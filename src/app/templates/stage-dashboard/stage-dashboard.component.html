@@ -1,0 +1,1112 @@
+<body class="g-sidenav-show  bg-gray-200">
+  <!-- HEADER -->
+  <app-header></app-header>
+  <!-- HEADER -->
+
+  <main class="main-content position-relative border-radius-lg max-height-vh-100"
+    [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '3.5rem'}">
+
+    <div class="container-fluid pb-2 pl-0" style="padding-inline: 1rem !important;padding-top: 1.8rem !important;">
+      <div class="row">
+        <div class="col-12 mb-2">
+
+          <div class=" btn-group btn-group-toggle d-flex justify-content-between">
+
+            <div class="title">
+              <span *ngIf="usvParam == 1">USV</span>
+              <span *ngIf="rsvParam == 1">RSV</span>
+              <span *ngIf="fnParam == 1">FN</span>
+               Dashboard</div>
+
+            <div class="d-inline-flex">
+              <span class="p-0">
+                <label class=" btn btn-sm btn-danger btn-simple ml-1 mb-0" (click)="datefilter('today')"
+                  [ngClass]="{'active':clicked1 === true}">
+                  <input class=" d-none d-sm-none" name="options" type="radio" (click)="$event.stopPropagation()" />
+                  <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                    Today
+                  </span>
+                  <span class=" d-block d-sm-none">
+                    <i class=" tim-icons icon-gift-2"> </i>
+                  </span>
+                </label>
+
+                <label class=" btn btn-sm btn-danger btn-simple ml-1 mb-0" (click)="datefilter('yesterday')"
+                  [ngClass]="{'active':clicked2 === true}">
+                  <input class=" d-none" name="options" type="radio" (click)="$event.stopPropagation()" />
+
+                  <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                    Yesterday
+                  </span>
+                  <span class=" d-block d-sm-none">
+                    <i class=" tim-icons icon-tap-02"> </i>
+                  </span>
+                </label>
+
+                <label class=" btn btn-sm btn-danger btn-simple mb-0" (click)="datefilter('last7')"
+                  [ngClass]="{'active':clicked3 === true}">
+                  <input checked="checked" class=" d-none d-sm-none" name="options" type="radio"
+                    (click)="$event.stopPropagation()" />
+
+                  <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                    Last 7 days
+                  </span>
+                  <span class=" d-block d-sm-none">
+                    <i class=" tim-icons icon-single-02"> </i>
+                  </span>
+                </label>
+
+                <label class=" btn btn-sm btn-danger btn-simple mx-1 mb-0" [ngClass]="{'active':clicked === true}">
+                  <div #nextActionDates class="cursor-pointer d-none">
+                    <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                  </div>
+                  <span id="nextActionDates" class=" d-sm-block d-md-block d-lg-block d-xl-block">
+                    {{datecustomfetch}}
+                  </span>
+                  <span class=" d-block d-sm-none">
+                    <i class=" tim-icons icon-tap-02"> </i>
+                  </span>
+                </label>
+
+              </span>
+
+              <span class="reset_btn py-0 px-1">
+                <button type="button" class="btn btn-secondary buttonwithicon p-2 mb-0" (click)="refresh()">Reset <i
+                    class="fas fa-redo"></i></button>
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 pt-0 pb-3 d-flex justify-content-between align-items-center">
+          <div class="button_section d-flex ">
+            <div class="planleadassign">
+
+              <a class="add_class usv_stage other_section" (click)="stageTabs('usv')">
+                USV
+              </a>
+
+              <a class="add_class rsv_stage other_section" (click)="stageTabs('rsv')">
+                RSV
+              </a>
+
+              <a class="add_class fn_stage other_section" (click)="stageTabs('fn')">
+                FN
+              </a>
+
+            </div>
+          </div>
+          <span class="reset_btn py-0 px-1">
+            <button type="button" class="btn btn-info p-2 mb-0" (click)="onclickReAssign()" data-toggle="modal"
+              data-target="#assign_lead" *ngIf="roleid == '1' || roleid == '2'">Re-Assign <img class="pl-1"
+                src="../../../assets/images/re-assign_icon.png"> </button>
+          </span>
+        </div>
+
+          <div class="col-xl-12 col-md-12 col-sm-12 m-0 p-0">
+            <div class="row m-0 p-0">
+              <div class="col-xl-2 col-md-2 col-sm-12 mb-xl-0 mb-0">
+                <div class="card-header cursor-pointer p-0" (click)="getCategoryLeads('Fixed')"
+                  [ngStyle]="{'border' : selectedCategory == 'Fixed' ? '2px solid #02ABFF' : '2px solid white'}"
+                  style="border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #E5F6FE 104.6%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                  <div class="d-flex justify-content-between p-0">
+                    <div class="d-flex justify-content-between">
+                      <a class="col-12 py-2 px-3">
+                        <p class="above_label_size mb-0">FIXED</p>
+                        <h4 class="mb-0 above_count_size" style="color: #004E76;">{{fixedCount}}</h4>
+                      </a>
+                    </div>
+                    <div class="py-2 px-3">
+                      <img class="setting_icon" src="../../../assets/images/settings_with_bg.png" alt="">
+                    </div>
+                  </div>
+          
+                  <div class="px-0 col-xl-9 d-flex justify-content-between" style="padding-block: 2.5rem !important;">
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-xl-2 col-md-2 col-sm-12 mb-xl-0 mb-0">
+                <div class="card-header cursor-pointer p-0" (click)="getCategoryLeads('Done')"
+                  [ngStyle]="{'border' : selectedCategory == 'Done' ? '2px solid #38A03C' : '2px solid white'}"
+                  style="border-radius: 10px !important;background: linear-gradient(50deg, #ffffff 50%, #D3FFC9 180%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                  <div class="d-flex justify-content-between p-0">
+                    <div class="d-flex justify-content-between">
+                      <a class="col-12 py-2 px-3">
+                        <p class="above_label_size mb-0">Done</p>
+                        <h4 class="mb-0 above_count_size" style="color: #004E76;">{{DoneCount}}</h4>
+                      </a>
+                    </div>
+                    <div class="py-2 px-3">
+                      <img class="setting_icon" src="../../../assets/images/closed_with_bg.png" alt="">
+                    </div>
+                  </div>
+          
+                  <div class="px-0 col-xl-9 d-flex justify-content-between" style="padding-block: 2.5rem !important;">
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-xl-4 col-md-4 col-sm-12 mb-xl-0 mb-0">
+                <div class="card-header p-0"
+                  [ngStyle]="{'border' : selectedCategory == 'Fixed Overdues' || selectedCategory == 'Refixed Overdues' || selectedCategory == 'Done Overdues' ? '2px solid #DD474A' : '2px solid white'}"
+                  style="border-radius: 10px !important;background: linear-gradient(86.98deg, #FFFFFF 47.96%, #FFECED 113.29%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                  <div class="d-flex justify-content-between">
+                    <a class="py-2 px-3" (click)="getCategoryLeads('Fixed Overdues')">
+                      <p class="above_label_size mb-0">Overdues</p>
+                      <h4 class="mb-0 above_count_size">{{ totalOverdues }}</h4>
+                    </a>
+                    <div class="py-2 px-3">
+                      <img class="setting_icon" src="../../../assets/images/overdues_dash_icon.png" alt="">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between col-10 p-0">
+                    <a class="py-2 px-3 cursor-pointer" (click)="getCategoryLeads('Fixed Overdues')"
+                      [ngClass]="{'fixed_overdues_active' : selectedCategory == 'Fixed Overdues'}">
+                      <p class="mb-0" style="color: #981F21;"><span class="count_bottom_label">
+                          <div class="footer_label">Fixed</div>
+                          <div class="footer_count">{{fixedOverduesCount}}</div>
+                        </span></p>
+                    </a>
+                    <a class="py-2 px-3 cursor-pointer" (click)="getCategoryLeads('Done Overdues')"
+                      [ngClass]="{'done_overdues_active' : selectedCategory == 'Done Overdues'}">
+                      <p class="mb-0" style="color: #981F21;"><span class="count_bottom_label">
+                          <div class="footer_label">Done</div>
+                          <div class="footer_count">{{DoneOverduesCount}}</div>
+                        </span></p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-xl-4 col-md-4 col-sm-12 mb-xl-0 mb-0">
+                <div class="card-header p-0"
+                  [ngStyle]="{'border' : selectedCategory == 'Fixed Junk' || selectedCategory == 'Refixed Junk' || selectedCategory == 'Done Junk' ? '2px solid #C68984' : '2px solid white'}"
+                  style="border-radius: 10px !important;background: linear-gradient(81.85deg, #FFFFFF 48.93%, #FFE4E1 106.84%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                  <div class="d-flex justify-content-between">
+                    <a class="py-2 px-3" (click)="getCategoryLeads('Fixed Junk')">
+                      <p class="above_label_size mb-0">Junk</p>
+                      <h4 class="mb-0 above_count_size">{{ totalJunk }}</h4>
+                    </a>
+                    <div class="py-2 px-3">
+                      <img class="setting_icon" src="../../../assets/images/junk_stage_icon.png" alt="">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between col-10 p-0">
+                    <a class="py-2 px-3 cursor-pointer" (click)="getCategoryLeads('Fixed Junk')"
+                      [ngClass]="{'fixed_junk_active' : selectedCategory == 'Fixed Junk'}">
+                      <p class="mb-0" style="color: #73322D;"><span class="count_bottom_label">
+                          <div class="footer_label">Fixed</div>
+                          <div class="footer_count">{{junkFixedCount}}</div>
+                        </span></p>
+                    </a>
+                    <a class="py-2 px-3 cursor-pointer" (click)="getCategoryLeads('Done Junk')"
+                      [ngClass]="{'done_junk_active' : selectedCategory == 'Done Junk'}">
+                      <p class="mb-0" style="color: #73322D;"><span class="count_bottom_label">
+                          <div class="footer_label">Done</div>
+                          <div class="footer_count">{{junkDoneCount}}</div>
+                        </span></p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-12 col-md-12 col-sm-12 p-0">
+            <div id="filtermaindiv" class="filterChips my-2 ml-2">
+              <span *ngIf="receivedDatefilterview && receivedFromDate && receivedToDate">
+                <div class="p-2 chip">
+                  Received On: {{receivedFromDate | date:'dd-MMM-yyyy'}} - {{receivedToDate | date:'dd-MMM-yyyy'}}
+                  <span class="closebtn" (click)="receivedDateclose()">&times;</span>
+                </div>
+              </span>
+              <span *ngIf="priorityFilter">
+                <div class="p-2 chip">
+                  {{priorityType}}
+                  <span class="closebtn" (click)="priorityClose()">&times;</span>
+                </div>
+              </span>
+              <span *ngIf="selectedLeadStatus && selectedLeadStatus != 'All'">
+                <div class="p-2 chip">
+                  Visit Type : {{selectedLeadStatus}}
+                  <span class="closebtn" (click)="removeselectedLeadStatus()">&times;</span>
+                </div>
+              </span>
+              <!-- property filtered data   -->
+              <span *ngIf="propertyfilterview && propertyid != ''">
+                <div class="p-2 chip">
+                  {{propertyname}}
+                  <span class="closebtn" (click)="propertyclose()">&times;</span>
+                </div>
+              </span>
+              <!-- executive filtered data   -->
+              <span *ngIf="executivefilterview && execid != ''">
+                <div class="p-2 chip">
+                  {{execname}}
+                  <span class="closebtn" (click)="executiveclose()">&times;</span>
+                </div>
+              </span>
+              <!-- source filtered data   -->
+              <span *ngIf="sourceFilter && source != ''">
+                <div class="p-2 chip">
+                  {{source == 'GR - Microsite' ? 'GR - campaign' : source}}
+                  <span class="closebtn" (click)="sourceClose()">&times;</span>
+                </div>
+              </span>
+              <span *ngIf="assignedOnDatefilterview && assignedFrom && assignedTo">
+                <div class="p-2 chip">
+                  Assigned On: {{assignedFrom | date:'dd-MMM-yyyy'}} - {{assignedTo | date:'dd-MMM-yyyy'}}
+                  <span class="closebtn" (click)="assignedOnDateclose()">&times;</span>
+                </div>
+              </span>
+              <span *ngIf="visitedDatefilterview ">
+                <div class="p-2 chip">
+                  Visited On: {{visitedFrom | date:'dd-MMM-yyyy'}} - {{visitedTo | date:'dd-MMM-yyyy'}}
+                  <span class="closebtn" (click)="visitedDateclose()">&times;</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <!-- table Code -->
+          <div class="col-xl-12 col-md-12 col-sm-12 p-0">
+            <div class="table-container"
+              [ngStyle]="{'border' : selectedCategory == 'Fixed' ? '1px solid #02ABFF' : selectedCategory == 'Refixed' ? '1px solid #F3883D' : selectedCategory == 'Done' ? '1px solid #38A03C' : selectedCategory == 'Overdues' || selectedCategory == 'Fixed Overdues' || selectedCategory == 'Refixed Overdues' || selectedCategory == 'Done Overdues' ? '1px solid #DD474A' : selectedCategory == 'Junk' || selectedCategory == 'Fixed Junk' || selectedCategory == 'Refixed Junk' || selectedCategory == 'Done Junk' ? '1px solid #C68984' : 'white'}">
+              <div id="filtermaindiv" class="filterspan"
+                [ngStyle]="{'color' : selectedCategory == 'Fixed' ? '#02ABFF' : selectedCategory == 'Refixed' ? '#F3883D' : selectedCategory == 'Done' ? '#38A03C' : selectedCategory == 'Overdues' || selectedCategory == 'Fixed Overdues' || selectedCategory == 'Refixed Overdues' || selectedCategory == 'Done Overdues' ? '#DD474A' : selectedCategory == 'Junk' || selectedCategory == 'Fixed Junk' || selectedCategory == 'Refixed Junk' || selectedCategory == 'Done Junk' ? '#C68984' : 'black' ,
+                  'background' : selectedCategory == 'Fixed' ? '#C3EBFF' : selectedCategory == 'Refixed' ? '#FFE0CA' : selectedCategory == 'Done' ? '#CDF3C5' : selectedCategory == 'Overdues' || selectedCategory == 'Fixed Overdues' || selectedCategory == 'Refixed Overdues' || selectedCategory == 'Done Overdues' ? '#FFC7C8' : selectedCategory == 'Junk' || selectedCategory == 'Fixed Junk' || selectedCategory == 'Refixed Junk' || selectedCategory == 'Done Junk' ? '#FFF6F5' : 'white' }">
+                <span class="col-xl-12 col-md-12 col-sm-12">
+                  {{selectedCategory}}
+                </span>
+              </div>
+          
+              <div class="CSassigned_table" #scrollContainer>
+                <div class="crm-sub-container padding-medium-full">
+                  <div class="panel-1 crm-auto-scrollrm panel-content">
+                    <table class="content_table_main table" infinite-scroll [fromRoot]="true"
+                      [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreassignedleads()"
+                      [infiniteScrollContainer]="'.CSassigned_table'">
+                      <thead>
+                        <tr class="header">
+                          <!-- ----------------------------sl no---------------------------- -->
+                          <th style="width: 3%;">#</th>
+                          <!-- ----------------------------Lead received with recivedFrom and recivedTo date filter---------------------------- -->
+                          <th *ngIf="roleid == '1' || roleid == '2'">
+                            <div class="d-flex gap-3 align-items-center">
+                              <span>Lead Date</span>
+                              <span class="leadreceiveddrop d-flex">
+                                <div id="leadReceivedDates" class="cursor-pointer">
+                                  <i class="fas fa-calendar" style="color: #0B7AB2;"></i>&nbsp;
+                                </div>
+                              </span>
+                            </div>
+                          </th>
+                          <!-- ----------------------------Name---------------------------- -->
+                          <th>Name</th>
+                          <th>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <span>Priority</span>
+                              <span class="leadstatusdrop d-flex">
+                                <div>
+                                  <button class="btn btn-primary mb-0" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                    <i class="fas fa-filter" style="color: #0B7AB2;"></i>
+                                  </button>
+                                  <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                                    <a class="dropdown-item dropDownCursor" (click)="prioritychange('1')">Hot</a>
+                                    <a class="dropdown-item dropDownCursor" (click)="prioritychange('2')">Warm</a>
+                                    <a class="dropdown-item dropDownCursor" (click)="prioritychange('3')">Cold</a>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+                          </th>
+                          <!-- ----------------------------Lead status with filter---------------------------- -->
+                          <th *ngIf="selectedCategory != 'Fixed' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Fixed Overdues'">
+                            <div class="d-flex gap-3 align-items-center">
+                              <span>Visit Type</span>
+                              <span class="leadstatusdrop d-flex">
+                                <div>
+                                  <button class="btn btn-primary mb-0" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                    <i class="fas fa-filter" style="color: #0B7AB2;"></i>
+                                  </button>
+                                  <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                                    <a class="dropdown-item dropDownCursor" (click)="leadStatus('All')">All</a>
+                                    <a class="dropdown-item dropDownCursor" (click)="leadStatus('Assigned')">Assigned</a>
+                                    <a class="dropdown-item dropDownCursor" (click)="leadStatus('Direct Visits')">Direct
+                                      Visits</a>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+                          </th>
+                          <!-- ----------------------------source with filter--------------------------- -->
+                          <th *ngIf="roleid == '1' || roleid == '2' || roleid == '50013' || roleid == '50014'" >
+                            <div class="d-flex gap-3">
+                              <span>Source</span>
+                              <div>
+                                <button class="btn btn-primary mb-0" type="button" id="bookingLeadDropdown_source" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                  <i class="fas fa-filter" style="color: #0B7AB2;"></i>
+                                </button>
+                                <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                                  style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                                  <!-- Filter Search  input -->
+                                  <div class="dropdown-search-container"><input type="text" class="form-control sourcesearch"
+                                      placeholder="Search..." [(ngModel)]="searchTerm_source" (input)="filtersource()"
+                                      style="margin-bottom: 2px;"></div>
+                                  <!-- Dropdown items with checkboxes -->
+                                  <div class="source_list_checkbox">
+                                    <div *ngFor="let sourcelist of sourcelist">
+                                      <label class="dropdown-item dropDownCursor mb-1">
+                                        <input type="checkbox" class="mr-2 loopcheckbox hidesourcecheckbox" id="hidesourcecheckboxid"
+                                          value="{{sourcelist?.source}}" name='sourceFilter' (change)="onCheckboxChangesource()">
+                                        {{ sourcelist.source }}
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- ----------------------------property with filter---------------------------- -->
+                          <th>
+                            <div class="d-flex gap-3">
+                              <span>Property</span>
+                              <div>
+                                <button class="btn btn-primary mb-0" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                  <i class="fas fa-filter" style="color: #0B7AB2;"></i>
+                                </button>
+                                <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                                  style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                                  <!-- Filter Search  input -->
+                                  <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                                      placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                                      style="margin-bottom: 2px;"></div>
+                                  <!-- Dropdown items with checkboxes -->
+                                  <div *ngIf="mandateprojects?.length">
+                                    <div *ngFor="let project of mandateprojects">
+                                      <label class="dropdown-item dropDownCursor mb-1">
+                                        <span (click)="onCheckboxChange(project)"> {{ project.property_info_name }}</span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="!mandateprojects?.length" class="text-center" style="color: #666666;">
+                                    <h4>No Properties Found</h4>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- ----------------------------stage with filter---------------------------- -->
+                          <!-- <th>Stage</th> -->
+                          <!-- ----------------------------Assigned to(RM)---------------------------- -->
+                          <th *ngIf="roleid == '1' || roleid == '2' || role_type == '1'">
+                            <div class="d-flex gap-3">
+                              <span>Assignees</span>
+                              <div>
+                                <button class="btn btn-primary mb-0" type="button" id="executiveDropdown" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                  <i class="fas fa-filter" style="color: #0B7AB2;"></i>
+                                </button>
+                                <div class="dropdown-menu propertyBasedFilter" aria-labelledby="executiveDropdown"
+                                  (click)="$event.stopPropagation()"
+                                  style="cursor:pointer; max-height: 350px;max-width: 400px;width: 300px !important;">
+                                  <div class="">
+                                    <div class="form-group col-12 pt-2">
+                                      <label>Assignees:</label><br />
+                                      <p-multiSelect id="mandateExec_dropdown" [options]="mandateexecutives"
+                                        [(ngModel)]="selectedFilteredEXECUTIVES" [filter]="true"
+                                        optionLabel="name" #customersupport="ngModel" name="customersupport"
+                                        defaultLabel="Select Executives" (onChange)="filterExecutiveSelect($event)"></p-multiSelect>
+                                    </div>
+                    
+                                    <div class="form-group col-12">
+                                      <label>Assigned On:</label><br />
+                                      <input type="text" id="assigedOnDates" class="form-control form-control-sm cursor-pointer"
+                                        style="height: 2.9rem;width: 250px;" placeholder="Select Date Range" readonly />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </th>
+                          <!-- ----------------------------Next action for NC,USV,RSV,FN with from and to date filter---------------------------- -->
+                          <th>
+                            <!-- <div class="d-flex gap-3 align-items-center"> -->
+                              <span>Next Action </span>
+                              <!-- <span class="leadstatusdrop d-flex">
+                                <div>
+                                  <div id="nextActionDates" class="cursor-pointer">
+                                    <i class="fas fa-calendar" style="color: #0B7AB2;"></i>&nbsp;
+                                  </div>
+                                </div>
+                              </span>
+                            </div> -->
+                          </th>
+                          <!-- ----------------------------USV,RSV,FN with visitedfrom and visitedto date filter---------------------------- -->
+                          <th *ngIf="selectedCategory != 'Fixed' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Fixed Overdues'">
+                            <div class="d-flex gap-3 align-items-center">
+                              <span>Visited On</span>
+                              <span class="leadstatusdrop d-flex">
+                                <div id="visitedOnDates" class="cursor-pointer">
+                                  <i class="fas fa-calendar" style="color: #0B7AB2;"></i>&nbsp;
+                                </div>
+                              </span>
+                            </div>
+                          </th>
+                          <!-- ----------------------------Last Updated for inactive---------------------------- -->
+                          <!-- ----------------------------Lastest remarks---------------------------- -->
+                          <th class="remarksection">Remarks</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="callerleads?.length" class="enquiry_table_body">
+                        <tr *ngFor="let leads of callerleads; let i = index" style="background: white !important;">
+                          <!-- ----------------------------Sl.no---------------------------- -->
+                          <td style="text-align: center;">
+                            {{i+1}}</td>
+                          <!-- ----------------------------Sl.no---------------------------- -->
+                    
+                          <!-- ----------------------------Lead Received---------------------------- -->
+                          <td *ngIf="roleid == '1' || roleid == '2'">
+                            <!-- ----------------------------Lead Received date if its assigned for the same person again---------------------------- -->
+                            <span *ngIf="(leads?.leadDate | date: 'dd-MMM-yyyy') !== (leads?.latestDateTime | date: 'dd-MMM-yyyy')">
+                              {{leads?.latestDateTime | date: 'dd-MMM-yyyy'}}
+                              <span *ngIf="leads?.latestDateTime">,{{ leads?.latestDateTime | date: 'hh:mm a'}}</span>
+                            </span>
+                            <!-- ----------------------------Lead Received date if its assigned for the same person again---------------------------- -->
+                            <hr class="m-0"
+                              *ngIf="(leads?.leadDate | date: 'dd-MMM-yyyy') !== (leads?.latestDateTime | date: 'dd-MMM-yyyy')">
+                            <!-- ----------------------------Lead Received date if its assigned for the first time---------------------------- -->
+                            <span style="font-size: 12px; font-weight: 300;display: block;" class="mt-1"
+                              *ngIf="(leads?.leadDate | date: 'dd-MMM-yyyy') !== (leads?.latestDateTime | date: 'dd-MMM-yyyy')">First
+                              Received</span>
+                            <span style="font-size: 12px;font-weight: 300"
+                              *ngIf="(leads?.leadDate | date: 'dd-MMM-yyyy') !== (leads?.latestDateTime | date: 'dd-MMM-yyyy')">{{leads.leadDate
+                              | date: 'dd-MMM-yyyy'}} <span *ngIf="leads.leadTime">,{{ leads.leadTime}}</span> </span>
+                            <span
+                              *ngIf="((leads?.leadDate | date: 'dd-MMM-yyyy') == (leads?.latestDateTime | date: 'dd-MMM-yyyy')) || leads?.latestDateTime == null">{{leads.leadDate
+                              | date: 'dd-MMM-yyyy'}} <span *ngIf="leads.leadTime">,{{ leads.leadTime}}</span></span>
+                            <!-- ----------------------------Lead Received date if its assigned for the first time---------------------------- -->
+                          </td>
+                          <!-- ----------------------------Lead Received---------------------------- -->
+                    
+                          <!-- ----------------------------Customer name and number---------------------------- -->
+                          <td *ngIf="roleid == 1 || roleid == 2" class="name_style"
+                            [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : ''}">
+                            <a class="btn_style cursor-pointer" (click)="detailsPageRedirection()">
+                              <div class="statuscard"
+                                routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}"
+                                [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : ''}">
+                                {{leads.CustomerName}}
+                                <span *ngIf="leads?.qualified_leads == '2'" class="d-flex"><img
+                                    src="../../../../assets/images/qualified.svg" style="width: 20px;"></span>
+                                <span *ngIf="leads?.qualified_leads == '3'" class="d-flex"><img
+                                    src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span>
+                              </div>
+                              <div class="d-flex gap-3"
+                                [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1'|| rsvParam == '1'|| fnParam == '1')) ? 'red' : '' }">
+                                <span class="call_des" *ngIf="leads?.number && leads.Leadphase != 'Junk'" (click)="triggerCall(leads)"
+                                  data-toggle="tooltip" data-placement="right"
+                                  [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
+                                    src="../../../../assets/images/call_btn.png"></span>
+                                <span class="call_des"
+                                  *ngIf="leads?.number && ((leads.Leadphase != 'Fresh' || (leads.Leadphase == 'Fresh' && leads.followupreason == 8)) || (roleid == 1 || roleid == 2))"
+                                  (click)="recordingList(leads)" data-toggle="tooltip" data-placement="right"
+                                  title="Click to listen to the recordings"><img src="../../../../assets/images/play_btn.png">
+                                </span>
+                              </div>
+                            </a>
+                          </td>
+                    
+                          <td *ngIf="roleid != 1 && roleid != '2'"
+                            [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : '' }">
+                            <!-- ----------------------------Customer name and stage (lead pushed junk/inactive above 2 hours not clickable---------------------------- -->
+                            <span class="name_style"
+                              *ngIf="selectedCategory == 'Fixed Junk' || selectedCategory == 'Refixed Junk' || selectedCategory == 'Done Junk'">
+                              <a>
+                                <div class=" anchor disabled"
+                                  [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : ''}">
+                                  {{leads.CustomerName}}
+                                  <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                                      style="width: 20px;"></span>
+                                  <span *ngIf="leads?.qualified_leads == '3'"><img src="../../../../assets/images/not_qualified.svg"
+                                      style="width: 20px;"></span>
+                                </div>
+                                <div>+91xxxxxxxx</div>
+                              </a>
+                            </span>
+                          
+                            <!-- ----------------------------Customer name and stage for all the stages execpt junk and inactive---------------------------- -->
+                            <a *ngIf="selectedCategory != 'Junk' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Refixed Junk' && selectedCategory != 'Done Junk'" class="btn_style cursor-pointer"
+                              [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' }">
+                              <div class="statuscard"
+                                routerLink="/mandate-customers/{{leads?.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">
+                                {{leads?.CustomerName}}
+                                <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                                    style="width: 20px;"></span>
+                                <span *ngIf="leads?.qualified_leads == '3'"><img src="../../../../assets/images/not_qualified.svg"
+                                    style="width: 20px;"></span>
+                              </div>
+                              <div class="d-flex gap-3"
+                                [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' }">
+                                <span class="call_des" *ngIf="leads?.number" (click)="triggerCall(leads)" data-toggle="tooltip"
+                                  data-placement="right"
+                                  [attr.title]="'Click to Call: ' + (((roleid != 50001 && roleid != 50002) || (leads.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
+                                    src="../../../../assets/images/call_btn.png"></span>
+                                <span class="call_des"
+                                  *ngIf="leads?.number && ((leads.Leadphase != 'Fresh' || (leads.Leadphase == 'Fresh' && leads.followupreason == 8)) || (roleid == 1 || roleid == 2))"
+                                  (click)="recordingList(leads)" data-toggle="tooltip" data-placement="right"
+                                  title="Click to listen to the recordings"><img src="../../../../assets/images/play_btn.png">
+                                </span>
+                              </div>
+                            </a>
+                          </td>
+                          <!-- ----------------------------Customer name and number---------------------------- -->
+                    
+                          <!-- priority  -->
+                          <td>
+                            <span class="priority_hot flex" *ngIf="leads?.lead_priority == 1"><span
+                                style="font-weight: 600;font-size: 14px;">HOT</span>&nbsp;<img
+                                src="../../../assets/images/hot-icon.png"></span>
+                            <span class="priority_warm flex" *ngIf="leads?.lead_priority == 2"><span
+                                style="font-weight: 600;font-size: 14px;">WARM</span>&nbsp;<img
+                                src="../../../assets/images/warm-icon.png"></span>
+                            <span class="priority_cold flex" *ngIf="leads?.lead_priority == 3"><span
+                                style="font-weight: 600;font-size: 14px;">COLD</span>&nbsp;<img
+                                src="../../../assets/images/cold-clr-icon.png"></span>
+                    
+                            <div *ngIf="leads?.lead_priority == 0">
+                              <span style="font-style: italic;font-weight: 900;">Priority not Set</span>
+                              <div class="text-right py-2">
+                                <span id="executiveDropdown" data-toggle="dropdown"
+                                  style="border-radius: 50px;padding-inline: 5px;border: 1px solid lightgray;cursor: pointer;">Set Here
+                                  >></span>
+                                <div>
+                                  <div class="dropdown-menu propertyBasedFilter" aria-labelledby="executiveDropdown"
+                                    (click)="$event.stopPropagation()"
+                                    style="cursor:pointer; max-height: 350px;max-width: 400px;width: 300px !important;">
+                                    <div class="">
+                                      <div class="form-group col-12 pt-2">
+                                        <label class="mb-0">Priority:</label>
+                                        <div class="d-flex gap-3 priority_btn">
+                                          <span class="update_priority_btn" [ngClass]="{'active' : selectedUpdatePriority == 1}"
+                                            (click)="updatePrriority('1')">Hot</span>
+                                          <span class="update_priority_btn" [ngClass]="{'active' : selectedUpdatePriority == 2}"
+                                            (click)="updatePrriority('2')">Warm</span>
+                                          <span class="update_priority_btn" [ngClass]="{'active' : selectedUpdatePriority == 3}"
+                                            (click)="updatePrriority('3')">Cold</span>
+                                        </div>
+                                      </div>
+                    
+                                      <div class="col-12 py-2 d-flex justify-content-end">
+                                        <button class="btn btn-warning mb-0" type="button"
+                                          (click)="updateLeadPriority(leads)">Update</button>
+                                      </div>
+                    
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <!-- priority  -->
+                    
+                          <!-- ----------------------------Lead Assigned or Direct visit---------------------------- -->
+                          <td *ngIf="selectedCategory != 'Fixed' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Fixed Overdues'">
+                            <span *ngIf="leads?.Leadidentifier == 0">Assigned</span>
+                            <span *ngIf="leads?.Leadidentifier == 1">Direct</span>
+                          </td>
+                          <!-- ----------------------------Lead Assigned or Direct visit---------------------------- -->
+                    
+                          <!-- ----------------------------Lead source---------------------------- -->
+                          <td *ngIf="roleid == '1' || roleid == '2' || roleid == '50013' || roleid == '50014'">
+                            {{leads.source == 'GR - Microsite' ? 'GR - campaign' : leads.source}}</td>
+                          <!-- ----------------------------Lead source---------------------------- -->
+                    
+                          <!-- ----------------------------Lead properties---------------------------- -->
+                          <td>{{leads.propertyname}}</td>
+                          <!-- ----------------------------Lead properties---------------------------- -->
+                    
+                          <!-- ----------------------------Lead stage---------------------------- -->
+                          <!-- <td>                                         -->
+                            <!-- ----------------------------lead stage which are in junk ,where are showing the laststage---------------------------- -->
+                            <!-- <span
+                              *ngIf="leads.Leadphase == 'Junk' && stagestatusval != 3 && leads.laststage != 'Final Negotiation' && usvParam != 1">{{leads.laststage}}</span>
+                            <span
+                              *ngIf="leads.Leadphase == 'Junk' && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && (junkvisitsParam == 1 || junkleadsParam == 1) && leads.laststage != 'Final Negotiation' && usvParam != 1">{{leads.laststage}}</span> -->
+                            <!-- ----------------------------lead stage which are in junk ,where are showing the laststage---------------------------- -->
+                    
+                    
+                            <!-- ----------------------------lead stage which are in Final Negotiation is shown as FN---------------------------- -->
+                            <!-- <span
+                              *ngIf="leads.Leadphase == 'Final Negotiation' && junkvisitsParam != 1 && junkleadsParam != 1 && leads.Leadphase != leads.laststage && (stagestatusval == '3' || stagestatusval == '' || stagestatusval == undefined) && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched'">{{"FN"}}</span>
+                            <span
+                              *ngIf="leads.Leadphase == 'Final Negotiation' && junkvisitsParam != 1 && junkleadsParam != 1 && stagestatusval != '3' && stagestatusval != '' && stagestatusval != undefined && fnParam == 1 ">{{"FN"}}</span>
+                            <span
+                              *ngIf="leads.laststage == 'Final Negotiation' && (junkvisitsParam == 1 || junkleadsParam == 1)">{{"FN"}}</span>
+                            <span
+                              *ngIf="leads.laststage == 'Final Negotiation' && (additionalParam == 'AllVisits' || additionalParam == 'Assigned' || additionalParam == 'Active' || additionalParam == 'Touched' || additionalParam == 'ActiveVisits') && junkvisitsParam != 1 && junkleadsParam != 1 && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'DCRR' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Junk'">{{"FN"}}</span> -->
+                            <!-- ----------------------------lead stage which are in Final Negotiation is shown as FN---------------------------- -->
+                    
+                            <!-- ----------------------------lead stage USV fix---------------------------- -->
+                            <!-- <span
+                              *ngIf="(usvParam == 1 && (leads.stagestatus == 1 || leads.stagestatus == 2) && leads.Leadphase == 'USV')">{{leads.Leadphase}}</span> -->
+                            <!-- ----------------------------lead stage USV fix---------------------------- -->
+                    
+                            <!-- ----------------------------To show leadstatus for NC,RSV,FN with lead status not equal to done---------------------------- -->
+                            <!-- <span
+                              *ngIf="(leads.stagestatus == '1' || leads.stagestatus == '2') && usvParam != '1' && stagestatusval != 3 && stagestatusval != '' && stagestatusval != undefined">{{'Fix'}}</span>
+                            <span
+                              *ngIf="leads.stagestatus == '3' && usvParam != '1' &&  stagestatusval != 3 && stagestatusval != '' && stagestatusval != undefined">{{'Done'}}</span> -->
+                            <!-- ----------------------------To show leadstatus for NC,RSV,FN with lead status not equal to done---------------------------- -->
+                    
+                            <!-- ----------------------------To show leadstatus for NC,RSV,FN with lead status equal to done  and showing followup if leadphase and laststage is equal---------------------------- -->
+                            <!-- <span
+                              *ngIf="(rsvParam || fnParam) == 1 && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.Leadphase != leads.laststage && (leads.stagestatus == '1' || leads.stagestatus == '2') && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'DCRR' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' ">{{'Fix'}}</span>
+                            <span
+                              *ngIf="(rsvParam || fnParam) == 1 && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.Leadphase != leads.laststage && leads.stagestatus == '3' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'DCRR' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk'">{{'Done'}}</span> -->
+                            <!-- ----------------------------To show leadstatus for NC,RSV,FN with lead status equal to done  and showing followup if leadphase and laststage is equal---------------------------- -->
+                    
+                            <!-- ----------------------------To show leadstatus for junk lead status equal to done---------------------------- -->
+                            <!-- <span
+                              *ngIf="(junkvisitsParam == 1 ) && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.laststage != 'Junk' && (leads.stagestatus == '1' || leads.stagestatus == '2')">{{'Fix'}}</span>
+                            <span
+                              *ngIf="(junkvisitsParam == 1 ) && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.laststage != 'Junk' && leads.stagestatus == '3'">{{'Done'}}</span> -->
+                            <!-- ----------------------------To show leadstatus for junk lead status equal to done---------------------------- -->
+                    
+                            <!-- ----------------------------To show leadstatus for usv done status and showing followup if leadphase and laststage is equal---------------------------- -->
+                            <!-- <span
+                              *ngIf="(usvParam) == 1 &&  leads.Leadphase != leads.laststage && (leads.stagestatus == '1' || leads.stagestatus == '2') && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'DCRR' && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Fix'}}</span>
+                            <span
+                              *ngIf="(usvParam) == 1 &&  leads.Leadphase != leads.laststage && leads.stagestatus == '3' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'DCRR' && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Done'}}</span> -->
+                            <!-- ----------------------------To show leadstatus for usv done status and showing followup if leadphase and laststage is equal---------------------------- -->
+                          <!-- </td> -->
+                          <!-- ----------------------------Lead stage---------------------------- -->
+                    
+                          <!-- ----------------------------Assigned-Executive-Name---------------------------- -->
+                          <td *ngIf="roleid == '1' || roleid == '2' || role_type == '1'">
+                            <span style="font-size: 14px;font-weight: 600;" *ngIf="visitType != '1'">{{leads.Executivename}}</span>
+                          
+                            <div> {{leads.assigneddate |
+                              date: 'dd-MMM-yyyy'}}
+                              <div>{{leads.assigneddate | date: 'hh:mm a'}}</div>
+                            </div>
+                          </td>
+                          <!-- ----------------------------Assigned-Executive-Name---------------------------- -->
+                    
+                          <!------------------------------Next Action Date for NC,USV,SV,RSV,FN------------------------------>
+                    
+                          <td>
+                            <!-- <div *ngIf="(usvParam || rsvParam || fnParam) == '1'" class="pb-1">
+                              <span class="stageStatusCard">
+                                <span
+                                  *ngIf="(usvParam == 1 && (leads.stagestatus == 1 || leads.stagestatus == 2) && leads.Leadphase == 'USV')">{{leads.Leadphase}}</span>
+                    
+                                <span
+                                  *ngIf="usvParam == '1' && (stagestatusval == '3' || stagestatusval == '' || stagestatusval == undefined)">
+                                  <span
+                                    *ngIf="leads.Leadphase != leads.laststage && leads.Leadphase != 'Final Negotiation'">{{leads.Leadphase}}</span>
+                                  <span *ngIf="leads.Leadphase == leads.laststage">{{'Followup'}}</span>
+                                </span>
+                    
+                                <span
+                                  *ngIf="rsvParam == '1' && (stagestatusval == '3' || stagestatusval == '' || stagestatusval == undefined)">
+                                  <span
+                                    *ngIf="leads.Leadphase != leads.laststage && leads.Leadphase != 'Final Negotiation'">{{leads.Leadphase}}</span>
+                                  <span *ngIf="leads.Leadphase == leads.laststage">{{'Followup'}}</span></span>
+                    
+                                <span
+                                  *ngIf="fnParam == '1' && (stagestatusval == '3' || stagestatusval == '' || stagestatusval == undefined)"><span
+                                    *ngIf="leads.Leadphase != leads.laststage && leads.Leadphase != 'Final Negotiation'">{{leads.Leadphase}}</span>
+                                  <span
+                                    *ngIf="leads.Leadphase == 'Final Negotiation' && junkvisitsParam != 1 && junkleadsParam != 1 && leads.Leadphase != 'Final Negotiation'">{{"FN"}}</span>
+                                  <span *ngIf="leads.Leadphase == leads.laststage">{{'Followup'}}</span></span>
+                    
+                                <span
+                                  *ngIf="leads.Leadphase == 'Final Negotiation' && junkvisitsParam != 1 && junkleadsParam != 1 && leads.Leadphase != leads.laststage && (stagestatusval == '3' || stagestatusval == '' || stagestatusval == undefined) && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched'">{{"FN"}}</span>
+                    
+                                <span
+                                  *ngIf="(usvParam) == 1 &&  leads.Leadphase != leads.laststage && (leads.stagestatus == '1' || leads.stagestatus == '2') && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'DCRR' && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Fix'}}</span>
+                                <span
+                                  *ngIf="(usvParam) == 1 &&  leads.Leadphase != leads.laststage && leads.stagestatus == '3' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'DCRR' && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Done'}}</span>
+                    
+                                <span
+                                  *ngIf="(leads.stagestatus == '1' || leads.stagestatus == '2') && usvParam != '1' && inactiveparam != '1' && bookingRequestParam != 1 && bookingPendingParam != 1 && bookingRejectedParam != 1 && bookedParam != 1 && stagestatusval != 3 && stagestatusval != '' && stagestatusval != undefined && normalcallparam != 1 && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Fix'}}</span>
+                                <span
+                                  *ngIf="leads.stagestatus == '3' && usvParam != '1' && inactiveparam != '1' && bookingRequestParam != 1 && bookingRejectedParam != 1 && bookingPendingParam != 1 &&  bookedParam != 1 && stagestatusval != 3 && stagestatusval != '' && stagestatusval != undefined && normalcallparam != 1 && additionalParam != 'AllVisits' && additionalParam != 'Assigned' && additionalParam != 'Active' && additionalParam != 'Touched' && additionalParam != 'ActiveVisits'">{{'Done'}}</span>
+                    
+                    
+                                <span
+                                  *ngIf="(rsvParam || fnParam) == 1 && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.Leadphase != leads.laststage && (leads.stagestatus == '1' || leads.stagestatus == '2') && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'DCRR' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk' ">{{'Fix'}}</span>
+                    
+                                <span
+                                  *ngIf="(rsvParam || fnParam) == 1 && (stagestatusval == 3 || stagestatusval == '' || stagestatusval == undefined) && leads.Leadphase != leads.laststage && leads.stagestatus == '3' && leads.Leadphase != 'Closing Request Rejected' && leads.Leadphase != 'Deal Closing Requested' && leads.Leadphase != 'DCRR' && leads.Leadphase != 'Deal Closed' && leads.Leadphase != 'Deal Closing Pending' && leads.Leadphase != 'Junk'">{{'Done'}}</span>
+                              </span>
+                            </div> -->
+                    
+                            <span
+                              *ngIf="(leads.nextactiondate != '' && leads.nextactiondate != undefined && leads.nextactiondate != null) && (leads.nextactiontime!= '' && leads.nextactiontime!= undefined && leads.nextactiontime != null)">
+                              {{leads.nextactiondate | date: 'dd-MMM-yyyy' }}
+                              <div>{{leads.nextactiontime}}</div>
+                            </span>
+                            <span
+                              *ngIf="(leads.nextactiondate == '' || leads.nextactiondate == undefined || leads.nextactiondate == null) || (leads.nextactiontime == '' || leads.nextactiontime == undefined || leads.nextactiontime == null)">
+                              <div style="font-weight: 600;" class="text-center">Moved To</div>
+                              <div style="font-weight: 600;" class="text-center">Junk</div>
+                            </span>
+                          </td>
+                          <!------------------------------Next Action Date for NC,USV,RSV,FN------------------------------>
+                    
+                          <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+                          <td *ngIf="selectedCategory != 'Fixed' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Fixed Overdues'">
+                            {{leads.visiteddate | date: 'dd-MMM-yyyy'}}
+                            <div>{{leads.visitedtime}}</div>
+                          </td>
+                          <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+                    
+                    
+                          <!------------------------------Latest Remarks Fetch Section------------------------------>
+                          <td class="remarksection">
+                            <div style="overflow: hidden;white-space: normal;">
+                              <div style="word-wrap: break-word;"
+                                *ngIf="leads.Leadphase2 != 'USV' && leads.Leadphase2 != 'RSV' && (leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin')">
+                                {{leads.visitremarks}}</div>
+                              <div style="word-wrap: break-word;" *ngIf="leads.Leadphase2 == 'USV'">{{leads.usvvisitremarks}}
+                              </div>
+                              <div style="word-wrap: break-word;" *ngIf="leads.Leadphase2 == 'RSV'">{{leads.rsvvisitremarks}}
+                              </div>
+                              <hr class="m-0"
+                                *ngIf="(leads.visitremarks && leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin') && leads.manualremarks">
+                              {{leads.manualremarks}}
+                            </div>
+                            <div style="font-size: 18px;font-style: italic;font-weight: 900;text-align: center;"
+                              *ngIf="(leads.usvvisitremarks == null && leads.Leadphase2 == 'USV') || (leads.Leadphase2 == 'RSV' && leads.Leadphase2 == 'RSV') || (leads.manualremarks == null && (leads.visitremarks == null || leads.visitremarks == 'got this lead from Admin' || leads.visitremarks == 'got this new lead Admin'))">
+                              No Remarks </div>
+                          </td>
+                          <!------------------------------Latest Remarks Fetch Section------------------------------>
+                    
+                        </tr>
+                      </tbody>
+                      <tbody *ngIf="!callerleads?.length">
+                        <tr>
+                          <td colspan="11" class="text-center font-weight-bold pt-5">
+                            No Leads Found.....!
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+          
+              </div>
+          
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </main>
+
+    <div *ngIf=filterLoader class="main-lds-ring-div">
+    <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</body>
+
+<!-- ---------------------------- reassign table---------------------------- -->
+<div class="modal fade" id="assign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog assignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Total Re-Assign Leads : {{reassignleadsCount}}</h4>
+        <div class="d-flex" style="gap: 0.2rem">
+          <label>Random Assign</label>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch5" (change)="checkRandom($event)"
+              [disabled]="maxSelectedLabels == 1">
+            <label class="custom-control-label" for="customSwitch5"></label>
+          </div>
+        </div>
+        <button type="button" class="close" id="closereassignmodal" data-dismiss="modal"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select Property</label>
+              <select id="property_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                (change)="reassignPropChange($event)">
+                <option value="" selected>Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                  [selected]="projects.property_idfk == selectedMandateProp">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign Executive Team</label>
+              <select id="team_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="reassignExecTeam($event)">
+                <option value="" selected>All</option>
+                <option value="50002">Relationship Executives</option>
+                <option value="50014">Customersupport Executives</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign To</label>
+              <p-multiSelect id="mandateExec_dropdown" [options]="reassignListExecutives"
+                [(ngModel)]="selectedEXECUTIVES" [filter]="true" optionLabel="name" #customersupport="ngModel"
+                name="customersupport" defaultLabel="Select Executives"
+                (onChange)="reAssignexecutiveSelect($event)"></p-multiSelect>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Leads Count</label>
+              <select id="leadcount_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+            <div class="form-group col-2 input_cmn_div pt-3">
+              <button type="button" class="btn btn-warning" (click)="getAssignedLeadsList()">Assign Now</button>
+            </div>
+
+            <!-- list of reassign selected leads table  -->
+            <div class="assign_table1">
+              <table id="start2" class="content_table_main table" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'" (scrolled)="loadMoreassignedleads()">
+                <thead style="background: #0B7AB2 !important;">
+                  <tr>
+                    <th>#</th>
+                    <th>Lead Received</th>
+                    <th>Name</th>
+                    <th>Source</th>
+                    <th>Property</th>
+                    <th>Executive</th>
+                    <th>Assigned Date</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <tr *ngFor="let assign of callerleads; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign}}" name='programming' (change)="getselectedleads()"
+                          [attr.data-assign]="assign | json" style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>
+                      <span
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">
+                        {{assign?.latestDateTime | date: 'dd-MMM-yyyy'}},
+                        {{ assign?.latestDateTime | date: 'hh:mm a'}}
+                      </span>
+                      <hr class="m-0"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">
+                      <span style="font-size: 12px; font-weight: 300;display: block;" class="mt-1"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">First
+                        Received</span>
+                      <span style="font-size: 12px;font-weight: 300"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">{{assign.leadDate
+                        | date: 'dd-MMM-yyyy'}}, {{ assign.leadTime}} </span>
+                      <span
+                        *ngIf="((assign.leadDate | date: 'dd-MMM-yyyy') == (assign?.latestDateTime | date: 'dd-MMM-yyyy')) || assign?.latestDateTime == null">{{assign.leadDate
+                        | date: 'dd-MMM-yyyy'}}, {{ assign.leadTime}} </span>
+                    </td>
+                    <td>
+                      <div>{{assign.CustomerName}} </div>
+                      <div>{{assign.number}}</div>
+                    </td>
+                    <td style="width: 10% !important;">{{assign.source}}</td>
+                    <td>{{assign.propertyname}}</td>
+                    <td>{{assign.Executivename}}</td>
+                    <td>{{assign.assigneddate | date: 'dd-MMM-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ---------------------------- reassign table---------------------------- -->
+
+<!-- ----------------------------After reassign Info table---------------------------- -->
+<button type="button" data-toggle="modal" data-target="#reassigned_leads_modal" id="reassign_leads_detail"
+  style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Re-Assign Leads</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeDetailModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <table class="content_table_main table" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead style="background: #0B7AB2 !important;">
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Fresh Assigned</th>
+                  <th>Re-Assigned</th>
+                  <th>Not Assigned</th>
+                  <th>Untouched Leads</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body">
+                <tr *ngFor="let reassign of reassignedResponseInfo; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{reassign.execname}}</td>
+                  <td>{{reassign.fresh}}</td>
+                  <td>{{reassign.reassigned}}</td>
+                  <td>
+                    <div>Already in Fresh - {{reassign.exsiting}}</div>
+                    <div>Leads Capacity Reached - {{reassign.leads_skipped_executive_capacity}}</div>
+                    <div>Gr-Swara-Leads - {{reassign.gr_swara_leads_skipped}}</div>
+                  </td>
+                  <td>{{(reassign.totalleads?reassign.totalleads:'---')}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ----------------------------After reassign Info table---------------------------- -->
+
+<!-- Pop up modal for  call recordings  -->
+<button type="button" data-toggle="modal" data-target="#recordings_modal" id="call_record_modal_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="recordings_modal" tabindex="-1" role="dialog" data-backdrop="static"
+  aria-labelledby="defModalHead" style="top: 45px !important;overflow: hidden;" aria-hidden="true">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+      <div class="call_recordings modal-header position-relative">
+        <h4 class="col-10 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;color: white;">
+          Call Recordings
+        </h4>
+        <button type="button" class="close" data-dismiss="modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important; position: absolute;right: 10px;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="col-12 d-flex">
+          <div class="col-4 pl-0">
+            <span class="font_12">Lead Name</span>
+            <div class="font_18">{{calledLead?.CustomerName}}</div>
+          </div>
+
+          <div class="col-4">
+            <span class="font_12">Number</span>
+            <div class="font_18">{{calledLead?.number}}</div>
+          </div>
+
+          <div class="col-4">
+            <span class="font_12">Last Updated</span>
+            <div class="font_18">{{calledLead?.lastupdated | date: 'dd-MMM-yyyy'}}</div>
+          </div>
+
+        </div>
+
+        <div class="col-12 py-0 py-3">
+          <hr>
+        </div>
+
+        <div class="col-12 pr-0">
+          <span style="font-size: 18px;color: #8C8C8C;" *ngIf="roleid == 1 || roleid == 2">Assignees</span>
+
+          <div class="execnav-scrollable">
+            <ul class="execnav execnav-tabs col-12 pt-3" *ngIf="roleid == 1 || roleid == 2">
+              <li class="exec-item" *ngFor=" let exec of onRecordExecList;let i = index;">
+                <a class="exec-link" [class.active]="exec.Exec_IDFK == selectedRecordExec"
+                  (click)="getexecutiveId(exec)">{{exec.exec_name}}&nbsp;
+                </a>
+              </li>
+            </ul>
+            <div class="recordings_list_table" style="height: 300px !important;overflow: scroll;">
+              <table class="recordings_content_table_main table table-striped">
+                <thead>
+                  <tr class="header">
+                    <!-- ----------------------------sl no---------------------------- -->
+                    <th>Call Type</th>
+                    <th>Duration</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Recordings</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="audioList?.length">
+                  <tr *ngFor="let leads of audioList; let i = index">
+                    <td>{{leads.direction}}</td>
+                    <td>{{leads.answeredtime}}</td>
+                    <td>{{leads.starttime}}</td>
+                    <td>{{leads.endtime}}</td>
+                    <td>
+                      <div style="flex-direction: column;">
+                        <audio class="media-item" [src]="leads.filename" controls (play)="onAudioPlay($event)">
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center lead_norecord" *ngIf="! audioList?.length">
+                No Recordings Found.....
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Pop up modal for call recordings  -->

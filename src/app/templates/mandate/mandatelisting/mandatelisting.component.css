@@ -1,0 +1,435 @@
+/* CENTER-CONTENTS */
+
+
+.enquiry_content_main {
+    width: 100% !important;
+}
+
+
+.enquiry_content_main .button_section {
+    margin: 0;
+    float: left;
+}
+
+.main_count_header {
+    background: #0B7AB229;
+    color: #fff;
+    /* padding-left: 14.5em !important; */
+}
+
+.enquiry_content_main tbody tr td a.id_style {
+    text-decoration: underline;
+}
+
+.enquiry_content_main .button_section:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry {
+    float: left;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry a {
+    background: #0B7AB2;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 600;
+    padding: 12px 15px;
+    cursor: pointer;
+    margin: 0 4px 0 0;
+}
+
+.enquiry_content_main .button_section .leadassign {
+    float: left;
+}
+
+.enquiry_content_main .button_section .leadassign a {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 0px 5px 10px;
+    margin: 0 4px 0 0;
+    cursor: pointer;
+    float: left;
+    color: #999;    
+}
+
+.enquiry_content_main .button_section .leadassign a.active {
+    color: #0B7AB2;
+    text-decoration: underline 2px;
+    text-underline-offset: 10px;
+    padding-bottom: 1rem;
+}
+
+.enquiry_content_main .button_section .download {
+    float: right;
+}
+
+.enquiry_content_main .button_section .download a {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #252525;
+    font-weight: 700;
+    padding: 6px 15px 0px 15px;
+}
+
+/*============= Enquiry Table CSS Start =========================*/
+
+.enquiry_table_body {
+    height: 150px;
+    font-size: 13px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.body-cntnts {
+    margin: 10px 0px 10px 10px !important;
+    width: 98% !important;
+    /* padding-left: 14.5rem; */
+    background: #f4f4f4;
+}
+
+.reset {
+    float: right;
+    cursor: pointer;
+    margin: 7px 0 0 0;
+}
+
+.reset i {
+    margin: 0px 10px 0px 0;
+}
+
+.CSassigned_table {
+    height: 680px;
+    overflow: auto;
+    width: 100%;
+}
+
+.panel-1 {
+    order: 1;
+    flex-grow: 1;
+    min-width: 50%;
+    background: #ddd;
+}
+
+.crm-auto-scroll {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.panel-content {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+.table-container {
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    padding-block: 0.5rem;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.content_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+    background: #0B7AB2;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.content_table_main thead tr th {
+    padding: 8px 25px 8px 8px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+    padding: 6px 6px 6px 6px;
+    color: #666666;
+    height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+    border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+.more_filter_maindiv {
+    position: absolute;
+    background-color: #fff;
+    width: 50%;
+    top: 34px;
+    padding: 6px 6px 6px 6px;
+    z-index: 1050;
+    margin: 0 0 0 445px;
+    height: 170px;
+}
+
+.date_filter {
+    float: left;
+    margin: 5px 0 0px 10px;
+}
+
+.date_to_label {
+    float: left;
+    margin: 34px 10px 0px 10px;
+}
+
+.date_to_date {
+    float: left;
+    margin: 29px 0 0 0;
+}
+
+a.asssign_search {
+    background-color: #0B7AB2;
+    color: #fff;
+    padding: 7px 11px 6px 10px;
+    margin: 30px 0px 0px -66px;
+    float: left;
+    cursor: pointer;
+}
+
+.fas {
+    margin: 0px 5px 0px 0px;
+}
+
+.modal-dialog {
+    max-width: inherit;
+}
+
+#new_executive {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#new_executive .modal-header {
+    background: #0B7AB2;
+    display: initial;
+    text-align: center;
+}
+
+#new_executive .modal-header h4 {
+    color: #fff;
+}
+
+#new_executive .new_executive_form div.input_cmn_div {
+    padding: 0px 15px 20px 15px;
+    float: left;
+}
+
+#new_executive .new_executive_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+}
+
+#new_executive .new_executive_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#new_executive .new_executive_form .save_btn {
+    margin: 0;
+    text-align: right;
+}
+
+#new_executive .new_executive_form .save_btn button {
+    background: #0B7AB2;
+    padding: 5px 79px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0px;
+}
+
+#new_executive .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -50px;
+    left: 2px;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 40px;
+}
+
+.wrapper .option {
+    background: #fff;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 2px solid lightgrey;
+    transition: all 0.3s ease;
+    margin-right: 4px;
+}
+
+.wrapper .option .dot::before {
+    position: absolute;
+    content: "";
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    background: #0069d9;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(1.5);
+    transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+#option-1:checked:checked~.option-1,
+#option-2:checked:checked~.option-2,
+#option-3:checked:checked~.option-3,
+#option-4:checked:checked~.option-4,
+#option-5:checked:checked~.option-5 {
+    border-color: #0B7AB2;
+    background: #0B7AB2;
+}
+
+.wrapper .option span {
+    font-size: 14px;
+    color: #808080;
+}
+
+#option-1:checked:checked~.option-1 span,
+#option-2:checked:checked~.option-2 span,
+#option-3:checked:checked~.option-3 span,
+#option-4:checked:checked~.option-4 span,
+#option-5:checked:checked~.option-5 span {
+    color: #fff;
+}
+
+#sitedate {
+    width: 100%;
+}
+
+.datepickerdiv {
+    display: inherit;
+}
+
+.addleadtextarea {
+    width: 100%;
+}
+
+.loader_div {
+    width: 100%;
+    background-color: #3a38388c;
+    height: 650px;
+    position: absolute;
+    text-align: center;
+    z-index: 99999;
+}
+
+.loader_div span.Centerer {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.datfiltermain {
+    width: 70%;
+    float: left;
+}
+
+.projectfiltermain {
+    width: 30%;
+    float: left;
+}
+
+/* RESPONSIVE_STARTS */
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .enquiry_content_main {
+        width: 100%;
+    }
+}
+
+@media (min-width: 750px) and (max-width: 830px) {
+    .enquiry_content_main {
+        width:600px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .main_count_header {
+        padding-left: 0rem !important;
+    }
+
+    .body-cntnts {
+        padding-left: 0rem;
+    }
+}
+
+::ng-deep bs-daterangepicker-container {
+    top: 210px !important;
+    left: 49rem !important;
+}
+
+.button_section .planleadassign {
+    background-color: #ffffff !important;
+    border-radius: 50px;
+    padding-inline: 0.2rem;
+    padding-block: 0.2rem;
+}
+
+.button_section .planleadassign a {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0px 0 0px;
+    cursor: pointer;
+    float: left;
+    color: #000000;
+    border: none;
+    padding: 6px 22px 6px 22px;
+}
+
+.button_section .planleadassign a.active {
+    color: #ffffff;
+    background: #0B7AB2;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 14px;
+}

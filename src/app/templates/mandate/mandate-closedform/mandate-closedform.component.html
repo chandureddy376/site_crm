@@ -1,0 +1,237 @@
+<div class="face2facemaindiv">
+  <form name="form" method="POST" [hidden]="!visitedpropertylists">
+    <h3 class="userDetailsTitle mt-3 mb-3">Deal Closed</h3>
+    <div class="row">
+      <div class="col-sm-6 form-group headingdesign">
+          <label class="heads">Closed Date</label>
+          <div class="ui calendar calendardate">
+            <div class="ui input left icon datepickerdiv">
+              <i class="calendar icon"></i>
+              <input type="text" autocomplete="off" id="closeddate" placeholder="Date">
+            </div>
+          </div>
+      </div>
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Closed Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="closedtime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+
+      <div class="cs_close_btn">
+        <button class="btn btn-warning" type="button" (click)="csClosingrequest()" *ngIf="roleid == '50014' || roleid == '50013' || getselectedLeadExec?.roleid == '50013' || getselectedLeadExec?.roleid == '50014'">Close</button>
+      </div>
+      
+    <div class="col-sm-12 form-group headingdesign closerequestform" *ngIf="roleid != '50014' && roleid != '50013' && getselectedLeadExec?.roleid != '50013' && getselectedLeadExec?.roleid != '50014'">
+      <label class="heads">Select the Properties for the LeadClosing</label>
+
+      <span>
+      <div class="ui grid" *ngFor="let visited of visitedpropertylists;  let i = index">
+        <div class="four wide column">
+          <div class="ui vertical fluid tabular menu selector{{i}}">
+            <a class="item" [ngClass]="{'active': selectedItem === i}" 
+            (click)='selectedItem = i;' data-toggle="tab" href="#selector{{i}}">
+              {{visited.name}}
+            </a>
+          </div>
+        </div>
+    
+        <div class="tab-content twelve wide stretched column">
+          <div id="selector{{i}}" class="ui segment tab-pane" [ngClass]="{'active': selectedItem === i}">
+
+            <label>Select Unit *:</label>
+
+              <div class="wrapper">
+                  <input type="checkbox" class="radiocheck" name="select1-{{i}}" value="1BHK" id="option-1-{{i}}" (click)="unitselection(i)">
+                  <input type="checkbox" class="radiocheck" name="select1-{{i}}" value="2BHK" id="option-2-{{i}}" (click)="unitselection(i)">
+                  <input type="checkbox" class="radiocheck" name="select1-{{i}}" value="3BHK" id="option-3-{{i}}" (click)="unitselection(i)">
+                  <input type="checkbox" class="radiocheck" name="select1-{{i}}" value="4BHK" id="option-4-{{i}}" (click)="unitselection(i)">
+                  <input type="checkbox" class="radiocheck" name="select1-{{i}}" value="5BHK" id="option-5-{{i}}" (click)="unitselection(i)">
+                  <label for="option-1-{{i}}" class="option option-1-{{i}}">
+                    <span>1 BHK</span>
+                  </label>
+                  <label for="option-2-{{i}}" class="option option-2-{{i}}">
+                    <span>2 BHK</span>
+                  </label>
+                  <label for="option-3-{{i}}" class="option option-3-{{i}}">
+                    <span>3 BHK</span>
+                  </label>
+                  <label for="option-4-{{i}}" class="option option-4-{{i}}">
+                    <span>4 BHK</span>
+                  </label>
+                  <label for="option-5-{{i}}" class="option option-5-{{i}}">
+                    <span>5 BHK</span>
+                  </label>
+                  <input type="hidden" id="selectedunits-{{i}}" >
+              </div>
+
+                <label>Unit No *:</label>
+                <input class="form-control" id="unitnum-{{i}}" type="text"  />
+
+              <!-- <div class="mt-3">
+                <label>Unit No *:</label>
+                  <p-multiSelect id="unit_dropdown" [options]="unitList" [(ngModel)]="selectedUnits" [filter]="true"
+                    optionLabel="unit_name" optionValue="unit_IDPK" name="selectedLeads" defaultLabel="Select Units" [showToggleAll]="showSelectAll"
+                    (onChange)="unitChange($event)"></p-multiSelect>
+              </div> -->
+
+                <label>Dimension *:</label>
+                <input class="form-control" id="dimension-{{i}}" type="text" />
+
+                <!-- <label>Dimension *:</label>
+                <input class="form-control" [(ngModel)]="selectedUnitsDimensionCommaSeperated" name="selectedUnitsDimensionCommaSeperated" type="text" disabled/> -->
+
+                <label>Rate Per Sqft *:</label>
+                <input class="form-control" id="ratepersquarfeet-{{i}}" type="text"/>
+
+                <label>Remarks *:</label>
+                <textarea class="form-control" id="remarks-{{i}}"></textarea>
+
+                <label>Upload Documents *(Eg: Booking Form, Pricesheet):
+                  <span style="color: #999;">Accepted File Size: 1MB</span><br/>
+                  <span style="color: #999;">Supported Formats: JPG,PNG,PDF</span>
+                </label>
+
+                <div class="custom-file mb-3">
+                  <input title="Upload file smaller than 1MB" placeholder="Upload file smaller than 1MB" type="file" data-max-size="1110000" (change)="imageuploads(i,$event)" class="custom-file-input" id="customFile{{i}}" name="filename" multiple>
+                  <label class="custom-file-label file-label-{{i}}" for="customFile{{i}}">Choose file</label>
+                </div>
+                <!-- Uploaded file displaying before submission -->
+                <div class="filedisplaymaindiv">
+                  <div class="col-6 mt-3 mr-3 text-center imagemaindiv" *ngFor='let url of uploads; let i = index'>
+                    <div class="coverImg">
+                  
+                    </div>
+                    <img class="mr-2" [src]="url" height="100%" width="100%">
+                    <a (click)="removeImage(i)" class="btn btn-xs closeButton btn-danger mt-2 mb-2">x</a>
+                  </div>
+                </div>
+               <!-- Uploaded file displaying before submission -->
+
+                <div class="col-sm-12 buttonmain">
+                  <button *ngIf="execview" (click)="closingrequest(i,visited.propid,visited.name)" class="btn requestbtn">Send Closing Request</button>
+                  <button *ngIf="adminview" (click)="closingrequest(i,visited.propid,visited.name)" class="btn requestbtn">Close Lead</button>
+                </div>
+          </div>
+        </div>
+      </div>
+    </span>
+
+
+
+    <!-- <div class="pt-3 pl-0" *ngIf="getselectedLeadExec?.suggestedprop?.length > 1">
+      <button *ngFor="let visited of visitedpropertylists;  let i = index" id="closedsection" (click)='tabclick(i,visited); selectedItem = i;' type="button" class="btn btnTab tab1 commonbtns actionbtns actions{{i}}" >
+        <span *ngIf="visitedpropertylists"><i class="fa fa-check-circle tabicon1 iconmark selectMark{{i}}" aria-hidden="true" ></i></span>&nbsp;&nbsp; {{visited.name}}
+      </button>&nbsp;
+
+    <div class=" twelve wide stretched column" style="width: 100% !important;"  *ngIf="showleadClose ==  true">
+      <div id="selector0" class="ui segment pb-5 " >
+        <label>Select Unit *:</label>
+
+          <div class="wrapper">
+              <input type="checkbox" class="radiocheck" name="select2" value="1BHK" id="option-4" (click)="unitselection2()">
+              <input type="checkbox" class="radiocheck" name="select2" value="2BHK" id="option-5" (click)="unitselection2()">
+              <input type="checkbox" class="radiocheck" name="select2" value="3BHK" id="option-6" (click)="unitselection2()">
+              <input type="checkbox" class="radiocheck" name="select2" value="4BHK" id="option-7" (click)="unitselection2()">
+              <input type="checkbox" class="radiocheck" name="select2" value="5BHK" id="option-8" (click)="unitselection2()">
+              <label for="option-4" class="option option-4">
+                <span>1 BHK</span>
+              </label>
+              <label for="option-5" class="option option-5">
+                <span>2 BHK</span>
+              </label>
+              <label for="option-6" class="option option-6">
+                <span>3 BHK</span>
+              </label>
+              <label for="option-7" class="option option-7">
+                <span>4 BHK</span>
+              </label>
+              <label for="option-8" class="option option-8">
+                <span>5 BHK</span>
+              </label>
+              <input type="hidden" class="selectedunits2" id="selectedunits2">
+          </div>
+
+            <label>Unit No *:</label>
+            <input class="form-control" id="unitnum2" type="text"/>
+
+            <label>Dimension *:</label>
+            <input class="form-control" id="dimension2" type="text"/>
+
+            <label>Rate Per Sqft *:</label>
+            <input class="form-control" id="ratepersquarfeet2" type="text"/>
+
+            <label>Remarks *:</label>
+            <textarea class="form-control" id="remarks2"></textarea>
+
+            <label>Upload Documents *(Eg: Booking Form, Pricesheet):
+              <span style="color: #999;">Accepted File Size: 1MB</span><br/>
+              <span style="color: #999;">Supported Formats: JPG,PNG,PDF</span>
+            </label>
+
+            <div class="custom-file mb-3">
+              <input title="Upload file smaller than 1MB" placeholder="Upload file smaller than 1MB" type="file" data-max-size="1110000" (change)="imageuploads('0',$event)" class="custom-file-input" id="customFile{{'0'}}" name="filename" multiple>
+              <label class="custom-file-label file-label" for="customFile{{'0'}}">Choose file</label>
+            </div>
+            <div class="filedisplaymaindiv">
+              <div class="col-6 mt-3 mr-3 text-center imagemaindiv" *ngFor='let url of uploads; let i = index'>
+                <div class="coverImg">
+              
+                </div>
+                <img class="mr-2" [src]="url" height="100%" width="100%">
+                <a (click)="removeImage(i)" class="btn btn-xs closeButton btn-danger mt-2 mb-2">x</a>
+              </div>
+            </div>
+
+            <div class="col-sm-12 buttonmain" style="position: relative;bottom: 10px;">
+              <button *ngIf="execview" (click)="closingrequest(i,visited.propid,visited.name)" class="btn requestbtn">Send Closing Request</button>
+              <button *ngIf="adminview" (click)="closingrequest(i,visited.propid,visited.name)" class="btn requestbtn">Close Lead</button>
+            </div>
+      </div>
+    </div>
+  </div> -->
+      <!-- <div class="main_suggested_div">
+        <ul class="ks-cboxtags">
+          <li *ngFor="let visited of visitedpropertylists; let i = index">
+            <input type="checkbox" id="closedcheckbox{{i}}" value="{{visited.propid}}" name='programming'
+              (change)="selectsuggested(visited.propid)">
+            <label for="closedcheckbox{{i}}">{{visited.name}}</label>
+          </li>
+        </ul>
+        <p *ngIf="!visitedpropertylists?.length" class="comma-list">
+          No Properties Suggested Till Now
+        </p>
+      </div> -->
+    </div>
+
+
+      <!-- <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Remarks</label>
+          <textarea class="form-control" id="closedtextarearemarks" placeholder="Please Add any remarks for final closure"></textarea>
+      </div> -->
+
+      <!-- <div class="buttonmain"> -->
+        <!-- <button *ngIf="adminview" (click)="closingapproval()" class="btn closebtns acceptbtn">Accept Request</button> -->
+        <!-- <button *ngIf="adminview" (click)="closingreject()" class="btn closebtns rejectbtn">Request Reject</button> -->
+      <!-- <button *ngIf="execview" (click)="closingrequest()" class="btn closebtns requestbtn">Send Closing Request</button> -->
+      <!-- </div> -->
+      
+    </div>
+  </form>
+
+  <p [hidden]="visitedpropertylists?.length" class="text-center p-5">No Visited properties Found</p>
+
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+ </div>

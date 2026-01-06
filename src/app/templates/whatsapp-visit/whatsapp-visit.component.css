@@ -1,0 +1,792 @@
+/* CENTER-CONTENTS */
+
+.main_count_header {
+    background: #0B7AB229;
+    color: #000000;
+    padding-inline: 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.body-cntnts {
+    margin: 10px 0px 10px 0px !important;
+    float: left;
+    background-color: #f4f4f4;
+    width: 99%;
+}
+
+.enquiry_content_main {
+    width: 100% !important;
+}
+
+.enquiry_content_main .button_section {
+    margin: 0;
+    float: left;
+}
+
+.enquiry_content_main tbody tr td a.id_style {
+    text-decoration: underline;
+}
+
+.enquiry_content_main .button_section:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.button_section .create_new_enquiry {
+    float: left;
+}
+
+.enquiry_content_main .tab_button_section .leadassign {
+    float: left;
+}
+
+.enquiry_content_main .tab_button_section .leadassign {
+    float: left;
+}
+
+.enquiry_content_main .tab_button_section .leadassign a {
+    text-decoration: none;
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 0px 5px 10px;
+    margin: 0 4px 0 0;
+    cursor: pointer;
+    float: left;
+    color: #999;
+}
+
+.enquiry_content_main .tab_button_section .leadassign a.active {
+    color: #0B7AB2;
+    text-decoration: underline 2px;
+    text-underline-offset: 10px;
+}
+
+.loader_div {
+    width: 100%;
+    background-color: #3a3838a6;
+    height: 100%;
+    position: absolute;
+    text-align: center;
+    z-index: 99999;
+    top: 0;
+}
+
+.loader_div span.Centerer {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.loader_div img {
+    width: 10%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry a {
+    background: #6a1abb;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 600;
+    padding: 12px 15px;
+    cursor: pointer;
+    margin: 0 4px 0 0;
+}
+
+.enquiry_content_main .button_section .download {
+    float: right;
+}
+
+.enquiry_content_main .button_section .download a {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #252525;
+    font-weight: 700;
+    padding: 6px 15px 0px 15px;
+}
+
+/*============= Enquiry Table CSS Start =========================*/
+
+.enquiry_table_body {
+    /* height: 638px; */
+    font-size: 13px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.even-row {
+    background-color: white;
+}
+
+.odd-row {
+    background-color: #f4f4f4;
+}
+
+.CSassigned_table {
+    height: calc(100dvh - 140px);
+    overflow: auto;
+    width: 100%;
+}
+
+.assign_table {
+    height: 450px;
+    overflow: auto;
+    width: 100%;
+}
+
+.assign_table1 {
+    height: 450px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.table-container {
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    border-radius: 12px;
+    background-color: white;
+    padding-top: 5px;
+}
+
+.content_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+    background: #0B7AB2;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.content_table_main thead tr th {
+    padding: 8px 25px 8px 8px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+    padding: 6px 6px 6px 6px;
+    color: #666666;
+    height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+    border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+.dropDownCursor {
+    cursor: pointer;
+}
+
+
+/*============= Enquiry Table CSS End =========================*/
+
+/* ASSIGN_TABLE_CSS_STARTS */
+
+.modal-dialog.assignlead_modal {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* MODAL */
+
+#new_enquiry {
+    height: 650px;
+    width: 100%;
+}
+
+#assign_leads {
+    /* height: 750px; */
+    width: 100%;
+}
+
+#new_enquiry .modal-header {
+    background: #0B7AB2;
+    text-align: center;
+}
+
+#assign_leads .modal-header {
+    background: #0B7AB2;
+    text-align: center;
+}
+
+#new_enquiry .modal-header h4 {
+    color: #fff;
+}
+
+#assign_leads .modal-header h4 {
+    color: #fff;
+}
+
+#new_enquiry .profile_photo span i.fa-user-circle {
+    font-size: 110px;
+    color: #5ca2f9;
+}
+
+#new_enquiry .profile_photo {
+    margin: 15px 30px 15px 30px;
+    position: relative;
+    text-align: center;
+}
+
+#new_enquiry .profile_photo span {
+    display: inline-block;
+}
+
+#new_enquiry .profile_photo span img {
+    border-radius: 50%;
+}
+
+#new_enquiry .profile_photo a {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+}
+
+#new_enquiry .new_enquiry_form div.input_cmn_div {
+    padding: 0px 15px 20px 15px;
+}
+
+#assign_leads .new_enquiry_form div.input_cmn_div {
+    padding: 0px 5px 10px 0px;
+}
+
+#new_enquiry .new_enquiry_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+    display: block;
+}
+
+#assign_leads .new_enquiry_form div label {
+    font-size: 16px;
+    color: #666666;
+    font-weight: 400;
+    display: block;
+}
+
+#new_enquiry .new_enquiry_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#assign_leads .new_enquiry_form div input {
+    float: left;
+}
+
+
+
+#new_enquiry .new_enquiry_form .save_btn {
+    margin: 0;
+}
+
+#assign_leads .new_enquiry_form .save_btn {
+    margin: 0;
+    width: 100%;
+}
+
+#new_enquiry .new_enquiry_form .save_btn button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#assign_leads .new_enquiry_form .save_btn button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#new_enquiry .new_enquiry_form .save_btn button {
+    background: #e5652e;
+    padding: 5px 79px;
+    height: 35px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 25px 0 0 0;
+    display: block;
+    text-align: center;
+    border: 0px;
+    width: 100%;
+}
+
+#assign_leads .new_enquiry_form .save_btn button.approve {
+    background: #e5652e;
+    padding: 5px 79px;
+    height: 35px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 25px 0 0 0;
+    display: block;
+    text-align: center;
+    border: 0px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+#new_enquiry .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -52px;
+    left: 0px;
+    color: #ffff;
+    transform: rotate(90deg);
+}
+
+#assign_leads .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -52px;
+    left: 0px;
+    color: #ffff;
+    transform: rotate(90deg);
+}
+
+/* RESPONSIVE_STARTS */
+
+#new_executive {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#new_executive .modal-header {
+    background: #0B7AB2;
+    display: initial;
+    text-align: center;
+}
+
+#new_executive .modal-header h4 {
+    color: #fff;
+}
+
+#new_executive .new_executive_form div.input_cmn_div {
+    padding: 0px 15px 20px 15px;
+    float: left;
+}
+
+#new_executive .new_executive_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+}
+
+#new_executive .new_executive_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#new_executive .new_executive_form div textarea {
+    width: 100% !important;
+    height: 90px;
+    color: #666666;
+}
+
+#new_executive .new_executive_form .save_btn {
+    margin: 0;
+    text-align: right;
+}
+
+#new_executive .new_executive_form .save_btn button {
+    background: #0B7AB2;
+    padding: 5px 25px;
+    font-size: 16px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0px;
+    border-radius: 4px;
+}
+
+#new_executive .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -50px;
+    left: 2px;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 40px;
+}
+
+.wrapper .option {
+    background: #fff;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 2px solid lightgrey;
+    transition: all 0.3s ease;
+    margin-right: 4px;
+}
+
+.wrapper .option .dot::before {
+    position: absolute;
+    content: "";
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    background: #0069d9;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(1.5);
+    transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+#option-1:checked:checked~.option-1,
+#option-2:checked:checked~.option-2,
+#option-3:checked:checked~.option-3,
+#option-4:checked:checked~.option-4,
+#option-5:checked:checked~.option-5,
+#option-6:checked:checked~.option-6,
+#option-7:checked:checked~.option-7,
+#option-8:checked:checked~.option-8,
+#option-9:checked:checked~.option-9,
+#option-10:checked:checked~.option-10,
+#option-11:checked:checked~.option-11,
+#option-12:checked:checked~.option-12,
+#option-13:checked:checked~.option-13,
+#option-14:checked:checked~.option-14,
+#option-15:checked:checked~.option-15,
+#option-16:checked:checked~.option-16,
+#option-17:checked:checked~.option-17,
+#option-18:checked:checked~.option-18,
+#option-19:checked:checked~.option-19,
+#option-20:checked:checked~.option-20,
+#option-21:checked:checked~.option-21,
+#option-22:checked:checked~.option-22,
+#option-23:checked:checked~.option-23,
+#option-24:checked:checked~.option-24,
+#option-25:checked:checked~.option-25,
+#option-26:checked:checked~.option-26,
+#option-27:checked:checked~.option-27,
+#option-28:checked:checked~.option-28,
+#option-29:checked:checked~.option-29,
+#option-30:checked:checked~.option-30 {
+    border-color: #0B7AB2;
+    background: #0B7AB2;
+}
+
+.wrapper .option span {
+    font-size: 14px;
+    color: #808080;
+}
+
+#option-1:checked:checked~.option-1 span,
+#option-2:checked:checked~.option-2 span,
+#option-3:checked:checked~.option-3 span,
+#option-4:checked:checked~.option-4 span,
+#option-5:checked:checked~.option-5 span,
+#option-6:checked:checked~.option-6 span,
+#option-7:checked:checked~.option-7 span,
+#option-8:checked:checked~.option-8 span,
+#option-9:checked:checked~.option-9 span,
+#option-10:checked:checked~.option-10 span,
+#option-11:checked:checked~.option-11 span,
+#option-12:checked:checked~.option-12 span,
+#option-13:checked:checked~.option-13 span,
+#option-14:checked:checked~.option-14 span,
+#option-15:checked:checked~.option-15 span,
+#option-16:checked:checked~.option-16 span,
+#option-17:checked:checked~.option-17 span,
+#option-18:checked:checked~.option-18 span,
+#option-19:checked:checked~.option-19 span,
+#option-20:checked:checked~.option-20 span,
+#option-21:checked:checked~.option-21 span,
+#option-22:checked:checked~.option-22 span,
+#option-23:checked:checked~.option-23 span,
+#option-24:checked:checked~.option-24 span,
+#option-25:checked:checked~.option-25 span,
+#option-26:checked:checked~.option-26 span,
+#option-27:checked:checked~.option-27 span,
+#option-28:checked:checked~.option-28 span,
+#option-29:checked:checked~.option-29 span,
+#option-30:checked:checked~.option-30 span {
+    color: #fff;
+}
+
+/* Acordion */
+
+span.duplicate_counts {
+    padding: 0px 4px 0px 4px;
+    border-radius: 18px;
+    border: 1px solid #017da5;
+    color: red;
+    margin: 0px 0px 0px 6px;
+    cursor: grab;
+}
+
+.subduplicates {
+    background-color: #31353D !important;
+    color: #fff;
+}
+
+.subduplicates i {
+    transform: rotate(90deg);
+    margin: 8px 0px 0px 25px;
+}
+
+.content_table_main tbody tr.subduplicates td {
+    color: #fff;
+}
+
+.modalbackbtn {
+    position: absolute;
+    cursor: pointer;
+    z-index: 123456;
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: .0px 0em 0em .5em !important;
+    border: none !important;
+    color: rgba(191, 191, 191, 0.87) !important;
+    font-size: 12px !important;
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+::ng-deep .ui-multiselect {
+    width: 210px !important;
+    height: 2.71428571em !important;
+}
+
+::ng-deep body .ui-multiselect {
+    padding: 0.5em 0em !important;
+    border-radius: 0.25em !important;
+}
+
+::ng-deep .new_enquiry_form .leadsDrop .ui.selection.dropdown {
+    width: 265px !important;
+}
+
+.leadassign a {
+    font-size: 14px !important;
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .enquiry_content_main {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .main_count_header {
+        padding-left: 0.2rem !important;
+    }
+
+    .body-cntnts {
+        padding-left: 0.2rem;
+    }
+}
+
+.dropdown-search-container {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-top: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu {
+    padding: 0 !important;
+}
+
+.alreadyExistlead_modal {
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.refreshIcon {
+    position: relative;
+    right: 6px;
+}
+
+.filterspan {
+    color: #9f9b9b;
+    display: flex;
+    gap: 0.1rem;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}
+
+.chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.filterLoaderStyles {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 678px;
+    background: #ffffffad;
+    padding: 1% 48%;
+    z-index: 1234;
+}
+
+.lds-ring {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    padding: 1% 48%;
+    height: 500px;
+}
+
+.crm-sub-container {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.panel-1 {
+    order: 1;
+    flex-grow: 1;
+    min-width: 50%;
+    background: #ddd;
+}
+
+.crm-auto-scroll {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.crm-auto-scroll {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.padding-medium {
+    padding: 0 16px;
+}
+
+.panel-content {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+.panel-2 {
+    order: 2;
+    flex-grow: 1;
+    margin-left: 16px;
+    background: #000;
+    min-width: 50%;
+}
+
+::ng-deep bs-daterangepicker-container {
+    left: 49.5rem !important;
+    top: 235px !important;
+}
+
+.button_section .planleadassign {
+    background-color: #ffffff !important;
+    border-radius: 50px;
+    padding-inline: 0.2rem;
+    padding-block: 0.2rem;
+}
+
+.button_section .planleadassign a {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0px 0 0px;
+    cursor: pointer;
+    float: left;
+    color: #000000;
+    border: none;
+    padding: 5px 10px 5px 10px;
+}
+
+.button_section .planleadassign a.active {
+    color: #ffffff;
+    background: #0B7AB2;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.assign_visit {
+    background: #0B7AB2;
+    color: #ffffff;
+    padding-inline: 6px;
+    padding-block: 1px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+}

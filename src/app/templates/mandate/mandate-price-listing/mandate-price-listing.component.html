@@ -1,0 +1,1755 @@
+<app-header></app-header>
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+<div class="col-12 main_count_header align-items-center">
+  <div class="text-left pr-0">
+  </div>
+  <div class="text-right d-flex align-items-center justify-content-end gap-3">
+    <div class="pr-0 search my-1">
+      <input class="form-control search_input" type="text" [(ngModel)]="property_name"
+        placeholder="Search Property Name" (keyup)="searchproperty()" style="border-radius: 15px;" />
+    </div>
+    <button type="button" class="btn btn-warning mb-0" data-toggle="modal" data-target="#add_property"
+      *ngIf="roleid == 1 || roleid == '2'" (click)="addProp()">Add Property</button>
+  </div>
+</div>
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '14rem' : '3rem'}">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <div class="container-fluid pb-2" style="padding-inline:  1.5rem !important;">
+      <div class="row" *ngIf="propertyList?.length > 0">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4 pt-3" *ngFor="let prop of propertyList"
+          style='border-radius: 10px !important;'>
+          <div class="card p-0 pt-0 card_coverimg"
+            [ngStyle]="{'background-image': 'url(https://superadmin.homes247.in/images/uploadPropertyImgs/' + prop.PropImageName + ')'}">
+            <img [src]="'https://superadmin.homes247.in/images/uploadPropertyImgs/' + prop.PropImageName"
+              style="width: 100%;height: 100%;border-radius: 5px;filter: brightness(0.8);">
+
+            <div class="edit_icon" *ngIf="roleid == 1" data-toggle="modal" data-target="#edit_property"
+              (click)="editProp(prop)"><i class="fa fa-edit pr-1"></i>Edit</div>
+
+            <div class="sub_header">
+              <div class="d-flex justify-content-between p-1">
+                <h5 class="color_blue mb-0">{{prop.PropName}}</h5>
+                <!-- <button type="button" class="btn btn-secondary buttonwithicon" (click)="downloadAllFiles(prop)">Download
+                  All<i class="fa fa-download"></i></button> -->
+              </div>
+              <div class="col-12 row pr-0 pl-3">
+
+                <div class="col-4 p-0">
+                  <div class=" cursor-pointer d-flex align-items-center"><img
+                      src="../../../../assets/images/price-sheet.png" class="pr-1">
+                    <span class="color-black" (click)="selectedType(prop,'Brochure')"
+                      [ngClass]="{'blurred': (prop?.Brochure == null || prop?.Brochure == '')}">Brochure</span>
+                  </div>
+                  <div class=" cursor-pointer d-flex align-items-center"><img src="../../../../assets/images/info.png"
+                      class="pr-1">
+                    <span class="color-black" data-toggle="modal" data-target="#propInfo_modal"
+                      (click)="selectedType(prop,'Property')"
+                      [ngClass]="{'blurred': (prop?.PropInfo == null || prop?.PropInfo == '')}">Property
+                      Info</span>
+                  </div>
+                </div>
+
+                <div class="col-4 p-0">
+                  <div class=" cursor-pointer text-right"><img src="../../../../assets/images/price-tag.png"
+                      class="pr-1">
+                    <span class="color-black" data-toggle="modal" data-target="#pricesheet_modal"
+                      (click)="selectedType(prop,'PriceSheet')"
+                      [ngClass]="{'blurred': (prop?.Pricesheets?.length == '0')}">PriceSheet</span>
+                  </div>
+                  <div class="cursor-pointer text-right"><img src="../../../../assets/images/video-icon.png"
+                      class="pr-1">
+                    <span class="color-black" data-toggle="modal" data-target="#video_modal"
+                      (click)="selectedType(prop,'Video')"
+                      [ngClass]="{'blurred': (prop?.videos.length == 0 || prop?.videos == '')}">Video</span>
+                  </div>
+                </div>
+
+                <div class="col-4 p-0">
+                  <div class=" cursor-pointer text-right"><img src="../../../../assets/images/blueprint.svg"
+                      class="pr-1">
+                    <span class="color-black" data-toggle="modal" data-target="#floorplan_modal"
+                      (click)="selectedType(prop,'floorplan')"
+                      [ngClass]="{'blurred': (prop?.Floorplans?.length  == 0)}">Floor Plan</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="noProp" *ngIf="propertyList?.length == 0">
+      No Properties has been Added.
+    </div>
+  </main>
+</div>
+<!-- MAIN-CONTENTS -->
+
+<div class="clearfix"></div>
+
+<!-- this is form code for add property and add channel partner  -->
+<div class="modal fade" id="add_property" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog add_prop_modal">
+    <div class="modal-content " id="new_executive">
+      <div class="modal-header">
+        <h4>Add Property</h4>
+
+        <button type="button" class="close" data-dismiss="modal" (click)="removeTinyMce()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="new_executive_form col-xs-12" style="align-items: center; justify-content: space-evenly;">
+          <!-- this is form code for add property based on the condition -->
+          <form name="form" method="POST">
+            <div class="row">
+              <div class="col-sm-6 form-group headingdesign">
+                <p class="heads mb-1">Select Builder</p>
+                <!-- <search-dropdown [items]="builders" [size]="'small'" [label]="'name'" id="builderDropdown" name="selectedBuilders"
+                  [(ngModel)]="selectedBuilders" (click)="builderchange($event)"> </search-dropdown> -->
+
+                <select id="builder_Dropdown" class="form-control ui search dropdown dashboard_dropdown"
+                  (change)="builderchange($event)" [(ngModel)]="selectedBuilders" name="selectedBuilders">
+                  <option value="">Select Builder</option>
+                  <option *ngFor="let exec of builders" value="{{exec.id}}" [selected]="exec.id === selectedBuilders">
+                    {{exec.name}}</option>
+                </select>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign" style="display: flex; flex-direction: column">
+                <p class="heads mb-1">Select Properties</p>
+                <select id="property_Dropdown" class="form-control ui search dropdown dashboard_dropdown"
+                  [(ngModel)]="selectedProperties" name="selectedProperties">
+                  <option value="">Select Properties</option>
+                  <option *ngFor="let exec of properties" value="{{exec.id}}"
+                    [selected]="exec.id === selectedProperties">
+                    {{exec.name}}</option>
+                </select>
+                <!-- <search-dropdown [items]="properties" [size]="'small'" [label]="'name'" name="selectedProperties"
+                  [(ngModel)]="selectedProperties"> </search-dropdown> -->
+              </div>
+
+              <!-- file upload for for brochure -->
+              <div class="form-group col-sm-6 headingdesign">
+                <div class="col-12 p-0">
+                  <label>Upload Brochure:
+                    <span style="color: #999;">Accepted File Size: 100MB</span><br />
+                    <span style="color: #999;">Supported Format: PDF</span>
+                  </label>
+                </div>
+
+                <div class="custom-file mb-3 col-8">
+                  <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB" type="file"
+                    data-max-size="100000000" (change)="brochureImageuploads('0',$event)" class="custom-file-input"
+                    id="customFile{{'0'}}" name="filename">
+                  <label class="custom-file-label file-label" for="customFile{{'0'}}">Choose file</label>
+                </div>
+                <!-- Uploaded file displaying before submission for brochure-->
+                <div class="filedisplaymaindiv col-12 p-0">
+                  <div class="col-6 mt-3 mr-3 imagemaindiv p-0" *ngFor='let url of uploads; let i = index'>
+                    <div class="coverImg">
+                    </div>
+                    <img class="mr-2 p-3" src="../../../../assets/images/pdf.png" height="50%" width="80%">
+                    <a (click)="removeBrochureImage(i)" class="btn btn-xs closeButton btn-danger mt-2 mb-2">x</a>
+                    <div style="font-size: 10px;">{{brochureFiles[0]?.name}}</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Uploaded file displaying before submission for brochure-->
+
+
+              <!-- file upload for for Price sheet -->
+              <div class="form-group col-sm-6 headingdesign">
+                <div class="col-12 p-0">
+                  <label>Upload Price Sheet:
+                    <span style="color: #999;">Accepted File Size: 50MB</span><br />
+                    <span style="color: #999;">Supported Format: PDF/PNG/JPEG</span>
+                  </label>
+                </div>
+
+                <div class="custom-file mb-3 col-12 p-0">
+                  <input title="Upload file smaller than 50MB" placeholder="Upload file smaller than 50MB" type="file"
+                    data-max-size="50000000" (change)="priceSheetImageuploads('0',$event)" class="custom-file-input"
+                    id="pricecustomFile{{'0'}}" name="filename" style="display:none">
+                  <label class="custom-file-label file-label" for="pricecustomFile{{'0'}}" style="display:none">Choose
+                    file</label>
+                  <div class="col-12 p-0">
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addpriceSheet('0')"
+                      *ngIf="priceSheetFiles0?.length == 0"><span class="pricesheetfont">Common </span>Upload Files <i
+                        class="fa fa-upload"></i> </button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="priceSheetFiles0?.length > 0"><span class="d-flex align-items-center"
+                        style="gap: 0.5rem;"><span class="pricesheetfont">Common </span>Uploaded <i class="fa fa-times"
+                          style="color: #ffffff;" (click)="removePriceSheetImage('0')"></i></span></button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addpriceSheet('1')"
+                      *ngIf="priceSheetFiles?.length == 0"><span class="pricesheetfont">1 BHK </span>Upload Files <i
+                        class="fa fa-upload"></i> </button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="priceSheetFiles?.length > 0"><span class="d-flex align-items-center"
+                        style="gap: 0.5rem;"><span class="pricesheetfont">1 BHK </span>Uploaded <i class="fa fa-times"
+                          style="color: #ffffff;" (click)="removePriceSheetImage('1')"></i></span></button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addpriceSheet('2')"
+                      *ngIf="priceSheetFiles2?.length == 0"><span class="pricesheetfont">2 BHK </span>Upload Files <i
+                        class="fa fa-upload"></i></button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="priceSheetFiles2?.length > 0"><span class="d-flex align-items-center"
+                        style="gap: 0.5rem;"><span class="pricesheetfont">2 BHK </span>Uploaded <i class="fa fa-times"
+                          style="color: #ffffff;" (click)="removePriceSheetImage('2')"></i></span></button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addpriceSheet('3')"
+                      *ngIf="priceSheetFiles3?.length == 0"><span class="pricesheetfont">3 BHK </span>Upload Files <i
+                        class="fa fa-upload"></i></button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="priceSheetFiles3?.length > 0"><span class="d-flex align-items-center"
+                        style="gap: 0.5rem;"><span class="pricesheetfont">3 BHK </span>Uploaded <i class="fa fa-times"
+                          style="color: #ffffff;" (click)="removePriceSheetImage('3')"></i></span></button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addpriceSheet('4')"
+                      *ngIf="priceSheetFiles4?.length == 0"><span class="pricesheetfont">4 BHK </span>Upload Files <i
+                        class="fa fa-upload"></i></button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="priceSheetFiles4?.length > 0"><span class="d-flex align-items-center"
+                        style="gap: 0.5rem;"><span class="pricesheetfont">4 BHK </span>Uploaded <i class="fa fa-times"
+                          style="color: #ffffff;" (click)="removePriceSheetImage('4')"></i></span></button>
+                  </div>
+                </div>
+
+                <!-- Uploaded file displaying before submission for price sheet-->
+                <!-- <div class="filedisplaymaindiv col-12 p-0">
+                  <div class="col-6 mt-3 mr-3 p-0 imagemaindiv" *ngFor='let url of priceSheetuploads; let i = index'>
+                    <div class="coverImg">
+                    </div>
+                    <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%">
+                    <a (click)="removePriceSheetImage(i)" class="btn btn-xs closeButton btn-danger mt-2 mb-2">x</a>
+                    <div style="font-size: 10px;">{{priceSheetFiles[0]?.name}}</div>
+                  </div>
+                </div> -->
+              </div>
+              <!-- Uploaded file displaying before submission for price sheet-->
+
+              <!-- video upload for for video -->
+              <div class="form-group col-sm-6 headingdesign">
+                <div class="col-12 p-0">
+                  <label>Upload Video:
+                    <span style="color: #999;">Accepted File Size: 100MB</span><br />
+                    <span style="color: #999;">Supported Format: Video</span>
+                  </label>
+                </div>
+
+                <div class="custom-file mb-3 col-12 p-0">
+                  <div class="col-12 p-0 d-flex justify-content-between">
+                    <button type="button" class="btn btn-info rounded-btn"
+                      *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '0'"
+                      (click)="addVideo('0')">Common</button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="selectedVideoNum == '0'">Common</button>
+                    <button type="button" class="btn btn-info rounded-btn"
+                      *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '1'"
+                      (click)="addVideo('1')">1 BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '1'">1
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('2')"
+                      *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null ||  selectedVideoNum != '2'">2
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '2'">2
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('3')"
+                      *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '3'">3
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '3'">3
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('4')"
+                      *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '4'">4
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '4'">4
+                      BHK</button>
+                  </div>
+                  <div class="col-10 p-0" style="border:1px solid #727886"
+                    *ngIf="selectedVideoNum != '' && selectedVideoNum != undefined && selectedVideoNum != null">
+                    <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB"
+                      type="file" data-max-size="100000000" (change)="videouploads('0',$event)"
+                      class="custom-file-input" id="videocustomFile{{'0'}}" name="filename" style="display: none;"
+                      multiple>
+                    <label class="custom-file-label1 file-label" for="videocustomFile{{'0'}}">Upload Videos</label>
+                  </div>
+                </div>
+
+                <!-- Uploaded file displaying before submission for vidoes-->
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '0'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of videoFiles0;let i = index'>
+                    <div class="col-12 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeVideo('0',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '1'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles;let i = index'>
+                    <div class="col-12 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeVideo('1',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '2'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of videoFiles2; let i = index'>
+                    <div class="col-12 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeVideo('2',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '3'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of videoFiles3; let i = index'>
+                    <div class="col-12 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeVideo('3',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '4'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of videoFiles4; let i = index'>
+                    <div class="col-12 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeVideo('4',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Uploaded file displaying before submission for video-->
+              <!-- <div class="custom-file mb-3 col-8">
+                  <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB" type="file"
+                    data-max-size="104857600" (change)="videouploads('0',$event)" class="custom-file-input"
+                    id="videocustomFile{{'0'}}" name="filename" multiple>
+                  <label class="custom-file-label file-label" for="videocustomFile{{'0'}}">Choose file</label>
+                </div> -->
+              <!-- Uploaded file displaying before submission for video-->
+              <!-- <div class="filedisplaymaindiv col-12 row d-flex p-0">
+                  <div class="col-6 mt-3" *ngFor='let video  of videouploadsdata; let i = index'>
+                    <div class="coverImg">
+                      <video *ngIf="video" width="100%" height="100%" controls>
+                        <source [src]="video" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                    <a (click)="removeVideo(i)" class="btn btn-xs videocloseButton btn-danger mt-2 mb-2">x</a>
+                    <div style="font-size: 10px;">{{videoFiles[i]?.name}}</div>
+                  </div>
+                </div>
+              </div> -->
+              <!-- Uploaded file displaying before submission for video-->
+
+              <!-- file upload for for floor plans -->
+              <div class="form-group col-sm-6 headingdesign">
+                <div class="col-12 p-0">
+                  <label>Upload Floor Plan:
+                    <span style="color: #999;">Accepted File Size: 10MB</span><br />
+                    <span style="color: #999;">Supported Format: PDF/PNG/JPEG</span>
+                  </label>
+                </div>
+
+                <div class="custom-file mb-3 col-12 p-0">
+                  <div class="col-12 p-0 d-flex justify-content-between">
+                    <button type="button" class="btn btn-info rounded-btn"
+                      *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '0'"
+                      (click)="addfloorplan('0')">Common</button>
+                    <button type="button" class="btn btn-secondary rounded-btn"
+                      *ngIf="selectedFloorPlanNum == '0'">Common</button>
+                    <button type="button" class="btn btn-info rounded-btn"
+                      *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '1'"
+                      (click)="addfloorplan('1')">1 BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '1'">1
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('2')"
+                      *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null ||  selectedFloorPlanNum != '2'">2
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '2'">2
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('3')"
+                      *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '3'">3
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '3'">3
+                      BHK</button>
+                    <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('4')"
+                      *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '4'">4
+                      BHK</button>
+                    <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '4'">4
+                      BHK</button>
+                  </div>
+                  <div class="col-12 p-0" style="border:1px solid #727886"
+                    *ngIf="selectedFloorPlanNum != '' && selectedFloorPlanNum != undefined && selectedFloorPlanNum != null">
+                    <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 10MB" type="file"
+                      data-max-size="10000000" (change)="floorPlansImageuploads('0',$event)" class="custom-file-input"
+                      id="floorFile{{'0'}}" name="filename" style="display: none;" multiple>
+                    <label class="custom-file-label1 file-label" for="floorFile{{'0'}}"><span>Upload Files </span><i
+                        class="fa fa-upload"></i></label>
+                  </div>
+                </div>
+                <!-- Uploaded file displaying before submission for floor plans-->
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '0'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of floorFiles0;let i = index'>
+                    <div class="col-7 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeFloorPlans('0',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-5" *ngIf="selectedFloorPlanNum == '0' && floorFiles0?.length > 0">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control"
+                          style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                          aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                          (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray0[i]">
+                        <div class="input-group-prepend">
+                          <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '1'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles;let i = index'>
+                    <div class="col-7 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeFloorPlans('1',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-5" *ngIf="selectedFloorPlanNum == '1' && floorFiles?.length > 0">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control"
+                          style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                          aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                          (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray[i]">
+                        <div class="input-group-prepend">
+                          <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '2'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of floorFiles2; let i = index'>
+                    <div class="col-7 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeFloorPlans('2',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-5" *ngIf="selectedFloorPlanNum == '2' && floorFiles2?.length > 0">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control"
+                          style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                          aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                          (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray2[i]">
+                        <div class="input-group-prepend">
+                          <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '3'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of floorFiles3; let i = index'>
+                    <div class="col-7 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeFloorPlans('3',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-5" *ngIf="selectedFloorPlanNum == '3' && floorFiles3?.length > 0">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control"
+                          style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                          aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                          (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray3[i]">
+                        <div class="input-group-prepend">
+                          <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '4'">
+                  <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                    *ngFor='let url of floorFiles4; let i = index'>
+                    <div class="col-7 p-0">
+                      <div class="viewuploadedFloorPlan">
+                        <span
+                          style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                        <span
+                          style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                          <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                          <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                          <span><i class="fa fa-times iconcolor" (click)="removeFloorPlans('4',i)"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-5" *ngIf="selectedFloorPlanNum == '4' && floorFiles4?.length > 0">
+                      <div class="input-group input-group-sm d-flex w-100">
+                        <input type="text" class="form-control"
+                          style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                          aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                          (input)="enterSqft(i,$event)" name="sqft" [value]="sqftArray4[i]">
+                        <div class="input-group-prepend">
+                          <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Uploaded file displaying before submission for floor plans-->
+
+              <div class="form-group col-sm-10 headingdesign">
+                <label class="heads">Project Info</label>
+                <!-- <textarea class="form-control addleadtextarea" id="address" [(ngModel)]="projectInfo" name="projectInfo"
+                  name="address" style="border: 1px solid #d2d6da;padding-inline: 0.5rem;"></textarea> -->
+                <textarea id="basic-example" name="expertdesc" [(ngModel)]="projectInfo"></textarea>
+              </div>
+
+              <div class="col-12">
+                <button (click)="addProperty()" class="btn btn-warning">Add Property</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- this is form code for edit property -->
+<div class="modal fade" id="edit_property" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog add_prop_modal">
+    <div class="modal-content " id="new_executive">
+      <div class="modal-header">
+        <h5>Update Property</h5>
+        <div class="d-flex">
+          <h4>{{selectedEditProp?.PropName}}</h4>
+          <button type="button" class="close" data-dismiss="modal" id="editpropclose" (click)="removeTinyMce()"><span
+              aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="new_executive_form col-xs-12" style="align-items: center; justify-content: space-evenly;">
+          <!-- this is form code for add property based on the condition -->
+          <!-- <form name="form" method="POST"> -->
+          <div class="row">
+            <!-- <div class="col-sm-6 form-group headingdesign  d-flex flex-column">
+              <label class="heads">Select Builder</label> -->
+            <!-- {{builders}} -->
+            <!-- <p-dropdown id="builders" [options]="builders" [(ngModel)]="selectedBuilders"
+                optionLabel="name" [value]="id" defaultLabel="Select Team" placeholder="Select Team"
+                (onChange)="builderchange($event)" filter="true"></p-dropdown> -->
+            <!-- <search-dropdown [items]="builders" [size]="'small'" [label]="'name'" id="builderDropdown"
+                name="selectedBuilders" [(ngModel)]="selectedBuilders" (click)="builderchange($event)"style="pointer-events: none;filter: blur(0px);opacity:10;">
+              </search-dropdown>
+            </div> -->
+
+            <!-- <div class="col-sm-4 form-group headingdesign" style="display: flex; flex-direction: column">
+              <label class="heads">Select Properties</label>
+              <search-dropdown [items]="properties" [size]="'small'" [label]="'name'" name="selectedProperties"
+                [(ngModel)]="selectedProperties" style="pointer-events: none;filter: blur(0px);opacity:10;"> </search-dropdown>
+            </div> -->
+
+            <!-- file upload for for brochure -->
+            <div class="form-group col-sm-6 headingdesign">
+              <div class="custom-file mb-3 col-8" *ngIf="btnName == 'Add Property'">
+                <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB" type="file"
+                  data-max-size="100000000" (change)="brochureImageuploads('0',$event)" class="custom-file-input"
+                  id="customFile{{'0'}}" name="filename" style="display:none">
+                <label class="custom-file-label file-label" for="customFile{{'0'}}" style="display: none;">Choose
+                  file</label>
+              </div>
+              <div style="text-decoration: underline;">Update Brochure</div>
+              <!-- Uploaded file displaying before submission for brochure-->
+              <div class="filedisplaymaindiv col-12 p-0">
+                <div class="col-6 mt-3 mr-3 imagemaindiv p-0" *ngFor='let url of uploads; let i = index'>
+                  <div class="coverImg">
+                  </div>
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdf.png" height="50%" width="80%"
+                    *ngIf="uploads?.length > 0 && uploads[0] != null && uploads != ''">
+                  <div *ngIf="uploads?.length == 0 || uploads[0] == null || uploads == ''"
+                    style="font-style: italic;font-size: 14px;color: black;font-weight: 800;">Brochure Not Uploaded
+                  </div>
+                  <button type="button" class="btn btn-warning" (click)="editBrochure(i)"
+                    *ngIf="uploads?.length == 0 || uploads[0] == null || uploads == ''">Add<i
+                      class="fa fa-plus pl-1"></i></button>
+                  <a (click)="editBrochure(i)" class="btn btn-xs editButton btn-danger mt-2 mb-2"
+                    *ngIf="uploads?.length > 0 && uploads[0] != null  && uploads != ''"><i class="fa fa-edit"></i></a>
+                  <div style="font-size: 10px;">{{brochureFiles[0]?.name}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- Uploaded file displaying before submission for brochure-->
+
+
+            <!-- file upload for for Price sheet -->
+            <div class="form-group col-sm-6 headingdesign">
+              <div class="custom-file mb-3 col-8" *ngIf="btnName == 'Add Property'">
+                <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 10MB" type="file"
+                  data-max-size="10000000" (change)="priceSheetImageuploads('0',$event)" class="custom-file-input"
+                  id="pricecustomFile{{'0'}}" name="filename" style="display: none;">
+                <label class="custom-file-label file-label" for="pricecustomFile{{'0'}}" style="display: none;">Choose
+                  file</label>
+              </div>
+
+              <div *ngIf="btnName == 'Edit Property'" style="text-decoration: underline;">Update PriceSheet</div>
+              <!-- Uploaded file displaying before submission for price sheet-->
+              <!-- <div class="filedisplaymaindiv col-12 p-0">
+              <div class="col-6 mt-3 mr-3 p-0 imagemaindiv" *ngFor='let url of priceSheetuploads; let i = index'>
+                <div class="coverImg">
+                </div>
+                <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"
+                  *ngIf="priceSheetuploads?.length > 0 && priceSheetuploads[0] != null && priceSheetuploads != ''">
+                <div *ngIf="priceSheetuploads?.length == 0 || priceSheetuploads[0] == null || priceSheetuploads == ''"
+                  style="font-style: italic;font-size: 14px;color: black;font-weight: 800;">Price Sheet Not Uploaded
+                </div><br />
+                <button type="button" class="btn btn-warning" (click)="editPriceSheet(i)"
+                  *ngIf="priceSheetuploads?.length == 0 || priceSheetuploads[0] == null || priceSheetuploads == ''">Add<i
+                    class="fa fa-plus pl-1"></i></button>
+                <a class="btn btn-xs editButton btn-danger mt-2 mb-2" (click)="editPriceSheet(i)"
+                  *ngIf="priceSheetuploads?.length > 0 && priceSheetuploads[0] != null && priceSheetuploads != ''"><i class="fa fa-edit"></i></a>
+                <div style="font-size: 10px;">{{priceSheetFiles[0]?.name}}</div>
+              </div>
+            </div> -->
+
+              <div class="custom-file mb-3 col-12 p-0">
+                <input title="Upload file smaller than 50MB" placeholder="Upload file smaller than 50MB" type="file"
+                  data-max-size="50000000" (change)="priceSheetImageuploads('0',$event)" class="custom-file-input"
+                  id="pricecustomFile{{'0'}}" name="filename" style="display:none">
+                <label class="custom-file-label file-label" for="pricecustomFile{{'0'}}" style="display:none">Choose
+                  file</label>
+                <div class="col-12 p-0">
+                  <button type="button" class="btn btn-info rounded-btn" (click)="onEditPostpriceSheet('0','post')"
+                    *ngIf="priceSheetFiles0?.length == 0"><span class="pricesheetfont">Common </span>Upload Files <i
+                      class="fa fa-upload"></i> </button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="priceSheetFiles0?.length > 0"><span
+                      class="d-flex align-items-center" style="gap: 0.5rem;"><span class="pricesheetfont">Common
+                      </span>Uploaded <i class="fa fa-edit" style="color: #ffffff;font-weight: 300 !important;"
+                        (click)="editpriceSheet('0',priceSheetFiles0[0])"></i> <i class="fa fa-times"
+                        style="color: #ffffff;" (click)="deletePriceSheetImage('0')"></i></span></button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="onEditPostpriceSheet('1','post')"
+                    *ngIf="priceSheetFiles?.length == 0"><span class="pricesheetfont">1 BHK </span>Upload Files <i
+                      class="fa fa-upload"></i> </button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="priceSheetFiles?.length > 0"><span
+                      class="d-flex align-items-center" style="gap: 0.5rem;"><span class="pricesheetfont">1 BHK
+                      </span>Uploaded <i class="fa fa-edit" style="color: #ffffff;font-weight: 300 !important;"
+                        (click)="editpriceSheet('1',priceSheetFiles[0])"></i> <i class="fa fa-times"
+                        style="color: #ffffff;" (click)="deletePriceSheetImage('1')"></i></span></button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="onEditPostpriceSheet('2','post')"
+                    *ngIf="priceSheetFiles2?.length == 0"><span class="pricesheetfont">2 BHK </span>Upload Files <i
+                      class="fa fa-upload"></i></button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="priceSheetFiles2?.length > 0"><span
+                      class="d-flex align-items-center" style="gap: 0.5rem;"><span class="pricesheetfont">2 BHK
+                      </span>Uploaded <i class="fa fa-edit" style="color: #ffffff;font-weight: 300 !important;"
+                        (click)="editpriceSheet('2',priceSheetFiles2[0])"></i> <i class="fa fa-times"
+                        style="color: #ffffff;" (click)="deletePriceSheetImage('2')"></i></span></button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="onEditPostpriceSheet('3','post')"
+                    *ngIf="priceSheetFiles3?.length == 0"><span class="pricesheetfont">3 BHK </span>Upload Files <i
+                      class="fa fa-upload"></i></button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="priceSheetFiles3?.length > 0"><span
+                      class="d-flex align-items-center" style="gap: 0.5rem;"><span class="pricesheetfont">3 BHK
+                      </span>Uploaded <i class="fa fa-edit" style="color: #ffffff;font-weight: 300 !important;"
+                        (click)="editpriceSheet('3',priceSheetFiles3[0])"></i> <i class="fa fa-times"
+                        style="color: #ffffff;" (click)="deletePriceSheetImage('3')"></i></span></button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="onEditPostpriceSheet('4','post')"
+                    *ngIf="priceSheetFiles4?.length == 0"><span class="pricesheetfont">4 BHK </span>Upload Files <i
+                      class="fa fa-upload"></i></button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="priceSheetFiles4?.length > 0"><span
+                      class="d-flex align-items-center" style="gap: 0.5rem;"><span class="pricesheetfont">4 BHK
+                      </span>Uploaded <i class="fa fa-edit" style="color: #ffffff;font-weight: 300 !important;"
+                        (click)="editpriceSheet('4',priceSheetFiles4[0])"></i> <i class="fa fa-times"
+                        style="color: #ffffff;" (click)="deletePriceSheetImage('4')"></i></span></button>
+                </div>
+              </div>
+            </div>
+            <!-- Uploaded file displaying before submission for price sheet-->
+
+            <!-- video upload -->
+            <!-- <div class="form-group col-sm-6 headingdesign">
+              <div class="col-12 p-0">
+                <label>Upload Video:
+                  <span style="color: #999;">Accepted File Size: 100MB</span><br />
+                  <span style="color: #999;">Supported Format: Video</span>
+                </label>
+              </div>
+
+              <div class="custom-file mb-3 col-8">
+                <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB" type="file"
+                  data-max-size="104857600" (change)="videouploads('0',$event)" class="custom-file-input"
+                  id="videocustomFile{{'0'}}" name="filename" multiple>
+                <label class="custom-file-label file-label" for="videocustomFile{{'0'}}">Choose file</label>
+              </div> -->
+            <!-- Uploaded file displaying before submission for video-->
+            <!-- <div class="filedisplaymaindiv col-12 d-flex p-0">
+                <div class="col-6 mt-3 mr-3 text-center videomaindiv"
+                  *ngFor='let video  of videouploadsdata; let i = index'>
+                  <div class="coverImg" *ngIf="videouploadsdata?.length > 0">
+                    <video *ngIf="video" width="100%" height="100%" controls>
+                      <source [src]="video" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <div *ngIf="videouploadsdata?.length == 0 || videouploadsdata[0] == null || videouploadsdata == ''"
+                    style="font-style: italic;font-size: 14px;color: black;font-weight: 800;">NO Videos Uploaded</div>
+                  <a (click)="deleteVideo(video)" class="btn btn-xs videocloseButton btn-danger mt-2 mb-2"
+                    *ngIf="videouploadsdata?.length > 1 && videouploadsdata[0] != null && videouploadsdata != ''">x</a>
+                  <div style="font-size: 10px;"
+                    *ngIf="videomaindiv?.length > 0 && videouploadsdata[0] != null && videouploadsdata != ''">
+                    {{videoFiles[i]?.name}}</div>
+                </div>
+              </div>
+            </div> -->
+            <!-- Uploaded file displaying before submission for video-->
+
+            <!-- video upload for for video -->
+            <div class="form-group col-sm-6 headingdesign">
+              <div class="col-12 p-0">
+                <label>Upload Video:
+                  <span style="color: #999;">Accepted File Size: 100MB</span><br />
+                  <span style="color: #999;">Supported Format: Video</span>
+                </label>
+              </div>
+
+              <div class="custom-file mb-3 col-12 p-0">
+                <div class="col-12 p-0 d-flex justify-content-between">
+                  <button type="button" class="btn btn-info rounded-btn"
+                    *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '0'"
+                    (click)="addVideo('0')">Common</button>
+                  <button type="button" class="btn btn-secondary rounded-btn"
+                    *ngIf="selectedVideoNum == '0'">Common</button>
+                  <button type="button" class="btn btn-info rounded-btn"
+                    *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '1'"
+                    (click)="addVideo('1')">1 BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '1'">1
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('2')"
+                    *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null ||  selectedVideoNum != '2'">2
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '2'">2
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('3')"
+                    *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '3'">3
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '3'">3
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addVideo('4')"
+                    *ngIf="selectedVideoNum == '' || selectedVideoNum == undefined || selectedVideoNum == null || selectedVideoNum != '4'">4
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedVideoNum == '4'">4
+                    BHK</button>
+                </div>
+                <div class="col-10 p-0" style="border:1px solid #727886"
+                  *ngIf="selectedVideoNum != '' && selectedVideoNum != undefined && selectedVideoNum != null">
+                  <input title="Upload file smaller than 100MB" placeholder="Upload file smaller than 100MB" type="file"
+                    data-max-size="100000000" (change)="videouploadsOnEdit('0',$event)" class="custom-file-input"
+                    id="videocustomFile1{{'0'}}" name="filename" style="display: none;" multiple>
+                  <label class="custom-file-label1 file-label" for="videocustomFile1{{'0'}}">Upload Videos</label>
+                </div>
+              </div>
+
+              <!-- Uploaded file displaying before submission for vidoes-->
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '0'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles0;let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url.propdetails_video)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideoOnEdit(i,url,'0')"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-trash iconcolor" (click)="deleteVideo('0',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                *ngFor='let url of videoFilesUpdate0;let i = index'>
+                <div class="col-12 p-0">
+                  <div class="viewuploadedFloorPlan">
+                    <span
+                      style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url.propdetails_video)}}</span>
+                    <span
+                      style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                      <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                      <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                      <span><i class="fa fa-times iconcolor" (click)="removeVideo('0',i,url)"></i></span>
+                    </span>
+                  </div>
+                </div>
+              </div> -->
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '1'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles;let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.propdetails_video}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideoOnEdit(i,url,'1')"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-trash iconcolor" (click)="deleteVideo('1',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFilesUpdate;let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeVideo('1',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '2'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles2; let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.propdetails_video}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideoOnEdit(i,url,'2')"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-trash iconcolor" (click)="deleteVideo('2',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of videoFilesUpdate2; let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeVideo('2',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '3'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles3; let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.propdetails_video}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideoOnEdit(i,url,'3')"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-trash iconcolor" (click)="deleteVideo('3',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                *ngFor='let url of videoFilesUpdate3; let i = index'>
+                <div class="col-12 p-0">
+                  <div class="viewuploadedFloorPlan">
+                    <span
+                      style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                    <span
+                      style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                      <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                      <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                      <span><i class="fa fa-times iconcolor" (click)="removeVideo('3',i,url)"></i></span>
+                    </span>
+                  </div>
+                </div>
+              </div> -->
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedVideoNum != '4'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of videoFiles4; let i = index'>
+                  <div class="col-12 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.propdetails_video}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewVideoOnEdit(i,url,'4')"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-trash iconcolor" (click)="deleteVideo('4',i,url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                *ngFor='let url of videoFilesUpdate4; let i = index'>
+                <div class="col-12 p-0">
+                  <div class="viewuploadedFloorPlan">
+                    <span
+                      style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url.name}}</span>
+                    <span
+                      style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                      <span><i class="fa fa-eye iconcolor" (click)="viewVideo(i,url)"></i></span>
+                      <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                      <span><i class="fa fa-times iconcolor" (click)="removeVideo('4',i,url)"></i></span>
+                    </span>
+                  </div>
+                </div>
+              </div> -->
+              </div>
+            </div>
+
+            <!-- file upload for for floor plans -->
+            <div class="form-group col-sm-6 headingdesign">
+              <div class="col-12 p-0">
+                <label>Upload Floor Plan:
+                  <span style="color: #999;">Accepted File Size: 10MB</span><br />
+                  <span style="color: #999;">Supported Format: PDF/PNG/JPEG</span>
+                </label>
+              </div>
+
+              <div class="custom-file mb-3 col-12 p-0">
+                <div class="col-12 p-0 d-flex justify-content-between">
+                  <button type="button" class="btn btn-info rounded-btn"
+                    *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '0'"
+                    (click)="addfloorplan('0')">Common</button>
+                  <button type="button" class="btn btn-secondary rounded-btn"
+                    *ngIf="selectedFloorPlanNum == '0'">Common</button>
+                  <button type="button" class="btn btn-info rounded-btn"
+                    *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '1'"
+                    (click)="addfloorplan('1')">1 BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '1'">1
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('2')"
+                    *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null ||  selectedFloorPlanNum != '2'">2
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '2'">2
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('3')"
+                    *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '3'">3
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '3'">3
+                    BHK</button>
+                  <button type="button" class="btn btn-info rounded-btn" (click)="addfloorplan('4')"
+                    *ngIf="selectedFloorPlanNum == '' || selectedFloorPlanNum == undefined || selectedFloorPlanNum == null || selectedFloorPlanNum != '4'">4
+                    BHK</button>
+                  <button type="button" class="btn btn-secondary rounded-btn" *ngIf="selectedFloorPlanNum == '4'">4
+                    BHK</button>
+                </div>
+                <div class="col-12 p-0" style="border:1px solid #727886"
+                  *ngIf="selectedFloorPlanNum != '' && selectedFloorPlanNum != undefined && selectedFloorPlanNum != null">
+                  <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 10MB" type="file"
+                    data-max-size="10000000" (change)="floorPlansImageuploadsOnUpdate('0',$event)"
+                    class="custom-file-input" id="floorFile1{{'0'}}" name="filename" style="display: none;" multiple>
+                  <label class="custom-file-label1 file-label" for="floorFile1{{'0'}}"><span>Upload Files</span><i
+                      class="fa fa-upload"></i></label>
+                </div>
+              </div>
+              <!-- Uploaded file displaying before submission for floor plans-->
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '0'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles0;let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url?.floorplan_image
+                        ? url?.floorplan_image :url?.name)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlanOnEdit(url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="deleteFloorPlans('0',url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '0' && floorFiles0?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray0[i]" disabled>
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of floorFilesOnUpdate0;let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url?.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeFloorPlansonEdit('0',i)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '0' && floorFilesOnUpdate0?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqftonFloorUpdate(i, $event)" name="sqft" [value]="updateonPostSqrt0[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '1'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles;let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url?.floorplan_image
+                        ? url?.floorplan_image :url?.name)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlanOnEdit(url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="deleteFloorPlans('1',url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '1' && floorFiles?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray[i]" disabled>
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of floorFilesOnUpdate;let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url?.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeFloorPlansonEdit('1',i)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '1' && floorFilesOnUpdate?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqftonFloorUpdate(i, $event)" name="sqft" [value]="updateonPostSqrt[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '2'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles2; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url?.floorplan_image
+                        ? url?.floorplan_image :url?.name)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlanOnEdit(url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="deleteFloorPlans('2',url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '2' && floorFiles2?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray2[i]" disabled>
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of floorFilesOnUpdate2; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url?.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeFloorPlansonEdit('2',i)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '2' && floorFilesOnUpdate2?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqftonFloorUpdate(i, $event)" name="sqft" [value]="updateonPostSqrt2[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '3'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles3; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url?.floorplan_image
+                        ? url?.floorplan_image :url?.name)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlanOnEdit(url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="deleteFloorPlans('3',url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '3' && floorFiles3?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqft(i, $event)" name="sqft" [value]="sqftArray3[i]" disabled>
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of floorFilesOnUpdate3; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url?.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeFloorPlansonEdit('3',i)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '3' && floorFilesOnUpdate3?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqftonFloorUpdate(i, $event)" name="sqft" [value]="updateonPostSqrt3[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filedisplaymaindiv col-10 p-0 mt-3" [hidden]="selectedFloorPlanNum != '4'">
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2" *ngFor='let url of floorFiles4; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{(url?.floorplan_image
+                        ? url?.floorplan_image :url?.name)}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlanOnEdit(url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="deleteFloorPlans('4',url)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '4' && floorFiles4?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqft(i,$event)" name="sqft" [value]="sqftArray4[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 p-0 d-flex align-items-baseline pt-2"
+                  *ngFor='let url of floorFilesOnUpdate4; let i = index'>
+                  <div class="col-7 p-0">
+                    <div class="viewuploadedFloorPlan">
+                      <span
+                        style="padding-inline: 0.2rem;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{url?.name}}</span>
+                      <span
+                        style="display: flex;align-items: center;gap: 1rem;padding-inline: 0.6rem;border-left: 1px solid #0B7AB2;">
+                        <span><i class="fa fa-eye iconcolor" (click)="viewFloorPlan(i,url)"></i></span>
+                        <span style="padding-block: 1rem;border-left: 1px solid #0B7AB2;"></span>
+                        <span><i class="fa fa-times iconcolor" (click)="removeFloorPlansonEdit('4',i)"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-5" *ngIf="selectedFloorPlanNum == '4' && floorFilesOnUpdate4?.length > 0">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control"
+                        style="border-bottom: 1px solid #00679B;padding:0.25rem 0rem !important"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        (input)="enterSqftonFloorUpdate(i,$event)" name="sqft" [value]="updateonPostSqrt4[i]">
+                      <div class="input-group-prepend">
+                        <span class="iconcolor" id="inputGroup-sizing-sm">SQFT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Uploaded file displaying before submission for floor plans-->
+
+            <div class="form-group col-sm-10 headingdesign">
+              <label class="heads">Project Info</label>
+              <!-- <textarea class="form-control addleadtextarea" id="address1" [(ngModel)]="projectInfo" name="projectInfo"
+                  name="address" style="border: 1px solid #d2d6da ;padding-inline: 0.5rem;"></textarea> -->
+              <textarea id="basic-example2" name="expertdesc" [(ngModel)]="projectInfo"></textarea>
+            </div>
+
+            <div class="col-12">
+              <button (click)="updateProjectInfo()" class="btn btn-warning">Update Property</button>
+            </div>
+
+          </div>
+          <!-- </form> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- brochure Popup  -->
+<!-- <div class="modal fade" id="brochure_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable reassignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Brochure</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="brochurecloseDetailModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-xs-12 d-flex justify-content-end pb-2">
+          <button type="button" class="btn btn-secondary buttonwithicon" (click)="downloadBrochure(selectedOpt?.Brochure)">Download<i class="fa fa-download"></i></button>
+        </div>
+        <iframe 
+        [src]="'https://superadmin-azure.right2shout.in/images/brochure/' + selectedOpt?.Brochure" 
+        width="100%" 
+        height="500px" 
+        type="application/pdf">
+        Your browser does not support PDFs.
+      </iframe>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- property Info Popup  -->
+<div class="modal fade" id="propInfo_modal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable reassignlead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Property Info</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="propertycloseDetailModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-xs-12 d-flex justify-content-end property_copy">
+          <span *ngIf="showCopiedBtn == false"><button type="button" class="btn btn-secondary buttonwithicon mb-0"
+              (click)="copyToClipboard(selectedOpt?.PropInfo)">Copy<i class="fa fa-copy"></i></button></span>
+          <span *ngIf="showCopiedBtn == true"><button type="button" class="btn btn-success buttonwithicon mb-0">Copied<i
+                class="fa fa-check"></i></button></span>
+        </div>
+        <div class="new_enquiry_form col-xs-12 pt-2" #propInfoElement>
+          <p [innerHTML]="selectedOpt?.PropInfo"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- pricesheet Popup  -->
+<div class="modal fade" id="pricesheet_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable reassignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Price Sheet</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body col-12 p-0 d-flex row m-0">
+        <div *ngFor="let ps of selectedOpt?.Pricesheets" class="col-3 p-0">
+          <!-- <div class="col-xs-12 d-flex justify-content-end pb-2">
+          <button type="button" class="btn btn-secondary buttonwithicon mb-0" (click)="downloadPricesheet(selectedOpt?.Pricesheet)" style="padding: 0.1rem 0.5rem;border-radius: 2px;">Download<i class="fa fa-download"></i></button>
+        </div> -->
+
+          <div *ngIf="ps?.bhkId == '0'">
+            <div class="">
+              <div class="image-container">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="ps?.propdetails_pricesheet.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getPriceSheetUrl(ps)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="ps?.propdetails_pricesheet">
+                  <i class="fa fa-eye iconcolor1" (click)="viewPriceSheet(ps)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadPricesheet(ps)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">Common</div>
+            </div>
+          </div>
+
+          <div *ngIf="ps?.bhkId == '1'">
+            <div class="">
+              <div class="image-container">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="ps?.propdetails_pricesheet.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getPriceSheetUrl(ps)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="ps?.propdetails_pricesheet">
+                  <i class="fa fa-eye iconcolor1" (click)="viewPriceSheet(ps)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadPricesheet(ps)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">1BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="ps?.bhkId == '2'">
+            <div class="">
+              <div class="image-container">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="ps?.propdetails_pricesheet.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getPriceSheetUrl(ps)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+
+                <div class="hover-icons" *ngIf="ps?.propdetails_pricesheet">
+                  <i class="fa fa-eye iconcolor1" (click)="viewPriceSheet(ps)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadPricesheet(ps)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">2BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="ps?.bhkId == '3'">
+            <div class="">
+              <div class="image-container">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="ps?.propdetails_pricesheet.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getPriceSheetUrl(ps)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="ps?.propdetails_pricesheet">
+                  <i class="fa fa-eye iconcolor1" (click)="viewPriceSheet(ps)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadPricesheet(ps)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">3BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="ps?.bhkId == '4'">
+            <div class="">
+              <div class="image-container">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="ps?.propdetails_pricesheet.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getPriceSheetUrl(ps)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="ps?.propdetails_pricesheet">
+                  <i class="fa fa-eye iconcolor1" (click)="viewPriceSheet(ps)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadPricesheet(ps)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">4BHK</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- video Popup  -->
+<div class="modal fade" id="video_modal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable modal-xl">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Videos</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body col-12 p-0 d-flex row m-0">
+        <!-- <div class="col-xs-12 d-flex justify-content-end pb-0">
+          <button type="button" class="btn btn-secondary buttonwithicon mb-0"
+            (click)="downloadVideo(selectedOpt?.videos)">Download<i class="fa fa-download"></i></button>
+        </div> -->
+        <div *ngFor="let pv of selectedOpt?.videos" class="col-4 p-0">
+          <div *ngIf="pv?.bhkId == '1'">
+            <div class="d-flex justify-content-center">
+              <video width="320" height="240" controls>
+                <source [src]="'https://lead247.in/images/videos/' + pv.propdetails_video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div
+              style="font-size: medium;font-weight:700;display: flex;justify-content: space-between;padding-inline: 2rem;">
+              <span>1BHK</span><span> <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i></span>
+            </div>
+          </div>
+
+          <div *ngIf="pv?.bhkId == '2'">
+            <div class="d-flex justify-content-center">
+              <video width="320" height="240" controls>
+                <source [src]="'https://lead247.in/images/videos/' + pv.propdetails_video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div
+              style="font-size: medium;font-weight:700;display: flex;justify-content:space-between;padding-inline: 2rem;">
+              <span>2BHK</span><span> <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i></span>
+            </div>
+          </div>
+
+          <div *ngIf="pv?.bhkId == '3'">
+            <div class="d-flex justify-content-center">
+              <video width="320" height="240" controls>
+                <source [src]="'https://lead247.in/images/videos/' + pv.propdetails_video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <div class="hover-icons" *ngIf="pv?.propdetails_video">
+                <i class="fa fa-eye iconcolor1" (click)="viewVideoOnEdit(pv)"> </i>
+                <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i>
+              </div>
+            </div>
+            <div
+              style="font-size: medium;font-weight:700;display: flex;justify-content: space-between;padding-inline: 2rem;">
+              <span>3BHK</span><span> <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i></span>
+            </div>
+          </div>
+
+          <div *ngIf="pv?.bhkId == '4'">
+            <div class="d-flex justify-content-center">
+              <video width="320" height="240" controls>
+                <source [src]="'https://lead247.in/images/videos/' + pv.propdetails_video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div
+              style="font-size: medium;font-weight:700;display: flex;justify-content:space-between;padding-inline: 2rem;">
+              <span>4BHK</span><span> <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i></span>
+            </div>
+          </div>
+
+          <div *ngIf="pv?.bhkId == '0'">
+            <div class="d-flex justify-content-center">
+              <video width="320" height="240" controls>
+                <source [src]="'https://lead247.in/images/videos/' + pv.propdetails_video" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div
+              style="font-size: medium;font-weight:700;display: flex;justify-content: space-between;padding-inline: 2rem;">
+              <span>Common</span><span> <i class="fa fa-download iconcolor1" (click)="downloadVideo(pv)"> </i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- floorplan Popup  -->
+<div class="modal fade" id="floorplan_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered  modal-dialog-scrollable reassignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Floor Plan</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body col-12 p-0 d-flex row m-0">
+        <div *ngFor="let pf of selectedOpt?.Floorplans" class="col-3 p-0">
+          <div *ngIf="pf?.bhkId == '1'">
+            <div class="">
+              <div class="image-container  d-flex justify-content-center">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="pf.floorplan_image.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getfloorplansUrl(pf)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="pf?.floorplan_image">
+                  <i class="fa fa-eye iconcolor1" (click)="viewFloorPlanOnEdit(pf)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadFloorPlan(pf)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">1BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="pf?.bhkId == '2'">
+            <div class="">
+              <div class="image-container d-flex justify-content-center">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="pf?.floorplan_image.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getfloorplansUrl(pf)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+
+                <div class="hover-icons" *ngIf="pf?.floorplan_image">
+                  <i class="fa fa-eye iconcolor1" (click)="viewFloorPlanOnEdit(pf)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadFloorPlan(pf)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">2BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="pf?.bhkId == '3'">
+            <div class="">
+              <div class="image-container d-flex justify-content-center">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="pf?.floorplan_image.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getfloorplansUrl(pf)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="pf?.floorplan_image">
+                  <i class="fa fa-eye iconcolor1" (click)="viewFloorPlanOnEdit(pf)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadFloorPlan(pf)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">3BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="pf?.bhkId == '4'">
+            <div class="">
+              <div class="image-container d-flex justify-content-center">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="pf?.floorplan_image.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getfloorplansUrl(pf)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="pf?.floorplan_image">
+                  <i class="fa fa-eye iconcolor1" (click)="viewFloorPlanOnEdit(pf)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadFloorPlan(pf)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">4BHK</div>
+            </div>
+          </div>
+
+          <div *ngIf="pf?.bhkId == '0'">
+            <div class="">
+              <div class="image-container d-flex justify-content-center">
+                <!-- <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="50%" width="80%"> -->
+                <ng-container *ngIf="pf?.floorplan_image.endsWith('.pdf'); else showImage">
+                  <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                    alt="PDF Icon">
+                </ng-container>
+
+                <!-- Else, show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="mr-2 p-3" [src]="getfloorplansUrl(pf)" height="200" width="200" alt="Uploaded Image">
+                </ng-template>
+                <div class="hover-icons" *ngIf="pf?.floorplan_image">
+                  <i class="fa fa-eye iconcolor1" (click)="viewFloorPlanOnEdit(pf)"> </i>
+                  <i class="fa fa-download iconcolor1" (click)="downloadFloorPlan(pf)"> </i>
+                </div>
+              </div>
+              <div style="font-size: medium;font-weight:700;display: flex;justify-content: center;">Common</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>

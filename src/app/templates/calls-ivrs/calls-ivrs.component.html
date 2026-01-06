@@ -1,0 +1,149 @@
+<div>
+  <app-header></app-header>
+</div>
+
+
+<div class="body-cntnts dimmable searchHeader" [ngStyle]="{'padding-left': isSidebarHovered ? '13.5rem' : '1.5rem'}">
+
+  <div class="col-12 pt-3" [hidden]="isAddIvrs">
+    <div class="btn-group btn-group-toggle float-right">
+      <p>
+        <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="addIvrs()">Add IVRS <i class="fas fa-plus"></i></button>
+      </p>
+    </div>
+  </div>
+
+  <div class="CSassigned_table pt-3 " #scrollContainer [ngStyle]="{'padding-left': isSidebarHovered ? '0.5rem' : '1.7rem'}" [hidden]="isAddIvrs">     
+    <div class="crm-sub-container padding-medium-full">
+      <div class="panel-1 crm-auto-scrollrm panel-content"> 
+    <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+      [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+      [infiniteScrollContainer]="'.CSassigned_table'">
+      <thead>
+        <tr class="header">
+          <!-- ----------------------------sl no---------------------------- -->
+          <th>Title</th>
+          <th>Landing Number</th>
+          <th>Timeout</th>
+          <th>Team Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="callerleads?.length" [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+        <tr *ngFor="let leads of callerleads; let i = index"
+          [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+        </tr>
+      </tbody>
+    </table>
+   
+    <div class="text-center no-record" *ngIf="!callerleads">
+      No Records Found...
+    </div>
+    </div>
+    </div>
+  </div>
+
+  <div [hidden]="!isAddIvrs" [ngStyle]="{'padding-left': isSidebarHovered ? '0.5rem' : '1.7rem'}">
+    <div class="col-12 pt-1">
+      
+      <div class="new_executive_form col-xs-12" style="padding-inline: 10rem;">
+        <form class="form-inline" name="form" novalidate>
+          <div class="col-12 pb-3 d-flex align-items-center justify-content-between">
+            <h4 style="color: #0B7AB2">IVRS Details</h4>
+            <button class="btn btn-warning" type="button">Add</button>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Title</label>
+            <input class="form-control" id="custname" placeholder="Enter IVRS title" type="text"
+              [(ngModel)]="ivrsTitle" #name="ngModel" name="name" required>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Landing Number</label>
+            <select id="message_type_dropdown" #drop class="form-control ui dropdown" [(ngModel)]="selectedLandingNum" name="selectedLandingNum"
+            (change)="landingNumberchange($event)">
+            <option value="" selected>Select Number</option>
+            <!-- <option *ngFor="let sourcelist of sourcelist" value="{{sourcelist.source}}">{{sourcelist.source}}</option> -->
+          </select>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Audio Message</label>
+              <select id="message_type_dropdown" class="form-control ui dropdown" [(ngModel)]="selectedMessageType" name="selectedMessageType"
+              (change)="messageTypechange($event)">
+              <option value="" selected>Select Message Type</option>
+              <!-- <option *ngFor="let sourcelist of sourcelist" value="{{sourcelist.source}}">{{sourcelist.source}}</option> -->
+            </select>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Timeout</label>
+            <input class="form-control" id="custnum" placeholder="Enter Number" type="text" maxlength=10
+            [(ngModel)]="timeOutNum" #number="ngModel" name="number" required>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Team Name</label>
+            <select id="team_name_dropdown" class="form-control ui dropdown" [(ngModel)]="selectedTeamName" name="selectedTeamName"
+            (change)="teamNameChange($event)">
+            <option value="" selected>Select Name</option>
+            <!-- <option *ngFor="let local of locality" value="{{local.id}}">{{local.locality}}</option> -->
+          </select>
+          </div>
+
+          <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+            <label>Non Working Days Message</label>
+            <input class="form-control" id="custnum" placeholder="Write Message" type="text" maxlength=10
+              [(ngModel)]="nonWorkingDays" #number="ngModel" name="number" required>
+          </div>
+
+          <!-- <div class="actions col-md-12 save_btn ">
+            <button class="approve " type="submit" (click)="addenquiry()">Save</button>
+          </div> -->
+
+        </form>
+        <div class="" style="border: 2px solid rgb(207, 197, 197);"></div>
+      </div>
+
+
+      <div class="col-12"  style="padding-inline: 10rem;">
+        <div class="col-12 py-3 d-flex">
+          <h4 style="color: #0B7AB2">IVRS Timings</h4>
+       </div>
+        <table id="ivrs1" class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+        [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+        [infiniteScrollContainer]="'.CSassigned_table'">
+        <tbody *ngIf="weekends?.length" [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+          <tr *ngFor="let week of weekends; let i = index"
+            [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+            <td>
+                <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                  value="{{week.value}}" name='programmingweekends' (change)="getselectedweekends()"
+                  style="display: none;">
+                  <label>{{week.value}}</label>
+            </td>
+            <td>
+              <div class="ui calendar calendartime">
+                <div class="ui input left icon timepickerdiv">
+                  <i class="time icon"></i>
+                  <input class="form-control" autocomplete="off" id="fromTime" type="text" placeholder="Select from Time" disabled="selectedWeekends">
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="ui calendar calendarTimeTo">
+                <div class="ui input left icon timepickerdiv">
+                  <i class="time icon"></i>
+                  <input class="form-control" autocomplete="off" id="toTime" type="text" placeholder="Select to Time" disabled="selectedWeekends">
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+</div>

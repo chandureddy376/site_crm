@@ -1,0 +1,125 @@
+<div>
+  <app-header></app-header>
+</div>
+
+
+<div class="body-cntnts dimmable searchHeader"
+  [ngStyle]="{'padding-left': isSidebarHovered ? '13.5rem' : '1.5rem'}">
+
+  <div class="col-12 pt-1">
+    <div class="float-left pl-3">
+      <input class="form-control search_input" type="text" [(ngModel)]="executive_name"
+      placeholder="Search Executive Name" (keyup)="searchExecutive()"
+      style="border-radius: 30px;width: 250px;height: 2.71428571em;" />
+    </div>
+    <div class="btn-group btn-group-toggle float-right">
+      <span>
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/call-dashboard"
+          [queryParams]="{today: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked===true}">
+          <input class=" d-none d-sm-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Today
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-gift-2"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/call-dashboard"
+          [queryParams]="{last7: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked1===true}">
+          <input class=" d-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Last 7 days
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked2===true}">
+          <div #nextActionDates class="cursor-pointer d-none">
+            <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+          </div>
+          <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            {{datecustomfetch}}
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+      </span>
+      <p>
+        <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+            class="fas fa-redo"></i>Reset</button>
+      </p>
+    </div>
+  </div>
+
+  <div class="CSassigned_table pt-1 " #scrollContainer [ngStyle]="{'padding-left': isSidebarHovered ? '0.5rem' : '1.7rem'}">     
+    <div class="crm-sub-container padding-medium-full">
+      <div class="panel-1 crm-auto-scrollrm panel-content"> 
+    <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+      [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+      [infiniteScrollContainer]="'.CSassigned_table'">
+      <thead>
+        <tr class="header">
+          <!-- ----------------------------sl no---------------------------- -->
+          <th>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Executive Details</span>
+              <span class="leadstatusdrop d-flex">
+                <!-- <div>
+                  <button class="btn btn-secondary" type="button" id="executivesDropdown" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                    <i class="fas fa-filter" style="color: #5D5D5D;"></i>
+                  </button>
+                  <div class="dropdown-menu executiveBasedFilter" aria-labelledby="executiveDropdown"
+                  style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+
+                  <div class="dropdown-search-container"><input type="text" class="form-control executivesearch"
+                      placeholder="Search..." [(ngModel)]="searchTerm_executive" (input)="filterExecutive()"
+                      style="margin-bottom: 2px;">
+                  </div>
+
+                  <div *ngIf="mandateExecutivesFilter?.length">
+                    <div *ngFor="let exec of mandateExecutivesFilter">
+                      <label class="dropdown-item dropDownCursor mb-1">
+                        <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox"
+                          id="hideExecutivecheckboxid" value="{{exec?.id}}" name='executiveFilter'
+                          (change)="onCheckboxExecutiveChange()">
+                        {{ exec.name }}
+                      </label>
+                    </div>
+                  </div>
+                  <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                    <h4>No Executives Found</h4>
+                  </div>
+                </div>
+                </div> -->
+              </span>
+            </div>
+          </th>
+          <th>Total Calls</th>
+          <th>Inbound/Unique</th>
+          <th>Outbound/Unique</th>
+          <th>Answered Calls</th>
+          <th>Call Duration</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="callerleads?.length" [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+        <tr *ngFor="let leads of callerleads; let i = index"
+          [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+        </tr>
+      </tbody>
+    </table>
+   
+    <div class="text-center no-record" *ngIf="!callerleads">
+      No Records Found...
+    </div>
+    </div>
+    </div>
+  </div>
+
+</div>

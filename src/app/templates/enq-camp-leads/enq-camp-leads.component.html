@@ -1,0 +1,324 @@
+<!-- HEADER -->
+
+<div>
+  <app-header></app-header>
+</div>
+
+<!-- HEADER -->
+
+<div class="body-cntnts dimmable blurring searchHeader">
+
+  <div class="enquiry_content_main">
+
+    <div class=" main_count_header" [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '4rem'}">
+      <div class="pl-0">
+        <!-- <div class="lead_count">
+          <label class="mb-0">Total {{type | titlecase}} Leads : {{ campaignLeadsCount }}</label>
+        </div> -->
+        <div class="button_section col-12 pr-0 pl-0 d-flex ">
+          <div class="planleadassign">
+            <a class="add_class lead_section freshLeads_section" (click)="selectedTab('fresh')" *ngIf="vsnapparam == 1"
+              routerLink="/enquiry-vsnap" [queryParams]="{vsnap:1,fresh:1,from:fromdate,to:todate}">
+              Fresh Leads
+              <span>({{freshLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section freshLeads_section" (click)="selectedTab('fresh')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,fresh:1,from:fromdate,to:todate}">
+              Fresh Leads
+              <span>({{freshLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section pendingLeads_section" (click)="selectedTab('pending')"
+              *ngIf="vsnapparam == 1" routerLink="/enquiry-vsnap"
+              [queryParams]="{vsnap:1,pending:1,from:fromdate,to:todate}">
+              Pending Leads
+              <span>({{pendingLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section pendingLeads_section" (click)="selectedTab('pending')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,pending:1,from:fromdate,to:todate}">
+              Pending Leads
+              <span>({{pendingLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section quafilied_section" (click)="selectedTab('quafilied')"
+              *ngIf="vsnapparam == 1" routerLink="/enquiry-vsnap"
+              [queryParams]="{vsnap:1,quafilied:1,from:fromdate,to:todate}">
+              Qualified Leads
+              <span>({{qualifiedLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section quafilied_section" (click)="selectedTab('quafilied')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,quafilied:1,from:fromdate,to:todate}">
+              Qualified Leads
+              <span>({{qualifiedLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section notqualified_section" (click)="selectedTab('notqualified')"
+              *ngIf="vsnapparam == 1" routerLink="/enquiry-vsnap"
+              [queryParams]="{vsnap:1,notquafilied:1,from:fromdate,to:todate}">
+              Not Qualified Leads
+              <span>({{notqualifiedLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section notqualified_section" (click)="selectedTab('notqualified')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,notquafilied:1,from:fromdate,to:todate}">
+              Not Qualified Leads
+              <span>({{notqualifiedLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section callback_section" (click)="selectedTab('callback')" *ngIf="vsnapparam == 1"
+              routerLink="/enquiry-vsnap" [queryParams]="{vsnap:1,callback:1,from:fromdate,to:todate}">
+              Callback
+              <span>({{callbackLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section callback_section" (click)="selectedTab('callback')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,callback:1,from:fromdate,to:todate}">
+              Callback
+              <span>({{callbackLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section numberbusy_section" (click)="selectedTab('numberbusy')"
+              *ngIf="vsnapparam == 1" routerLink="/enquiry-vsnap"
+              [queryParams]="{vsnap:1,numberbusy:1,from:fromdate,to:todate}">
+              Number Busy
+              <span>({{numberbusyLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section numberbusy_section" (click)="selectedTab('numberbusy')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,numberbusy:1,from:fromdate,to:todate}">
+              Number Busy
+              <span>({{numberbusyLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section rnr_section" (click)="selectedTab('rnr')" routerLink="/enquiry-vsnap"
+              *ngIf="vsnapparam == 1" [queryParams]="{vsnap:1,rnr:1,from:fromdate,to:todate}">
+              RNR
+              <span>({{rnrLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section rnr_section" (click)="selectedTab('rnr')" routerLink="/enquiry-sitecrm"
+              *ngIf="sitecrmparam == 1" [queryParams]="{sitecrm:1,rnr:1,from:fromdate,to:todate}">
+              RNR
+              <span>({{rnrLeadsCount}})</span>
+            </a>
+
+            <a class="add_class lead_section switchoff_section" (click)="selectedTab('switchoff')"
+              *ngIf="vsnapparam == 1" routerLink="/enquiry-vsnap"
+              [queryParams]="{vsnap:1,switchoff:1,from:fromdate,to:todate}">
+              Switch Off
+              <span>({{switchoffLeadsCount}})</span>
+            </a>
+            <a class="add_class lead_section switchoff_section" (click)="selectedTab('switchoff')"
+              *ngIf="sitecrmparam == 1" routerLink="/enquiry-sitecrm"
+              [queryParams]="{sitecrm:1,switchoff:1,from:fromdate,to:todate}">
+              Switch Off
+              <span>({{switchoffLeadsCount}})</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="text-right pr-0 ">
+        <button type="button" class="btn btn-warning" (click)="refresh();"
+          style="padding: .375rem .75rem !important;font-size: 1rem !important;"><i class="fas fa-redo"></i></button>
+      </div>
+    </div>
+    <div class="table-container" [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '4rem'}">
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <!-- <span *ngIf="propertyFilter && propertyname != ''">
+          <div class="p-2 chip">
+            {{propertyname}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="sourceFilter && leadsource != ''">
+          <div class="p-2 chip">
+            {{(leadsource == 'GR - Microsite' ? 'GR - campaign' : leadsource)}}
+            <span class="closebtn" (click)="sourceClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="cityFilter && selectedCity != '' && selectedCityName != ''">
+          <div class="p-2 chip">
+            {{selectedCityName}}
+            <span class="closebtn" (click)="cityClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="localityFilter && selectedLocId != '' && selectedLocName != ''">
+          <div class="p-2 chip">
+            {{selectedLocName}}
+            <span class="closebtn" (click)="localityClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="propTypeFilter && selectedPropTypeTableFil != ''">
+          <div class="p-2 chip">
+            {{selectedPropTypeTableFil}}
+            <span class="closebtn" (click)="propTypeClose()">&times;</span>
+          </div>
+        </span> -->
+        <span *ngIf="datefilterview">
+          <div class="p-2 chip">
+            Date: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateclose()">&times;</span>
+          </div>
+        </span>
+      </div>
+      <div class="CSassigned_table " #scrollContainer>
+        <!-- this Table is for sitecrm section  -->
+        <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+          *ngIf="sitecrmparam == 1" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+          (scrolled)="loadMore()" [infiniteScrollContainer]="'.CSassigned_table'">
+          <thead>
+            <tr class="header">
+              <th style="width: 3%;">#</th>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Company Name</th>
+              <th style="width: 15%;">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Date</span>
+                  <span class="leadstatusdrop d-flex">
+                    <div id="nextActionDates" style="cursor: pointer;">
+                      <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                    </div>
+                  </span>
+                </div>
+              </th>
+              <th style="width: 25%;">Remarks</th>
+              <th style="width: 20%;" *ngIf="quafiliedparam != '1'"></th>
+            </tr>
+          </thead>
+
+          <tbody *ngFor="let enquiry of enquiriesList ; let i = index"
+            [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+            <tr>
+              <td>{{i+1}}</td>
+              <td><a>{{enquiry.client_name}}</a></td>
+              <td>{{enquiry.client_number}}</td>
+              <td>{{enquiry.client_company}}</td>
+              <td>
+                <span *ngIf="enquiry.datetime">{{enquiry.datetime | date: 'dd-MMM-yyyy'}}</span>
+                <span *ngIf="enquiry.datetime"> , {{enquiry.datetime | date: 'shortTime'}}</span>
+              </td>
+              <td>
+                <div style="overflow: hidden;white-space: normal;word-wrap: break-word;">
+                  {{enquiry.client_message}}
+                </div>
+              </td>
+              <td style="text-align: center;" *ngIf="quafiliedparam != '1'">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#leadstatus_update"
+                  (click)="selectedFollowupLead(enquiry.client_IDPK)">Followup</button>
+                <button type="button" class="btn btn-outline-success"
+                  (click)="convertLead('2',enquiry.client_IDPK)">Qualified</button>
+                <button type="button" class="btn btn-outline-danger" (click)="convertLead('3',enquiry.client_IDPK)">Not
+                  Qualified</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- this Table is for vsnap section  -->
+        <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+          *ngIf="vsnapparam == 1" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+          (scrolled)="loadMore()" [infiniteScrollContainer]="'.CSassigned_table'">
+          <thead>
+            <tr class="header">
+              <th style="width: 3%;">#</th>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Plan</th>
+              <th>Period</th>
+              <th style="width: 15%;">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Date</span>
+                  <span class="leadstatusdrop d-flex">
+                    <div id="nextActionDates" style="cursor: pointer;">
+                      <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                    </div>
+                  </span>
+                </div>
+              </th>
+              <th style="width: 25%;">Remarks</th>
+              <th style="width: 20%;" *ngIf="quafiliedparam != '1'"></th>
+            </tr>
+          </thead>
+
+          <tbody *ngFor="let enquiry of enquiriesList ; let i = index"
+            [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+            <tr>
+              <td>{{i+1}}</td>
+              <td><a>{{enquiry.customer_name}}</a></td>
+              <td>{{enquiry.customer_number}}</td>
+              <td>{{enquiry.plan}}</td>
+              <td>{{enquiry.period}}</td>
+              <td>
+                <span *ngIf="enquiry.datetime">{{enquiry.datetime | date: 'dd-MMM-yyyy'}}</span>
+                <span *ngIf="enquiry.datetime"> , {{enquiry.datetime | date: 'shortTime'}}</span>
+              </td>
+              <td>
+                <div style="overflow: hidden;white-space: normal;word-wrap: break-word;">
+                  {{enquiry.customer_message}}
+                </div>
+              </td>
+              <td style="text-align: center;" *ngIf="quafiliedparam != '1'">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#leadstatus_update"
+                  (click)="selectedFollowupLead(enquiry.customer_IDPK)">Followup</button>
+                <button type="button" class="btn btn-outline-success"
+                  (click)="convertLead('2',enquiry.customer_IDPK)">Qualified</button>
+                <button type="button" class="btn btn-outline-danger" (click)="convertLead('3',enquiry.customer_IDPK)">Not
+                  Qualified</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center no-record" *ngIf="!enquiriesList?.length">
+          No Records Found...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- //update followup status -->
+<div class="modal fade" id="leadstatus_update" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog leadstatus_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 p-0 m-0">Followup</h4>
+        <button type="button" class="close" data-dismiss="modal" id="closefollowupmodal"
+          (click)="leadstatusModalClose()"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="col-sm-12 form-group headingdesign">
+          <label class="heads">Reasons To Followup</label>
+          <div>
+            <button *ngFor="let section of followupsections; let i = index" id="followupsection"
+              (click)="followupactionclick(i,section.name,section.value)" type="button"
+              class="btn btnTab actionbtns actions{{i}}">
+              <span><i class="fa fa-check-circle iconmark selectMark{{i}}"
+                  aria-hidden="true"></i></span>&nbsp;&nbsp;{{section.name}}
+            </button>&nbsp;
+          </div>
+        </div>
+        <div class="col-sm-12 pt-2 d-flex justify-content-end">
+          <button class="btn btn-warning" type="button" style="padding: .375rem .75rem !important;"
+            (click)="updateFollowup()">Update Followup</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <div class="main-lds-ring-div" *ngIf=filterLoader>
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+     <img src="../../../assets/images/infinity_loader.gif">
+  </div>

@@ -1,0 +1,882 @@
+<!-- HEADER -->
+
+<app-header></app-header>
+
+<!-- HEADER -->
+
+
+<!-- SIDE-NAV-ENDS -->
+
+<!-- MAIN-CONTENTS  -->
+<div class="row main_count_header px-4 pb-0" [ngStyle]="{'margin-left': isSidebarHovered ? '13rem' : '2rem'}">
+  <div class="button_section col-12 p-2 d-flex">
+    <div class="planleadassign">
+      <!-- *****************************Page Three Navigations***************************** -->
+      <a class="add_class weekends_section plan_section " (click)="onTabPlan('weekends')">
+        <!-- routerLink="/mandate-plans"
+        [queryParams]="{weekends: 1,type : stageplan,from:fromdate, to:todate, suggestedproid:suggestedpropertyid, suggestedpropname:suggestedpropertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,receivedFrom:receivedFromDate,receivedTo:receivedToDate,visitedfrom:visitedFrom,visitedto:visitedTo,source:source,enquirypropname:enquirypropertyname,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname,closedproid:closedpropertyid,closedpropname:closedpropertyname}"> -->
+        WEEKEND PLANS
+        <!-- <span>({{weekendCount}})</span> -->
+      </a>
+      <a class="add_class weekdays_section plan_section" (click)="onTabPlan('weekdays')">
+        <!-- routerLink="/mandate-plans"
+        [queryParams]="{weekdays: 1,type : stageplan,from:fromdate, to:todate, suggestedproid:suggestedpropertyid, suggestedpropname:suggestedpropertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,receivedFrom:receivedFromDate,receivedTo:receivedToDate,visitedfrom:visitedFrom,visitedto:visitedTo,source:source,enquirypropname:enquirypropertyname,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname,closedproid:closedpropertyid,closedpropname:closedpropertyname}"> -->
+        WEEKDAYS PLANS
+        <!-- <span>({{weekdaysCount}})</span> -->
+      </a>
+      <!-- <a class="add_class ytc_section plan_section" (click)="onTabPlan('weekends')"> -->
+      <!-- routerLink="/mandate-plans"
+        [queryParams]="{ytc: 1,type : stageplan,from:fromdate, to:todate, suggestedproid:suggestedpropertyid, suggestedpropname:suggestedpropertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,receivedFrom:receivedFromDate,receivedTo:receivedToDate,visitedfrom:visitedFrom,visitedto:visitedTo,source:source,enquirypropname:enquirypropertyname,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname,closedproid:closedpropertyid,closedpropname:closedpropertyname}"> -->
+      <!-- Yet to Confirm
+        <span>({{rsvcount}})</span>
+      </a> -->
+
+      <!-- *****************************Page Three Navigations***************************** -->
+    </div>
+  </div>
+</div>
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '15rem' : '4rem'}">
+  <div class="enquiry_content_main">
+
+    <div *ngIf=filterLoader class="main-lds-ring-div">
+      <!-- <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div> -->
+      <img src="../../../../assets/images/infinity_loader.gif">
+    </div>
+
+    <div class="button_section col-12 pl-0 pr-0">
+      <div class="leadassign col-8 pl-0" #leadassign>
+        <!-- *****************************Page Three Navigations***************************** -->
+        <a class="add_class usv_section other_section" (click)="onstageTab('usv')">
+          <!-- routerLink="/mandate-plans"
+          [queryParams]="{type:'usv',from:fromdate, to:todate,execid:execid, execname:execname, stage:stagevalue,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname}"> -->
+          USV
+          <span>({{usvCounts}})</span>
+        </a>
+
+        <a class="add_class rsv_section other_section" (click)="onstageTab('rsv')">
+          <!-- routerLink="/mandate-plans"
+          [queryParams]="{type:'rsv',from:fromdate, to:todate,execid:execid, execname:execname, stage:stagevalue,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname}"> -->
+          RSV
+          <span>({{rsvCounts}})</span>
+        </a>
+
+        <a class="add_class fn_section other_section" (click)="onstageTab('fn')">
+          <!-- routerLink="/mandate-plans"
+          [queryParams]="{type:'fn',from:fromdate, to:todate,execid:execid, execname:execname, stage:stagevalue,visitedproid:visitedpropertyid,visitedpropname:visitedpropertyname}"> -->
+          FN
+          <span>({{fnCounts}})</span>
+        </a>
+        <!-- *****************************Page Three Navigations***************************** -->
+      </div>
+      <div class="d-flex justify-content-end col-4 pr-0 gap-05">
+        <button type="button" class="btn btn-primary" (click)="lastWeek('weekend')"
+          *ngIf="weekplanparam == 'weekend'">Last Weekend</button>
+        <button type="button" class="btn btn-primary" (click)="lastWeek('weekdays')"
+          *ngIf="weekplanparam == 'weekdays'">Last Weekdays</button>
+        <button type="button" class="btn btn-primary" (click)="refresh()"><i class="fas fa-redo"></i>Reset</button>
+      </div>
+    </div>
+
+    <!-- ----------------------------to show Table filter data---------------------------- -->
+    <div id="filtermaindiv" class="filterspan ml-2">
+      <span *ngIf="propertyfilterview && propertyid != ''">
+        <div class="p-2 chip">
+          {{propertyname}}
+          <span class="closebtn" (click)="propertyclose()">&times;</span>
+        </div>
+      </span>
+      <span *ngIf="executivefilterview && execid != ''&& execname != ''">
+        <div class="p-2 chip">
+          {{execname}}
+          <span class="closebtn" (click)="executiveclose()">&times;</span>
+        </div>
+      </span>
+      <span *ngIf="stagefilterview && stagestatusvaltext != ''">
+        <div class="p-2 chip">
+          <span>{{stagestatusvaltext}}</span>
+          <span class="closebtn" (click)="stageclose()">&times;</span>
+        </div>
+      </span>
+      <span *ngIf="datefilterview && fromdate && todate">
+        <div class="p-2 chip">
+          Next Visits: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+          <!-- <span class="closebtn" (click)="dateclose()">&times;</span> -->
+        </div>
+      </span>
+      <span *ngIf="selectedLeadStatus && selectedLeadStatus != 'All'">
+        <div class="p-2 chip">
+          Visit Type : {{selectedLeadStatus}}
+          <span class="closebtn" (click)="removeselectedLeadStatus()">&times;</span>
+        </div>
+      </span>
+    </div>
+
+    <!-- this is the table for assigned leads -->
+    <div class="table-container ">
+      <div class="CSassigned_table" #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <!-- All Visits Related Data listing table For Executive View-->
+            <table *ngIf="roleid != '1' && roleid != '2'" class="content_table_main table table-striped table-bordered"
+              infinite-scroll [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2"
+              [infiniteScrollThrottle]="50" (scrolled)="loadMoreassignedleads()"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <!-- ----------------------------Sl.no---------------------------- -->
+                  <th>#</th>
+                  <!-- ----------------------------Name---------------------------- -->
+                  <th>Name </th>
+                  <!-- ----------------------------lead status with filter---------------------------- -->
+                  <!-- <th style="width: 220px;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Visit Type</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('All')">All</a>
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('Assigned')">Assigned</a>
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('Direct Visits')">Direct
+                              Visits</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th> -->
+                  <!-- ----------------------------property with filter---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-width: 250px ;max-height: 250px; overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngFor="let project of mandateprojects">
+                            <label class="dropdown-item dropDownCursor">
+                              <span (click)="onCheckboxChange(project)">{{ project.property_info_name }}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <!-- ----------------------------Executive filter only for team lead---------------------------- -->
+                  <th *ngIf="role_type == '1'">
+                    <div class="d-flex justify-content-between">
+                      <span>Assigned To</span>
+                      <div *ngIf="(pendingleadsparam || followupleadsparam || normalcallparam) != '1'">
+                        <button class="btn btn-warning" type="button" id="executiveDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu executiveBasedFilter" aria-labelledby="executiveDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <div class="dropdown-search-container"><input type="text" class="form-control executivesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_executive" (input)="filterExecutive()"
+                              style="margin-bottom: 2px;"></div>
+                          <div *ngIf="mandateExecutivesFilter?.length">
+                            <div *ngFor="let exec of mandateExecutivesFilter">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox"
+                                  id="hideExecutivecheckboxid" value="{{exec?.id}}" name='executiveFilter'
+                                  (change)="onCheckboxExecutiveChange()">
+                                {{ exec.name }}
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                            <h4>No Executives Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <!-- ----------------------------assigned on---------------------------- -->
+                  <!-- <th>Assigned On</th> -->
+                  <!-- ----------------------------next action for usv,rsv,fn and nc with from and todate filter---------------------------- -->
+                  <th style="width: 10%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Confirmed On</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <div id="confirmedOnDates" class="cursor-pointer">
+                            <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <!-- ----------------------------visited for usv,rsv,fn and nc with visited from and visited to filter---------------------------- -->
+                  <!-- <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <span>Visited On</span>
+                    <span class="leadstatusdrop d-flex">
+                      <div>
+                        <button class="btn btn-warning visitedDatefilter" type="button" id="visitedDatefilterDropdown"
+                          data-toggle="dropdown" (click)="showdateRange3()" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu visitedDfilter" aria-labelledby="visitedDatefilterDropdown"
+                          style="cursor:pointer;padding: 0rem;display: none;">
+                          <div style="position: relative;display: none;">
+                            <input #datepicker3 class="form-control" id="visiteddate" name="options" type="text"
+                              bsDaterangepicker autocomplete="off" [maxDate]="currentdateforcompare"
+                              placeholder="Select Date" [(bsValue)]="visitedDateRange"
+                              (bsValueChange)="onVisitedDateRangeSelected($event)" required>
+                            <span style="position: absolute; top: 25%;right: 10px; opacity: 75%;color: #0B7AB2;">
+                              <i class="fas fa-calendar-alt"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                  </th> -->
+                  <!-- ----------------------------lastest remarks---------------------------- -->
+                  <th class="remarksection" style="width: 20%;">Latest Remarks</th>
+                  <!-- ----------------------------stage with filter---------------------------- -->
+                  <!-- ----------------------------stage with filter [maxDate]="currentdateforcompare"---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex" *ngIf="fromdate < this.todaysdateforcompare">
+                        <div>
+                          <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="bookingLeadDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('1')">Pending</a>
+                            <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('3')">Done</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="callerleads?.length" class="enquiry_table_body">
+                <tr *ngFor="let leads of callerleads; let i = index">
+                  <!-- ----------------------------Sl.no---------------------------- -->
+                  <td style="text-align: center;">
+                    {{i+1}}</td>
+                  <!-- ----------------------------Sl.no---------------------------- -->
+
+                  <!-- ----------------------------Customer Name ---------------------------- -->
+                  <td
+                    [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                    <span>
+                      <!-- ----------------------------Customer name and stage (lead pushed junk/inactive above 2 hours not clickable---------------------------- -->
+                      <span>
+                        <a>
+                          <div class="anchor disabled"
+                            [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                            {{leads.CustomerName}}
+                            <span *ngIf="leads?.qualified_leads == '2'"><img
+                                src="../../../../assets/images/qualified.svg" style="width: 20px;"></span>
+                            <span *ngIf="leads?.qualified_leads == '3'"><img
+                                src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span>
+                          </div>
+                          <!-- <div>{{leads?.number}}</div> -->
+                        </a>
+                      </span>
+                       <div
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                        <div class="d-flex gap-3"
+                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
+                          <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
+                            data-placement="right"
+                            [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
+                              src="../../../../assets/images/call_btn.png"></span>
+                          <!-- <span class="call_des" *ngIf="leads.number" (click)="moveToWhatsapp(leads)"
+                            data-toggle="tooltip" data-placement="right" title="Click to Chat"><img
+                              src="../../../../assets/images/whatsapp_btn.png"></span> -->
+                          <span class="call_des" *ngIf="leads.number" (click)="recordingList(leads)"
+                            data-toggle="tooltip" data-placement="right" title="Click to listen to the recordings"><img
+                              src="../../../../assets/images/play_btn.png"> </span>
+                        </div>
+                      </div>
+                    </span>
+                  </td>
+                  <!-- ----------------------------Customer Name ---------------------------- -->
+
+                  <!-- ----------------------------lead Assigned or Direct visit---------------------------- -->
+                  <!-- <td>
+                    <span *ngIf="leads?.Leadidentifier == 0">Assigned</span>
+                    <span *ngIf="leads?.Leadidentifier == 1">Direct</span>
+                  </td> -->
+                  <!-- ----------------------------lead Assigned or Direct visit---------------------------- -->
+
+                  <!-- ----------------------------lead Properties---------------------------- -->
+                  <td>
+                    <span
+                      *ngIf="(leads.leadstagestatus =='1' || leads.leadstagestatus =='2')">{{leads.propertyname}}</span>
+                    <span *ngIf="leads.leadstagestatus =='3'">{{leads.propertyname}}</span>
+                  </td>
+                  <!-- ----------------------------lead Properties---------------------------- -->
+                  <!-- ----------------------------Executive Name---------------------------- -->
+                  <td *ngIf="role_type == '1'"> {{leads.Executivename}}</td>
+                  <!-- ----------------------------Executive Name---------------------------- -->
+
+                  <!-- ----------------------------Assigned-DATE---------------------------- -->
+                  <!-- <td
+                    [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '#666666' }">
+                    {{leads.assigneddate | date:
+                    'dd-MMM-yyyy'}}
+                    <div>{{leads.assigneddate | date: 'hh:mm a'}}</div>
+                  </td> -->
+                  <!-- ----------------------------Assigned-DATE---------------------------- -->
+
+                  <!------------------------------Next Action Date for NC,USV,RSV,FN------------------------------>
+                  <td>
+                    <span
+                      *ngIf="(leads.nextactiondate != '' && leads.nextactiondate != undefined && leads.nextactiondate != null) && (leads.nextactiontime!= '' && leads.nextactiontime!= undefined && leads.nextactiontime != null)">
+                      {{leads.nextactiondate | date: 'dd-MMM-yyyy' }}
+                      <div>{{leads.nextactiontime}}</div>
+                    </span>
+                    <span
+                      *ngIf="(leads.nextactiondate == '' || leads.nextactiondate == undefined || leads.nextactiondate == null) || (leads.nextactiontime == '' || leads.nextactiontime == undefined || leads.nextactiontime == null)">
+                      <div style="font-weight: 600;" class="text-center">Moved To</div>
+                      <div style="font-weight: 600;" class="text-center">Junk</div>
+                    </span>
+                  </td>
+                  <!------------------------------Next Action Date for NC,USV,RSV,FN------------------------------>
+
+                  <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+                  <!-- <td>
+                    {{leads.visiteddate | date: 'dd-MMM-yyyy'}}
+                    <div>{{leads.visitedtime}}</div>
+                  </td> -->
+                  <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+
+                  <!------------------------------Latest Remarks Fetch Section------------------------------>
+                  <td class="remarksection">
+                    <div style="overflow: hidden;white-space: normal;">
+                      <div style="word-wrap: break-word;"
+                        *ngIf="(leads.visitremarks && leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin')">
+                        {{leads.visitremarks}}</div>
+                      <!-- <hr class="m-0" *ngIf="leads.visitremarks && leads.manualremarks">
+                      {{leads.manualremarks}} -->
+                    </div>
+                  </td>
+                  <!-- ----------------------------lead stage tester---------------------------- -->
+                  <td>
+                    <span>{{leads.Leadstatus}}</span>
+                    <span *ngIf="leads.Leadstatus == 'Final Negotiation'">{{"FN"}}</span>
+                    <span *ngIf="leads.leadstagestatus == '1' || leads.leadstagestatus == '2'">{{'Fix'}}</span>
+                    <span *ngIf="leads.leadstagestatus == '3'">{{'Done'}}</span>
+                  </td>
+                  <!-- ----------------------------lead stage---------------------------- -->
+                  <!------------------------------Latest Remarks Fetch Section------------------------------>
+                </tr>
+              </tbody>
+            </table>
+            <!-- All Visits Related Data listing table For Executive View-->
+          </div>
+        </div>
+
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <!-- All Visits Related Data listing table For ADMIN View-->
+            <table *ngIf="roleid == '1' || roleid == '2'" class="content_table_main table table-striped table-bordered"
+              infinite-scroll [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2"
+              [infiniteScrollThrottle]="50" (scrolled)="loadMoreassignedleads()"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <!-- ----------------------------sl no---------------------------- -->
+                  <th style="width: 3%;">#</th>
+                  <!-- ----------------------------Name---------------------------- -->
+                  <th>Name </th>
+                  <!-- ----------------------------Lead status with filter---------------------------- -->
+                  <!-- <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Visit Type</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('All')">All</a>
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('Assigned')">Assigned</a>
+                            <a class="dropdown-item dropDownCursor" (click)="leadStatus('Direct Visits')">Direct
+                              Visits</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th> -->
+                  <!-- ----------------------------source with filter--------------------------- -->
+                  <th *ngIf="roleid == '1' || roleid == '2' || roleid == '50013' || roleid == '50014'">
+                    <div class="d-flex justify-content-between">
+                      <span>Source</span>
+                      <!-- <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_source"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                          style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                          <div class="dropdown-search-container"><input type="text" class="form-control sourcesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_source" (input)="filtersource()"
+                              style="margin-bottom: 2px;"></div>
+                          <div class="source_list_checkbox">
+                            <div *ngFor="let sourcelist of sourceList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hidesourcecheckbox"
+                                  id="hidesourcecheckboxid" value="{{sourcelist?.source}}" name='sourceFilter'
+                                  (change)="onCheckboxChangesource()">
+                                {{ sourcelist.source }}
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div> -->
+                    </div>
+                  </th>
+                  <!-- ----------------------------property with filter---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span *ngIf="fromdate > todaysdateforcompare">Fixed Visits</span>
+                      <span *ngIf="fromdate <= todaysdateforcompare">Visits</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="mandateprojects?.length">
+                            <div *ngFor="let project of mandateprojects">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox"
+                                  id="hidepropcheckboxid" value="{{project?.property_idfk}}" name='propFilter'
+                                  (change)="onCheckboxChange()"> -->
+                                <span (click)="onCheckboxChange(project)"> {{ project.property_info_name }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!mandateprojects?.length" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <!-- ----------------------------Assigned to(RM)---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Assignees</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="executiveDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu executiveBasedFilter" aria-labelledby="executiveDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control executivesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_executive" (input)="filterExecutive()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="mandateExecutivesFilter?.length">
+                            <div *ngFor="let exec of mandateExecutivesFilter">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox"
+                                  id="hideExecutivecheckboxid" value="{{exec?.id}}" name='executiveFilter'
+                                  (change)="onCheckboxExecutiveChange()">
+                                {{ exec.name }}
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                            <h4>No Executives Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <!-- ----------------------------ASSIGNED ON for pending---------------------------- -->
+                  <!-- <th>Assigned On</th> -->
+                  <!-- ----------------------------Next action for NC,USV,RSV,FN with from and to date filter---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Confirmed On</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <!-- <button class="btn btn-warning" type="button" id="datefilterDropdown" data-toggle="dropdown"
+                            (click)="showdateRange2()" aria-haspopup="true" aria-expanded="false"
+                            style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="datefilterDropdown"
+                            style="cursor:pointer;padding: 0rem;display: none;">
+                            <div style="position: relative;display: none;">
+                              <input #datepicker2 class="form-control" id="fromdate" name="options" type="text"
+                                bsDaterangepicker autocomplete="off" placeholder="Select Date"
+                                [(bsValue)]="nextActionDateRange"
+                                (bsValueChange)="onNextActionDateRangeSelected($event)" required>
+                              <span style="position: absolute; top: 25%;right: 10px; opacity: 75%;color: #0B7AB2;">
+                                <i class="fas fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                          </div> -->
+                          <div id="confirmedOnDates" class="cursor-pointer">
+                            <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <!-- ----------------------------USV,RSV,FN with visitedfrom and visitedto date filter---------------------------- -->
+                  <!-- <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Visited On</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-warning visitedDatefilter" type="button" id="visitedDatefilterDropdown"
+                            data-toggle="dropdown" (click)="showdateRange3()" aria-haspopup="true" aria-expanded="false"
+                            style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu visitedDfilter" aria-labelledby="visitedDatefilterDropdown"
+                            style="cursor:pointer;padding: 0rem;display: none;">
+                            <div style="position: relative;display: none;">
+                              <input #datepicker3 class="form-control" id="visiteddate" name="options" type="text"
+                                bsDaterangepicker autocomplete="off" [maxDate]="currentdateforcompare"
+                                placeholder="Select Date" [(bsValue)]="visitedDateRange"
+                                (bsValueChange)="onVisitedDateRangeSelected($event)" required>
+                              <span style="position: absolute; top: 25%;right: 10px; opacity: 75%;color: #0B7AB2;">
+                                <i class="fas fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th> -->
+                  <!-- ----------------------------Lastest remarks---------------------------- -->
+                  <th class="remarksection">
+                    Latest Remarks</th>
+                  <!-- ----------------------------stage with filter [maxDate]="currentdateforcompare"---------------------------- -->
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex" *ngIf="fromdate < this.todaysdateforcompare">
+                        <div>
+                          <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="bookingLeadDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('1')">Pending</a>
+                            <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('3')">Done</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="callerleads?.length" class="enquiry_table_body">
+                <tr *ngFor="let leads of callerleads; let i = index">
+                  <!-- ----------------------------Sl.no---------------------------- -->
+                  <td style="text-align: center;">
+                    {{i+1}}</td>
+                  <!-- ----------------------------Sl.no---------------------------- -->
+
+                  <!-- ----------------------------Customer name and number---------------------------- -->
+                  <td
+                    [ngStyle]="{'width': pendingleadsparam == '1' ?'280px' : '','color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : ' ' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                    <a class="btn_style cursor-pointer" style="font-size: 14px;" (click)="detailsPageRedirection()">
+                      <div routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}"
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                        {{leads.CustomerName}}
+                        <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                            style="width: 20px;"></span>
+                        <span *ngIf="leads?.qualified_leads == '3'"><img
+                            src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span>
+                      </div>
+                      <div
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                        <div class="d-flex gap-3"
+                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
+                          <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
+                            data-placement="right"
+                            [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
+                              src="../../../../assets/images/call_btn.png"></span>
+                          <!-- <span class="call_des" *ngIf="leads.number" (click)="moveToWhatsapp(leads)"
+                            data-toggle="tooltip" data-placement="right" title="Click to Chat"><img
+                              src="../../../../assets/images/whatsapp_btn.png"></span> -->
+                          <span class="call_des" *ngIf="leads.number" (click)="recordingList(leads)"
+                            data-toggle="tooltip" data-placement="right" title="Click to listen to the recordings"><img
+                              src="../../../../assets/images/play_btn.png"> </span>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <!-- ----------------------------Customer name and number---------------------------- -->
+
+                  <!-- ----------------------------Lead Assigned or Direct visit---------------------------- -->
+                  <!-- <td>
+                    <span *ngIf="leads?.Leadidentifier == 0">Assigned</span>
+                    <span *ngIf="leads?.Leadidentifier == 1">Direct</span>
+                  </td> -->
+                  <!-- ----------------------------Lead Assigned or Direct visit---------------------------- -->
+
+                  <!-- ----------------------------Lead source---------------------------- -->
+                  <td>
+                    {{leads.source == 'GR - Microsite' ? 'GR - campaign' : leads.source}}</td>
+                  <!-- ----------------------------Lead source---------------------------- -->
+
+                  <!-- ----------------------------Lead properties---------------------------- -->
+                  <td>
+                    <span
+                      *ngIf="leads.leadstagestatus =='1' || leads.leadstagestatus == '2'">{{leads.propertyname}}</span>
+                    <span *ngIf="leads.leadstagestatus =='3'">{{leads.propertyname}}</span>
+                  </td>
+                  <!-- ----------------------------Lead properties---------------------------- -->
+
+                  <!-- ----------------------------Assigned-Executive-Name---------------------------- -->
+                  <td>
+                    {{leads.Executivename}}</td>
+                  <!-- ----------------------------Assigned-Executive-Name---------------------------- -->
+
+                  <!-- ----------------------------Assigned-DATE---------------------------- -->
+                  <!-- <td>
+                    {{leads.assigneddate |
+                    date: 'dd-MMM-yyyy'}}
+                    <div>{{leads.assigneddate | date: 'hh:mm a'}}</div>
+                  </td> -->
+                  <!-- ----------------------------Assigned-DATE---------------------------- -->
+
+                  <!------------------------------Next Action Date for NC,USV,SV,RSV,FN------------------------------>
+                  <td>
+                    <span
+                      *ngIf="(leads.nextactiondate != '' && leads.nextactiondate != undefined && leads.nextactiondate != null) && (leads.nextactiontime!= '' && leads.nextactiontime!= undefined && leads.nextactiontime != null)">
+                      {{leads.nextactiondate | date: 'dd-MMM-yyyy' }}
+                      <div>{{leads.nextactiontime}}</div>
+                    </span>
+                  </td>
+                  <!------------------------------Next Action Date for NC,USV,RSV,FN------------------------------>
+
+                  <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+                  <!-- <td>
+                    {{leads.visiteddate | date: 'dd-MMM-yyyy'}}
+                    <div>{{leads.visitedtime}}</div>
+                  </td> -->
+                  <!------------------------------Visited Date for NC,USV,RSV,FN------------------------------>
+
+                  <!------------------------------Latest Remarks Fetch Section------------------------------>
+                  <td class="remarksection">
+                    <div style="overflow: hidden;white-space: normal;">
+                      <div style="word-wrap: break-word;"
+                        *ngIf="(leads.visitremarks && leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin')">
+                        {{leads.visitremarks}}</div>
+                      <!-- <div style="word-wrap: break-word;" *ngIf="leads.Leadphase2 == 'USV'">{{leads.usvvisitremarks}}
+                      </div>
+                      <div style="word-wrap: break-word;" *ngIf="leads.Leadphase2 == 'RSV'">{{leads.rsvvisitremarks}}
+                      </div> -->
+                      <!-- <hr class="m-0" *ngIf="leads.visitremarks && leads.manualremarks">
+                      {{leads.manualremarks}} -->
+                    </div>
+                    <div style="font-size: 18px;font-style: italic;font-weight: 900;text-align: center;"
+                      *ngIf="(leads.visitremarks == null || leads.visitremarks == 'got this lead from Admin' || leads.visitremarks == 'got this new lead Admin')">
+                      No Remarks </div>
+                  </td>
+                  <!------------------------------Latest Remarks Fetch Section------------------------------>
+
+                  <!-- ----------------------------Lead stage---------------------------- -->
+                  <td>
+                    <!-- ----------------------------lead stage is displayed for the stages not equal to usv and lead phase not equal to junk and Final negotiation and not equal to done stage---------------------------- -->
+                    <span>{{leads.Leadstatus}}</span>
+                    <!-- ----------------------------lead stage is displayed for the stages not equal to usv and lead phase not equal to junk and Final negotiation and not equal to done stage---------------------------- -->
+
+                    <span *ngIf="leads.Leadstatus == 'Final Negotiation'">{{"FN"}}</span>
+
+                    <!-- ----------------------------To show leadstatus for usv done status and showing followup if leadphase and laststage is equal---------------------------- -->
+                    <span *ngIf="leads.leadstagestatus == '1' || leads.leadstagestatus == '2'">{{'Fix'}}</span>
+                    <span *ngIf="leads.leadstagestatus == '3'">{{'Done'}}</span>
+                    <!-- ----------------------------To show leadstatus for usv done status and showing followup if leadphase and laststage is equal---------------------------- -->
+                  </td>
+                  <!-- ----------------------------Lead stage---------------------------- -->
+                </tr>
+              </tbody>
+            </table>
+            <!-- All Visits Related Data listing table For ADMIN View-->
+          </div>
+        </div>
+        <!-- Followup Sections Table -->
+        <div class="text-center lead_norecord" *ngIf="! callerleads?.length">
+          No Leads Found.....
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN-CONTENTS -->
+
+<div class="clearfix"></div>
+
+<!-- Pop up modal for on call and update status  -->
+
+<!-- <button type="button" data-toggle="modal" data-target="#on_call_modal" id="call_modal_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="on_call_modal" tabindex="-1" role="dialog" data-backdrop="static"
+  aria-labelledby="defModalHead" style="top: 45px !important;" aria-hidden="true">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+      <div class="answered_call modal-header position-relative" [hidden]="callStatus == 'Call Disconnected'">
+        <h4 class="col-10 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc> On Call with {{ calledLead?.number
+          }}
+        </h4>
+      </div>
+
+      <div class="disconnected_call modal-header position-relative" [hidden]="callStatus != 'Call Disconnected'">
+        <h4 class="col-10 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc> Disconnected with {{
+          calledLead?.number }}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallModalClose()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <app-mandate-call-details *ngIf="isModalOpen" [calledLead]="calledLead"
+          [assignedRm]="assignedRm"></app-mandate-call-details>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Pop up modal for on call and update status  -->
+
+
+<!-- Pop up modal for  call recordings  -->
+<button type="button" data-toggle="modal" data-target="#recordings_modal" id="call_record_modal_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="recordings_modal" tabindex="-1" role="dialog" data-backdrop="static"
+  aria-labelledby="defModalHead" style="top: 45px !important;overflow: hidden;" aria-hidden="true">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+      <div class="call_recordings modal-header position-relative">
+        <h4 class="col-10 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          Call Recordings
+        </h4>
+        <button type="button" class="close" data-dismiss="modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onRecordModalClose()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="col-12 d-flex">
+          <div class="col-4 pl-0">
+            <span class="font_12">Lead Name</span>
+            <div class="font_18">{{calledLead?.CustomerName}}</div>
+          </div>
+
+          <div class="col-4">
+            <span class="font_12">Number</span>
+            <div class="font_18">{{calledLead?.number}}</div>
+          </div>
+
+          <div class="col-4">
+            <span class="font_12">Last Updated</span>
+            <div class="font_18">{{calledLead?.lastupdated | date: 'dd-MMM-yyyy'}}</div>
+          </div>
+
+        </div>
+
+        <div class="col-12 py-0 py-3">
+          <hr>
+        </div>
+
+        <div class="col-12 pr-0">
+          <span style="font-size: 18px;color: #8C8C8C;" *ngIf="roleid == 1 || roleid == 2">Assignees</span>
+
+          <div class="execnav-scrollable">
+            <ul class="execnav execnav-tabs col-12 pt-3" *ngIf="roleid == 1 || roleid == 2">
+              <li class="exec-item" *ngFor=" let exec of onRecordExecList;let i = index;">
+                <a class="exec-link" [class.active]="exec.Exec_IDFK == selectedRecordExec"
+                  (click)="getexecutiveId(exec)">{{exec.exec_name}}&nbsp;
+                </a>
+              </li>
+            </ul>
+            <div class="recordings_list_table" style="height: 300px !important;overflow: scroll;">
+              <table class="recordings_content_table_main table table-striped">
+                <thead>
+                  <tr class="header">
+                    <!-- ----------------------------sl no---------------------------- -->
+                    <th>Call Type</th>
+                    <!-- <th>Date</th> -->
+                    <th>Duration</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Recordings</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="audioList?.length">
+                  <tr *ngFor="let leads of audioList; let i = index">
+                    <td>{{leads.direction}}</td>
+                    <!-- <td>{{leads.date}}</td> -->
+                    <td>{{leads.answeredtime}}</td>
+                    <td>{{leads.starttime}}</td>
+                    <td>{{leads.endtime}}</td>
+                    <td>
+                      <div style="flex-direction: column;">
+                        <audio class="media-item" [src]="leads.filename" controls (play)="onAudioPlay($event)">
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center lead_norecord" *ngIf="! audioList?.length">
+                No Recordings Found.....
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Pop up modal for call recordings  -->

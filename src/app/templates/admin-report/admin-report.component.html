@@ -1,0 +1,380 @@
+<body class="g-sidenav-show" style="background-color: #F5F7F9 !important;">
+  <!-- HEADER -->
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main">
+    <app-header></app-header>
+  </aside>
+  <!-- HEADER -->
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><span *ngIf="roleid == 1"> Admin-
+              </span> Dashboard </li>
+          </ol>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+            </div>
+          </div>
+          <ul class="navbar-nav  justify-content-end  align-items-baseline">
+            <li class="pr-3" *ngIf="roleid != 1 ">
+              <button class="btn btn-primary d-flex align-items-center justify-content-center" type="button"
+                data-toggle="modal" data-target="#start_break">Start Break <img src="../../../assets/images/break.png"
+                  style="width: 1.3rem;" class="pl-1"></button>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">{{username}}</span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item dropdown px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="settings" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog fixed-plugin-button-nav hoverclass"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="settings">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center" (click)="logout()">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">Logout</span>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell hoverclass"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New feature</span> Coming Soon
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxxxxx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/small-logos/logo-spotify.svg"
+                          class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">xx xxxx</span> xx xxxxx xxxx
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar -->
+    <div class="container-fluid " style="background-color: #F5F7F9;">
+      <div class="row">
+        <!-- date filter row  -->
+        <div class="col-xl-12 col-sm-12  mb-4 flex justify-content-between" style="margin-bottom: 2.5rem !important;">
+          <div class=" btn-group btn-group-toggle float-left"></div>
+          <div class=" btn-group btn-group-toggle float-right d-flex gap">
+
+            <label class=" btn btn-sm btn-danger btn-simple" routerLink="/adminreports"
+              [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}"
+              [ngClass]="{'active':clicked===true}">
+              <input class=" d-none d-sm-none" checked="checked" name="options" type="radio" />
+
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                All Time
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-single-02"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-danger btn-simple" routerLink="/adminreports"
+              [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}"
+              [ngClass]="{'active':clicked1===true}">
+              <input class=" d-none d-sm-none" name="options" type="radio" />
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Today
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-gift-2"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-danger btn-simple" routerLink="/adminreports"
+              [queryParams]="{yesterdayvisited: 1,from:'', to:'',dashtype:'dashboard'}"
+              [ngClass]="{'active':clicked2===true}">
+              <input class=" d-none" name="options" type="radio" />
+
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Yesterday
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-tap-02"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked3===true}">
+              <input class=" d-none" name="options" type="radio" bsDaterangepicker #dateInput [bsValue]="dateRange"
+                (click)="datePicker()" (bsValueChange)="onDateRangeSelected($event)" />
+              <span id="dateInput" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                {{datecustomfetch}}
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-tap-02"> </i>
+              </span>
+            </label>
+
+          </div>
+        </div>
+         <!-- date filter row  -->
+      </div>
+
+      <div class="row">
+        <!-- counts and bar graph row  -->
+        <div class="col-md-6">
+          <div class="row">
+            <!-- counts cards in row  -->
+            <div class="col-md-4 mb-xl-0 mb-4">
+              <div class="card hoverclass" routerLink="/leads"
+                [queryParams]="{unique:1,from:previousMonthDateForCompare,to:todaysdateforcompare}">
+                <div class="card-header p-3 pt-2">
+                  <div class="text-start pt-1">
+                    <p class="text-sm mb-0 text-capitalize">Total Leads</p>
+                    <h4 class="mb-0">{{dashboardsCounts[0]?.total_count}}</h4>
+                  </div>
+                </div>
+                <img src="../../../assets/images/Graph.png">
+                <div class="card-footer px-3 pt-1 pb-2">
+                  <p class="mb-0 text-center"><span class="text-success text-sm font-weight-bolder">Closure -
+                      {{dashboardsCounts[0]?.Closed_count}}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-xl-0 mb-4">
+              <div class="card hoverclass" routerLink="/mandate-dashboard"
+                [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard',htype:'mandate'}">
+                <div class="card-header p-3 pt-2">
+                  <div class="text-strat pt-1">
+                    <p class="text-sm mb-0 text-capitalize">Mandate</p>
+                    <h4 class="mb-0">{{500}}</h4>
+                  </div>
+                </div>
+                <!-- <hr class="dark horizontal my-0"> -->
+                <img src="../../../assets/images/Graph.png">
+                <div class="card-footer px-3 pt-1 pb-2">
+                  <p class="mb-0 text-center"><span class="text-success text-sm font-weight-bolder">Closure -
+                      {{1000}}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-xl-0 mb-4">
+              <div class="card hoverclass" routerLink="/retail-dashboard"
+                [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}">
+                <div class="card-header p-3 pt-2">
+                  <div class="text-start pt-1">
+                    <p class="text-sm mb-0 text-capitalize">Retail</p>
+                    <h4 class="mb-0">{{50}}</h4>
+                  </div>
+                </div>
+                <!-- <hr class="dark horizontal my-0"> -->
+                <img src="../../../assets/images/Graph.png">
+                <div class="card-footer px-3 pt-1 pb-2">
+                  <p class="mb-0 text-center"><span class="text-success text-sm font-weight-bolder">Closure -
+                      {{1000}}</span></p>
+                </div>
+              </div>
+            </div>
+            <!-- counts cards  -->
+
+            <!-- bar graph  -->
+            <div class="col-md-12 pt-3">
+              <div class="card hoverclass">
+                <h4 class="pb-1 pl-3">Overall Sales</h4>
+                <canvas id="mybarChart"  height="296"></canvas>
+              </div>
+            </div>
+            <!-- bar graph  -->
+          </div>
+        </div>
+
+       <!-- closure properties and polar graph -->
+        <div class="col-md-6 ">
+          <div class="row">
+             <!-- closure properties table  -->
+            <div class="col-md-12">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="">
+                    <h6>Top 10 Closure Properties</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-header " style="height: 250px !important;">
+                <div class="table-responsive" style="height: 200px !important;">
+                  <table class="table align-items-center mb-0">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Number</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stage</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Scheduled
+                          Time</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let todays of scheduledtoday; let i = index" (mouseenter)="underlineName(true,i)"
+                        (mouseleave)="underlineName(false,i)">
+                        <td class="align-middle">
+                          <span class="text-xs font-weight-bold " [ngClass]="{'underline-name' : underlinedRow === i}"
+                            routerLink="/mandate-customers/{{todays.LeadID}}/{{todays.RMID}}/{{'0'}}/{{'mandate'}}/{{''}}">{{todays.registeredname}}</span>
+                        </td>
+                        <td class="align-middle">
+                          <span class="text-xs font-weight-bold">{{todays.number}}</span>
+                        </td>
+                        <td class="align-middle text-sm">
+                          <span class="text-xs font-weight-bold">{{todays.Leadphase}}</span>
+                        </td>
+                        <td class="align-middle text-sm">
+                          <span class="text-xs font-weight-bold">{{todays.nextactiontime}}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- closure properties table  -->
+
+            <!-- revenue my leads  -->
+            <div class="col-md-12 pt-3">   
+              <div class="card flex justify-content-center px-3 pb-2">
+                <h4>Revenue by Leads</h4>
+                <div class="row">
+                  <div class="col-md-6">
+                <div id="revenueTotal" class="total-cricle d-flex justify-content-center align-items-center">
+                  <div class="inner-totalcricle d-flex justify-content-center align-items-center">
+                  <div id="revenueRetail" class="retail-cricle d-flex justify-content-center align-items-center">
+                    <div class="inner-retailcricle d-flex justify-content-center align-items-center">
+                  <div id="revenueMandate" class="mandate-cricle d-flex justify-content-center align-items-center">
+                    <div class="inner-mandatecricle d-flex justify-content-center align-items-center">
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-6 d-flex flex-column justify-content-center gap">
+                    <div class="item d-flex justify-content-between align-items-center">
+                      <div class="circle purple"></div>
+                      <div class="fz-14 text-black">Total Amount Spent</div>
+                      <div class="font-weight-bold text-black">₹ 200,000</div>
+                    </div>
+                  
+                    <div class="item d-flex justify-content-between align-items-center">
+                      <div class="circle orange"></div>
+                      <div class="fz-14 text-black">Retail Revenue</div>
+                      <div class="font-weight-bold text-black">₹ 400,000</div>
+                    </div>
+                  
+                    <div class="item d-flex justify-content-between align-items-center">
+                      <div class="circle pink"></div>
+                      <div class="fz-14 text-black">Mandate Revenue</div>
+                      <div class="font-weight-bold text-black">₹ 300,000</div>
+                    </div>
+                  
+                    <div class="total-revenue d-flex justify-content-between">
+                      <div class="fz-14 text-black">Total Revenue</div>
+                      <div class="font-weight-bold text-blue">₹ 700,000</div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+             <!-- revenue my leads  -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Source row cards -->
+      <div class="row">
+        <div class="col-md-12 col-sm-12  mb-4 flex justify-content-between card p-3" style="margin-top: 2.5rem !important;">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="mb-1">Leads by Source</h5>
+            <span class="viewall hoverclass" routerLink="/source-dashboard" [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}">View More >></span>
+          </div>
+          <div class="d-flex" style="overflow: hidden;gap: 1.5rem;">
+            <div  *ngFor="let source of sourcelist;let i = index" class="d-flex flex-column align-items-center">
+              <span style="font-size: 6px;overflow: hidden;">{{source.source}}</span>
+          <div id="progress-circle" class="doughgraph d-flex align-items-center justify-content-center" [ngStyle]="{'background-image': getProgressCircleBackground(i)}"> 
+            <div class="inner-cricle d-flex align-items-center justify-content-center"><span id="percentage-text">{{percentage}}%</span></div>
+          </div>  
+          <div style="font-size: 12px;">{{'320K'}}</div>
+          <div style="font-size: 12px;">Revenue</div>
+        </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+  <div *ngIf=filterLoader class="main-lds-ring-div">
+      <!-- <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div> -->
+       <img src="../../../assets/images/infinity_loader.gif">
+    </div>
+</body>

@@ -1,0 +1,2313 @@
+<body class="g-sidenav-show  bg-gray-200">
+  <!-- HEADER -->
+  <!-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main">
+  </aside> -->
+  <app-header></app-header>
+  <!-- HEADER -->
+  <main class="main-content position-relative max-height-vh-100 border-radius-lg" style="margin-top: 2rem;"
+    [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '2.5rem'}">
+    <!-- Navbar -->
+    <!-- <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+      <div class="container-fluid py-1 px-3"> -->
+    <!-- <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-3 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><span
+                *ngIf="roleid == 1 || this.roleid == '2'"> Mandate-
+              </span> Dashboard </li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page"
+              *ngIf="(roleid == 1 || this.roleid == '2') && (execid != '' && execid != undefined && execid != null)">
+              <span> {{execname}}-
+              </span> Dashboard </li>
+          </ol>
+        </nav> -->
+    <!-- <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+            </div>
+          </div> -->
+    <!-- <ul class="navbar-nav  justify-content-end  align-items-baseline">
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">{{username}}</span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item dropdown px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="settings" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="settings">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center" (click)="logout()">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">Logout</span>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New feature</span> Coming Soon
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxxxxx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/small-logos/logo-spotify.svg"
+                          class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">xx xxxx</span> xx xxxxx xxxx
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul> -->
+    <!-- </div>
+      </div>
+    </nav> -->
+    <!-- End Navbar -->
+    <div class="container-fluid pb-2" style="padding-inline:  1.5rem !important;">
+      <div class="row" *ngIf=" roleid == '1' || this.roleid == '2'">
+        <div class="col-xl-12 col-sm-12 mb-xl-4 mb-4">
+          <div class=" btn-group btn-group-toggle float-left align-items-baseline">
+
+            <div [hidden]="!onlyadmin" class="mr-3">
+              <div class="main_suggested_div" [hidden]="mandateprojects?.length > 3">
+                <ul class="ks-cboxtags">
+                  <li *ngFor="let proj of mandateprojects; let i = index">
+                    <input type="radio" id="propcheckbox{{i}}" value="{{proj.property_idfk }}" name='programming'
+                      (change)="selectsuggested(proj.property_idfk,proj.property_info_name,proj)"
+                      [(ngModel)]="propertyid">
+                    <label for="propcheckbox{{i}}">{{proj.property_info_name}}</label>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="project_select_drop" [hidden]="mandateprojects?.length < 4">
+                <select id="project_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                  (change)="propchange($event)">
+                  <option value="">Select Project</option>
+                  <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                    [selected]="projects.property_idfk === propertyid">{{projects.property_info_name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div [hidden]="!adminandexec" class="mr-3">
+              <select id="role_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                (change)="rolechange($event)">
+                <option value="">Select Team</option>
+                <option value="all">All</option>
+                <option value="50002" [selected]="'50002' === roleTeam">RM Executives</option>
+                <option value="50014" [selected]="'50014' === roleTeam">CS Executives</option>
+              </select>
+            </div>
+
+            <div [hidden]="!adminandexec" class="mr-3">
+              <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" (change)="rmchange($event)">
+                <option value="">Select Executive</option>
+                <option *ngFor="let executives of mandateexecutives" value="{{executives.id}}"
+                  [selected]="executives.id === execid">{{executives.name}}</option>
+              </select>
+            </div>
+
+          </div>
+          <div class=" btn-group btn-group-toggle float-right align-items-center">
+            <span>
+              <!-- <label class=" btn btn-sm btn-danger btn-simple m-0" routerLink="/mandate-dashboard"
+                [queryParams]="{allvisits: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',role:roleTeam,htype:'mandate'}"
+                [ngClass]="{'active':clicked===true}">
+                <input checked="checked" class=" d-none d-sm-none" name="options" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  All Time
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-single-02"> </i>
+                </span>
+              </label> -->
+              <label class=" btn btn-sm btn-danger btn-simple ml-1 m-0" routerLink="/mandate-dashboard"
+                [queryParams]="{todayvisited: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',role:roleTeam,htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked1===true}">
+                <input class=" d-none d-sm-none" name="options" type="radio" />
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Today
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-gift-2"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple ml-1 m-0" routerLink="/mandate-dashboard"
+                [queryParams]="{yesterdayvisited: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',role:roleTeam,htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked2===true}">
+                <input class=" d-none" name="options" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Yesterday
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple m-0" routerLink="/mandate-dashboard"
+                [queryParams]="{last7: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',role:roleTeam,htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked3 === true}">
+                <input checked="checked" class=" d-none d-sm-none" name="options" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  7 Days
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-single-02"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple mx-1 m-0" [ngClass]="{'active':clicked===true}">
+                <!-- <input class=" d-none" name="options" type="radio" bsDaterangepicker #dateInput [bsValue]="dateRange"
+                  (click)="datePicker()" (bsValueChange)="onDateRangeSelected($event)" />
+                <span id="dateInput" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span> -->
+                <div #nextActionDates class="cursor-pointer d-none">
+                  <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                </div>
+                <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+            </span>
+            <p>
+              <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+                  class="fas fa-redo"></i>Reset</button>
+            </p>
+          </div>
+        </div>
+
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">account_tree</i>
+              </div>
+              <div class="text-center pt-1" routerLink="/mandate-lead-stages"
+                [queryParams]="{pending:1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'leads',htype:'mandate'}">
+                <p class="text-sm mb-0 text-capitalize">Assigned</p>
+                <h4 class="mb-0" *ngIf="totalAssignedleadcounts">{{totalAssignedleadcounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0 ">
+            <div class="card-footer text-center p-3 pt-6px" routerLink="/mandate-lead-stages"
+              [queryParams]="{pending: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="unTouchedleadcounts">Untouched
+                  - {{unTouchedleadcounts}}</span></p>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-4 col-sm-6">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">touch_app</i>
+              </div>
+              <div class="text-center pt-1" routerLink="/mandate-lead-stages"
+                [queryParams]="{filterData:'Touched',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                <p class="text-sm mb-0 text-capitalize">Touched</p>
+                <h4 class="mb-0" *ngIf="touchedcounts">{{touchedcounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-3">
+              <div style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;">
+
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{inactive:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'leads',visits:2,htype:'mandate'}">
+                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="inactivecounts">Inactive -
+                      {{inactivecounts}}</span></p>
+                </span>
+
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{junkleads: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="junkleadsCount">Junk Leads
+                      -
+                      {{junkleadsCount}}</span></p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1" routerLink="/mandate-lead-stages"
+                [queryParams]="{filterData:'Active',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                <p class="text-sm mb-0 text-capitalize">Active Leads</p>
+                <h4 class="mb-0" *ngIf="activecounts">{{activecounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer" style="padding: 0.3rem !important;">
+              <div
+                style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;padding-block: 0.85rem;">
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{followups:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">General
+                  Followups - <span class="font-normal subcontentclr"
+                    *ngIf="followupleadcounts">{{followupleadcounts}}</span></span>
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{nc: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:this.stagestatusval,type:'leads',htype:'mandate'}">NC
+                  - <span class="font-normal subcontentclr" *ngIf="allschedulednc">{{allschedulednc}}</span></span>
+                </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-3 col-sm-6">
+          <div class="card hoverclass" routerLink="/mandate-lead-stages"
+            [queryParams]="{fixedvisits:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team}">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">weekend</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Visits Fixed</p>
+                <h4 class="mb-0" *ngIf="visitsFixedcounts">{{visitsFixedcounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3 text-center " routerLink="/mandate-lead-stages"
+            [queryParams]="{visitconverts:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team}">
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="visitconvertedcounts">Converted - {{visitconvertedcounts}}</span></p>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">published_with_changes</i>
+              </div>
+              <div>
+                <div class="pt-1 d-flex justify-content-evenly ">
+                  <span routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="text-sm mb-0 text-capitalize">All Visits</p>
+                    <h4 class="mb-0 text-center" *ngIf="allVisitsTotalcounts">{{allVisitsTotalcounts}}</h4>
+                  </span>
+                  <span *ngIf="(fromdate == '' || fromdate == undefined) && (todate == '' || todate == undefined)"
+                    routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'ActiveVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="text-sm mb-0 text-capitalize">Active Visits</p>
+                    <h4 class="mb-0 text-center" *ngIf="mandateTotalcounts">{{mandateTotalcounts}}</h4>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer" style="padding: 1rem !important;">
+              <div
+                style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;padding-top: 1rem;">
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'visits',htype:'mandate'}">USV
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledusv">{{allscheduledusv}}</span></span>
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'visits',htype:'mandate'}">RSV
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledrsv">{{allscheduledrsv}}</span></span>
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'visits',htype:'mandate'}">FN
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledfn">{{allscheduledfn}}</span></span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-4">
+          <div class="card hoverclass" routerLink="/rmleadassign"
+            [queryParams]="{bookingrequest: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team}">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <div class="text-center pt-1" style="padding-left: 3rem;">
+                <span>
+                <p class="text-sm mb-0 text-capitalize">Booking Request</p>
+                <h4 class="mb-0" *ngIf="bookingrequest">{{bookingrequest}}</h4>
+                </span>
+                <span>
+
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3 text-center">
+              <p class="mb-0 redclr text-center" style="padding-top: 2.6rem;"></p>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">library_books</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-evenly ">
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRequest: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="text-sm mb-0 text-capitalize">Booking Request</p>
+                  <h4 class="mb-0 text-center" *ngIf="bookingrequest">{{bookingrequest}}</h4>
+                </span>
+
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{booked: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="text-sm mb-0 text-capitalize">Closed Leads</p>
+                  <h4 class="mb-0 text-center" *ngIf="bookedLeads">{{bookedLeads}}</h4>
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly " style="padding-top: 2rem;padding-bottom: 1rem;">
+              <span routerLink="/mandate-lead-stages"
+                [queryParams]="{bookingRejected: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Rejected - <span
+                    class="text-sm " *ngIf="rejected">{{rejected}}</span></p>
+              </span>
+              <span routerLink="/mandate-lead-stages"
+                [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'visits',htype:'mandate'}">
+                <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Junk Visits- <span
+                    class="text-sm " *ngIf="junkvisitsCount">{{junkvisitsCount}}</span></p>
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="col-8 col-md-8 col-sm-12 row m-0 p-0">
+          <div class="col-xl-3 col-md-3 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #E5F6FE 104.6%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{pending:1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Assigned</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="totalAssignedleadcounts">{{totalAssignedleadcounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/settings_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages" style="color: #004E76;"
+                  [queryParams]="{pending: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0">
+                    <span class="count_bottom_label">Untouched </span>
+                  </p>
+                  <div class="bottom_count" *ngIf="unTouchedleadcounts">{{unTouchedleadcounts}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(81.85deg, #FFFFFF 48.93%, #FFE4E1 106.84%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{filterData:'Touched',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Touched</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="touchedcounts">{{touchedcounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/flash_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 d-flex justify-content-between col-10 col-md-12 col-sm-12 p-0">
+                <a routerLink="/mandate-lead-stages" style="color: #73322D;"
+                  [queryParams]="{inactive:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">Inactive</span></p>
+                  <div class="bottom_count" *ngIf="inactivecounts">{{inactivecounts}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #73322D;"
+                  [queryParams]="{junkleads: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">Junk Leads</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="junkleadsCount">{{junkleadsCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-5 col-md-5 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(81.86deg, #FFFFFF 47.83%, #FFE371 237.55%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{filterData:'Active',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Active Leads</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="activecounts">{{activecounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/bulb_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 col-10 col-md-12 col-sm-12 p-0 d-flex justify-content-between">
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{followups:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">
+                      G.Followups</span></p>
+                  <div class="bottom_count" *ngIf="followupleadcounts">{{followupleadcounts}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{nc: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:this.stagestatusval,type:'leads',htype:'mandate',id:'3'}">
+                  <p class="mb-0"><span class="count_bottom_label">NC</span></p>
+                  <div class="bottom_count" *ngIf="allschedulednc">{{allschedulednc}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{usv:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname,stage:'',stagestatus:'1',type:'visits',htype:'mandate',id:'3'}">
+                  <p class="mb-0"><span class="count_bottom_label">
+                      USV Fix</span></p>
+                  <div class="bottom_count" *ngIf="usvfixcount">{{usvfixcount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-5 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 65%, #DBD8FF 180%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;padding-inline: 0.7rem !important;">
+              <div class="d-flex justify-content-between p-1">
+                <div class="col-8 p-0 pt-1 d-flex justify-content-between ">
+                  <a routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="mb-0 above_label_size">All Visits</p>
+                    <h4 class="mb-0 above_count_size" *ngIf="allVisitsTotalcounts">{{allVisitsTotalcounts}}</h4>
+                  </a>
+                  <a *ngIf="(fromdate == '' || fromdate == undefined) && (todate == '' || todate == undefined)"
+                    routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'ActiveVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="mb-0 above_label_size">Active Visits</p>
+                    <h4 class="mb-0 above_count_size" *ngIf="mandateTotalcounts">{{mandateTotalcounts}}</h4>
+                  </a>
+                </div>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/navigate_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 col-10 col-md-12 col-sm-12 p-0 d-flex justify-content-between">
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">USV
+                  <div class="bottom_count" *ngIf="allscheduledusv">{{allscheduledusv}}</div>
+                </a>
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">RSV
+                  <div class="bottom_count" *ngIf="allscheduledrsv">{{allscheduledrsv}}</div>
+                </a>
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname,  stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">FN
+                  <div class="bottom_count" *ngIf="allscheduledfn">{{allscheduledfn}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background:linear-gradient(55deg, #ffffff 50%, #FFB884 300%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRequest: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Booking Request</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="bookingrequest">{{bookingrequest}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/calendar_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRejected: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">Rejected</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="rejected">{{rejected}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 50%, #D3FFC9 180%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{booked: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Closed Leads</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="bookedLeads">{{bookedLeads}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/closed_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'visits',htype:'mandate'}">
+                  <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">Junk Visits</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="junkvisitsCount">{{junkvisitsCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- <div class="col-4 mb-xl-0 mb-4 relative">
+          <span class="overdue_text">Overdues</span>
+          <div class="card-header p-1 pt-1"
+            style="padding-block:0.9rem!important;border-radius: 4px !important;background: linear-gradient(180deg, #FFEBEC 0%, #FFFFFF 100%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="d-flex justify-content-around">
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">G.Followups</p>
+                <div class="above_count_size text-center">{{followupsoverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{ncoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">NC</p>
+                <div class="above_count_size text-center">{{ncOverduesCount}}</div>
+              </a>
+
+            </div>
+
+            <div class="d-flex justify-content-around" style="border-top: 1px solid #FFE3E3;">
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{usvoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">USV</p>
+                <div class="above_count_size text-center">{{usvOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{rsvoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">RSV</p>
+                <div class="above_count_size text-center">{{rsvOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{fnoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">FN</p>
+                <div class="above_count_size text-center">{{fnOverduesCount}}</div>
+              </a>
+            </div>
+
+            <div class="d-flex justify-content-around" style="border-top: 1px solid #FFE3E3;">
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{dealRequested: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">Deal Closing Requested</p>
+                <div class="above_count_size text-center">{{dealRequestedOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{dealPending: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">Deal Close Pending</p>
+                <div class="above_count_size text-center">{{dealPendingOverduesCount}}</div>
+              </a>
+            </div>
+
+          </div>
+        </div> -->
+
+        <div class="col-xl-4 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+          <div class="card-header p-1 pt-1"
+            style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(86.98deg, #FFFFFF 47.96%, #FFECED 113.29%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="d-flex justify-content-between p-1">
+              <a class="pt-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="above_label_size mb-0">Overdues</p>
+                <h4 class="mb-0 above_count_size">{{followupsoverduesCount+ncOverduesCount+usvFixOverduesCount}}</h4>
+              </a>
+              <div>
+                <img class="setting_icon" src="../../../../assets/images/overdues_dash_icon.png" alt="">
+              </div>
+            </div>
+
+            <div class="p-1 col-10 d-flex justify-content-between">
+              <a style="color: #981F21;" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0"><span class="count_bottom_label">
+                    G.Followups</span></p>
+                <div class="bottom_count">{{followupsoverduesCount}}</div>
+              </a>
+              <a style="color: #981F21;" routerLink="/mandate-myoverdues"
+                [queryParams]="{ncoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0"><span class="count_bottom_label">NC</span></p>
+                <div class="bottom_count">{{ncOverduesCount}}</div>
+              </a>
+              <a routerLink="/mandate-myoverdues" style="color: #981F21;"
+                [queryParams]="{usv:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname,stage:'', stagestatus:'1',type:'visits',htype:'mandate',id:'3'}">
+                <p class="mb-0"><span class="count_bottom_label">
+                    USV Fix</span></p>
+                <div class="bottom_count">{{usvFixOverduesCount}}</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+          <div class="card-header p-1 pt-1"
+            style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(86.98deg, #FFFFFF 47.96%, #FFECED 113.29%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="row g-0 p-1 align-items-center">
+              <div class="col-4 pt-1">
+                <a routerLink="/mandate-myoverdues" [queryParams]="{dealRequested:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,
+                                execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="above_label_size mb-0">Deal Requested</p>
+                  <h4 class="mb-0 above_count_size">{{dealRequestedOverduesCount}}</h4>
+                </a>
+              </div>
+
+              <div class="col-4 pt-1">
+                <a routerLink="/mandate-myoverdues" [queryParams]="{dealPending:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,
+                                execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="above_label_size mb-0">Deal Pending</p>
+                  <h4 class="mb-0 above_count_size">{{dealPendingOverduesCount}}</h4>
+                </a>
+              </div>
+
+              <div class="col-4 pt-1 text-end">
+                <img class="setting_icon" src="../../../../assets/images/overdues_dash_icon.png">
+              </div>
+            </div>
+
+            <div class="row g-0 align-items-center">
+              <div class="col-4 py-1">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{usvoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">USV</span></p>
+                  <div class="bottom_count">{{usvOverduesCount}}</div>
+                </a>
+              </div>
+
+              <div class="col-4 py-1">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{rsvoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">RSV</span></p>
+                  <div class="bottom_count">{{rsvOverduesCount}}</div>
+                </a>
+              </div>
+
+              <div class="col-4 py-1 text-start">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{fnoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">FN</span></p>
+                  <div class="bottom_count">{{fnOverduesCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row" *ngIf=" roleid != '1' && this.roleid != '2'">
+        <div class="col-xl-12 col-sm-12 mb-xl-4 mb-4">
+          <div class=" btn-group btn-group-toggle float-left">
+
+            <div class="mr-3" [hidden]="!mandateprojects || mandateprojects.length < 2">
+              <div class="main_suggested_div" [hidden]="mandateprojects?.length > 3">
+                <ul class="ks-cboxtags">
+                  <li *ngFor="let proj of mandateprojects; let i = index">
+                    <input type="radio" id="propcheckbox{{i}}" value="{{proj.property_idfk }}" name='programming'
+                      (change)="selectsuggested(proj.property_idfk,proj.property_info_name,proj)"
+                      [(ngModel)]="propertyid">
+                    <label for="propcheckbox{{i}}">{{proj.property_info_name}}</label>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="project_select_drop" [hidden]="mandateprojects?.length < 4">
+                <select id="project_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                  (change)="propchange($event)">
+                  <option value="">Select Project</option>
+                  <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                    [selected]="projects.property_idfk === propertyid">{{projects.property_info_name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mr-3" [hidden]="role_type != '1'">
+              <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" (change)="rmchange($event)">
+                <option value="">Select Executive</option>
+                <option value="all">All</option>
+                <option *ngFor="let executives of mandateexecutives" value="{{executives.id}}"
+                  [selected]="executives.id === execid">{{executives.name}}</option>
+              </select>
+            </div>
+
+            <div class="checkIn_btn">
+              <span *ngIf="isCheckIn">Your Not Checked In</span>
+              <span *ngIf="!isCheckIn"> <cd-timer format="hms" #CheckInBasicTimer class="bootstrap-timer"
+                  [startTime]='checkinstartTime'></cd-timer></span>
+              <button class="btn btn-success m-0" type="button" (click)="checkIn('in')"
+                style="border-radius: 3px !important;padding: 0.2rem 0.8rem !important;"
+                *ngIf="isCheckIn">Check-In</button>
+              <button class="btn btn-danger m-0" type="button" (click)="checkIn('out')" disabled="true"
+                style="border-radius: 3px !important;padding: 0.2rem 0.8rem !important;display: flex;align-items: center;height: 20px;"
+                *ngIf="!isCheckIn">Check-Out</button>
+            </div>
+
+          </div>
+          <div class=" btn-group btn-group-toggle float-right">
+            <span>
+              <!-- <label class=" btn btn-sm btn-danger btn-simple" routerLink="/mandate-dashboard"
+                [queryParams]="{allvisits: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',htype:'mandate'}"
+                [ngClass]="{'active':clicked===true}">
+                <input checked="checked" name="options" class=" d-none d-sm-none" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  All Time
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-single-02"> </i>
+                </span>
+              </label> -->
+              <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/mandate-dashboard"
+                [queryParams]="{todayvisited: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked1===true}">
+                <input class=" d-none d-sm-none" name="options" type="radio" />
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Today
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-gift-2"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/mandate-dashboard"
+                [queryParams]="{yesterdayvisited: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked2===true}">
+                <input class=" d-none" name="options" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Yesterday
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/mandate-dashboard"
+                [queryParams]="{last7: 1,from:'', to:'',property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval, team:team,dashtype:'dashboard',role:roleTeam,htype:'mandate',type:dashtype}"
+                [ngClass]="{'active':clicked3 === true}">
+                <input class=" d-none" name="options" type="radio" />
+
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  7 Days
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-single-02"> </i>
+                </span>
+              </label>
+              <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked===true}">
+                <!-- <input class=" d-none" name="options" type="radio" bsDaterangepicker #dateInput [bsValue]="dateRange"
+                  (click)="datePicker()" (bsValueChange)="onDateRangeSelected($event)" />
+                <span id="dateInput" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span> -->
+                <div #nextActionDates class="cursor-pointer d-none">
+                  <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                </div>
+                <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+            </span>
+            <p>
+              <button type="button" class="btn btn-warning buttonwithicon p-2" (click)="refresh()"><i
+                  class="fas fa-redo"></i>Reset</button>
+            </p>
+          </div>
+        </div>
+
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">account_tree</i>
+              </div>
+              <div class=" text-center">
+                <div class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{pending:1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="text-sm mb-0 text-capitalize">Assigned</p>
+                  <h6 class="mb-0" *ngIf="totalAssignedleadcounts">{{totalAssignedleadcounts}}</h6>
+                </div>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly  pl-3 pt-6px">
+              <div class="card-footer p-3 text-center pl-3 " routerLink="/mandate-lead-stages"
+                [queryParams]="{pending: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                <p class="mb-0 text-center redclr"><span class="text-danger text-sm font-weight-bolder"
+                    *ngIf="unTouchedleadcounts">Untouched - {{unTouchedleadcounts}}</span></p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-4 col-sm-6">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">touch_app</i>
+              </div>
+              <div class="text-center pt-1" routerLink="/mandate-lead-stages"
+                [queryParams]="{filterData:'Touched',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                <p class="text-sm mb-0 text-capitalize">Touched</p>
+                <h4 class="mb-0" *ngIf="touchedcounts">{{touchedcounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3 text-center ">
+              <div style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;">
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{inactive:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="inactivecounts">Inactive -
+                      {{inactivecounts}}</span></p>
+                </span>
+
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{junkleads: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="junkleadsCount">Junk Leads
+                      -
+                      {{junkleadsCount}}</span></p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1" routerLink="/mandate-lead-stages"
+                [queryParams]="{filterData:'Active',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                <p class="text-sm mb-0 text-capitalize">Active Leads</p>
+                <h4 class="mb-0" *ngIf="activecounts">{{activecounts}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer" style="padding: 0.3rem !important;">
+              <div
+                style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;padding-block: 0.86rem;">
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{followups:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">General
+                  Followups - <span class="font-normal subcontentclr"
+                    *ngIf="followupleadcounts">{{followupleadcounts}}</span></span>
+                <span class="mb-0  text-center text-sm text-danger font-weight-bolder" routerLink="/mandate-lead-stages"
+                  [queryParams]="{nc: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:this.stagestatusval,type:'leads',htype:'mandate'}">NC
+                  - <span class="font-normal subcontentclr" *ngIf="allschedulednc">{{allschedulednc}}</span></span>
+               </div>
+            </div>
+            </div>
+        </div> -->
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">published_with_changes</i>
+              </div>
+              <div>
+               <div class="pt-1 d-flex justify-content-evenly ">
+                  <span routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="text-sm mb-0 text-capitalize">All Visits</p>
+                    <h4 class="mb-0 text-center" *ngIf="allVisitsTotalcounts">{{allVisitsTotalcounts}}</h4>
+                  </span>
+                  <span *ngIf="(fromdate == '' || fromdate == undefined) && (todate == '' || todate == undefined)"
+                    routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'ActiveVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="text-sm mb-0 text-capitalize">Active Visits</p>
+                    <h4 class="mb-0" *ngIf="mandateTotalcounts">{{mandateTotalcounts}}</h4>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer" style="padding: 1rem !important;">
+              <div
+                style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;padding-top: 0.71rem;">
+                <span class="mb-0  text-center font-normal text-danger font-weight-bolder"
+                  routerLink="/mandate-lead-stages"
+                  [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'visits',htype:'mandate'}">USV
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledusv">{{allscheduledusv}}</span></span>
+                <span class="mb-0  text-center font-normal text-danger font-weight-bolder"
+                  routerLink="/mandate-lead-stages"
+                  [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'visits',htype:'mandate'}">RSV
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledrsv">{{allscheduledrsv}}</span></span>
+                <span class="mb-0  text-center font-normal text-danger font-weight-bolder"
+                  routerLink="/mandate-lead-stages"
+                  [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname,  stage:'', stagestatus:stagestatusval,type:'visits',htype:'mandate'}">FN
+                  - <span class="font-normal subcontentclr" *ngIf="allscheduledfn">{{allscheduledfn}}</span></span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-4">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">library_books</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-evenly ">
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRequest: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="text-sm mb-0 text-capitalize">Booking Request</p>
+                  <h4 class="mb-0 text-center" *ngIf="bookingrequest">{{bookingrequest}}</h4>
+                </span>
+
+                <span routerLink="/mandate-lead-stages"
+                  [queryParams]="{booked: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="text-sm mb-0 text-capitalize">Closed Leads</p>
+                  <h4 class="mb-0 text-center" *ngIf="bookedLeads">{{bookedLeads}}</h4>
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly " style="padding-top: 2rem;padding-bottom: 1rem;">
+              <span routerLink="/mandate-lead-stages"
+                [queryParams]="{bookingRejected: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Rejected - <span
+                    class="text-sm " *ngIf="rejected">{{rejected}}</span></p>
+              </span>
+              <span routerLink="/mandate-lead-stages"
+                [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'visits',htype:'mandate'}">
+                <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Junk Visits- <span
+                    class="text-sm " *ngIf="junkvisitsCount">{{junkvisitsCount}}</span></p>
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="col-8 row m-0 p-0">
+
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #E5F6FE 104.6%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{pending:1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'',type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Assigned</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="totalAssignedleadcounts">{{totalAssignedleadcounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/settings_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages" style="color: #004E76;"
+                  [queryParams]="{pending: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0">
+                    <span class="count_bottom_label">Untouched </span>
+                  </p>
+                  <div class="bottom_count" *ngIf="unTouchedleadcounts">{{unTouchedleadcounts}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(81.85deg, #FFFFFF 48.93%, #FFE4E1 106.84%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{filterData:'Touched',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Touched</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="touchedcounts">{{touchedcounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/flash_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 col-10 p-0 d-flex justify-content-between">
+                <a routerLink="/mandate-lead-stages" style="color: #73322D;"
+                  [queryParams]="{inactive:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">Inactive</span></p>
+                  <div class="bottom_count" *ngIf="inactivecounts">{{inactivecounts}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #73322D;"
+                  [queryParams]="{junkleads: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">Junk Leads</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="junkleadsCount">{{junkleadsCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(81.86deg, #FFFFFF 47.83%, #FFE371 237.55%);;border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{filterData:'Active',from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Active Leads</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="activecounts">{{activecounts}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/bulb_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 col-10 p-0 d-flex justify-content-between">
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{followups:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,visits:2,type:'leads',htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">
+                      G.Followups</span></p>
+                  <div class="bottom_count" *ngIf="followupleadcounts">{{followupleadcounts}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{nc: 1,from:fromdate, to:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:this.stagestatusval,type:'leads',htype:'mandate',id:'3'}">
+                  <p class="mb-0"><span class="count_bottom_label">NC</span></p>
+                  <div class="bottom_count" *ngIf="allschedulednc">{{allschedulednc}}</div>
+                </a>
+                <a routerLink="/mandate-lead-stages" style="color: #5D4100;"
+                  [queryParams]="{usv:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname,stage:'', stagestatus:'1',type:'visits',htype:'mandate',id:'3'}">
+                  <p class="mb-0"><span class="count_bottom_label">
+                      USV Fix</span></p>
+                  <div class="bottom_count" *ngIf="usvfixcount">{{usvfixcount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 65%, #DBD8FF 180%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;padding-inline: 0.7rem !important;">
+              <div class="d-flex justify-content-between p-1">
+                <div class="col-8 p-0 pt-1 d-flex justify-content-between ">
+                  <a routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="mb-0 above_label_size">All Visits</p>
+                    <h4 class="mb-0 above_count_size" *ngIf="allVisitsTotalcounts">{{allVisitsTotalcounts}}</h4>
+                  </a>
+                  <a *ngIf="(fromdate == '' || fromdate == undefined) && (todate == '' || todate == undefined)"
+                    routerLink="/mandate-lead-stages"
+                    [queryParams]="{filterData:'ActiveVisits',visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate'}">
+                    <p class="mb-0 above_label_size">Active Visits</p>
+                    <h4 class="mb-0 above_count_size" *ngIf="mandateTotalcounts">{{mandateTotalcounts}}</h4>
+                  </a>
+                </div>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/navigate_with_bg.png" alt="">
+                </div>
+              </div>
+
+              <div class="p-1 col-10 p-0 d-flex justify-content-between">
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">USV
+                  <div class="bottom_count" *ngIf="allscheduledusv">{{allscheduledusv}}</div>
+                </a>
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">RSV
+                  <div class="bottom_count" *ngIf="allscheduledrsv">{{allscheduledrsv}}</div>
+                </a>
+                <a class="mb-0 count_bottom_label" style="color: #0F0082;" routerLink="/mandate-lead-stages"
+                  [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname,  stage:'', stagestatus:'3',type:'visits',htype:'mandate',id:'3'}">FN
+                  <div class="bottom_count" *ngIf="allscheduledfn">{{allscheduledfn}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background:linear-gradient(55deg, #ffffff 50%, #FFB884 300%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRequest: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Booking Request</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="bookingrequest">{{bookingrequest}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/calendar_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{bookingRejected: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">Rejected</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="rejected">{{rejected}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+            <div class="card-header p-1 pt-1"
+              style="padding-inline: 0.7rem !important;border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 50%, #D3FFC9 180%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+              <div class="d-flex justify-content-between p-1">
+                <a class="pt-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{booked: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'bookings',htype:'mandate'}">
+                  <p class="above_label_size mb-0">Closed Leads</p>
+                  <h4 class="mb-0 above_count_size" *ngIf="bookedLeads">{{bookedLeads}}</h4>
+                </a>
+                <div>
+                  <img class="setting_icon" src="../../../../assets/images/closed_with_bg.png" alt="">
+                </div>
+              </div>
+              <div class="d-flex">
+                <a class="p-1" routerLink="/mandate-lead-stages"
+                  [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate, property:propertyid, propname:propertyname, execid:execid, execname:execname, stage:stagevalue, stagestatus:stagestatusval,type:'visits',htype:'mandate'}">
+                  <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">Junk Visits</span>
+                  </p>
+                  <div class="bottom_count" *ngIf="junkvisitsCount">{{junkvisitsCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- <div class="col-3 mb-xl-0 mb-4 relative">
+          <span class="overdue_text">Overdues</span>
+          <div class="card-header p-1 pt-1"
+            style="padding-block:0.9rem!important;border-radius: 4px !important;background: linear-gradient(180deg, #FFEBEC 0%, #FFFFFF 100%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="d-flex justify-content-around">
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">G.Followups</p>
+                <div class="above_count_size text-center">{{followupsoverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{ncoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">NC</p>
+                <div class="above_count_size text-center">{{ncOverduesCount}}</div>
+              </a>
+            </div>
+
+            <div class="d-flex justify-content-around" style="border-top: 1px solid #FFE3E3;">
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{usvoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">USV</p>
+                <div class="above_count_size text-center">{{usvOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{rsvoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">RSV</p>
+                <div class="above_count_size text-center">{{rsvOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{fnoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">FN</p>
+                <div class="above_count_size text-center">{{fnOverduesCount}}</div>
+              </a>
+            </div>
+
+            <div class="d-flex justify-content-around" style="border-top: 1px solid #FFE3E3;">
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{dealRequested: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">Deal Closing Requested</p>
+                <div class="above_count_size text-center">{{dealRequestedOverduesCount}}</div>
+              </a>
+
+              <span class="vertical-line"></span>
+
+              <a class="p-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{dealPending: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0" style="color: #8A0002;font-size: 12px;font-weight: 400;">Deal Close Pending</p>
+                <div class="above_count_size text-center">{{dealPendingOverduesCount}}</div>
+              </a>
+            </div>
+
+          </div>
+        </div> -->
+
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'leads'">
+          <div class="card-header p-1 pt-1"
+            style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(86.98deg, #FFFFFF 47.96%, #FFECED 113.29%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="d-flex justify-content-between p-1">
+              <a class="pt-1" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="above_label_size mb-0">Overdues</p>
+                <h4 class="mb-0 above_count_size">{{followupsoverduesCount+ncOverduesCount+usvFixOverduesCount}}</h4>
+              </a>
+              <div>
+                <img class="setting_icon" src="../../../../assets/images/overdues_dash_icon.png" alt="">
+              </div>
+            </div>
+
+            <div class="p-1 col-10 p-0 d-flex justify-content-between">
+              <a style="color: #981F21;" routerLink="/mandate-myoverdues"
+                [queryParams]="{followupsoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0"><span class="count_bottom_label">
+                    G.Followups</span></p>
+                <div class="bottom_count">{{followupsoverduesCount}}</div>
+              </a>
+              <a style="color: #981F21;" routerLink="/mandate-myoverdues"
+                [queryParams]="{ncoverdues: 1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                <p class="mb-0"><span class="count_bottom_label">NC</span></p>
+                <div class="bottom_count">{{ncOverduesCount}}</div>
+              </a>
+              <a routerLink="/mandate-myoverdues" style="color: #981F21;"
+                [queryParams]="{usv:1, from:fromdate, to:todate,property:propertyid, propname:propertyname, execid:execid, execname:execname,stage:'', stagestatus:'1',type:'visits',htype:'mandate',id:'3'}">
+                <p class="mb-0"><span class="count_bottom_label">
+                    USV Fix</span></p>
+                <div class="bottom_count">{{usvFixOverduesCount}}</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4" *ngIf="dashtype == 'visits'">
+          <div class="card-header p-1 pt-1"
+            style="padding-inline: 0.7rem !important;border-radius: 10px !important;background: linear-gradient(86.98deg, #FFFFFF 47.96%, #FFECED 113.29%);border: 2px solid white;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+            <div class="row g-0 p-1 align-items-center">
+              <div class="col-4 pt-1">
+                <a routerLink="/mandate-myoverdues" [queryParams]="{dealRequested:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,
+                  execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="above_label_size mb-0">Deal Requested</p>
+                  <h4 class="mb-0 above_count_size">{{dealRequestedOverduesCount}}</h4>
+                </a>
+              </div>
+
+              <div class="col-4 pt-1">
+                <a routerLink="/mandate-myoverdues" [queryParams]="{dealPending:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,
+                                        execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="above_label_size mb-0">Deal Pending</p>
+                  <h4 class="mb-0 above_count_size">{{dealPendingOverduesCount}}</h4>
+                </a>
+              </div>
+
+              <div class="col-4 pt-1 text-end">
+                <img class="setting_icon" src="../../../../assets/images/overdues_dash_icon.png">
+              </div>
+            </div>
+
+            <div class="row g-0 align-items-center">
+              <div class="col-4 py-1">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{usvoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">USV</span></p>
+                  <div class="bottom_count">{{usvOverduesCount}}</div>
+                </a>
+              </div>
+
+              <div class="col-4 py-1">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{rsvoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">RSV</span></p>
+                  <div class="bottom_count">{{rsvOverduesCount}}</div>
+                </a>
+              </div>
+
+              <div class="col-4 py-1 text-start">
+                <a style="color:#981F21" routerLink="/mandate-myoverdues"
+                  [queryParams]="{fnoverdues:1,from:fromdate,to:todate,propname:propertyname,property:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}">
+                  <p class="mb-0"><span class="count_bottom_label">FN</span></p>
+                  <div class="bottom_count">{{fnOverduesCount}}</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row mt-3 mb-2"
+        *ngIf="(roleid == '1' || this.roleid == '2') && (execid == '' || execid == undefined || execid == null)">
+
+        <!-- <div class="col-lg-12 col-md-12">
+          <div class="card position-relative" style="box-shadow: 0px 8px 25px 0px #959DA533;">
+            <div class="card-header pb-0" style="padding-block: 0.3rem !important;">
+              <div class="row">
+                <div class="p-0">
+                  <h6 class="hoverclass m-0">
+                    Planned VS Actual Summary
+                  </h6>
+                </div>
+              </div>
+            </div>
+            <div class="card-body"
+              style="padding-inline:0.5rem !important;padding-top: 0rem !important;padding-bottom: 0.5rem !important;">
+              <div class="button_section d-flex pb-1 justify-content-between">
+                <div class="planleadassign" [ngClass]="{'blurred':isLoading}">
+
+                  <a class="add_class last7_section" (click)="planSelectedTime('last7')">
+                    Last 7 days
+                  </a>
+              
+                  <a class="add_class weekend_section" (click)="planSelectedTime('weekend')">
+                    Weekend
+                  </a>
+              
+                  <a class="add_class weekdays_section" (click)="planSelectedTime('weekdays')">
+                    Weekdays
+                  </a>
+              
+                </div>
+
+                  <div class="d-flex">
+
+                    <label class="btn-danger btn-simple mx-1 m-0 d-flex" style="height:30px;border-color: #A4D7FF !important;border-radius: 2px !important;background: #ffffff !important;align-items: center;padding-inline: 10px;cursor: pointer;">
+                      <div #weeknextActionDates class="cursor-pointer">
+                        <i class="fas fa-calendar" style="color: #0B7AB2;font-size: 12px;padding-right: 0.2rem;"></i>&nbsp;
+                      </div>
+                      <span id="weeknextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                        {{weekdatecustomfetch}}
+                      </span>
+                      <span class=" d-block d-sm-none">
+                        <i class=" tim-icons icon-tap-02"> </i>
+                      </span>
+                    </label>
+
+                    <button type="button" style="height: 30px;border-color: #A4D7FF !important;padding-inline:0.5rem !important;border-radius: 5px !important;" class="btn btn-primary mb-0" (click)="planRefresh()"><i class="fas fa-redo pr-1"></i></button>
+                  </div>
+
+              </div>
+              <div class="table-responsive " style="height: 200px;" *ngIf="!isLoading">
+                <div class="col-12 p-0 d-flex justify-content-between align-items-center equal">
+                  <div class="text-center py-2 font_pop " style="background: #558FA8;color: #ffffff;">
+                    Stages
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #CAEDFF;color: #004568;">
+                    Total Planned
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #E1DEFD;color: #170988;" *ngIf="isFuture">
+                    Upcoming
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #E6FFC9;color: #1F3900;">
+                    Done
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #FFF1C8;color: #624A00;">
+                    Rescheduled
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #FFD7C7;color: #971B1D;">
+                    Overdue
+                  </div>
+                  <div class="text-center py-2 font_pop" style="background: #EBEBEB;color: #434343;">
+                    Unplanned
+                  </div>
+                </div>
+                <div class="col-12 p-0 d-flex justify-content-between align-items-center equal"
+                  style="border-block: 1px solid #EAEAEA">
+                  <div class="text-center py-3 font_pop" style="background: #E5F7FF;color: #005B82;">
+                    USV
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.USV?.total_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;" *ngIf="isFuture">
+                    {{planOverdue.USV?.upcoming_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.USV?.done_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.USV?.rescheduled_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.USV?.overdues_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.USV?.unplanned_counts}}
+                  </div>
+                </div>
+                <div class="col-12 p-0 d-flex justify-content-between align-items-center equal"
+                  style="border-block: 1px solid #EAEAEA">
+                  <div class="text-center py-3 font_pop" style="background: #AFE3F9;color: #00405C;">
+                    RSV
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.RSV?.total_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;" *ngIf="isFuture">
+                    {{planOverdue.RSV?.upcoming_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.RSV?.done_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.RSV?.rescheduled_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.RSV?.overdues_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.RSV?.unplanned_counts}}
+                  </div>
+                </div>
+                <div class="col-12 p-0 d-flex justify-content-between align-items-center equal"
+                  style="border-block: 1px solid #EAEAEA">
+                  <div class="text-center py-3 font_pop" style="background: #E5F7FF;color: #005B82;">
+                    FN
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.FN?.total_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;" *ngIf="isFuture">
+                    {{planOverdue.FN?.upcoming_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.FN?.done_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.FN?.rescheduled_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.FN?.overdues_counts}}
+                  </div>
+                  <div class="text-center py-3" style="border-inline: 0.5px solid #EAEAEA;">
+                    {{planOverdue.FN?.unplanned_counts}}
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="isLoading">
+                <div class="skeleton-row" *ngFor="let i of [1,2,3]"></div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="col-lg-5 col-md-5 mb-md-0 mb-4 mt-3">
+
+          <!-- today's leads -->
+          <!-- <div class="card p mb-3" style="box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="card-header pb-0" style="padding-block: 0.3rem !important;">
+              <div class="row">
+                <div class="">
+                  <h6 class="hoverclass m-0" routerLink="/rmleadassign"
+                    [queryParams]="{todaysvisits: 1, property:propertyid, propname:propertyname, execid:execid, execname:execname, team:team,htype:'mandate'}">
+                    Executive's Today Schedule - <span *ngIf="todayscheduled">{{todayscheduled}}</span>
+                  </h6>
+                  <div style="display: flex; justify-content: space-between;align-items: center;">
+
+                    <p class="cursor-pointer m-0" style="color: #E17020;font-weight: 500;" routerLink="/rmleadassign"
+                      [queryParams]="{todaysvisits: 1,from:fromdate, to:todate,property:propertyid, propname:propertyname,execid:execid, execname:execname, stage:'USV', team:team,htype:'mandate'}">
+                      USV - {{todayscheduledusv}}
+                    </p>
+                    <p class="cursor-pointer m-0" style="color: #7070e9;font-weight: 500;" routerLink="/rmleadassign"
+                      [queryParams]="{todaysvisits: 1,from:fromdate, to:todate,property:propertyid, propname:propertyname,execid:execid, execname:execname, stage:'RSV', team:team,htype:'mandate'}">
+                      RSV - {{todayscheduledrsv}}
+                    </p>
+                    <p class="cursor-pointer m-0" style="color: #29A71A;font-weight: 500;" routerLink="/rmleadassign"
+                      [queryParams]="{todaysvisits: 1,from:fromdate, to:todate,property:propertyid, propname:propertyname,execid:execid, execname:execname, stage:'Final Negotiation', team:team,htype:'mandate'}">
+                      FN - {{todayscheduledfn}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive" style="height: 200px;">
+                <table class="table align-items-center mb-0">
+
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NAME</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">VISITS FIXED
+                      </th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">USV</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">RSV</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">FN</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let todays of executiveTodayInfo; let i = index">
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold cursor-pointer text-decoration-underline"
+                          routerLink="/mandate-dashboard"
+                          [queryParams]="{todayvisited: 1,from:fromdate, to:todate, execid:todays.id,property:propertyid,propname:propertyname,execname:todays.name,dashtype:'dashboard',visits:2,htype:'mandate'}">{{todays.name}}</span>
+                      </td>
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].All_Visits}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].USV}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].RSV}}</span>
+                      </td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Final_Negotiation}}</span></td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center"
+                    *ngIf="executiveTodayInfo?.length == 0"
+                    style="position: relative;top: 60px;left: 150px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- Quick view table -->
+          <!-- <div class="card" style="box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="card-header pb-0" style="padding-block: 0.3rem !important;">
+              <div class="row">
+                <div class="">
+                  <div style="display: flex; justify-content: space-between;align-items: baseline;">
+                    <h6 class="hoverclass" routerLink="/mandate-myoverdues"
+                      [queryParams]="{followupsoverdues: 1, property:propertyid, propname:propertyname, execid:execid, execname:execname, team:team,htype:'mandate'}">
+                      Executive's Quick View
+                    </h6>
+                    <div class="form-check form-switch ">
+                      <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+                      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked
+                        (change)="checkActive($event)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive" style="height: 458px;">
+
+                <table class="table align-items-center mb-0" *ngIf="dashtype == 'leads'">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NAME</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">G.Followups</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NC</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">USV Fix</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Inactive</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Junk Leads</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Overdues</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let todays of executiveOverdueInfo; let i = index">
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold cursor-pointer text-decoration-underline" routerLink="/mandate-dashboard"
+                          [queryParams]="{todayvisited: 1,from:fromdate, to:todate, execid:todays.id,property:propertyid,propname:propertyname,execname:todays.name,dashtype:'dashboard',visits:2,htype:'mandate',type:dashtype}">{{todays.name}}
+                        </span> 
+                      </td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].followups}}</span></td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].nc}}</span></td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].usvfix}}</span></td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].inactive}}</span></td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].Junk}}</span></td>
+                      <td><span class="text-xs font-weight-bold">{{todays.counts[0].Overdues}}</span></td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center" *ngIf="executiveOverdueInfo?.length == 0"
+                    style="position: relative;top: 60px;left: 150px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+
+                <table class="table align-items-center mb-0" *ngIf="dashtype == 'visits'">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NAME</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">VISITS</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">USV</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">RSV</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">FN</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Closed</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Junk Visits</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Overdues</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let todays of executiveOverdueInfo; let i = index">
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold cursor-pointer text-decoration-underline"
+                          routerLink="/mandate-dashboard"
+                          [queryParams]="{todayvisited: 1,from:fromdate, to:todate, execid:todays.id,property:propertyid,propname:propertyname,execname:todays.name,dashtype:'dashboard',visits:2,htype:'mandate',type:dashtype}">{{todays.name}}</span>
+                      </td>
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].All_Visits}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].USV}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].RSV}}</span>
+                      </td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Final_Negotiation}}</span></td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Closed}}</span></td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Junk}}</span></td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Overdues}}</span></td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center"
+                    *ngIf="executiveOverdueInfo?.length == 0"
+                    style="position: relative;top: 60px;left: 150px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="card p mb-3" style="box-shadow: 0px 8px 24px 0px #959DA533;" *ngIf="dashtype == 'leads'">
+            <div class="health-card">
+
+              <div class="title_main">Leads Health Overview</div>
+
+              <div class="main_body">
+                <div *ngFor="let row of weekDataCal" class="row-box" [ngStyle]="{'background-color': row.bgColor}">
+
+                  <!-- Row Title -->
+                  <div class="title">
+                    <span [ngStyle]="{'color': row.labelColor}">{{ row.label }}</span>
+                    <span class="value" [ngStyle]="{'color': row.labelColor}">{{ row.value }}</span>
+                  </div>
+
+                  <!-- SOLID BAR (first row) -->
+                  <div *ngIf="row.type == 'solid'" class="solid-bar" [ngClass]="row.color"></div>
+
+                  <!-- SEGMENTED BAR (other rows) -->
+                  <div *ngIf="row.type == 'segment'" class="segments">
+                    <div class="segment" *ngFor="let seg of [].constructor(segments); let i = index"
+                      [ngClass]="i < row.activeSegments ? row.color + '-active' : ''">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="card p-0" style="background: #fff;box-shadow: 0px 8px 24px 0px #959DA533;"
+            *ngIf="dashtype == 'visits'">
+            <div class="title_main">Scheduled Visits</div>
+            <div class="table-responsive plans_table" style="height:441px;">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <!-- <th>Sl.No</th> -->
+                    <th>Name</th>
+                    <th>Stage</th>
+                    <th>Executive</th>
+                    <th>Scheduled Time</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngIf="scheduledtoday?.length > 0">
+                  <tr *ngFor="let plan of scheduledtoday; let i = index">
+                    <!-- <td>{{i+1}}</td> -->
+                    <td>
+                      <a style="color: #0B7AB2;text-decoration: none !important;cursor: pointer;"
+                        routerLink="/mandate-customers/{{plan.LeadID}}/{{plan.ExecId}}/{{'0'}}/{{'mandate'}}/{{plan.propertyid}}">{{(plan.registeredname?plan.registeredname:plan.CustomerName)}}
+                        <div>{{(plan.number?plan.number:'--')}}</div>
+                      </a>
+                    </td>
+                    <td>{{(plan.Leadphase == 'Final Negotiation' ? 'FN' : plan.Leadphase)}}</td>
+                    <td>{{plan.Executivename}}</td>
+                    <td>{{plan.nextactiondate}}
+                      <div>{{plan.nextactiontime}}</div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="scheduledtoday?.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center font-weight-bold pt-3">
+                      NO DATA FOUND ...!
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- <div class="font-weight-bold pt-3 d-flex justify-content-center " *ngIf="scheduledtoday?.length == 0"
+                  style="position: relative;top: 50px;left: 150px;border: none;">
+                  NO DATA FOUND ...!
+                </div> -->
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-lg-7 col-md-7 mt-3">
+          <!-- <div class="enquiry_content_main mt-3" style="box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="leadassign" style="display: flex;justify-content: space-between;padding-top:0.2rem ;">
+              <a class="add_class total totalLeads_section other_section active" (click)="getTotalLeads('Total Leads')">
+                Total Leads
+              </a>
+              <a class="add_class lead_section activeLeads_section other_section"
+                (click)="getTotalLeads('Active Leads')">
+                Active Leads
+              </a>
+              <a class="add_class lead_section inactiveLeads_section other_section"
+                (click)="getTotalLeads('Inactive Leads')">
+                Inactive Leads
+              </a>
+            </div>
+            <div class="card h-100">
+              <div class="row card-header pb-0 mr-0 ml-0">
+                <div class="col-lg-12 col-12" style="padding-inline: 0.1rem !important;">
+                  <span>
+                    <h6 class="hoverclass">
+                      Executive's {{leadName}} - {{leadsCount}}
+                    </h6>
+                  </span>
+                </div>
+                <div class="col-lg-12 col-12" style="padding-inline: 0.1rem !important;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span class="cursor-pointer" style="color: #C01010; font-weight: 500;" *ngIf="hcwLeadsCount">HOT -
+                      {{hcwLeadsCount.total_counts[0]?.hot}}</span>
+                    <span class="cursor-pointer" style="color: #E17020;font-weight: 500;" *ngIf="hcwLeadsCount">WARM -
+                      {{hcwLeadsCount.total_counts[0]?.warm}}</span>
+                    <span class="cursor-pointer" style="color: #009ACB;font-weight: 500;" *ngIf="hcwLeadsCount">COLD -
+                      {{hcwLeadsCount.total_counts[0]?.cold}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-3">
+                <div class="table-responsive" style="height:400px;">
+                  <table class="table align-items-center mb-0">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NAME</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Total Leads'">TOTAL</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Total Leads' || leadName == 'Active Leads'">ACTIVE
+                        </th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Total Leads' || leadName == 'InActive Leads'">INACTIVE
+                        </th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">HOT</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">WARM</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">COLD</th>
+                      </tr>
+                    </thead>
+
+                    <tbody *ngIf="hcwLeadsCount?.myexecutive?.length > 0">
+                      <tr *ngFor="let overdue of hcwExecutiveCounts; let i = index">
+                        <td class="align-middle ">
+                          <span class="text-xs font-weight-bold cursor-pointer" routerLink="/mandate-dashboard"
+                            [queryParams]="{ todayvisited: 1,from:fromdate, to:todate, execid:overdue.id, property:propertyid,propname:propertyname,execname:overdue.name,dashtype:'dashboard',visits:2,htype:'mandate',type:dashtype}">{{overdue.name}}</span>
+                        </td>
+                        <td class="align-middle" *ngIf="leadName == 'Total Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.totalleads}}</span>
+                        </td>
+                        <td class="align-middle text-sm"
+                          *ngIf="leadName == 'Total Leads' || leadName == 'Active Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.activeleads}}</span>
+                        </td>
+                        <td class="align-middle text-sm"
+                          *ngIf="leadName == 'Total Leads' || leadName == 'InActive Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.inactiveleads }}</span>
+                        </td>
+                        <td class="align-middle text-sm"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.hot }}</span>
+                        </td>
+                        <td class="align-middle text-sm"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.warm }}</span>
+                        </td>
+                        <td class="align-middle text-sm"
+                          *ngIf="leadName == 'Active Leads' || leadName == 'InActive Leads'">
+                          <span class="text-xs font-weight-bold">{{overdue.counts[0]?.cold }}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <div class="font-weight-bold pt-3 d-flex justify-content-center "
+                      *ngIf="hcwExecutiveCounts?.length == 0"
+                      style="position: relative;top: 50px;left: 150px;border: none;">
+                      NO DATA FOUND ...!
+                    </div>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="card p-0" style="background: #fff;box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="title_main" *ngIf="dashtype == 'leads'">USV Plans</div>
+            <div class="title_main d-flex gap-3" *ngIf="dashtype == 'visits'"><span>Weekdays <i class="fas fa-circle"
+                  style="color: #C09001;width: 16px;height: 16px;"></i></span> <span>Weekend Days <i
+                  class="fas fa-circle" style="color: #E84C0A;width: 16px;height: 16px;"></i></span></div>
+            <div class="table-responsive plans_table CSassigned_table">
+              <table class="table align-items-center mb-0" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+                [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadmoreForPlan()"
+                [infiniteScrollContainer]="'.CSassigned_table'">
+                <thead>
+                  <tr>
+                    <!-- <th>Sl.No</th> -->
+                    <th>Name</th>
+                    <th>Executive</th>
+                    <th *ngIf="dashtype == 'visits'">Stage</th>
+                    <th>Date</th>
+                    <th>Planned Day</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngIf="weekendPlansData?.length > 0">
+                  <tr *ngFor="let plan of weekendPlansData; let i = index">
+                    <!-- <td>{{i+1}}</td> -->
+                    <td>
+                      <a style="color: #0B7AB2;text-decoration: none !important;cursor: pointer;"
+                        routerLink="/mandate-customers/{{plan.LeadID}}/{{plan.ExecId}}/{{'0'}}/{{'mandate'}}/{{plan.propertyid}}">{{plan.CustomerName}}
+                        <div>{{plan.number}}</div>
+                      </a>
+                    </td>
+                    <td>{{plan.Executivename}}</td>
+                    <td *ngIf="dashtype == 'visits'">{{(plan.Leadstatus?plan.Leadstatus:'---')}}</td>
+                    <td>{{plan.nextactiondate}}
+                      <div>{{plan.nextactiontime}}</div>
+                    </td>
+                    <td>
+                      <span class="weekend_plan" *ngIf="plan.weekplans == '2'">{{'Weekend'}}</span>
+                      <span class="weekedays_plan" *ngIf="plan.weekplans == '1'">{{'Weekdays'}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="weekendPlansData?.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center font-weight-bold pt-3">
+                      NO DATA FOUND ...!
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- <div class="font-weight-bold pt-3 d-flex justify-content-center" *ngIf="weekendPlansData?.length == 0"
+                  style="position: relative;top: 50px;left: 200px;border: none;">
+                  NO DATA FOUND ...!
+                </div> -->
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row mt-1 mb-1"
+        *ngIf="(roleid != '1' && this.roleid != '2') || (execid != '' && execid != undefined && execid != null)">
+        <div class="col-lg-5 col-md-5 mb-md-0 mb-4 mt-3">
+
+          <div class="card p mb-3" style="box-shadow: 0px 8px 24px 0px #959DA533;" *ngIf="dashtype == 'leads'">
+            <div class="health-card">
+
+              <div class="title_main">Leads Health Overview</div>
+
+              <div class="main_body">
+                <div *ngFor="let row of weekDataCal" class="row-box" [ngStyle]="{'background-color': row.bgColor}">
+
+                  <!-- Row Title -->
+                  <div class="title">
+                    <span [ngStyle]="{'color': row.labelColor}">{{ row.label }}</span>
+                    <span class="value" [ngStyle]="{'color': row.labelColor}">{{ row.value }}</span>
+                  </div>
+
+                  <!-- SOLID BAR (first row) -->
+                  <div *ngIf="row.type == 'solid'" class="solid-bar" [ngClass]="row.color"></div>
+
+                  <!-- SEGMENTED BAR (other rows) -->
+                  <div *ngIf="row.type == 'segment'" class="segments">
+                    <div class="segment" *ngFor="let seg of [].constructor(segments); let i = index"
+                      [ngClass]="i < row.activeSegments ? row.color + '-active' : ''">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card p-0" style="background: #fff;box-shadow: 0px 8px 24px 0px #959DA533;"
+            *ngIf="dashtype == 'visits'">
+            <div class="title_main">Scheduled Visits</div>
+            <div class="table-responsive plans_table" style="height:441px;">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <!-- <th>Sl.No</th> -->
+                    <th>Name</th>
+                    <th *ngIf="role_type != 1">Number</th>
+                    <th>Stage</th>
+                    <th *ngIf="role_type == 1">Executive</th>
+                    <th>Scheduled Time</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngIf="scheduledtoday?.length > 0">
+                  <tr *ngFor="let plan of scheduledtoday; let i = index">
+                    <!-- <td>{{i+1}}</td> -->
+                    <td>
+                      <a style="color: #0B7AB2;text-decoration: none !important;cursor: pointer;"
+                        routerLink="/mandate-customers/{{plan.LeadID}}/{{plan.ExecId}}/{{'0'}}/{{'mandate'}}/{{plan.propertyid}}">
+                        {{(plan.registeredname?plan.registeredname:plan.CustomerName)}}
+                        <div *ngIf="role_type == 1">{{(plan.number?plan.number:'--')}}</div>
+                      </a>
+                    </td>
+                    <td *ngIf="role_type != 1">{{(plan.number?plan.number:'--')}}</td>
+                    <td>{{(plan.Leadphase == 'Final Negotiation' ? 'FN' : plan.Leadphase)}}</td>
+                    <td *ngIf="role_type == 1">{{plan.Executivename}}</td>
+                    <td>{{plan.nextactiondate}}
+                      <div>{{plan.nextactiontime}}</div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="scheduledtoday?.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center font-weight-bold pt-3">
+                      NO DATA FOUND ...!
+                    </td>
+                  </tr>
+                </tbody>>
+              </table>
+            </div>
+          </div>
+
+          <!-- today's table -->
+          <!-- <div class="card" style="box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="card-header pb-0">
+              <div class="row">
+                <div class="col-lg-12 col-12">
+                  <h6 class="hoverclass" routerLink="/rmleadassign"
+                    [queryParams]="{todaysvisits: 1, property:propertyid, propname:propertyname, execid:execid, execname:execname, team:team,htype:'mandate'}">
+                    Today's Scheduled Visits - {{todayscheduled}}
+                  </h6>
+                  <p class="text-sm mb-0 d-flex justify-content-between">
+                    <span>
+                      <i class="fa fa-check text-info" aria-hidden="true" style="color: #C01010 !important;"></i>
+                      <span class="font-weight-bold ms-1 mr-2 cursor-pointer" routerLink="/rmleadassign"
+                        [queryParams]="{todaysvisits: 1,from:'', to:'',property:propertyid, propname:propertyname,execid:execid, execname:execname, stage:'USV', team:team,htype:'mandate'}"
+                        style="color: #C01010;">USV - {{todayscheduledusv}}</span>
+                    </span>
+                    <span>
+                      <i class="fa fa-check text-info" aria-hidden="true" style="color: #E17020 !important;"></i>
+                      <span class="font-weight-bold ms-1 mr-2 cursor-pointer" routerLink="/rmleadassign"
+                        [queryParams]="{todaysvisits: 1, property:propertyid, propname:propertyname,execid:execid, execname:execname,stage:'RSV', team:team,htype:'mandate'}"
+                        style="color: #E17020;">RSV - {{todayscheduledrsv}}</span>
+                    </span>
+                    <span>
+                      <i class="fa fa-check text-info" aria-hidden="true" style="color: #29A71A !important;"></i>
+                      <span class="font-weight-bold ms-1 mr-2 cursor-pointer" routerLink="/rmleadassign"
+                        [queryParams]="{todaysvisits: 1, property:propertyid, propname:propertyname,execid:execid, execname:execname,stage:'Final Negotiation', team:team,htype:'mandate'}"
+                        style="color: #29A71A;">FN - {{todayscheduledfn}}</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive" style="height: 315px;">
+                <table class="table align-items-center mb-0">
+
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Number</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stage</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Scheduled
+                        Time</th>
+                    </tr>
+                  </thead>
+
+                  <tbody *ngIf="!isScheldue">
+                    <tr *ngFor="let todays of scheduledtoday; let i = index">
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold cursor-pointer text-decoration-underline"
+                          (click)="detailsPageRedirection()"
+                          routerLink="/mandate-customers/{{todays.LeadID}}/{{todays.ExecId}}/{{'0'}}/{{'mandate'}}/{{todays.propertyid}}">{{(todays.registeredname?todays.registeredname:todays.CustomerName)}}</span>
+                      </td>
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold">{{(todays.number?todays.number:'--')}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.Leadphase}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.nextactiontime}}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center" *ngIf="isScheldue"
+                    style="position: relative;top: 60px;left: 150px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="col-lg-7 col-md-7 mt-3">
+
+          <div class="card p-0" style="background: #fff;box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="title_main" *ngIf="dashtype == 'leads'">USV Plans</div>
+            <div class="title_main d-flex gap-3" *ngIf="dashtype == 'visits'"><span>Weekdays <i class="fas fa-circle"
+                  style="color: #C09001;width: 16px;height: 16px;"></i></span> <span>Weekend Days <i
+                  class="fas fa-circle" style="color: #E84C0A;width: 16px;height: 16px;"></i></span></div>
+            <div class="table-responsive plans_table CSassigned_table">
+              <table class="table align-items-center mb-0" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+                [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadmoreForPlan()"
+                [infiniteScrollContainer]="'.CSassigned_table'">
+                <thead>
+                  <tr>
+                    <!-- <th>Sl.No</th> -->
+                    <th>Name</th>
+                    <th *ngIf="role_type != 1">Number</th>
+                    <th *ngIf="role_type == 1">Executive</th>
+                    <th *ngIf="dashtype == 'visits' && role_type == 1">Stage</th>
+                    <th>Date</th>
+                    <th>Planned Day</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngIf="weekendPlansData?.length > 0">
+                  <tr *ngFor="let plan of weekendPlansData; let i = index">
+                    <!-- <td>{{i+1}}</td> -->
+                    <td>
+                      <a style="color: #0B7AB2;text-decoration: none !important;cursor: pointer;"
+                        routerLink="/mandate-customers/{{plan.LeadID}}/{{plan.ExecId}}/{{'0'}}/{{'mandate'}}/{{plan.propertyid}}">{{plan.CustomerName}}
+                        <div *ngIf="role_type == 1">{{(plan.number?plan.number:'---')}}</div>
+                      </a>
+                    </td>
+                    <td *ngIf="role_type != 1">{{(plan.number?plan.number:'--')}}</td>
+                    <td *ngIf="role_type == 1">{{plan.Executivename}}</td>
+                    <td *ngIf="dashtype == 'visits' && role_type == 1">{{(plan.Leadstatus?plan.Leadstatus:'---')}}</td>
+                    <td>{{plan.nextactiondate}}
+                      <div>{{plan.nextactiontime}}</div>
+                    </td>
+                    <td>
+                      <span class="weekend_plan" *ngIf="plan.weekplans == '2'">{{'Weekend'}}</span>
+                      <span class="weekedays_plan" *ngIf="plan.weekplans == '1'">{{'Weekdays'}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="weekendPlansData?.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center font-weight-bold pt-3">
+                      NO DATA FOUND ...!
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- <div class="font-weight-bold pt-3 d-flex justify-content-center " *ngIf="weekendPlansData?.length == 0"
+                  style="position: relative;top: 50px;left: 150px;border: none;">
+                  NO DATA FOUND ...!
+                </div> -->
+              </table>
+            </div>
+          </div>
+
+          <!-- <div class="card mt-3" style="box-shadow: 0px 8px 24px 0px #959DA533;">
+            <div class="row card-header pb-0 mr-0 ml-0" style="padding-inline: 1rem !important;">
+              <div class="col-lg-6 col-6">
+                <h6 class="hoverclass m-0" routerLink="/mandate-myoverdues"
+                  [queryParams]="{followupsoverdues: 1, property:propertyid, propname:propertyname, execid:execid, execname:execname, team:team,htype:'mandate'}">
+                  Overdues -
+                  {{overduescounts}}</h6>
+              </div>
+            </div>
+            <div class="card-body p-3 d-flex justify-content-center"
+              style="padding-top: 0rem !important;padding-inline: 1.5rem !important;">
+              <div class="table-responsive CSassigned_table">
+                <table class="table" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+                  [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadmoreForOverdues()"
+                  [infiniteScrollContainer]="'.CSassigned_table'">
+
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stage</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Scheduled
+                        Date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Overdue by
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody *ngIf="!isoverdue">
+                    <tr *ngFor="let overdue of overdueslists; let i = index">
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold cursor-pointer text-decoration-underline"
+                          (click)="detailsPageRedirection()"
+                          routerLink="/mandate-customers/{{overdue.LeadID}}/{{overdue.ExecId}}/{{'0'}}/{{'mandate'}}//{{overdue.propertyid}}">{{(overdue.registeredname?overdue.registeredname:overdue.CustomerName)}}</span>
+                      </td>
+
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{overdue.Leadphase}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{overdue.nextactiondate | date: 'dd-MMM-yyyy'}}
+                          {{overdue.nextactiontime}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span>{{calculateDiff(overdue.nextactiondate)}} days</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center" *ngIf="isoverdue"
+                    style="position: relative;top: 60px;left: 170px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <div *ngIf=filterLoader class="main-lds-ring-div">
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+    <img src="../../../../assets/images/infinity_loader.gif">
+  </div>
+</body>
+
+<!-- start break modal  -->
+<!-- <div class="modal fade startbreak" id="start_break" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="new_executive">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" style="display: none;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class=""
+          style="display: flex;justify-content: center;align-items: center;flex-direction: column;text-align: center;">
+
+          <h2 class="h2colored" *ngIf="timerstarted == false">Taking Quick Break</h2>
+          <span *ngIf="timerstarted == false">You are about start a break.</span>
+          <span *ngIf="timerstarted == false">Your CRM access will be temporarily paused untill you check in</span>
+
+          <h2 class="h2colored" *ngIf="timerstarted == true">You're on Break</h2>
+          <span *ngIf="timerstarted == true">Your break has started</span>
+          <span *ngIf="timerstarted == true">You need to check in to regain access to CRM</span>
+
+
+          <div class="pt-5" style="color: #0B7AB2;font-size: 80px;">
+            <cd-timer format="hms" #basicTimer class="bootstrap-timer"></cd-timer>
+          </div>
+          <span class="pt-5" *ngIf="timerstarted == false">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-warning" (click)="doActionBasicTimer('start',$event)">Start
+              Break</button>
+          </span>
+
+          <span class="pt-5" *ngIf="timerstarted == true">
+            <button type="button" class="btn btn-primary" (click)="doActionBasicTimer('stop',$event)">Check IN Now</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<button type="button" data-toggle="modal" data-target="#check_in_out_mod" id="check_inout_btn"
+  style="display: none;">Show Details</button>
+<div class="modal fade startbreak" id="check_in_out_mod" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="new_executive">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" id="closecheck" style="display: none;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div>
+          <div class="d-flex justify-content-center"><img src="../../../../assets/images/check_login_dash_img.png">
+          </div>
+          <div class="text-center" style="color: #005580;font-size: 20px;font-weight: 500;">
+            <span>Check-in is only allowed through</span>
+            <div>the Site CRM mobile app.</div>
+          </div>
+
+          <div class="text-center" style="font-size: 12px;color: #535353;">
+            We recommend using the app to proceed with check-in.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

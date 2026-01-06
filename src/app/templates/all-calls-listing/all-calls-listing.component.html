@@ -1,0 +1,207 @@
+<div>
+  <app-header></app-header>
+</div>
+
+<div class="body-cntnts blurring searchHeader" [ngStyle]="{'padding-left': isSidebarHovered ? '15rem' : '3.5rem'}">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="button_section  p-2 d-flex ">
+      <div class="planleadassign">
+
+        <a class="add_class allcalls_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{allcalls: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Total Calls
+          <span>- {{totalCallsCount}}</span>
+        </a>
+
+        <a class="add_class connected_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{connected: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Connected Calls
+          <span>- {{connectedCalls}}</span>
+        </a>
+
+        <a class="add_class active_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{active: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Active Calls
+          <span>- {{activeCallsCount}}</span>
+        </a>
+
+        <a class="add_class inactive_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{inactive: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Inactive Calls
+          <span>- {{inActiveCallsCount}}</span>
+        </a>
+
+        <a class="add_class missed_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{missed: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Missed Calls
+          <span>- {{missedCallsCount}}</span>
+        </a>
+
+        <a class="add_class visitfixed_section other_section" routerLink="/all-calls-listing"
+          [queryParams]="{visitsfixed: 1,from:fromdate,to:todate,execid:execid, execname:execname}">
+          Visits Fixed
+          <span>- {{visitsCallsCount}}</span>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="text-right">
+      <button type="button" class="btn btn-warning btn_icon" (click)="refresh()"><i
+          class="fas fa-redo"></i>Reset</button>
+    </div>
+  </div>
+
+  <div class="enquiry_content_main pl-2">
+    <div class="table-container ">
+      <!-- ----------------------------to show Table filter data---------------------------- -->
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="datefilterview">
+          <div class="p-2 chip">
+            {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="executiveFilter">
+          <div class="p-2 chip">
+            {{execname}}
+            <span class="closebtn" (click)="executiveClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="statusFilter">
+          <div class="p-2 chip">
+            {{status | titlecase}} ({{ status == 'reconnect' ? reConnectedCallsCount : onlymissedCallsCount}})
+            <span class="closebtn" (click)="statusClose()">&times;</span>
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table" #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              (scrolled)="loadMoreassignedleads()" [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th *ngIf="roleid == 1 || roleid == 2">
+                    <div class="d-flex justify-content-between">
+                      <span>Executive</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="executiveDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu executiveBasedFilter" aria-labelledby="executiveDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control executivesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_executive" (input)="filterExecutive()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="executivesList?.length">
+                            <div *ngFor="let exec of executivesList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <span (click)="onCheckboxChangeExec(exec)">{{ exec.Name }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!executivesList?.length" class="text-center" style="color: #666666;">
+                            <h4>No Executives Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span *ngIf="missedcallsparam != 1">Start Time</span>
+                      <span *ngIf="missedcallsparam == 1">Missed On</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <div id="nextActionDates" class="cursor-pointer">
+                            <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th *ngIf="missedcallsparam != 1">End Time</th>
+                  <th *ngIf="missedcallsparam == 1">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="callStatus('')">All</a>
+                            <a class="dropdown-item dropDownCursor" (click)="callStatus('missed')">Missed</a>
+                            <a class="dropdown-item dropDownCursor" (click)="callStatus('reconnect')">Reconnected</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th *ngIf="missedcallsparam != 1">Call Duration</th>
+                  <th *ngIf="missedcallsparam != 1">Recordings</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="callerleads?.length" class="enquiry_table_body">
+                <tr *ngFor="let leads of callerleads; let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{leads.leadname}}
+                    <!-- <div>{{leads.callto}}</div> -->
+                    <div *ngIf="leads?.callto" class="call_des cursor-pointer" (click)="triggerCall(leads,'mandate')">
+                      <img src="../../../../assets/images/call_btn.png">
+                    </div>
+                  </td>
+                  <td *ngIf="roleid == 1 || roleid == 2">{{leads.name}}</td>
+                  <td>
+                    {{leads.starttime | date:'shortTime'}}
+                    <div>{{leads.starttime | date:'dd-MM -yyyy'}}</div>
+                  </td>
+                  <td *ngIf="missedcallsparam != 1">
+                    <div>{{leads.endtime | date:'shortTime'}}</div>
+                  </td>
+                  <td *ngIf="missedcallsparam != 1">{{leads.answeredtime}}</td>
+                  <td *ngIf="missedcallsparam == 1" class="text-center">
+                    <span class="missed_call" *ngIf="leads?.missedid == '1'"><img
+                        src="../../../assets/images/missed_call_btn.png" style="width: 12px;"> {{'Missed'}}</span>
+                    <span class="reconnected_call" *ngIf="leads?.missedid == '2'"><i class="fa fa-check"
+                        style="width: 12px;"></i>{{'Reconnected'}}</span>
+                  </td>
+                  <td *ngIf="missedcallsparam != 1">
+                    <div style="flex-direction: column;">
+                      <audio class="media-item" [src]="leads.filename" controls (play)="onAudioPlay($event)">
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Followup Sections Table -->
+        <div class="text-center lead_norecord" *ngIf="! callerleads?.length">
+          No Leads Found.....
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>

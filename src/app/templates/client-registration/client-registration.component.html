@@ -1,0 +1,279 @@
+<app-header></app-header>
+
+<div class="main_count_header" >
+  <h2 class="text-center" style="color: #727272;text-decoration: underline;">Client Registration</h2>
+  
+  <!-- <div class="new_executive_form col-12 ">
+    <form class="form-inline" name="form" novalidate>
+      <div class="form-group col-md-6">
+        <div><label>Client Name</label></div>
+        <div><input class="form-control" id="custname" placeholder="Enter the Name" type="text"
+          [(ngModel)]="clientName" #name="ngModel" name="name" required></div>
+      </div>
+
+      <div class="form-group col-6">
+        <label>Contact Number</label>
+        <input class="form-control" id="custnum" placeholder="Enter the Number" type="text"
+          [(ngModel)]="clientNumber" #number="ngModel" name="number" required>
+      </div>
+
+      <div class="form-group col-6">
+        <label>Client Email</label>
+        <input class="form-control" id="custmail" placeholder="Enter the Email" type="text"
+          [(ngModel)]="clientMail" #mail="ngModel" name="mail" required>
+      </div>
+
+      <!-- <div class="form-group col-md-6 input_cmn_div">
+        <label>Source</label>
+        <select id="sourceselect" class="sourcename form-control ui dropdown" [(ngModel)]="model.source"
+          #source="ngModel" name="source">
+          <!-- <option value="" selected>Select Source</option>
+          <option value="Walkin">Commonfloor</option>
+          <option value="Magicbricks">Magicbricks</option>
+          <option value="Housing">Housing</option>
+          <option value="Homes247">Homes247</option> -->
+          <!-- <option value="directcall">Direct Call</option>
+          <option value="whatsupenquiry">Whatsup Enquiry</option>
+        </select>
+      </div> -->
+
+      <!-- <div class="form-group col-md-6 input_cmn_div">
+        <label>Type</label>
+        <div class="wrapper">
+          <input type="radio" class="radiocheck" name="select1" value="Apartment" id="option-1"
+            (click)="typeselection($event)">
+          <input type="radio" class="radiocheck" name="select1" value="Villa" id="option-2"
+            (click)="typeselection($event)">
+          <input type="radio" class="radiocheck" name="select1" value="Plot" id="option-3"
+            (click)="typeselection($event)">
+            <input type="radio" class="radiocheck" name="select1" value="Villament" id="option-19"
+            (click)="typeselection($event)">
+          <label for="option-1" class="option option-1">
+            <span>Apartment</span>
+          </label>
+          <label for="option-2" class="option option-2">
+            <span>Villa</span>
+          </label>
+          <label for="option-3" class="option option-3">
+            <span>Plot</span>
+          </label>
+          <label for="option-19" class="option option-19">
+            <span>Villament</span>
+          </label>
+        </div>
+        <input type="hidden" id="proptypeselect">
+      </div>
+
+      <div class="form-group col-md-6 input_cmn_div">
+        <label>Possession With</label>
+        <div class="wrapper">
+          <input type="radio" class="radiocheck" name="select2" value="6 Months" id="option-4"
+            (click)="possessionselection($event)">
+          <input type="radio" class="radiocheck" name="select2" value="1 Year" id="option-5"
+            (click)="possessionselection($event)">
+          <input type="radio" class="radiocheck" name="select2" value="Above 2 years" id="option-6"
+            (click)="possessionselection($event)">
+          <label for="option-4" class="option option-4">
+            <span>6 Months</span>
+          </label>
+          <label for="option-5" class="option option-5">
+            <span>1 Year</span>
+          </label>
+          <label for="option-6" class="option option-6">
+            <span>Above 2 years</span>
+          </label>
+        </div>
+        <input type="hidden" id="possessionselect">
+      </div>
+
+      <div class="form-group col-md-12 input_cmn_div">
+        <label>Select Size</label>
+        <div class="wrapper">
+          <input type="radio" class="radiocheck" name="select3" value="1 BHK" id="option-7"
+            (click)="sizeselection($event)">
+          <input type="radio" class="radiocheck" name="select3" value="2 BHK" id="option-8"
+            (click)="sizeselection($event)">
+          <input type="radio" class="radiocheck" name="select3" value="3 BHK" id="option-9"
+            (click)="sizeselection($event)">
+          <input type="radio" class="radiocheck" name="select3" value="4 BHK" id="option-10"
+            (click)="sizeselection($event)">
+          <input type="radio" class="radiocheck" name="select3" value="5 BHK" id="option-11"
+            (click)="sizeselection($event)">
+          <label for="option-7" class="option option-7">
+            <span>1 BHK</span>
+          </label>
+          <label for="option-8" class="option option-8">
+            <span>2 BHK</span>
+          </label>
+          <label for="option-9" class="option option-9">
+            <span>3 BHK</span>
+          </label>
+          <label for="option-10" class="option option-10">
+            <span>4 BHK</span>
+          </label>
+          <label for="option-11" class="option option-11">
+            <span>5 BHK</span>
+          </label>
+        </div>
+        <input type="hidden" id="sizeselect">
+      </div>
+
+      <div class="form-group col-md-12 input_cmn_div">
+        <label>Budget</label>
+        <div class="wrapper">
+          <input type="radio" class="radiocheck" name="select" value="50L - 60L" id="option-13"
+            (click)="budgetselection($event)">
+          <input type="radio" class="radiocheck" name="select" value="60L - 70L" id="option-14"
+            (click)="budgetselection($event)">
+          <input type="radio" class="radiocheck" name="select" value="70L - 80L" id="option-15"
+            (click)="budgetselection($event)">
+          <input type="radio" class="radiocheck" name="select" value="80L - 90L" id="option-16"
+            (click)="budgetselection($event)">
+          <input type="radio" class="radiocheck" name="select" value="90L - 1Cr" id="option-17"
+            (click)="budgetselection($event)">
+          <input type="radio" class="radiocheck" name="select" value="Above 1Cr" id="option-18"
+            (click)="budgetselection($event)">
+          <label for="option-13" class="option option-13">
+            <span>50L - 60L</span>
+          </label>
+          <label for="option-14" class="option option-14">
+            <span>60L - 70L</span>
+          </label>
+          <label for="option-15" class="option option-15">
+            <span>70L - 80L</span>
+          </label>
+          <label for="option-16" class="option option-16">
+            <span>80L - 90L</span>
+          </label>
+          <label for="option-17" class="option option-17">
+            <span>90L - 1Cr</span>
+          </label>
+          <label for="option-18" class="option option-18">
+            <span>Above 1Cr</span>
+          </label>
+        </div>
+        <input type="hidden" id="budgetselect">
+      </div> -->
+
+      <!-- <div class="form-group col-12">
+        <label>Address</label>
+        <textarea class="form-control addleadtextarea" id="address" [(ngModel)]="clientaddress" #address="ngModel"
+          name="address"></textarea>
+      </div>
+
+      <div>
+        <div class="actions col-md-12 save_btn input_cmn_div">
+          <button class="approve" type="submit" (click)="addClient()">Save</button>
+        </div>
+      </div>
+    </form>
+
+
+  </div> --> 
+  <form>
+    <div class="row" style="padding-inline: 15rem;">
+
+    <div class="form-group col-6">
+      <label class="mb-0">Client Name :</label>
+      <!-- <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
+      <input class="form-control" id="custname" placeholder="Enter the Name" type="text"
+      [(ngModel)]="clientName" #name="ngModel" name="name" required>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="mb-0">Contact No :</label>
+      <input class="form-control" id="custnum" placeholder="Enter the Number" type="text" maxlength="10"
+      [(ngModel)]="clientNumber" #number="ngModel" name="number" required>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="mb-0">Client Mail :</label>
+      <input class="form-control" id="custmail" placeholder="Enter the Email" type="text"
+      [(ngModel)]="clientMail" #mail="ngModel" name="mail" required>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="mb-0">Select  RM Name :</label>
+      <select id="rm_dropdown" filter ="true" class="form-control ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="rmchange($event)" style="min-height: 1.5em !important;">
+      <option value="" selected>Select RM</option>
+      <option *ngFor="let exec of employeesList" value="{{exec.emp_name}}">{{exec.emp_name}}</option>
+    </select>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="mb-0">Select  RM Mail :</label>
+      <select id="builder_dropdown" filter ="true" class="form-control ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="rmMailchange($event)" style="min-height: 1.5em !important;" disabled>
+      <option value="" selected>Select RM Mail</option>
+      <option *ngFor="let builder of builderpropertylists" value="{{builder.builderInfo_IDPK}}">{{builder.builderInfo_name}}</option>
+    </select>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="mb-0">Developer :</label>
+      <select id="builder_dropdown" filter ="true" class="form-control ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="builderschange($event)" style="min-height: 1.5em !important;">
+      <option value="" selected>Select Builder</option>
+      <option *ngFor="let builder of builderpropertylists" value="{{builder.builderInfo_IDPK}}">{{builder.builderInfo_name}}</option>
+    </select>
+    </div>
+
+    <div class="form-group col-6" [hidden]="selectedbuilder != '2'">
+      <label class="mb-0">Select Series :</label>
+      <select id="series_dropdown" filter ="true" class="form-control ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="serieschange($event)" style="min-height: 1.5em !important;">
+      <option value="" selected>Select Series</option>
+       <option value="Sobha Dream Series">Sobha Dream Series</option>
+       <option value="Sobha Luxury Series">Sobha Luxury Series</option>
+       <option value="Sobha Town Park Series">Sobha Town Park Series</option>
+    </select>
+    </div>
+
+    <div class="form-group col-6">
+      <div style="display: flex;flex-direction: column;">
+      <label class="mb-0">Project Name :</label>
+      <!-- <select id="property_dropdown" filter ="true" class="form-control multiple propertyClassDrop ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="propchange($event)" style="min-height: 1.5em !important;" >
+      <option value="" selected>Select Project</option>
+      <option *ngFor="let property of propertiesList" value="{{property.property_info_IDPK}}">{{property.property_info_name}}</option>
+    </select> -->
+ 
+    <p-multiSelect id="property_dropdown" [options]="propertiesList" [filter]="true" optionLabel="property_info_name" name="selectedLeads"
+    defaultLabel="Select Project" (onChange)="propchange($event)" ></p-multiSelect>
+  </div>
+    </div>
+
+    <div class="form-group col-6" [hidden]="selectedProperty == '624' || selectedProperty == '16793' || selectedbuilder == '191' ">
+      <label class="mb-0">Send To :</label>
+      <select id="mail_dropdown" filter ="true" class="form-control ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="selectmail($event)" style="min-height: 1.5em !important;">
+      <option value="" selected>Select mail</option>
+      <option *ngFor="let buildermail of buidersMails" value="{{buildermail.builder_mail}}">{{buildermail.builder_mail}}</option>
+    </select>
+    </div>
+
+    <div class="form-group col-6" [hidden]="selectedProperty == '624' || selectedProperty == '16793' || selectedbuilder == '191' ">
+      <label class="mb-0">Add CC :</label>
+      <!-- <select id="mail2_dropdown" filter ="true"  class="form-control multiple ui dropdown search dropdown dashboard_dropdown mr-3"
+      (change)="selectCCmail($event)" style="min-height: 1.5em !important;">
+      <option value="" selected>Select CC mail</option>
+      <option *ngFor="let builder of buidersMails" value="{{builder.builder_mail}}">{{builder.builder_mail}}</option>
+    </select> -->
+
+    <p-multiSelect id="mail2_dropdown" [options]="buidersMails" [filter]="true" [(ngModel)]="selectedbuilderCCmails" optionLabel="builder_mail" name="selectedCCmails"
+    defaultLabel="Select CC Mails" (onChange)="selectCCmail($event)" ></p-multiSelect>
+    </div>
+
+    <div class="form-group col-12">
+      <label class="mb-0">Remarks</label>
+      <textarea class="form-control addleadtextarea" id="remarks" [(ngModel)]="clientremarks" #remarks="ngModel"
+        name="remarks"></textarea>
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-warning" type="submit" (click)="addClient()">Submit</button>
+    </div>
+  </div>
+    </form>
+</div>

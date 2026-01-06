@@ -1,0 +1,534 @@
+<app-header></app-header>
+<!-- HEADER -->
+
+
+<!-- SIDE-NAV-ENDS -->
+
+<!-- MAIN-CONTENTS -->
+<div class="row main_count_header " [ngStyle]="{'margin-left': isSidebarHovered ? '11rem' : '0rem'}">
+  <div class="button_section col-12 p-2 d-flex align-items-center justify-content-between" style="margin-left: 3rem;">
+    <div class="planleadassign ">
+      <!-- *****************************Page Three Navigations***************************** -->
+      <a class="add_class inactive_section traffic_section " (click)="onTabPlan('inactive')">
+        Inactive Leads
+        <!-- <span> - {{inactiveCount}}</span> -->
+      </a>
+
+      <a class="add_class junkleads_section traffic_section" (click)="onTabPlan('junkleads')">
+        Junk Leads
+        <!-- <span> - {{junkCount}}</span> -->
+      </a>
+
+      <a class="add_class junkvisits_section traffic_section" (click)="onTabPlan('junkvisits')">
+        Junk Visits
+        <!-- <span> - {{junkvisitsCount}}</span> -->
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '15rem' : '4rem'}">
+  <div class="enquiry_content_main">
+    <div class="table-container ">
+
+      <div class="button_section col-12 pl-0 pr-0">
+        <div class="leadassign col-9 pl-0" #leadassign>
+          <!-- *****************************Inactive Navigations***************************** -->
+
+          <a class="add_class inactive1_section other_section active" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,inactive1: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype != 'inactive'">
+            Inactive-I
+            <span>({{inactive1Count}})</span>
+          </a>
+
+          <a class="add_class inactive2_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,inactive2: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype != 'inactive'">
+            Inactive-II
+            <span>({{inactive2Count}})</span>
+          </a>
+
+          <a class="add_class inactive3_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,inactive3: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype != 'inactive'">
+            Inactive-III
+            <span>({{inactive3Count}})</span>
+          </a>
+
+          <a class="add_class inactive4_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,inactive4: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype != 'inactive'">
+            Inactive-IV
+            <span>({{inactive4Count}})</span>
+          </a>
+
+          <a class="add_class inactivefinal_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,inactivefinal: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype != 'inactive'">
+            Final Inactive
+            <span>({{inactiveFinalCount}})</span>
+          </a>
+
+          <!-- *****************************Inactive Navigations***************************** -->
+
+
+          <!-- *****************************Junk Navigations***************************** -->
+
+          <a class="add_class junk1_section other_section active" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,junk1: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype == 'inactive'">
+            Junk-I
+            <span>({{junk1Count}})</span>
+          </a>
+
+          <a class="add_class junk2_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,junk2: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype == 'inactive'">
+            Junk-II
+            <span>({{junk2Count}})</span>
+          </a>
+
+          <a class="add_class junk3_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,junk3: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype == 'inactive'">
+            Junk-III
+            <span>({{junk3Count}})</span>
+          </a>
+
+          <a class="add_class junk4_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,junk4: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype == 'inactive'">
+            Junk-IV
+            <span>({{junk4Count}})</span>
+          </a>
+
+          <a class="add_class junkfinal_section other_section" routerLink="/mandate-inactive-junk"
+            [queryParams]="{type:leadtype,junkfinal: 1,from:fromdate,to:todate,property:propertyname,propname:propertyid,execid:execid,execname:execname,stagestatus:stagestatusval,source:source,htype:'mandate'}"
+            [hidden]=" leadtype == 'inactive'">
+            Final Junk
+            <span>({{junkFinalCount}})</span>
+          </a>
+
+          <!-- *****************************Junk Navigations***************************** -->
+        </div>
+
+        <div class="d-flex justify-content-end col-3 pr-0 gap-05">
+          <button type="button" class="btn btn-warning" data-toggle="modal" (click)="onclickReAssign()"
+            data-target="#reassign_lead"><i class="fas fa-share"></i>
+            Re-Assign</button>
+          <button type="button" class="btn btn-warning" (click)="refresh()"><i class="fas fa-redo"></i>Reset</button>
+        </div>
+      </div>
+
+      <div id="filtermaindiv" class="filterspan mt-2 ml-2">
+        <span *ngIf="propertyfilterview && propertyid != ''">
+          <div class="p-2 chip">
+            {{propertyname}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="executivefilterview && execid != ''">
+          <div class="p-2 chip">
+            {{execname}}
+            <span class="closebtn" (click)="executiveclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="stagefilterview">
+          <div class="p-2 chip">
+            {{stagevalue}}
+            <span *ngIf="stagestatusfilterview">{{stagestatusvaltext}}</span>
+            <span class="closebtn" (click)="stageclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="sourceFilter">
+          <div class="p-2 chip">
+            {{source}}
+            <span class="closebtn" (click)="sourceClose()">&times;</span>
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table" #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              (scrolled)="loadMoreassignedleads()" [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name </th>
+                  <th *ngIf="roleid == '1' || roleid == '2'">
+                    <div class="d-flex justify-content-between">
+                      <span>Source</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_source"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                          style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control sourcesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_source" (input)="filtersource()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div class="source_list_checkbox">
+                            <div *ngFor="let sourcelist of sourceList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hidesourcecheckbox"
+                                  id="hidesourcecheckboxid" value="{{sourcelist?.source}}" name='sourceFilter'
+                                  (change)="onCheckboxChangesource()">
+                                {{ sourcelist.source }}
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="mandateprojects?.length">
+                            <div *ngFor="let project of mandateprojects">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox"
+                                  id="hidepropcheckboxid" value="{{project?.property_idfk}}" name='propFilter'
+                                  (change)="onCheckboxChange(project)">
+                                {{ project.property_info_name }} -->
+                                <span (click)="onCheckboxChange(project)"> {{ project.property_info_name }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!mandateprojects?.length" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>Stage </th>
+                  <th *ngIf="role_type == '1' || roleid == '1' || roleid == '2'">
+                    <div class="d-flex justify-content-between">
+                      <span>Assigned To</span>
+                      <div *ngIf="(pendingleadsparam || followupleadsparam || normalcallparam) != '1'">
+                        <button class="btn btn-warning" type="button" id="executiveDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu executiveBasedFilter" aria-labelledby="executiveDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control executivesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_executive" (input)="filterExecutive()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="mandateExecutivesFilter?.length">
+                            <div *ngFor="let exec of mandateExecutivesFilter">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox"
+                                  id="hideExecutivecheckboxid" value="{{exec?.id}}" name='executiveFilter'
+                                  (change)="onCheckboxExecutiveChange()">
+                                {{ exec.name }}
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                            <h4>No Executives Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th *ngIf="leadtype == 'inactive'">
+                    Last Updated</th>
+                  <th class="remarksection">Latest Remark</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="callerleads?.length" [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+                <tr *ngFor="let leads of callerleads; let i = index">
+                  <td>{{i+1}}</td>
+                  <td><a class="btn_style cursor-pointer" (click)="detailsPageRedirection()"
+                      routerLink="/mandate-customers/{{leads.LeadID}}/{{leads.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">{{leads.CustomerName}}
+                      <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg" style="width: 20px;"></span>
+                          <span *ngIf="leads?.qualified_leads == '3'"><img src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span><br />{{leads.number}}</a>
+                  </td>
+                  <td *ngIf="roleid == '1' || roleid == '2'">{{leads.source}}</td>
+                  <td>{{leads.propertyname}}</td>
+                  <td>
+                    <span *ngIf="leadtype == 'inactive'">{{leads.Leadphase}}
+                      <span *ngIf="leadtype == 'inactive'"> - {{leads.followup_categories}}</span></span>
+                    <span
+                      *ngIf="leads.laststage != 'Final Negotiation' && leadtype != 'inactive'">{{leads.laststage}}</span>
+                    <span *ngIf="leads.laststage == 'Final Negotiation'">{{"FN"}}</span>
+                    <span *ngIf="leads.stagestatus == '1'">{{'Fix'}}</span>
+                    <span *ngIf="leads.stagestatus == '2'">{{'Refix'}}</span>
+                    <span *ngIf="leads.stagestatus == '3'">{{'Done'}}</span>
+                  </td>
+                  <td *ngIf="role_type == '1' || roleid == '1' || roleid == '2'">{{leads.Executivename}}</td>
+                  <!-- <td>{{leads.nextactiondate | date: 'dd-MMM-yyyy'}}
+                    <div>{{leads.nextactiontime}}</div>
+                  </td> -->
+                  <td
+                    *ngIf="(inactive1Param || inactive2Param || inactive3Param || inactive4Param || inactiveFinalParam )== '1'">
+                    {{leads.lastupdated | date: 'dd-MMM-yyyy'}}
+                    <div>{{leads.lastupdated | date: 'hh:mm a'}}</div>
+                  <td style="width: 300px;"><span *ngIf="(leads.visitremarks && leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin')">{{leads.visitremarks}}</span>
+                    <hr class="m-0" *ngIf="(leads.visitremarks && leads.visitremarks != 'got this lead from Admin' && leads.visitremarks != 'got this new lead Admin') && leads.manualremarks"> 
+                    {{leads.manualremarks}}
+
+                     <div style="font-size: 18px;font-style: italic;font-weight: 900;text-align: center;" *ngIf="(leads.manualremarks == null && (leads.visitremarks == null || leads.visitremarks == 'got this lead from Admin' || leads.visitremarks == 'got this new lead Admin'))">No Remarks </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="text-center lead_norecord" *ngIf="! callerleads?.length">
+          No Leads Found.....
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="modal fade" id="reassign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg assignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Total Re-Assign Leads : {{reassignleadsCount}}</h4>
+        <div class="d-flex" style="gap: 0.2rem">
+          <label>Random Assign</label>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch5" (change)="checkRandom($event)"
+              [disabled]="maxSelectedLabels == 1">
+            <label class="custom-control-label" for="customSwitch5"></label>
+          </div>
+        </div>
+        <button type="button" class="close" id="closereassignmodal" data-dismiss="modal"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <!-- <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign Team</label>
+              <select id="team_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="reassignTeam($event)">
+                <option value="">Select Team</option>
+                <option value="retail" [selected]="'retail' === team">Retail Team</option>
+                <option value="mandate" [selected]="'mandate' === team">Mandate Team</option>
+              </select>
+            </div> -->
+
+            <div class="form-group col-3 input_cmn_div" [hidden]="selectedTeamType != 'mandate'">
+              <label class="font-bold">Select Property</label>
+              <select id="property_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                (change)="reassignPropChange($event)">
+                <option value="" selected>Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                  [selected]="projects.property_idfk == selectedMandateProp">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div" [hidden]="selectedTeamType != 'mandate'">
+              <label class="font-bold">Assign Executive Team</label>
+              <select id="retail_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="reassignExecTeam($event)">
+                <option value="">Select Execuitve Team</option>
+                <option value="50002">Relationship Executives</option>
+                <option value="50014">Customersupport Executives</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign To</label>
+              <p-multiSelect id="mandateExec_dropdown" [options]="reassignListExecutives"
+                [(ngModel)]="selectedEXECUTIVES" [filter]="true" optionLabel="name" #customersupport="ngModel"
+                name="customersupport" defaultLabel="Select Executives"
+                (onChange)="reAssignexecutiveSelect($event)"></p-multiSelect>
+            </div>
+
+            <!-- <div class="form-group col-3 input_cmn_div" [hidden]="selectedTeamType != 'retail'"
+              [ngStyle]="{'padding-top':selectedTeamType != 'retail'?'0.5rem':'0rem'}">
+              <label class="font-bold">Assign To</label>
+              <p-multiSelect id="retailExec_dropdown" [options]="reassignListExecutives"
+                [(ngModel)]="selectedEXECUTIVES" [filter]="true" optionLabel="ExecName" #customersupport="ngModel"
+                name="customersupport" defaultLabel="Select Executives"
+                (onChange)="reAssignexecutiveSelect($event)"></p-multiSelect>
+            </div> -->
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Leads Count</label>
+              <select id="leadcount_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+            <div class="form-group col-2 input_cmn_div pt-3">
+              <button type="button" class="btn btn-warning" (click)="getAssignedLeadsList()">Assign Now</button>
+            </div>
+
+            <!-- list of reassign selected leads table  -->
+            <div class="assign_table1 pt-3">
+              <table id="start2" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'" (scrolled)="loadMoreassignedleads()">
+                <tbody class="enquiry_table_body">
+                  <tr *ngFor="let assign of callerleads; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign}}" name='programming' (change)="getselectedleads()"
+                          [attr.data-assign]="assign | json" style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>
+                      <span
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">
+                        {{assign?.latestDateTime | date: 'dd-MMM-yyyy'}},
+                        {{ assign?.latestDateTime | date: 'hh:mm a'}}
+                      </span>
+                      <hr class="m-0"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">
+                      <span style="font-size: 12px; font-weight: 300;display: block;" class="mt-1"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">First
+                        Received</span>
+                      <span style="font-size: 12px;font-weight: 300"
+                        *ngIf="(assign.leadDate | date: 'dd-MMM-yyyy') !== (assign?.latestDateTime | date: 'dd-MMM-yyyy')">{{assign.leadDate
+                        | date: 'dd-MMM-yyyy'}}, {{ assign.leadTime}} </span>
+                      <span
+                        *ngIf="((assign.leadDate | date: 'dd-MMM-yyyy') == (assign?.latestDateTime | date: 'dd-MMM-yyyy')) || assign?.latestDateTime == null">{{assign.leadDate
+                        | date: 'dd-MMM-yyyy'}}, {{ assign.leadTime}} </span>
+                    </td>
+                    <td style="width: 300px;">
+                      <div class="statuscard">{{assign.CustomerName}} </div>
+                    </td>
+                    <td>{{assign.number}}</td>
+                    <td>{{assign.source}}</td>
+                    <td>{{assign.propertyname}}</td>
+                    <td>{{assign.Executivename}}</td>
+                    <td>{{assign.assigneddate | date: 'dd-MMM-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#reassigned_leads_modal" id="reassign_leads_detail" style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  data-backdrop="static" data-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0"> Re-Assign Leads</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <!-- <div class="">
+              <h3>ReAssigned Leads Details</h3>
+            </div> -->
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Fresh Assigned</th>
+                  <th>Re-Assigned</th>
+                  <th>Not Assigned</th>
+                  <th>Untouched Leads</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body">
+                <tr *ngFor="let reassign of reassignedResponseInfo; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{reassign.execname}}</td>
+                  <td>{{reassign.fresh}}</td>
+                  <td>{{reassign.reassigned}}</td>
+                  <td>{{reassign.exsiting}}</td>
+                  <td>{{(reassign.totalleads?reassign.totalleads:'---')}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN-CONTENTS -->
+
+<div class="clearfix"></div>
+
+<!-- <textarea id="junkcopyleads"></textarea> -->

@@ -1,0 +1,364 @@
+<!-- HEADER -->
+<div>
+  <app-header></app-header>
+</div>
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+<div class="row main_count_header" [ngStyle]="{'padding-left': isSidebarHovered ? '16.5rem' : '6rem'}">
+  <div class="col-8 pl-0">
+    <div class="lead_count pt-2">
+      <label class="mb-0">CP Dedicated Leads : {{enquiryCount}}</label>
+    </div>
+  </div>
+  <div class="col-4 pt-2 text-right">
+
+    <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="modal" data-target="#assign_lead"
+      aria-haspopup="true" aria-expanded="false" (click)="assignmodalfetch()">
+      <i class="fas fa-share"></i>
+    </button>
+
+    <button type="button" class="btn btn-warning" (click)="refresh();"><i class="fas fa-redo"></i> Reset</button>
+
+  </div>
+
+</div>
+
+<div class="main_suggested_div" [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '4rem'}">
+  <button class="chevron-btn left" (click)="scrollLeft()">
+    <i class="fa fa-chevron-left"></i>
+  </button>
+  <ul class="ks-cboxtags m-0" #junkReason>
+    <li *ngFor="let reason of junkReasonList; let i = index">
+      <input type="radio" id="junkrescheckbox{{i}}" value="{{reason.Junk_IDPK}}" name='programming1'
+        [(ngModel)]="selectedJunkReasonId" (change)="selectSuggestedJunkReason(reason)">
+      <label for="junkrescheckbox{{i}}">{{reason.Junk_Category}} ({{reason.Junk_Category_Count}})</label>
+    </li>
+  </ul>
+  <button class="chevron-btn right" (click)="scrollRight()">
+    <i class="fa fa-chevron-right"></i>
+  </button>
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '16rem' : '5.5rem'}">
+
+  <div class="enquiry_content_main">
+    <div class="table-container pl-0 pr-0">
+
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="propertyFilter && propertyid != ''">
+          <div class="p-2 chip">
+            {{propertyid}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="sourceFilter && source != ''">
+          <div class="p-2 chip">
+            {{source}}
+            <span class="closebtn" (click)="sourceClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="localityFilter && selectedLocality != '' && selectedLocalityName != ''">
+          <div class="p-2 chip">
+            {{selectedLocalityName}}
+            <span class="closebtn" (click)="localityClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="datefilterview && fromdate != '' && todate != ''">
+          <div class="p-2 chip">
+            Date: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateclose()">&times;</span>
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table pt-1 " #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+
+                  <th>Name</th>
+
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Source</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_source"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu sourceBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                          <div class="dropdown-search-container"><input type="text" class="form-control sourcesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_source" name="searchTerm_source"
+                              (input)="filtersource()" style="margin-bottom: 2px;"></div>
+                          <div class="source_list_checkbox">
+                            <div *ngFor="let sourcelist of sourcelist">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangesource(sourcelist.source)">{{ sourcelist.source }}</div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Locality</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_locality"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu localityBasedFilter" aria-labelledby="bookingLeadDropdown_locality"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+
+                          <div class="dropdown-search-container"><input type="text" class="form-control localitysearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_locality" name="searchTerm_locality"
+                              (input)="filterlocality()" style="margin-bottom: 2px;"></div>
+
+                          <div class="city_list_checkbox">
+                            <div *ngFor="let local of locality">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangeLocality(local)">{{ local.locality }}</div>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="propertyList?.length">
+                            <div *ngFor="let project of propertyList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox" id="hidepropcheckboxid"
+                             value="{{project?.propertyname}}" name='propFilter' (change)="onCheckboxChange()"> -->
+                                <span (click)="onCheckboxChange(project.Property)">{{ project.Property }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!propertyList?.length" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+
+                  <th>Reason</th>
+
+                  <th style="width: 17%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Date</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div id="nextActionDates" style="cursor: pointer;">
+                          <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let enquiry of enquiries ; let i = index"
+                [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+                <tr>
+                  <td>{{i+1}}</td>
+
+                  <td>
+                    <a routerLink="/assigned-leads-details/{{enquiry.Customer_ID}}/{{userid}}/{{'0'}}/{{'retail'}}">{{enquiry.Name}}
+                    </a><br />
+                    {{enquiry.Number}}
+                  </td>
+
+                  <td>
+                    <span>{{enquiry.Source}}</span>
+                  </td>
+
+
+                  <td>
+                    <span>{{(enquiry.Locality?enquiry.Locality:'---')}}</span>
+                  </td>
+
+                  <td>
+                    {{(enquiry.Property?enquiry.Property:'---')}}
+                  </td>
+
+                  <td>
+                    {{enquiry.Reason}}
+                  </td>
+
+                  <td>
+                    {{enquiry.DateTime | date: 'dd-MMM-yyyy'}} <span *ngIf="enquiry.DateTime">, {{enquiry.DateTime |
+                      date: 'hh:mm a'}}</span>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center no-record" *ngIf="enquiries?.length == 0">
+              No Records Found...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-lds-ring-div" *ngIf=filterLoader>
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+     <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+<div class="modal fade" id="assign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog assignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-12 m-0">Assign Leads</h4>
+      </div>
+
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" (click)="assignleadModalClose()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <!-- <div class="form-group col-3 input_cmn_div leadsDrop">
+              <label class="font-bold">Select City</label>
+              <select id="city_dropdown" class="form-control ui dropdown exec_designation leadsDrop"
+                (change)="cityselected($event)">
+                <option value="">Select City</option>
+                <option *ngFor="let city of cities" value="{{city.id}}">
+                  {{city.name}}</option>
+              </select>
+            </div> -->
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select Clients</label>
+              <p-multiSelect id="mandaterm_dropdown" [options]="clientList" [(ngModel)]="selectedEXEC" [filter]="true"
+                optionLabel="client_name" #customersupport="ngModel" name="customersupport"
+                defaultLabel="Select Clients" [showToggleAll]="showSelectAll"
+                (onChange)="executiveSelect($event)"></p-multiSelect>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select the Count</label>
+              <select id="counts_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+            <div class="form-group col-2  input_cmn_div pt-3">
+              <button class="approve btn btn-warning" (click)="assignMandatetorm()" type="submit">Share Now</button>
+              <button #cancel hidden type="button" class="btn btn-warning" data-dismiss="modal"></button>
+            </div>
+
+            <div class="assign_table">
+              <table id="start2" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                (scrolled)="loadMore()" [infiniteScrollContainer]="'.assign_table'">
+                <thead>
+                  <tr class="header">
+                    <th>Sl.No</th>
+                    <th>Name</th>
+                    <th>Source</th>
+                    <th>Locality</th>
+                    <th>Property
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <input type="hidden" id="selectedleads" [(ngModel)]="selectedRetailLeads" #assignedleads="ngModel"
+                    name="assignedleads" required>
+                  <tr *ngFor="let assign of enquiries ; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign.Customer_ID}}" name='programmingretail' (change)="getselectedRetailleads()"
+                          value="{{assign.Customer_ID}}" name='programmingretail' (change)="getselectedRetailleads()"
+                          style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>{{assign.Name}} <br> {{assign.Number}}</td>
+                    <td>{{assign.Source}}</td>
+                    <td>{{(assign.Locality ? assign.Locality : '---')}}</td>
+                    <td>{{(assign.Property ? assign.Property : '---')}}</td>
+                    <td>{{assign.DateTime}} <span *ngIf="assign.DateTime"> , {{assign.DateTime |
+                        date:'dd-MMM-yyyy'}}</span></td>
+                    <td>{{assign.DateTime}} <span *ngIf="assign.DateTime"> , {{assign.DateTime |
+                        date:'dd-MMM-yyyy'}}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div *ngIf=filterLoader class="main-lds-ring-div">
+        <!-- <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> -->
+         <img src="../../../assets/images/infinity_loader.gif">
+      </div>
+    </div>
+  </div>
+</div>

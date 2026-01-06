@@ -1,0 +1,706 @@
+<div class="row body-cntnts-mandate">
+  <div class="col-6">
+    <div class="d-flex justify-content-between align-items-center details_column col-12">
+      <div>
+        <span class="cust_name">{{(show_cnt?.enquiry_name?show_cnt?.enquiry_name:show_cnt?.customer_name)}}</span>
+        <div style="font-size: 16px;">{{(((roleid != 50001 && roleid != 50002) || (assignedrm &&
+          assignedrm[0]?.leadstage != 'Fresh' ||
+          ((assignedrm && assignedrm[0]?.leadstage == 'Fresh') && (assignedrm && assignedrm[0]?.followupreason == 8))))?
+          show_cnt.customer_number :
+          'xxxxxxxxxx')}}</div>
+        <div class="cust_details">{{liveCallData?.direction | titlecase}} Call</div>
+      </div>
+      <div>
+        <span class="cust_details">Call Duration</span>
+        <div class="cust_name" style="color: #0B7AB2 !important;" *ngIf="callDurationStr">{{callDurationStr}} </div>
+        <div class="cust_details" *ngIf="liveCallData && liveCallData.starttime">Call started on
+          {{liveCallData?.starttime | date:'h:mm a'}}</div>
+      </div>
+    </div>
+    <div class="p-0 col-12">
+      <div class="lead_deatils_header col-12">
+        <span>Lead Details</span>
+        <span><a>
+            <img *ngIf="!isEditLead" (click)="getcustomerupdate(show_cnt.customer_IDPK)"
+              src="../../../../assets/images/lead_details_edit_icon.png" alt="" style="width: 25px;cursor: pointer;">
+            <i *ngIf="isEditLead" class="fas fa-check" style="font-size: 20px;cursor: pointer;"
+              (click)="updateCustomer()"></i>
+          </a></span>
+      </div>
+      <div class="col-12 row m-0 pb-3" style="background: #ffffff;">
+
+        <div class="col-6 pt-3" *ngIf="roleid == '1' || roleid == '2' || roleid == '50013' || roleid == '50014'">
+          <span class="font_12">Source</span>
+          <div class="font_14">{{show_cnt.customer_source}}</div>
+        </div>
+
+        <div class="col-6 pt-3" *ngIf="roleid == 1 || roleid == 2">
+          <span class="font_12">Enquired</span>
+          <div class="font_14">{{(show_cnt.customer_properties ? show_cnt.customer_properties : '---')}}</div>
+        </div>
+
+        <div class="col-6 pt-3">
+          <span class="font_12">Location</span>
+          <div class="font_14">{{(show_cnt.enquiry_location ? show_cnt.enquiry_location : '---')}}</div>
+        </div>
+
+        <div class="col-6 pt-3">
+          <span class="font_12">Property Type</span>
+          <div class="font_14" *ngIf="leadPropertyType && !isEditLead">{{leadPropertyType}}</div>
+          <div *ngIf="isEditLead">
+            <select class="form-control" [(ngModel)]="editmodela.enquiry_proptype" (change)="typeselection($event)">
+              <option value="" disabled selected>Select Preferred Type</option>
+              <option value="1">Apartment</option>
+              <option value="2">Villa</option>
+              <option value="3">Plot</option>
+              <option value="4">Villament</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6 pt-3">
+          <span class="font_12">Possession</span>
+          <div class="font_14" *ngIf="leadPossession && !isEditLead">{{leadPossession}}</div>
+          <div *ngIf="isEditLead">
+            <select class="form-control" [(ngModel)]="editmodela.enquiry_possession"
+              (change)="possessionselection($event)">.
+              <option value="" disabled selected>Select Possession</option>
+              <option value="1">
+                < 6 Months</option>
+              <option value="2">1 Year</option>
+              <option value="3">1 - 2 Years</option>
+              <option value="4">> 2 Years</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6 pt-3">
+          <span class="font_12">Size</span>
+          <div class="font_14" *ngIf="!isEditLead">{{(show_cnt.enquiry_bhksize ? show_cnt.enquiry_bhksize : '---')}}
+          </div>
+          <div *ngIf="isEditLead">
+            <select class="form-control" [(ngModel)]="editmodela.enquiry_bhksize" (change)="sizeselection($event)">
+              <option value="" disabled selected>Select BHK Size</option>
+              <!-- Apartment only options -->
+              <option value="1"
+                [hidden]="((editmodela.enquiry_proptype == '2' || editmodela.enquiry_proptype == '4') && propertyType != 1) || propertyType == '2' || propertyType == '4'">
+                1 BHK
+              </option>
+
+              <option value="2"
+                [hidden]="((editmodela.enquiry_proptype == '2' || editmodela.enquiry_proptype == '4') && propertyType != 1) || propertyType == '2' || propertyType == '4'">
+                2 BHK
+              </option>
+
+              <option value="3">3 BHK</option>
+
+              <!-- Villa/Villament only -->
+              <option value="3.5"
+                [hidden]="((editmodela.enquiry_proptype == null || editmodela.enquiry_proptype == '1') && propertyType != 2 && propertyType != 4 ) || propertyType == '1'">
+                3.5 BHK
+              </option>
+
+              <option value="4">4 BHK</option>
+
+              <option value="4.5"
+                [hidden]="((editmodela.enquiry_proptype == null || editmodela.enquiry_proptype == '1') && propertyType != 2 && propertyType != 4 ) || propertyType == '1'">
+                4.5 BHK
+              </option>
+
+              <option value="5">5 BHK</option>
+
+              <option value="5.5"
+                [hidden]="((editmodela.enquiry_proptype == null || editmodela.enquiry_proptype == '1') && propertyType != 2 && propertyType != 4 ) || propertyType == '1'">
+                5.5 BHK
+              </option>
+
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6 pt-3">
+          <span class="font_12">Budget</span>
+          <div class="font_14" *ngIf="!isEditLead">{{(show_cnt.enquiry_budget ? show_cnt.enquiry_budget :'---')}}</div>
+          <div *ngIf="isEditLead">
+            <select class="form-control" [(ngModel)]="editmodela.enquiry_budget" (change)="budgetselection($event)">
+              <option value="" disabled selected>Select Budget</option>
+              <!-- Budget for Apartment + Plot -->
+              <ng-container *ngIf="(editmodela.enquiry_proptype == '1' || editmodela.enquiry_proptype == '3') || 
+                (editmodela.enquiry_proptype == null && propertyType != '2' && propertyType != '4')">
+                <option value="< 60L">
+                  < 60L</option>
+                <option value="60L - 80L">60L - 80L</option>
+                <option value="80L - 1Cr">80L - 1Cr</option>
+                <option value="1Cr - 1.2Cr">1Cr - 1.2Cr</option>
+                <option value="> 1.2Cr">> 1.2Cr</option>
+
+              </ng-container>
+
+              <!-- Budget for Villa + Villament -->
+              <ng-container *ngIf="(editmodela.enquiry_proptype == '2' || 
+                                                editmodela.enquiry_proptype == '4') || 
+                                                (propertyType == '2' || propertyType == '4')">
+
+                <option value="1.5Cr - 2Cr">1.5Cr - 2Cr</option>
+                <option value="2Cr - 3Cr">2Cr - 3Cr</option>
+                <option value="3Cr - 4Cr">3Cr - 4Cr</option>
+                <option value="> 4Cr">> 4Cr</option>
+
+              </ng-container>
+
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 scroll-height">
+    <ul class="nav nav-tabs " role="tablist" style="justify-content: space-between;background: #E3E3E3;">
+      <li class="nav-item col-6 p-0 text-center">
+        <a class="nav-link updateActivities active" id="updateActivitiesTab" data-toggle="tab" href="#home" role="tab"
+          (click)="getstages();">
+          <i class="now-ui-icons objects_umbrella-13"></i> Update Status
+        </a>
+      </li>
+
+      <!-- <li class="nav-item"
+        [ngClass]="{'blurred' : userid != selectedExecId && roleid != 1 && roleid != 2 && ((role_type == 1 && assignedrm && (assignedrm[0]?.roleid == 50003 || assignedrm[0]?.roleid == 50004)) || role_type != 1) && feedbackId != 1}"
+        [hidden]="assignedrm && (assignedrm[0]?.leadstage == 'Fresh' && assignedrm[0]?.followupreason != '8') || (assignedrm && assignedrm[0]?.leadstatus == '3')"
+        (click)="checkstage()">
+        <a class="nav-link" data-toggle="tab" href="#plans" role="tab"
+          *ngIf="assignedrm && (assignedrm[0]?.leadstage == 'USV' || assignedrm[0]?.leadstage == 'RSV' || assignedrm[0]?.leadstage == 'Final Negotiation')">
+          <i class="now-ui-icons shopping_cart-simple"></i>
+          <span *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan == null">Fix a Plan</span>
+          <span *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan != null">Fixed Plan</span>
+        </a>
+        <a class="nav-link cursor-pointer"
+          *ngIf="assignedrm && assignedrm[0]?.leadstage == 'Fresh' && assignedrm[0]?.followupreason == '8'">
+          <i class="now-ui-icons shopping_cart-simple"></i>
+          <span>Fix a Plan</span>
+        </a>
+      </li> -->
+
+      <li class="nav-item col-6 p-0 text-center">
+        <a class="nav-link allActivities" id="allActivitiesTab" data-toggle="tab" href="#profile" role="tab"
+          (click)="logsTab('lead');">
+          <i class="now-ui-icons shopping_cart-simple"></i> All Activities
+        </a>
+      </li>
+    </ul>
+
+
+    <hr class="m-0" style="border-top: 1px solid #D9D9D9;">
+    <div class="card-body">
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div *ngIf="assignedrm?.length && assignedrm[0]?.suggestedprop?.length > 1" class="p-0">
+          <button *ngFor="let property of assignedrm[0]?.suggestedprop;  let i = index" id="closedsection"
+            [ngClass]="{'selected': i === selectedItem}" (click)='tabclick(i,property); selectedItem = i;' type="button"
+            class="btn btnTab commonbtnss actionbtnss actionss{{i}}">
+            <span *ngIf="assignedrm[0]?.suggestedprop"><i class="fa fa-check-circle iconmarks selectMarks{{i}}"
+                aria-hidden="true"></i></span>&nbsp;&nbsp; {{property.name}}
+          </button>&nbsp;
+        </div>
+        <div class="tab-pane active" id="home" role="tabpanel">
+          <!-- Confirmed-Action -->
+          <div
+            [ngClass]="{'blurred' : callStatus != 'Answered' && callStatus != 'Customer Answered' && callStatus != 'Answered by customer' && callStatus != 'Call Disconnected' && callDirection != 'inbound'}">
+            <div class="pt-3" *ngIf="!isSuggestedPropBoolean && showRejectionForm == false  ">
+              <div class="wrapper">
+                <input *ngIf="followup" type="radio" class="radiocheck" name="select4" value="Follow Up" id="option-20"
+                  (click)="actionChange($event.target.value)">
+                <label *ngIf="followup" for="option-20" class="option option-20">
+                  <span>Follow Up</span>
+                </label>
+                <input *ngIf="USV" type="radio" class="radiocheck" name="select4" value="USV" id="option-21"
+                  (click)="actionChange($event.target.value)">
+                <label *ngIf="USV" for="option-21" class="option option-21">
+                  <span>USV</span>
+                </label>
+                <input *ngIf="RSV" type="radio" class="radiocheck" name="select4" value="RSV" id="option-23"
+                  (click)="actionChange($event.target.value)">
+                <label *ngIf="RSV" for="option-23" class="option option-23">
+                  <span>RSV</span>
+                </label>
+                <input *ngIf="Negotiation" type="radio" class="radiocheck" name="select4" value="Final Negotiation"
+                  id="option-24" (click)="actionChange($event.target.value)">
+                <label *ngIf="Negotiation" for="option-24" class="option option-24">
+                  <span>FN</span>
+                </label>
+                <input *ngIf="leadclose && feedbackId != 1" type="radio" class="radiocheck" name="select4"
+                  value="Lead Closed" id="option-25" (click)="actionChange($event.target.value)">
+                <label *ngIf="leadclose && feedbackId != 1" for="option-25" class="option option-25">
+                  <span>Lead Closed</span>
+                </label>
+                <!-- [ngClass]="{'blurred' : callCounts <= 3 && roleid != 1 && roleid != 2}" -->
+                <input *ngIf="junkmove" type="radio" class="radiocheck" name="select4" value="Move to Junk"
+                  id="option-26" (click)="actionChange($event.target.value)">
+                <!-- [ngClass]="{'blurred' : callCounts <= 3 && roleid != 1 && roleid != 2}" -->
+                <label *ngIf="junkmove" for="option-26" class="option option-26">
+                  <span>Junk</span>
+                </label>
+              </div>
+              <input type="hidden" id="customer_phase4">
+              <input type="hidden" id="sectionselector">
+            </div>
+            <div *ngIf="followform">
+              <app-mandate-on-call-followupform [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [callStatus]="callStatus" [callDirection]="callDirection" [assignedRm]="assignedRm"
+                (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-followupform>
+            </div>
+            <div *ngIf="usvform">
+              <app-mandate-on-call-usv [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [assignedRm]="assignedRm" (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-usv>
+            </div>
+            <div *ngIf="rsvform">
+              <app-mandate-on-call-rsv [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [assignedRm]="assignedRm" (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-rsv>
+            </div>
+            <div *ngIf="finalnegoform">
+              <app-mandate-on-call-nego [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [assignedRm]="assignedRm" (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-nego>
+            </div>
+            <div *ngIf="leadclosedform">
+              <app-mandate-on-call-closed [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [assignedRm]="assignedRm" (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-closed>
+            </div>
+            <div *ngIf="junkform">
+              <app-mandate-on-call-junk [selectedExecId]="selectedExecId" [calledLead]="calledLead"
+                [assignedRm]="assignedRm" (dataUpdated)="handleRefresh()"
+                [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-junk>
+            </div>
+
+          </div>
+          <!-- Confirmed-Action -->
+        </div>
+
+        <!-- <div style="display: flex;flex-direction: column;justify-content: center;align-items: center;gap: 1rem;">
+          <div style="font-size:medium;font-weight: 700;display: flex;justify-content: center;color: #a9a9a9;">Lead
+            Moved to Junk</div>
+          <button class="btn btn-warning" type="button" (click)="revertStage()">Revert</button>
+        </div> -->
+
+        <div
+          *ngIf="roleid != '1' && roleid != '2' && activestagestatus?.length && activestagestatus[0]?.stage == 'Junk'">
+          <div style="font-size:medium;font-weight: 700;display: flex;justify-content: center;color: #a9a9a9;">Lead
+            Moved to Junk</div>
+        </div>
+
+        <div
+          *ngIf="((roleid == '50013' || roleid == '50014') && activestagestatus?.length && (activestagestatus[0]?.stage == 'Deal Closing Requested' || activestagestatus[0]?.stage == 'Deal Closed' || activestagestatus[0]?.stage == 'Closing Request Rejected' || activestagestatus[0]?.stage == 'Deal Closing Pending') && feedbackId == '0' && userid == selectedExecId) || (assignedrm && (assignedrm[0].roleid == 50013 || assignedrm[0].roleid == 50014) && userid == 1)">
+          <div style="font-size:medium;font-weight: 700;display: flex;justify-content: center;color: #a9a9a9;">
+            <span class="pt-3"
+              *ngIf="activestagestatus && activestagestatus[0]?.stage == 'Deal Closed' && assignedrm">Lead Closed by
+              {{assignedrm[0]?.accompany}}</span>
+            <span class="pt-3"
+              *ngIf="activestagestatus && activestagestatus[0]?.stage == 'Deal Closing Requested' && assignedrm">Deal
+              Closing Requested sent by {{assignedrm[0]?.accompany}}</span>
+            <span class="pt-3"
+              *ngIf="activestagestatus && activestagestatus[0]?.stage == 'Deal Closing Pending' && assignedrm">Deal
+              Closing Pending request sent to {{assignedrm[0]?.accompany}}</span>
+            <span class="pt-3"
+              *ngIf="activestagestatus && activestagestatus[0]?.stage == 'Closing Request Rejected'">Closing Request
+              Rejected by Admin</span>
+          </div>
+        </div>
+
+        <div *ngIf="execview && (activestagestatus && activestagestatus[0]?.stage != 'Junk')" class="tab-pane"
+          id="profile" role="tabpanel">
+          <div class="button_section  p-2 d-flex ">
+            <div class="planleadassign">
+
+              <a class="add_class lead_section active other_section" (click)="logsTab('lead')">
+                Lead History
+              </a>
+
+              <a class="add_class executive_section other_section" (click)="logsTab('executive')">
+                <span *ngIf="assignedrm && assignedrm.length > 0">{{assignedrm[0]?.customer_assign_name}}'s
+                  History</span>
+              </a>
+
+            </div>
+          </div>
+
+          <div *ngIf="logsType == 'lead'" style="height: calc(100vh - 170px);overflow: scroll;">
+            <div class="col-12 p-0" *ngIf="leadtrack">
+              <div class="col-12 p-0" *ngIf="leadtrack?.length" style="height: cal c(100vh - 170px);overflow: scroll;">
+                <div class="history-tl-container">
+
+                  <ng-container *ngFor="let leadhistory of leadtrack; let i = index">
+
+                    <div class="date_row" *ngIf="leadhistory.item_type == 'message_date'">
+                      {{ leadhistory.Saveddate }}
+                    </div>
+
+                    <div class="timeline-item" *ngIf="leadhistory.item_type != 'message_date'">
+                      <div class="timeline-left">
+                        <span class="dot"></span>
+                        <span class="line"
+                          *ngIf="i < leadtrack.length - 1 && leadtrack[i + 1].item_type !== 'message_date'"></span>
+                      </div>
+
+                      <div class="timeline-content d-flex">
+                        <div class="time">
+                          {{ leadhistory.Saveddate | date:'hh:mm a' }}
+                        </div>
+                        <div class="text">
+                          <div class="title">
+                            <strong>{{((leadhistory.autoremarks == 'got this new lead from Admin' || leadhistory.autoremarks == 'got this lead from Admin' || leadhistory.autoremarks == 'got this new lead from Admin Auto-Assigned' || leadhistory.autoremarks == 'got this lead from Admin auto assigned' || leadhistory.autoremarks == 'got this new lead from Admin auto') ? leadhistory.executivename : leadhistory.updatebyname)}}</strong>
+                            {{ leadhistory.autoremarks }}
+                          </div>
+                          <div class="remarks">
+                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-container>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 d-flex justify-content-center py-5" *ngIf="leadtrack?.length == 0 || !leadtrack">
+              <span style="font-size: 20px;font-weight: bolder;font-style: italic;">No History Found</span>
+            </div>
+          </div>
+
+          <div *ngIf="logsType == 'executive'" style="height: calc(100vh - 170px);overflow: scroll;">
+            <div class="col-12 p-0" *ngIf="leadtrack">
+              <div class="col-12 p-0" *ngIf="leadtrack?.length" style="height: calc(100vh - 170px);overflow: scroll;">
+                <div class="history-tl-container">
+
+                  <ng-container *ngFor="let leadhistory of leadtrack; let i = index">
+
+                    <div class="date_row" *ngIf="leadhistory.item_type == 'message_date'">
+                      {{ leadhistory.Saveddate }}
+                    </div>
+
+                    <div class="timeline-item" *ngIf="leadhistory.item_type != 'message_date'">
+                      <div class="timeline-left">
+                        <span class="dot"></span>
+                        <span class="line"
+                          *ngIf="i < leadtrack.length - 1 && leadtrack[i + 1].item_type !== 'message_date'"></span>
+                      </div>
+
+                      <div class="timeline-content d-flex">
+                        <div class="time">
+                          {{ leadhistory.Saveddate | date:'hh:mm a' }}
+                        </div>
+                        <div class="text">
+                          <div class="title">
+                            <strong>{{((leadhistory.autoremarks == 'got this new lead from Admin' || leadhistory.autoremarks == 'got this lead from Admin' || leadhistory.autoremarks == 'got this new lead from Admin Auto-Assigned' || leadhistory.autoremarks == 'got this lead from Admin auto assigned' || leadhistory.autoremarks == 'got this new lead from Admin auto') ? leadhistory.executivename : leadhistory.updatebyname)}}</strong>
+                            {{ leadhistory.autoremarks }}
+                          </div>
+                          <div class="remarks">
+                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-container>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 d-flex justify-content-center py-5" *ngIf="leadtrack?.length == 0 || !leadtrack">
+              <span style="font-size: 20px;font-weight: bolder;font-style: italic;">No History Found</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="plans" role="tabpanel"
+          [ngClass]="{'blurred' : callStatus != 'Answered' && callStatus != 'Customer Answered' && callStatus != 'Answered by customer' && callStatus != 'Call Disconnected' && callDirection != 'inbound'}"
+          *ngIf="assignedrm &&  (assignedrm[0]?.leadstage == 'USV' ||  assignedrm[0]?.leadstage == 'RSV' ||  assignedrm[0]?.leadstage == 'Final Negotiation')">
+          <div>
+            <div class="col-sm-12">
+              <div class="wrapper mt-2">
+                <input type="radio" class="radiocheck" name="select5" value="weekend" id="option-41"
+                  [(ngModel)]="selectedPlanType" (click)="selectedplan('weekend')">
+                <label for="option-41" class="option option-41">
+                  <span>Weekend
+                    <img
+                      *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan == '2' || selectedPlanType == '2'"
+                      src="../../../../assets/images/checkin.png">
+                    <img
+                      *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan == '2' && selectedPlanType != '2'"
+                      src="../../../../assets/images/whitetick.png">
+                  </span>
+                </label>
+
+                <input type="radio" class="radiocheck" name="select5" value="weekdays" id="option-42"
+                  [(ngModel)]="selectedPlanType" (click)="selectedplan('weekdays')" checked>
+                <label for="option-42" class="option option-42">
+                  <span>Weekdays <img
+                      *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan == '1' || selectedPlanType == '1'"
+                      src="../../../../assets/images/checkin.png"> <img
+                      *ngIf="selectedSuggestedProp && selectedSuggestedProp.weekplan == '1' && selectedPlanType != '1'"
+                      src="../../../../assets/images/whitetick.png"></span>
+                </label>
+
+                <!-- <input type="radio" class="radiocheck" name="select5" value="ytc" [(ngModel)]="selectedPlanType"
+                id="option-43" (click)="selectedplan('ytc')">
+              <label for="option-43" class="option option-43">
+                <span>Yet to Confirm <img *ngIf="visitpanelselection && visitpanelselection[0]?.weekplan == '0'" src="../../../../assets/images/checkin.png"></span>
+              </label> -->
+              </div>
+
+            </div>
+            <div class="px-3 py-3" *ngIf="selectedPlanType != '' && editplan == false">
+              <div class="col-12 text-center" style="font-size: 14px;font-weight: 600;">
+                <div class="col-10 d-inline-block p-2 mb-2"
+                  style="border: 1px solid #BEBEBE;background-color: #0B7AB21F;">
+                  <span *ngIf="activestagestatus"
+                    style="line-height: 2rem;word-spacing: 2px;">{{(activestagestatus[0].stage == 'Final Negotiation' ?
+                    'FN' : activestagestatus[0].stage)}} Fixed on
+                    <span *ngIf="visitPlanNextDate">{{visitPlanNextDate | date : 'dd-MMMM-yy'}}
+                      <span *ngIf="visitPlanNextTime"> , {{visitPlanNextTime}}
+                      </span>
+                    </span></span>
+                  <div style="font-size: 12px;font-weight: 500;color: #676767;line-height: 2rem;"
+                    *ngIf="selectedSuggestedProp">{{selectedSuggestedProp.name}} were Fixed</div>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-end gap-1" *ngIf="visitPlanDone == false">
+                <button class="btn btn-primary " type="button" (click)="editvisitPlan('edit')">Edit Plan</button>
+                <button type="button" class="btn btn-primary" (click)="confirmPlan()">Confirm Plan</button>
+              </div>
+
+              <div class="col-12 d-flex justify-content-center gap-1" *ngIf="visitPlanDone == true">
+                <button class="btn btn-primary " type="button" (click)="editvisitPlan('change')">Change The
+                  Plan</button>
+              </div>
+            </div>
+            <div class="pt-3" *ngIf="editplan == true">
+              <div class="d-flex">
+                <div class="col-6 form-group headingdesign" [hidden]="selectedPlanType == 'ytc'">
+                  <label class="heads">Visit Date</label>
+                  <div class="ui calendar" id="disableddaysofweek_calendar">
+                    <div class="ui fluid input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text" autocomplete="off" id="visitPlandate" placeholder="Date">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 form-group headingdesign" [hidden]="selectedPlanType == 'ytc'">
+                  <label class="heads">Visit Time</label>
+                  <div class="ui calendar calendartime">
+                    <div class="ui input left icon timepickerdiv">
+                      <i class="time icon"></i>
+                      <input class="form-control" autocomplete="off" id="visitPlantime" type="text" placeholder="Time">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-12 form-group headingdesign">
+              <span class="d-flex justify-content-between align-items-baseline">
+                <label class="heads">Suggested Properties </label> -->
+              <!-- <span role="button" style="color: #4183C4;" data-toggle="modal" data-target="#suggestproperties02">Add Properties<i class="bi bi-building-add" style="font-size: 20px; cursor: pointer;"></i></span> -->
+              <!-- </span> -->
+              <!-- <div class="main_suggested_div">
+                <ul class="ks-cboxtags" *ngIf="activestagestatus[0].stage == 'USV'">
+                  <li *ngFor="let property of suggestedpropertylists; let i = index">
+                    <span *ngIf="property.selection == '1'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)" checked>
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                    <span *ngIf="property.selection != '1'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)">
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                  </li>
+                </ul>
+
+                <ul class="ks-cboxtags" *ngIf="activestagestatus[0].stage == 'SV'">
+                  <li *ngFor="let property of suggestedpropertylists; let i = index">
+                    <span *ngIf="property.selection == '4'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)" checked>
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                    <span *ngIf="property.selection != '4'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)">
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                  </li>
+                </ul>
+
+                <ul class="ks-cboxtags" *ngIf="activestagestatus[0].stage == 'RSV'">
+                  <li *ngFor="let property of suggestedpropertylists; let i = index">
+                    <span *ngIf="property.selection == '2'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)" checked>
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                    <span *ngIf="property.selection != '2'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)">
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                  </li>
+                </ul>
+
+                <ul class="ks-cboxtags" *ngIf="activestagestatus[0].stage == 'Final Negotiation'">
+                  <li *ngFor="let property of suggestedpropertylists; let i = index">
+                    <span *ngIf="property.selection == '3'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)" checked>
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                    <span *ngIf="property.selection != '3'">
+                      <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                      (change)="refixsuggested(i,property.propid,property.name)">
+                    <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                    </span>
+                  </li>
+                </ul>
+                <p *ngIf="!suggestedpropertylists?.length" class="comma-list">
+                  No Properties Suggested Till Now
+                </p>
+              </div> -->
+              <!-- </div> -->
+            </div>
+            <div class="d-flex justify-content-end pt-2 gap-1" *ngIf="editplan == true">
+              <button type="button" class="btn btn-primary" style="float: left;" (click)="clearPlandata()"
+                [disabled]="selectedPlanType !== ''">Cancel</button>
+              <button type="button" class="btn btn-primary" style="float: left;" (click)="fixPlan()">Confirm</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="adminview" class="tab-pane" id="profile" role="tabpanel">
+          <div class="button_section  p-2 d-flex ">
+            <div class="planleadassign">
+
+              <a class="add_class lead_section active other_section" (click)="logsTab('lead')">
+                Lead History
+              </a>
+
+              <a class="add_class executive_section other_section" (click)="logsTab('executive')">
+                <span *ngIf="assignedrm && assignedrm.length > 0">{{assignedrm[0]?.customer_assign_name}}'s
+                  History</span>
+              </a>
+
+            </div>
+          </div>
+
+          <div *ngIf="logsType == 'lead'" style="height: calc(100vh - 170px);overflow: scroll;">
+            <div class="col-12 p-0" *ngIf="leadtrack">
+              <div class="col-12 p-0" *ngIf="leadtrack?.length" style="height: calc(100vh - 170px);overflow: scroll;">
+                <div class="history-tl-container">
+
+                  <ng-container *ngFor="let leadhistory of leadtrack; let i = index">
+
+                    <div class="date_row" *ngIf="leadhistory.item_type == 'message_date'">
+                      {{ leadhistory.Saveddate }}
+                    </div>
+
+                    <div class="timeline-item" *ngIf="leadhistory.item_type != 'message_date'">
+                      <div class="timeline-left">
+                        <span class="dot"></span>
+                        <span class="line"
+                          *ngIf="i < leadtrack.length - 1 && leadtrack[i + 1].item_type !== 'message_date'"></span>
+                      </div>
+
+                      <div class="timeline-content d-flex">
+                        <div class="time">
+                          {{ leadhistory.Saveddate | date:'hh:mm a' }}
+                        </div>
+                        <div class="text">
+                          <div class="title">
+                            <strong>{{((leadhistory.autoremarks == 'got this new lead from Admin' || leadhistory.autoremarks == 'got this lead from Admin' || leadhistory.autoremarks == 'got this new lead from Admin Auto-Assigned' || leadhistory.autoremarks == 'got this lead from Admin auto assigned' || leadhistory.autoremarks == 'got this new lead from Admin auto') ? leadhistory.executivename : leadhistory.updatebyname)}}</strong>
+                            {{ leadhistory.autoremarks }}
+                          </div>
+                          <div class="remarks">
+                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-container>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 d-flex justify-content-center py-5" *ngIf="leadtrack?.length == 0 || !leadtrack">
+              <span style="font-size: 20px;font-weight: bolder;font-style: italic;">No History Found</span>
+            </div>
+          </div>
+
+          <div *ngIf="logsType == 'executive'" style="height: calc(100vh - 170px);overflow: scroll;">
+            <div class="col-12 p-0" *ngIf="leadtrack">
+              <div class="col-12 p-0" *ngIf="leadtrack?.length" style="height: calc(100vh - 170px);overflow: scroll;">
+                <div class="history-tl-container">
+
+                  <ng-container *ngFor="let leadhistory of leadtrack; let i = index">
+
+                    <div class="date_row" *ngIf="leadhistory.item_type == 'message_date'">
+                      {{ leadhistory.Saveddate }}
+                    </div>
+
+                    <div class="timeline-item" *ngIf="leadhistory.item_type != 'message_date'">
+                      <div class="timeline-left">
+                        <span class="dot"></span>
+                        <span class="line"
+                          *ngIf="i < leadtrack.length - 1 && leadtrack[i + 1].item_type !== 'message_date'"></span>
+                      </div>
+
+                      <div class="timeline-content d-flex">
+                        <div class="time">
+                          {{ leadhistory.Saveddate | date:'hh:mm a' }}
+                        </div>
+                        <div class="text">
+                          <div class="title">
+                            <strong>{{((leadhistory.autoremarks == 'got this new lead from Admin' || leadhistory.autoremarks == 'got this lead from Admin' || leadhistory.autoremarks == 'got this new lead from Admin Auto-Assigned' || leadhistory.autoremarks == 'got this lead from Admin auto assigned' || leadhistory.autoremarks == 'got this new lead from Admin auto') ? leadhistory.executivename : leadhistory.updatebyname)}}</strong>
+                            {{ leadhistory.autoremarks }}
+                          </div>
+                          <div class="remarks">
+                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-container>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 d-flex justify-content-center py-5" *ngIf="leadtrack?.length == 0 || !leadtrack">
+              <span style="font-size: 20px;font-weight: bolder;font-style: italic;">No History Found</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>

@@ -1,0 +1,1685 @@
+<div class="dash_main_dash"
+  [ngStyle]="{'padding-bottom' : isDashboardActive == true || departId == '10003' ? '0rem' : '0rem'}">
+  <div class="container-fluid col-12 row pr-0 m-0" [ngStyle]="{'padding-left': isHover ? '14.3rem' : '3.5rem'}"
+    [ngClass]="{'padding_block' : departId == '10005'}">
+    <div class="col-3 d-flex align-items-center">
+
+      <div class="button_section" *ngIf="routerUrl == '/mandate-dashboard' || routerUrl == '/all-calls'">
+        <div class="leadtype" style="display: flex ; gap: .5rem;">
+          <a class="add_class1" [ngClass]="{'active': selectedDash == 'leads'}"
+            (click)="selectedDashboardtype('leads')">Leads
+            <span class="pl-1" *ngIf="selectedDash == 'leads'"></span>
+          </a>
+
+          <a class="add_class1" [ngClass]="{'active': selectedDash == 'calldash'}" id="mandatetab"
+            (click)="selectedDashboardtype('calldash')">Calls
+            <span class="pl-1" *ngIf="selectedDash == 'calldash'"></span>
+          </a>
+
+          <a class="add_class1" [ngClass]="{'active': selectedDash == 'visits'}"
+            (click)="selectedDashboardtype('visits')">Visits
+            <span class="pl-1" *ngIf="selectedDash == 'visits'"></span>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- <div class="button_section" *ngIf="commonHeader && (
+    adminview || ((CSTLview || CSEXview) && 
+           (routerUrl == 'assigned-leads-details' || 
+            routerUrl == 'mandate-customers' || 
+            routerUrl == '/retail-feedback' || 
+            routerUrl == '/mandate-feedback' || 
+            ((routerUrl == '/retail-lead-stages' || 
+            routerUrl == '/mandate-lead-stages')))))">
+        <div class="leadtype" style="display: flex ; gap: .5rem;">
+          <a class="add_class1" [ngClass]="{'active': selectedLead == 'retail'}"
+            (click)="selectedLeadtype('retail')">Retail
+            <span class="pl-1" *ngIf="selectedLead == 'retail'"><i class="fas fa-check"
+                style="color: white;"></i></span>
+          </a>
+
+          <a class="add_class1" [ngClass]="{'active': selectedLead == 'mandate'}" id="mandatetab"
+            (click)="selectedLeadtype('mandate')">Mandate
+            <span class="pl-1" *ngIf="selectedLead == 'mandate'"><i class="fas fa-check"
+                style="color: white;"></i></span>
+          </a>
+        </div>
+      </div> -->
+
+
+      <!-- <div class="button_section_chat" *ngIf="isShowChatTypesBtn">
+        <div class="leadtype_chat" style="display: flex ; gap: .5rem;">
+          <a class="add_class1" [ngClass]="{'active': selectedchat == 'in'}" (click)="selectedchattype('in')">
+            <img src="../../../assets/images/internal_chat_icon.svg" style="width: 20px;" *ngIf="selectedchat == 'wc'">
+            <img src="../../../assets/images/interanl_chat_white_icon.svg" style="width: 20px;"
+              *ngIf="selectedchat == 'in'">
+            <span>Internal Chat</span>
+          </a>
+
+          <a class="add_class1" [ngClass]="{'active': selectedchat == 'wc' , 'seletcedWhatsapp' : selectedchat == 'wc'}"
+            id="mandatetab" (click)="selectedchattype('wc')">
+            <img src="../../../assets/images/whatsapp_cchat_black_icon.svg" style="width: 20px;"
+              *ngIf="selectedchat == 'in'">
+            <img src="../../../assets/images/whatsapp_chat_icon.svg" style="width: 20px;" *ngIf="selectedchat == 'wc'">
+            <span>WhatsApp Chat</span>
+          </a>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="header_subdiv d-flex justify-content-end align-items-center col-9 pl-0 pr-2">
+      <div class="right-items d-flex justify-content-center align-items-center" style="gap: 1rem;">
+        <!-- <div class="leadtype_chat">
+          <a class="" (click)="goToAllCallsection()">
+            <img src="../../../assets/images/missed_call_btn.png" style="width:22px">
+          </a>
+          <span class="message_count_header" [ngStyle]="{'width' : missedCallsCount > 99 ? 'auto' : '20px'}"
+            (click)="goToAllCallsection()">{{missedCallsCount}}</span>
+        </div> -->
+        <!-- <div class="chat_icon_common" (click)="goToChatsection()">
+                <img src="../../../assets/images/chat_icon.png" style="width: 20px;"> Chat
+              </div>
+              <span class="message_count_header" [ngStyle]="{'width' : messageCount > 99 ? 'auto' : '20px'}"
+                (click)="goToChatsection()" *ngIf="messageCount > 0 ">{{messageCount}}</span> -->
+
+        <div *ngIf="departId != '10005'">
+          <div class="button_section_chat" [ngClass]="{'padding-class' : departId == '10003'}">
+            <div class="leadtype_chat" style="display: flex;gap: 1rem;">
+              <a class="add_class_chat" (click)="goToAllCallsection()" data-tooltip="Missed Call"
+                data-placement="bottom"
+                style="background: #F44336 !important;border: 1px solid #F44336;color: #ffffff;position: relative;">
+                <img src="../../../assets/images/missed_call_btn.png" style="width:20px">
+                <span class="message_count_header" *ngIf="missedCallsCount > 0"
+                  [ngStyle]="{'width' : missedCallsCount > 99 ? 'auto' : '20px'}">{{(missedCallsCount > 999 ? '999+' :
+                  missedCallsCount)}}</span>
+              </a>
+
+              <a class="add_class_chat" *ngIf="routerUrl != '/team-chat' && routerUrl != '/client-chat'"
+                style="background: #0B7AB2 !important;border: 1px solid #0B7AB2;color: #ffffff;position: relative;"
+                (click)="goToChatsection('in')" data-tooltip="Internal Chat" data-placement="bottom">
+                <img src="../../../assets/images/interanl_chat_white_icon.svg" style="width: 20px;">
+                <span class="message_count_header" [ngStyle]="{'width' : messageCount > 99 ? 'auto' : '20px'}"
+                  *ngIf="messageCount > 0 && routerUrl != '/team-chat' && routerUrl != '/client-chat'">{{(messageCount >
+                  999 ? '999+' : messageCount)}}</span>
+              </a>
+
+              <!-- <a class="add_class_chat seletcedWhatsapp"
+                *ngIf="routerUrl != '/team-chat' && routerUrl != '/client-chat'" id="mandatetab"
+                (click)="goToChatsection('wc')" data-tooltip="Whats Chat" data-placement="bottom">
+                <img src="../../../assets/images/whatsapp_chat_icon.svg" style="width: 20px;">
+                <span class="whats_message_count_header"
+                  [ngStyle]="{'width' : whatsappMessageCount > 99 ? 'auto' : '20px'}"
+                  *ngIf="whatsappMessageCount > 0 && routerUrl != '/team-chat' && routerUrl != '/client-chat'">{{(whatsappMessageCount
+                  > 999 ? '999+' : whatsappMessageCount)}}</span>
+              </a> -->
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="adminview" class="search my-1">
+          <input class="form-control" type="text" [(ngModel)]="customer_name" placeholder="Search"
+            (keyup)="searchClient(customer_name)" />
+          <div class="search-result" *ngIf="flag">
+            <ul class="searchline">
+              <li *ngFor="let client of clients | async">
+                <!-- <a (click)="onselectClient(client)">{{client.customer_name}}
+                        <span *ngIf="client.execname"> -
+                          {{client.execname}}</span> <span *ngIf="client.Lead_stage"> ({{client.Lead_stage}})</span>
+                        <div class="nextDate" *ngIf="client.nextaction_date"> <span>( Next Action date -
+                            {{client.nextaction_date}} )</span>
+                          <span *ngIf="client.crm_type" style="text-decoration: underline;text-decoration-color: grey;">{{
+                            (client.crm_type == 1 ?' Mandate ' : 'Retail')}}</span>
+                        </div>
+                      </a> -->
+
+                <a (click)="onselectClient(client)">
+                  <!-- {{client.customer_name}} -->
+                  <!-- <span *ngIf="client.execname"> -
+                          {{client.execname}}</span> <span *ngIf="client.Lead_stage"> ({{client.Lead_stage}})</span>
+                        <div class="nextDate" *ngIf="client.nextaction_date"> <span>( Next Action date -
+                            {{client.nextaction_date}} )</span>
+                          <span *ngIf="client.crm_type" style="text-decoration: underline;text-decoration-color: grey;">{{
+                            (client.crm_type == 1 ?' Mandate ' : 'Retail')}}</span>
+                        </div> -->
+
+                  <div class="col-12 d-flex p-0">
+                    <div class="col-7 py-0 px-1 d-flex align-items-center"
+                      [ngStyle]="{'justify-content' : client.merged_lead_name ? 'space-between' : 'center'}">
+                      <span class="serach_data_client">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.customer_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.customer_number}}
+                        </div>
+                      </span>
+                      <span class="merge_icon" *ngIf="client.merged_lead_name"><img
+                          src="../../../assets/images/merge-icon.svg" style="width: 15px !important;"></span>
+                      <span class="serach_data_client" *ngIf="client.merged_lead_name">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.merged_lead_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.merged_lead_number}}
+                        </div>
+                      </span>
+                    </div>
+                    <div class="col-5 py-0 px-1" style="border-left: 1px solid grey;" *ngIf="client.execid">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>
+                          <span *ngIf="client.execname"
+                            style="font-size: 10px;font-weight: 500;">{{client.execname}}</span>
+                          <span *ngIf="client.Lead_stage" style="font-size: 10px;font-weight: 500;">
+                            ({{(client.Lead_stage == 'Final Negotiation' ? 'FN' : client.Lead_stage)}} <span
+                              *ngIf="client.Lead_stage_status && client.Lead_stage != 'Junk'  && client.Lead_stage != 'Fresh'">{{(client.Lead_stage_status
+                              == '3' ? 'Done' : 'Fix')}}</span>) </span>
+                        </span>
+                      </div>
+
+                      <div class="nextDate" *ngIf="client.nextaction_date && client.Lead_stage != 'Junk'">
+                        <span style="font-size: 10px;">( Next Action - {{client.nextaction_date}} )</span>
+                      </div>
+                      <div class="nextDate" *ngIf="client.lastupdated && client.Lead_stage == 'Junk'">
+                        <span style="font-size: 10px;">( Last Updated - {{client.lastupdated}} )</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+          class="search my-1">
+          <input class="form-control" type="text" [(ngModel)]="name" placeholder="Search"
+            (keyup)="searchClient(name)" />
+          <div class="search-result" *ngIf="flag">
+            <ul class="searchline">
+              <li *ngFor="let client of clients | async">
+                <a (click)="onselectClient(client)">
+                  <!-- {{client.customer_name}} <span *ngIf="client.Lead_stage">
+                          ({{client.Lead_stage}})</span> -->
+                  <div class="col-12 d-flex p-0">
+                    <div class="col-7 py-0 px-1 d-flex align-items-center"
+                      [ngStyle]="{'justify-content' : client.merged_lead_name ? 'space-between' : 'center'}">
+                      <span class="serach_data_client">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.customer_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.customer_number}}
+                        </div>
+                      </span>
+                      <span class="merge_icon" *ngIf="client.merged_lead_name"><img
+                          src="../../../assets/images/merge-icon.svg" style="width: 15px !important;"></span>
+                      <span class="serach_data_client" *ngIf="client.merged_lead_name">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.merged_lead_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.merged_lead_number}}
+                        </div>
+                      </span>
+                    </div>
+                    <div class="col-5 py-0 px-1" style="border-left: 1px solid grey;" *ngIf="client.execid">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>
+                          <span *ngIf="client.execname && role_type == 1"
+                            style="font-size: 10px;font-weight: 500;">{{client.execname}}</span>
+                          <span *ngIf="client.Lead_stage" style="font-size: 10px;font-weight: 500;">
+                            ({{(client.Lead_stage == 'Final Negotiation' ? 'FN' : client.Lead_stage)}} <span
+                              *ngIf="client.Lead_stage_status && client.Lead_stage != 'Junk' && client.Lead_stage != 'Fresh'">{{(client.Lead_stage_status
+                              == '3' ? 'Done' : 'Fix')}}</span>) </span>
+                        </span>
+                      </div>
+                      <div class="nextDate" *ngIf="client.nextaction_date && client.Lead_stage != 'Junk'">
+                        <span style="font-size: 10px;">( Next Action - {{client.nextaction_date}} )</span>
+                      </div>
+                      <div class="nextDate" *ngIf="client.lastupdated && client.Lead_stage == 'Junk'">
+                        <span style="font-size: 10px;">( Last Updated - {{client.lastupdated}} )</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- <div *ngIf="RetailRMEXview || RetailRMTLview || CSTLview || CSEXview" class="search my-1">
+          <input class="form-control" type="text" [(ngModel)]="name" placeholder="Search"
+            (keyup)="searchClient(name)" />
+          <div class="search-result" *ngIf="flag">
+            <ul class="searchline">
+              <li *ngFor="let client of clients | async">
+                <a (click)="onselectClient(client)">
+                  <div class="col-12 d-flex p-0">
+                    <div class="col-7 py-0 px-1 d-flex align-items-center"
+                      [ngStyle]="{'justify-content' : client.merged_lead_name ? 'space-between' : 'center'}">
+                      <span class="serach_data_client">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.customer_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.customer_number}}
+                        </div>
+                      </span>
+                      <span class="merge_icon" *ngIf="client.merged_lead_name"><img
+                          src="../../../assets/images/merge-icon.svg" style="width: 15px !important;"></span>
+                      <span class="serach_data_client" *ngIf="client.merged_lead_name">
+                        <p class="m-0 p-0" style="font-size: 10px;font-weight: 500;">{{client.merged_lead_name}}</p>
+                        <div style="color: #5B5B5B;font-size: 10px;font-weight: 500;">
+                          {{client.merged_lead_number}}
+                        </div>
+                      </span>
+                    </div>
+                    <div class="col-5 py-0 px-1 d-flex justify-content-center" style="border-left: 1px solid grey;"
+                      *ngIf="client.execid">
+                      <div class="d-flex justify-content-center align-items-center">
+                        <span>
+                          <span *ngIf="client.Lead_stage" style="font-size: 10px;font-weight: 500;">
+                            {{(client.Lead_stage)}}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div> -->
+
+        <div class="px-2 cursor-pointer" (click)="getAllLoginData()" *ngIf="roleid == 1 || roleid == 2"
+          data-toggle="modal" data-target="#switch_account">
+          <img src="../../../assets/images/switch_main_icon.png" alt="">
+        </div>
+
+        <div class="px-2 cursor-pointer" (click)="goBackToAdminAccount()"
+          *ngIf="roleid != 1 && roleid != 2 && mainAccountData != undefined && mainAccountData != null && mainAccountData != ''">
+          <img src="../../../assets/images/switch_main_icon.png" alt="">
+        </div>
+
+        <div class="admin-drop">
+          <div class="ui dropdown" id="assignLeadDropdown" data-toggle="dropdown">
+            <!-- <span class="img-brdr"><i class="fa fa-user-circle"></i></span> -->
+            <div class="text">{{userDetails}}</div>
+            <button class="btn btn-warning " type="button" id="assignLeadDropdown" data-toggle="dropdown"
+              aria-haspopup="true"
+              style="background-color: white !important;color: #0B7AB2 !important;border-color:white !important;padding: 0rem !important;margin: 0;"
+              aria-expanded="false">
+              <i class="dropdown icon" id="assignLeadDropdown"></i>
+            </button>
+            <div class="dropdown-menu " aria-labelledby="assignLeadDropdown"
+              style="right: 0 !important;left: auto !important;">
+              <!-- <a class="dropdown-item dropDownCursor" data-toggle="modal" data-target="#change_password_modal" (click)="changePassword()"><i class="fa fa-key" ></i>
+                        Change Password</a> -->
+              <a class="dropdown-item dropDownCursor" (click)="logout()"><i class="fa fa-sign-out-alt"></i>
+                Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-05 px-2 cursor-pointer setting_auto_assign" *ngIf="roleid == 1 || roleid == 2">
+        <!-- <a class="cursor-pointer" data-toggle="modal" data-target="#auto_assign_settings">
+          <i class="fas fa-cog" style="font-size: 14px;"></i>
+        </a> -->
+        <!-- <div class="dropdown dropleft" id="settings" data-toggle="dropdown">
+          <a href="javascript:;" class="nav-link text-body p-0" id="settings-link" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer" style="font-size: larger;"></i>
+          </a>
+          <div class="dropdown-menu " aria-labelledby="settings-link"
+            style="right: 0 !important;left: auto !important;">
+            <div class="px-1">
+              <div class="d-flex" style="gap: 1rem;">
+                <img src="../../../assets/images/profileimg.png" style="width: 25px;">
+                <h5 class="m-0">xxxxxx</h5>
+              </div>
+              <div class="text-center pt-2">Coming soon</div>
+            </div>
+          </div>
+        </div> -->
+        <!-- id="dropdownMenuButton" data-toggle="dropdown" -->
+        <!-- <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" (click)="toggleDrawer()">
+          <i class="fa fa-bell cursor-pointer" style="font-size: larger;"><span
+              class="notification_bell_count">2</span></i>
+        </a> -->
+
+
+
+        <!-- on clicking on the notification icon the right side bar will be opened  -->
+        <div [class.open]="isDrawerOpen" class="right-drawer">
+          <div class="drawerClose"><i class="fa fa-times" (click)="closeDrawer()"></i></div>
+          <div class="drawer-content">
+            <div class="button_section">
+              <div class="noti_design">
+                <a class="add_class unread_messages active" (click)="notificationSelection('unread')">Unread <span
+                    class="notification_num" *ngIf="isUnread">2</span></a>
+                <a class="add_class read_messages" (click)="notificationSelection('read')">Read <span
+                    class="notification_num" *ngIf="isRead">2</span></a>
+              </div>
+            </div>
+            <div class="content_mess" [ngStyle]="{'background' : isUnread ? '#0B7AB240' : '#ffffff'}">
+              <div class="pr-2 d-flex align-items-center" style="border-right: 1px solid grey;">
+                <img src="../../../assets/images/profileimg.png" style="width: 30px;">
+              </div>
+              <div class="pl-1" style="position: relative;width: 100%;">Admin
+                <div class="">
+                  <span class="m-0"
+                    style="font-size: 10px;text-overflow: ellipsis;white-space: normal;word-break: break-word;">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+                  <span style="font-size: 10px;" class="d-flex justify-content-end">5 mins ago</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- Optional: Overlay background that appears when the drawer is open -->
+        <div class="overlay" *ngIf="isDrawerOpen" (click)="toggleDrawer()"></div>
+      </div>
+    </div>
+
+    <!-- <div class="col-12 details_bg d-flex align-items-center" *ngIf="isDisaplyCall">
+      <div class="col-10 p-0 d-flex align-items-center">
+        <div class="col-3 p-0">
+          <span class="font_12">Name</span>
+          <div class="font_16">Rohan Sharma</div>
+        </div>
+
+        <div class="col-3 p-0">
+          <span class="font_12">Mobile Number</span>
+          <div class="font_16">9876542123</div>
+        </div>
+
+        <div class="col-3 p-0">
+          <span class="font_12">Call Duration</span>
+          <div class="font_16" *ngIf="liveCallData && liveCallData?.starttime">{{getDurationTime(liveCallData?.starttime)}}</div>
+        </div>
+
+        <div class="col-3 p-0">
+          <div><span class="view_detail_btn">View Details</span></div>
+        </div>
+      </div>
+
+      <div class="col-2 p-0 text-right">
+        <div>
+          <span class="on_call_icon">
+            <span><dotlottie-wc src="https://lottie.host/5a600bd0-43b2-4e75-9767-d30268cabec7/pNJ9TlllhB.lottie"
+                style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc></span>
+            <span class="font_18"> On Call</span>
+          </span>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+<!-- HEADER-CLOSED -->
+
+<!-- SIDEBAR-STARTED -->
+
+
+
+<div class="page-wrapper chiller-theme toggled" id="pageWrapper" *ngIf="departId != '10005'"
+  [ngClass]="{'sidebar_blur' : isPointerEvents}">
+  <a id="show-siderbar" class="btn btn-sm btn-dark"></a>
+  <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <div class="sidebar-content">
+      <div class="sidebar-header logo_fixed">
+        <div class="sidebar_logo" style="display: flex;gap: 0.4rem;">
+          <img src="../../../assets/images/SITE CRM Logo_1.png">
+          <!-- <span id="show-close-icon" #showCloseIcon>
+            <i class="fa fa-window-close" style="color: #0B7AB2;font-size: 18px;"></i>
+          </span> -->
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <ul>
+
+          <li *ngIf="adminview" class="sidebar-dropdown" [routerLinkActive]="'active'"><a><i
+                class="fa fa-sitemap"></i><span class="sidebar-text">Dashboards</span></a>
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul>
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a [routerLink]="'/mandate-dashboard'" (click)="onClickSidebarMenu()"
+                    [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard',htype:'mandate',type:'leads'}"><i
+                      class="fa fa-warehouse" aria-hidden="true"></i><span class="sidebar-text">Main
+                      Dashboard</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/visit-dashboard" [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-chart-line" aria-hidden="true"></i><span
+                      class="sidebar-text">Visit Dashboard</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/source-dashboard"
+                    [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-wind" aria-hidden="true"></i><span
+                      class="sidebar-text">Source Dashboard</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/today-activity" [queryParams]="{from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span
+                      class="sidebar-text">Today's Activities</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/stage-dashboard" [queryParams]="{usv:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span class="sidebar-text">Stage
+                      Dashboard</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/overdues-dashboard"
+                    [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-rss-square" aria-hidden="true"></i><span
+                      class="sidebar-text">Overdues Dashboard</span></a>
+                </li>
+
+                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/junk-dashboard"
+                    [queryParams]="{junkleads:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-fax" aria-hidden="true"></i><span
+                      class="sidebar-text">Junk Dashboard</span></a>
+                </li>
+
+                <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                    <a routerLink="/today-activity" [queryParams]="{from:'', to:'',dashtype:'dashboard'}"
+                      (click)="onClickSidebarMenu()"><i class="fa fa-hanukiah" aria-hidden="true"></i><span class="sidebar-text">Today's
+                        Activities</span></a>
+                  </li> -->
+
+              </ul>
+            </div>
+          </li>
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/all-calls"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"> <i class="fas fa-blender-phone"></i>
+              <span class="sidebar-text">Calls Dashboard</span></a>
+          </li> -->
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/all-calls-listing" [queryParams]="{allcalls:1,from:'',to:''}" (click)="onClickSidebarMenu()">
+              <i class="fas fa-mobile-alt"></i>
+              <span class="sidebar-text">Call Insights</span></a>
+          </li>
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/live-calls"
+              [queryParams]="{livecalls:1}" (click)="onClickSidebarMenu()"> <i class="fas fa-phone-volume"></i>
+              <span class="sidebar-text">Live Calls</span></a>
+          </li> -->
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/attendance-list" [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()">
+              <i class="fa fa-file" aria-hidden="true"></i>
+              <span class="sidebar-text">Attendance Logs</span></a>
+          </li>
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()"><a
+              routerLink="/inventory-dashboard" [queryParams]="{dashtype:'dashboard',viewtype:'table'}"
+              (click)="onClickSidebarMenu()"><i class="fas fa-universal-access" aria-hidden="true"></i><span
+                class="sidebar-text">Inventory Dashboard</span></a></li> -->
+
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()"><a
+              [routerLink]="(selectedTypeLead == 'retail' || selectedTypeLead == undefined)? '/retail-junk-dash' : '/mandate-junk-dash'"
+              [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-warehouse" aria-hidden="true"></i><span class="sidebar-text">Junk Dashboard</span></a></li> -->
+
+          <li *ngIf="adminview " [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a routerLink="/Enquiry" [queryParams]="{leads:'1',from:'',to:''}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-user-secret" aria-hidden="true"></i><span class="sidebar-text">Fresh
+                Leads</span></a>
+          </li>
+
+          <li *ngIf="roleid == '2'" class="sidebar-dropdown" [routerLinkActive]="'active'">
+            <a><i class="fa fa-cloud-moon"></i><span class="sidebar-text">Homes247</span></a>
+
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul *ngIf="roleid == '2'">
+
+                <li *ngIf="roleid == '2'" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/client-dash" [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-newspaper"></i><span class="sidebar-text">Clients
+                      Dashboard</span></a></li>
+
+                <li *ngIf="roleid == '2'" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/homes247-enquiry" [queryParams]="{leads:'1',from:'',to:''}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-user-secret" aria-hidden="true"></i><span
+                      class="sidebar-text">Homes247 Fresh
+                      Leads</span></a></li>
+
+                <li *ngIf="roleid == '2'" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/homes247-leads"
+                    [queryParams]="{unique:1,from:previousMonthDateForCompare,to:todaysdateforcompare}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-file-code" aria-hidden="true"></i><span
+                      class="sidebar-text">Homes247 Complete Leads</span></a></li>
+
+                <li *ngIf="roleid == '2'" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/cp-dedicated-leads" [queryParams]="{from:'',to:''}" (click)="onClickSidebarMenu()"><i
+                      class="fa fa-user-secret" aria-hidden="true"></i><span class="sidebar-text">CP Dedicated
+                      Leads</span></a></li>
+
+                <li *ngIf="roleid == '2'" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/client-list" [queryParams]="{paid:1}" (click)="onClickSidebarMenu()"><i
+                      class="fa fa-newspaper"></i><span class="sidebar-text">CP Clients</span></a></li>
+
+              </ul>
+            </div>
+
+          </li>
+
+          <li *ngIf="adminview " [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a routerLink="/leads" [queryParams]="{unique:1,from:previousMonthDateForCompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-file-code" aria-hidden="true"></i><span
+                class="sidebar-text">Complete Leads</span></a>
+          </li>
+
+          <li *ngIf="adminview " [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a routerLink="/whatsapp-visit" [queryParams]="{leads:'1',from:'',to:''}" (click)="onClickSidebarMenu()"><i
+                class="fab fa-whatsapp" aria-hidden="true"></i><span class="sidebar-text">Whatsapp Visits</span></a>
+          </li>
+
+          <!-- Mandate Executive Login redirection -->
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="sidebar-dropdown" [routerLinkActive]="'active'"><a><i class="fa fa-sitemap"></i><span
+                class="sidebar-text">My Dashboards</span></a>
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul>
+
+                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+                 [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/mandate-dashboard"
+                    [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard',htype:'mandate',type:'leads'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-warehouse" aria-hidden="true"></i><span
+                      class="sidebar-text">Dashboard</span></a>
+                </li>
+
+
+                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+                  [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/today-activity" [queryParams]="{from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span
+                      class="sidebar-text">Today's
+                      Activities</span></a>
+                </li>
+
+                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/stage-dashboard" [queryParams]="{usv:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span class="sidebar-text">Stage
+                      Dashboard</span></a>
+                </li>
+
+                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+                  [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/overdues-dashboard"
+                    [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-rss-square" aria-hidden="true"></i><span
+                      class="sidebar-text">Overdues Dashboard</span></a>
+                </li>
+
+                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+                  [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/junk-dashboard"
+                    [queryParams]="{junkleads:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-fax" aria-hidden="true"></i><span
+                      class="sidebar-text">Junk
+                      Dashboard</span></a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+          <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/all-calls"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"> <i class="fas fa-blender-phone"></i>
+              <span class="sidebar-text">Calls Dashboard</span></a>
+          </li> -->
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/all-calls-listing"
+              [queryParams]="{allcalls:1,from:'',to:''}" (click)="onClickSidebarMenu()"> <i
+                class="fas fa-mobile-alt"></i>
+              <span class="sidebar-text">Call Insights</span></a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/attendance-list"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()">
+              <i class="fa fa-file" aria-hidden="true"></i>
+              <span class="sidebar-text">My Attendance</span></a>
+          </li>
+
+          <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/rmleadassign" [queryParams]="{todaysvisits: 1,execid:execid,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-shapes"></i><span class="sidebar-text">Scheduled
+                Activities</span></a>
+          </li> -->
+
+          <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a routerLink="/today-activity" [queryParams]="{from:'', to:'',dashtype:'dashboard'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span
+                class="sidebar-text">Today's
+                Activities</span></a>
+          </li> -->
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/rmleadassign"
+              [queryParams]="{todaysfollowups: 1,from:'', to:'',execid:execid,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-envelope-open"></i>
+              <!-- <span class="sidebar-text">My Followups</span> -->
+              <span class="sidebar-text" *ngIf="role_type != '1'"> My Followups</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'"> Followup Bucket</span>
+            </a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/mandate-lead-stages"
+              [queryParams]="{pending:'1',from:'', to:'',type:'leads',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-tty" aria-hidden="true"></i>
+              <!-- <span class="sidebar-text"> My Leads</span> -->
+              <span class="sidebar-text" *ngIf="role_type != '1'"> My Leads</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'"> All Leads</span>
+            </a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/mandate-lead-stages"
+              [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'mandate',id:'3'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-code-branch" aria-hidden="true"></i>
+              <!-- <span class="sidebar-text">My Visits</span> -->
+              <span class="sidebar-text" *ngIf="role_type != '1'">My Visits</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'">All Visits</span>
+            </a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/mandate-lead-stages"
+              [queryParams]="{bookingPending: 1,from:'', to:'',type:'bookings',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-dungeon" aria-hidden="true"></i>
+              <!-- <span class="sidebar-text">My Bookings</span> -->
+              <span class="sidebar-text" *ngIf="role_type != '1'">My Bookings</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'">All Bookings</span>
+            </a>
+          </li>
+
+          <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/mandate-myoverdues" [queryParams]="{followupsoverdues:1,from:'', to:'',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-hanukiah"></i>
+              <span class="sidebar-text" *ngIf="role_type != '1'">My Overdues</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'">All Overdues</span>
+            </a>
+          </li> -->
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/mandate-plans"
+              [queryParams]="{plan:'weekend',type:'usv',from:planfromdate,to:plantodate,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-inbox" aria-hidden="true"></i><span
+                class="sidebar-text">Weekend Plans</span></a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/mymandatereports" [queryParams]="{followups: 1,datetype:'today',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+              <!-- <span class="sidebar-text">My Activities</span> -->
+              <span class="sidebar-text" *ngIf="role_type != '1'">My Activities</span>
+              <span class="sidebar-text" *ngIf="role_type == '1'">Team Activities</span>
+            </a>
+          </li>
+
+          <li *ngIf="MandateCSExecutiveview || MandateCSTLview" [routerLinkActive]="'active'" class="notdrop"
+            (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mandate-feedback'" [queryParams]="{pending:1,from:'', to:'',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-comment-dots" aria-hidden="true"></i><span
+                class="sidebar-text">My Feedback Calls</span></a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()" class="notdrop">
+            <a routerLink="/mandate-pricing-list" [queryParams]="{htype:'mandate'}"><i class="fa fa-tags"
+                aria-hidden="true" (click)="onClickSidebarMenu()"></i><span class="sidebar-text">Property Price
+                List</span></a>
+          </li>
+
+          <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
+            class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/hourly-report" [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-user-clock"></i><span class="sidebar-text">Hourly
+                Report</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyId == '16793'" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()" class="notdrop"><a routerLink="/visit-update-sitara"
+              [queryParams]="{sitara:1}" (click)="onClickSidebarMenu()">
+              <i class="fa fa-sitemap"></i>
+              <span class="sidebar-text">Visit Updates</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyId == '1830'" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()" class="notdrop"><a routerLink="/visit-update-samskruthi"
+              [queryParams]="{samskruthi:1}" (click)="onClickSidebarMenu()">
+              <i class="fa fa-sitemap" aria-hidden="true"></i>
+              <span class="sidebar-text">Visit Updates</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyId == '82668'" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()" class="notdrop"><a routerLink="/visit-update-swara" [queryParams]="{swara:1}"
+              (click)="onClickSidebarMenu()">
+              <i class="fa fa-sitemap" aria-hidden="true"></i>
+              <span class="sidebar-text">Visit Updates</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyId == '80459'" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()" class="notdrop"><a routerLink="/visit-update-reviva"
+              [queryParams]="{reviva:1}" (click)="onClickSidebarMenu()">
+              <i class="fa fa-sitemap" aria-hidden="true"></i>
+              <span class="sidebar-text">Visit Updates</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyId == '28773'"
+            (click)="onClickSidebarMenu()"><a routerLink="/visit-update-ranav" [queryParams]="{ranav:1}"
+              (click)="onClickSidebarMenu()">
+              <i class="fa fa-vihara" aria-hidden="true"></i>
+              <span class="sidebar-text">Visit Updates</span></a>
+          </li>
+
+          <li *ngIf="(MandateRMTLview || MandateRMExecutiveview) && propertyIdArray.length > 1" class="sidebar-dropdown"
+            [routerLinkActive]="'active'"><a><i class="fa fa-sitemap"></i><span class="sidebar-text">Visit
+                Updates</span></a>
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()" *ngIf="sitaraPropIdCheck == '16793'"><a
+                    routerLink="/visit-update-sitara" [queryParams]="{sitara:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-jedi" aria-hidden="true"></i>
+                    <span class="sidebar-text">GR Sitara</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"
+                  *ngIf="samskruthiPropIdCheck == '1830'"><a routerLink="/visit-update-samskruthi"
+                    [queryParams]="{samskruthi:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">GR Samskruthi</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()" *ngIf="swaraPropIdCheck == '82668'"><a
+                    routerLink="/visit-update-swara" [queryParams]="{swara:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">GR Swara</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()" *ngIf="revivaPropIdCheck == '80459'"><a
+                    routerLink="/visit-update-reviva" [queryParams]="{reviva:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">Reviva By SSI</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()" *ngIf="ranavPropIdCheck == '28773'"><a
+                    routerLink="/visit-update-ranav" [queryParams]="{ranav:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-vihara" aria-hidden="true"></i>
+                    <span class="sidebar-text">Ranav Tranquil Haven</span></a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+          <!-- Retail Executive Login redirection -->
+          <!-- <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-dashboard"
+              [queryParams]="{allvisits: 1,from:'', to:'',dashtype:'dashboard',htype:'retail'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-warehouse" aria-hidden="true"></i><span
+                class="sidebar-text">My Dashboard</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()"><a routerLink="/all-calls"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"> <i class="fas fa-blender-phone"></i>
+              <span class="sidebar-text">Calls Dashboard</span></a>
+          </li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()"><a routerLink="/all-calls-listing" [queryParams]="{allcalls:1,from:'',to:''}"
+              (click)="onClickSidebarMenu()"> <i class="fas fa-mobile-alt"></i>
+              <span class="sidebar-text">Call Insights</span></a>
+          </li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()"><a routerLink="/attendance-list"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()">
+              <i class="fa fa-file" aria-hidden="true"></i>
+              <span class="sidebar-text">My Attendance</span></a>
+          </li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-leadassign"
+              [queryParams]="{todaysvisits: 1,execid:execid,htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-shapes"></i><span class="sidebar-text">Scheduled
+                Activities</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-leadassign"
+              [queryParams]="{todaysfollowups: 1,htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-envelope-open"></i><span class="sidebar-text">My
+                Followups</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-lead-stages"
+              [queryParams]="{pending:'1',type:'leads',htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-tty" aria-hidden="true"></i><span class="sidebar-text">My
+                Leads</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-lead-stages"
+              [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'retail',id:'3'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-code-branch" aria-hidden="true"></i><span
+                class="sidebar-text">My Visits</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-lead-stages"
+              [queryParams]="{brs: 1,from:'', to:'',type:'bookings',htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-dungeon" aria-hidden="true"></i><span class="sidebar-text">My
+                Bookings</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-myoverdues"
+              [queryParams]="{followupsoverdues:1,from:'', to:'',htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-hanukiah"></i><span class="sidebar-text">My
+                Overdues</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/retail-plans"
+              [queryParams]="{plan:'weekend',type:'usv',from:planfromdate,to:plantodate,htype:'retail'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-inbox" aria-hidden="true"></i><span
+                class="sidebar-text">Weekend Plans</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/myretailreports"
+              [queryParams]="{followups: 1,datetype:'today',htype:'retail'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-paper-plane" aria-hidden="true"></i><span class="sidebar-text">My
+                Activities</span></a></li>
+
+          <li *ngIf="CSEXview || CSTLview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="(selectedTypeLead == 'retail' || selectedTypeLead == undefined) ? '/retail-feedback' : '/mandate-feedback'"
+              [queryParams]="{pending:1,from:'', to:'',htype:(selectedTypeLead == undefined ? 'retail' : selectedTypeLead)}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-comment-dots" aria-hidden="true"></i><span
+                class="sidebar-text">My Feedback
+                Calls</span></a>
+          </li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" [routerLinkActive]="'active'"
+            (click)="onClickSidebarMenu()" class="notdrop"><a routerLink="/retail-pricing-list"
+              (click)="onClickSidebarMenu()" [queryParams]="{htype:'retail'}"><i class="fa fa-tags"
+                aria-hidden="true"></i><span class="sidebar-text">Property Price List</span></a></li>
+
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/hourly-report"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-user-clock"></i><span class="sidebar-text">Hourly
+                Report</span></a></li> -->
+          <!-- 
+          <li *ngIf="RetailRMEXview || RetailRMTLview || CSEXview || CSTLview" class="notdrop"
+            (click)="onClickSidebarMenu()" [routerLinkActive]="'active'"><a routerLink="/allbooking"
+              [queryParams]="{followups: 1,from:'', to:''}" (click)="onClickSidebarMenu()">
+              <i class="fa fa-allergies" aria-hidden="true"></i><span class="sidebar-text">My Bookings</span></a></li> -->
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/rmleadassign'" [queryParams]="{todaysvisits: 1,execid:execid,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-shapes"></i><span class="sidebar-text">Scheduled
+                Activities</span></a>
+          </li> -->
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a routerLink="/today-activity" [queryParams]="{from:'', to:'',dashtype:'dashboard'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span
+                class="sidebar-text">Today's
+                Activities</span></a>
+          </li> -->
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/rmleadassign'" [queryParams]="{todaysfollowups: 1,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-envelope-open"></i><span class="sidebar-text">Followup
+                Bucket</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a
+              [routerLink]="'/mandate-lead-stages'" [queryParams]="{pending:'1',type:'leads',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-tty" aria-hidden="true"></i><span class="sidebar-text">All
+                Leads</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a
+              [routerLink]="'/mandate-lead-stages'"
+              [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'mandate',id:'3'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-code-branch" aria-hidden="true"></i><span
+                class="sidebar-text">All Visits</span></a></li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a
+              [routerLink]="'/mandate-lead-stages'"
+              [queryParams]="{bookingPending: 1,from:'', to:'',type:'bookings',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-dungeon" aria-hidden="true"></i><span
+                class="sidebar-text">All Bookings</span></a>
+          </li>
+
+          <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]=" '/mandate-myoverdues'"
+              [queryParams]="{followupsoverdues:1,from:'', to:'',htype:'mandate'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-hanukiah"></i><span class="sidebar-text">All
+                Overdues</span></a>
+          </li> -->
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mandate-plans'"
+              [queryParams]="{plan: 'weekend',type:'usv',from:planfromdate,to:plantodate,htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-inbox"></i><span class="sidebar-text">Weekend
+                Plans</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mymandatereports'" [queryParams]="{followups: 1,datetype:'today',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-paper-plane" aria-hidden="true"></i><span
+                class="sidebar-text">Activities Report</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mandate-inactive-junk'"
+              [queryParams]="{type:'inactive',inactive1: 1,from:'', to:'',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-comments" aria-hidden="true"></i><span
+                class="sidebar-text">Inactive and Junk</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mandate-feedback'" [queryParams]="{pending:1,from:'', to:'',htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-comment-dots" aria-hidden="true"></i><span
+                class="sidebar-text">Feedback Calls</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
+            <a [routerLink]="'/mandate-pricing-list'" [queryParams]="{htype:'mandate'}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-tags" aria-hidden="true"></i>
+              <span class="sidebar-text">Property Price List</span></a>
+          </li>
+
+          <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()"><a
+              routerLink="/mandateleads" [queryParams]="{freshid: 2}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-globe" aria-hidden="true"></i><span class="sidebar-text">Mandate
+                Registered Leads</span></a></li>
+
+          <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/registrationlist" (click)="onClickSidebarMenu()"><i class="fa fa-archive"
+                aria-hidden="true"></i>
+              <span class="sidebar-text">Registration Data</span></a>
+          </li>
+
+          <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/Executives" [queryParams]="{executive:'1'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-sitemap"></i>
+              <span class="sidebar-text">My Executives</span></a>
+          </li>
+
+          <!-- <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/Executives" (click)="onClickSidebarMenu()"><i class="fa fa-sitemap"></i>
+              <span class="sidebar-text">My Executives</span></a>
+          </li> -->
+
+          <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/addproperty" [queryParams]="{type:'property'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-monument"></i><span class="sidebar-text">Add Properties</span></a>
+          </li>
+
+          <li *ngIf="adminview || (MandateRMTLview || MandateRMExecutiveview && userid == '40007')" class="notdrop"
+            [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/addproperty"
+              [queryParams]="{type:'cp'}" (click)="onClickSidebarMenu()"><i class="fa fa-recycle"></i><span
+                class="sidebar-text">CP Registration</span></a>
+          </li>
+
+          <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+              routerLink="/addproperty" [queryParams]="{type:'builders'}" (click)="onClickSidebarMenu()"><i
+                class="fa fa-newspaper"></i><span class="sidebar-text">Mandate Requests</span></a>
+          </li>
+
+          <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/hourly-report" [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+              (click)="onClickSidebarMenu()"><i class="fa fa-user-clock"></i><span class="sidebar-text">Hourly
+                Report</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/campaignLeads" [queryParams]="{fresh:'1',type:'fresh'}" (click)="onClickSidebarMenu()"><i
+                class="fab fa-facebook-square"></i><span class="sidebar-text">Fresh</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/buyleads" [queryParams]="{quafilied:'1',type:'buy'}" (click)="onClickSidebarMenu()"><i
+                class="fab fa-buysellads"></i><span class="sidebar-text">Buy</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/sellleads" [queryParams]="{quafilied:'1',type:'sell'}" (click)="onClickSidebarMenu()"><i
+                class="fab fa-sellcast"></i><span class="sidebar-text">Sell</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/rentleads" [queryParams]="{quafilied:'1',type:'rent'}" (click)="onClickSidebarMenu()"><i
+                class="fab fa-rockrms"></i><span class="sidebar-text">Rent</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/enquiry-vsnap" [queryParams]="{vsnap:'1',fresh:'1'}" (click)="onClickSidebarMenu()"><i
+                class="fas fa-yen-sign"></i><span class="sidebar-text">Vsnap Leads</span></a>
+          </li>
+
+          <li *ngIf="departId == '10003'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/enquiry-sitecrm" [queryParams]="{sitecrm:'1',fresh:'1'}" (click)="onClickSidebarMenu()"><i
+                class="fas fa-coins"></i><span class="sidebar-text">Sitecrm Leads</span></a>
+          </li>
+
+          <li class="notdrop " (click)="onClickSidebarMenu()">
+            <a routerLink="/team-chat" [queryParams]="{allchat:1}" (click)="onClickSidebarMenu()">
+              <span class="icon-wrapper">
+                <i class="fa fa-money-check"></i>
+                <span class="message_count" *ngIf="messageCount > 0">{{ messageCount }}</span>
+              </span>
+
+              <span class="sidebar-text">Chat</span>
+              <span class="new_btn sidebar-text">NEW</span>
+            </a>
+          </li>
+
+          <li *ngIf="adminview || roleid == '2'" class="sidebar-dropdown" [routerLinkActive]="'active'"><a><i
+                class="fa fa-sitemap"></i><span class="sidebar-text">Visit Updates</span></a>
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/visit-update-sitara"
+                    [queryParams]="{sitara:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-jedi"></i>
+                    <span class="sidebar-text">GR Sitara</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/visit-update-samskruthi" [queryParams]="{samskruthi:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">GR Samskruthi</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/visit-update-swara"
+                    [queryParams]="{swara:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">GR Swara</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/visit-update-reviva"
+                    [queryParams]="{reviva:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-spa" aria-hidden="true"></i>
+                    <span class="sidebar-text">Reviva By SSI</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/visit-update-ranav"
+                    [queryParams]="{ranav:1}" (click)="onClickSidebarMenu()">
+                    <i class="fa fa-vihara" aria-hidden="true"></i>
+                    <span class="sidebar-text">Ranav Tranquil Haven</span></a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+          <!-- <li *ngIf="loggedName == 'demo'" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+            <a routerLink="/dummy-dash" (click)="onClickSidebarMenu()"><i class="fa fa-shopping-basket"></i><span
+                class="sidebar-text">Dummy
+                Dashboard</span></a>
+          </li> -->
+
+          <!-- <li *ngIf="adminview || roleid == '2'" class="sidebar-dropdown" [routerLinkActive]="'active'"><a><i
+                class="fas fa-phone"></i><span class="sidebar-text">Call Insights</span></a>
+            <div class="sidebar-submenu" [routerLinkActive]="'active'">
+              <ul> -->
+
+          <!-- <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/call-dashboard"
+                    [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+                    (click)="onClickSidebarMenu()"> <i class="fa fa-jedi"></i>
+                    <span class="sidebar-text">Dashboard</span></a>
+                </li>  ,type:'inbound',calltype:'answered'-->
+
+          <!-- <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/all-calls"
+                    [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+                    (click)="onClickSidebarMenu()"> <i class="fas fa-blender-phone"></i>
+                    <span class="sidebar-text">All Calls</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/live-calls"
+                    [queryParams]="{livecalls:1}" (click)="onClickSidebarMenu()"> <i class="fas fa-phone-volume"></i>
+                    <span class="sidebar-text">Live Calls</span></a>
+                </li> -->
+
+          <!-- <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/calls-hourly-report"
+                    [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+                    (click)="onClickSidebarMenu()"><i class="fa fa-user-clock"></i><span class="sidebar-text">Hourly
+                      Report</span></a></li>
+
+                <li *ngIf="adminview" class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
+                    routerLink="/calls-monthly-report" (click)="onClickSidebarMenu()"><i
+                      class="fa fa-user-clock"></i><span class="sidebar-text">Monthly Report</span></a></li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/executive-calls-report"
+                    [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}"
+                    (click)="onClickSidebarMenu()"> <i class="fa fa-spa"></i>
+                    <span class="sidebar-text">Executive Report</span></a>
+                </li>
+
+                <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/ivrs-list"
+                    [queryParams]="{list:1}" (click)="onClickSidebarMenu()"> <i class="fa fa-spa"></i>
+                    <span class="sidebar-text">IVRS</span></a>
+                </li> -->
+          <!-- </ul>
+            </div>
+          </li> -->
+
+          <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || CSEXview || CSTLview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/all-calls"
+              [queryParams]="{today:1,from:todaysdateforcompare,to:todaysdateforcompare}" (click)="onClickSidebarMenu()"> <i
+                class="fas fa-blender-phone"></i>
+              <span class="sidebar-text">All Calls</span></a>
+          </li> -->
+
+          <!-- <li [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/visit-update-ranav"
+                  [queryParams]="{ranav:1}" (click)="onClickSidebarMenu()">
+                  <i class="fa fa-vihara" aria-hidden="true"></i>
+                  <span class="sidebar-text">Ranav Tranquil Haven</span></a>
+              </li> -->
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- SIDEBAR-ENDED -->
+
+<!-- CHANGE_PASSWORD_MODAL -->
+
+<div class="modal fade" id="change_password_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content " id="change_password">
+      <div class="modal-header password_header">
+        <h4>Change Password</h4>
+        <a class="close" data-dismiss="modal" id="changepass_modal_close" (click)="closeChangePassModal()"><span
+            aria-hidden="true" style="color: #fff;border: none;">&times;</span><span class="sr-only">Close</span></a>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form">
+            <div class="row ml-0">
+              <div class="col-6">
+                <label class="mr-5">Enter New Password:</label>
+                <input class="form-control mt-2" id="newpass" type="password" [(ngModel)]="password.newpassword"
+                  #newpassword="ngModel" name="newpassword" placeholder="Enter the Password">
+
+              </div>
+
+              <div class="col-6">
+                <label style="margin-right: 9rem;">Re-Enter:</label>
+                <input class="form-control mt-2" id="repass" type="password" [(ngModel)]="password.repassword"
+                  #repassword="ngModel" name="repassword" placeholder="Re-enter the Password">
+              </div>
+            </div>
+            <div class="actions save_btn input_cmn_div ml-3">
+              <button class="approve" type="submit" (click)="passwordchange()">Update</button>
+              <button hidden type="button" class="close" id="cancel" data-dismiss="modal"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE_PASSWORD_MODAL -->
+
+
+<!-- start break modal  -->
+<!-- <div class="modal fade startbreak" id="start_break" tabindex="-1" role="dialog" aria-labelledby="defModalHead" *ngIf="!(isDashboardActive)"
+  aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content" id="new_executive">
+      <div class="modal-body">
+        <button type="button" class="close"  data-dismiss="modal" style="display: none;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <div  class="" style="display: flex;justify-content: center;align-items: center;flex-direction: column;text-align: center;">
+            
+            <h2 class="h2colored" *ngIf="timerstarted == false" >Taking Quick Break</h2>
+            <span *ngIf="timerstarted == false">You are about start a break.</span>
+            <span *ngIf="timerstarted == false">Your CRM access will be temporarily paused untill you check in</span>
+
+            <h2 class="h2colored" *ngIf="timerstarted == true" >You're on Break</h2>
+            <span *ngIf="timerstarted == true">Your break has started</span>
+            <span *ngIf="timerstarted == true">You need to check in to regain access to CRM</span>
+
+
+            <div class="pt-5" style="color: #0B7AB2;font-size: 80px;">
+              <cd-timer format="hms"  #basicTimer class="bootstrap-timer" [startTime]="startTime"></cd-timer>
+            </div>
+            <span class="pt-5" *ngIf="timerstarted == false">
+              <button type="button" class="btn btn-secondary"  (click)="closeModal()">Cancel</button>
+              <button type="button" class="btn btn-warning breaktimer" (click)="doActionBasicTimer('start')" >Start Break</button>
+            </span>
+
+            <span class="pt-5" *ngIf="timerstarted == true">
+              <button type="button" class="btn btn-primary" (click)="doActionBasicTimer('stop')">Check In Now</button>
+            </span>
+          </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Hourly Report For Executive Account  -->
+<!-- <button type="button" data-toggle="modal" data-target="#hourlyReport" id="hourlyReport_detail" style="display: none;">Show Details</button>
+<div class="modal fade" id="hourlyReport" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #0B7AB2;color: white;">
+        <h4 class="col-10 m-0 text-center">Last 1 Hour Report ( {{minus1hour}} - {{currentTime}} )</h4>
+        <button type="button" class="close" data-dismiss="modal" style="display: none;"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 p-0 row">
+          <div class="col-2"></div>
+          <div class="col-4 p-0">
+            <div class="col-12 p-0">
+              <div class="textblue">
+                <span>Untouched</span>
+                <span>{{unquieleadcounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>General Followups</span>
+                <span>{{followupleadcounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>NC</span>
+                <span>{{normalcallcounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>USV</span>
+                <span>{{usvCounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>SV Fix</span>
+                <span>{{svfixcount}}</span>
+              </div>
+              <div class="textgrey">
+                <span>SV Done</span>
+                <span>{{svcount}}</span>
+              </div>
+              <div class="textblue">
+                <span>RSV Fix</span>
+                <span>{{rsvfixCounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>RSV Done</span>
+                <span>{{rsvCounts}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 p-0">
+            <div class="col-12 p-0">
+              <div class="textgrey">
+                <span>FN Fix</span>
+                <span>{{fnfixCounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>FN Done</span>
+                <span>{{fnCounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>Inactive</span>
+                <span>{{normalcallcounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>Junk Leads</span>
+                <span>{{junkleadsCounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>Junk Visits</span>
+                <span>{{junkvisitsCounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>Booking Requests</span>
+                <span>{{bookingRequestCounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>Booking Rejected</span>
+                <span>{{bookingRejCounts}}</span>
+              </div>
+              <div class="textblue">
+                <span>Booked</span>
+                <span>{{bookedCounts}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-2"></div>
+      </div>
+
+      <div class="col-12 px-0 py-2 d-flex justify-content-center align-items-center flex-column">
+        <div>
+          Here's a summary of your CRM activity in last 1 hour.
+        </div>
+        <div>
+          Review and take necessary action
+        </div>
+      </div>
+      <div clas="col-12 px-0" style="display: flex; justify-content: center;">
+        <button class="btn btn-warning" type="button">Submit</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<!-- pop up modal for calls in live for Mandate  -->
+<!-- <button type="button" data-toggle="modal" data-target="#on_call_modal" id="mandate_call_modal_detail"
+  style="display: none;">Show Details</button> -->
+
+<div *ngIf="isOnCallMandateModalOpen" class="custom-angular-mandate-modal">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+
+      <div class="ringing_call modal-header position-relative"
+        [hidden]="callStatus != 'Ringing' && callStatus != 'Answered by agent'">
+        <h4 class="col-12 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <img src="../../../assets/images/ringing_icon.png" style="width: 25px;">
+          <span style="color: #ffffff !important">Ringing with {{ calledLead?.leadname
+            }} </span>
+        </h4>
+        <button
+          *ngIf="(showCloseConnectingButton && (callStatus == 'Ringing' || callStatus == 'Answered by agent')) && callDirection != 'inbound'"
+          type="button" class="close" data-dismiss="modal" id="mandate_call_modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallDisconnect()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="answered_call modal-header position-relative"
+        [hidden]="callStatus != 'CONNECTING' && callStatus != undefined && callStatus != 'Answered' && callStatus != 'Answered by customer'">
+        <h4 class="col-12 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc>
+          <span style="color: #ffffff !important">On Call with {{ calledLead?.leadname }} </span>
+        </h4>
+        <button
+          *ngIf="((showCloseButton && (callStatus == 'CONNECTING' || callStatus == 'Answered' || callStatus == 'Answered by customer')) || (showCloseConnectingButton && callStatus == 'CONNECTING')) && callDirection != 'inbound'"
+          type="button" class="close" data-dismiss="modal" id="mandate_call_modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallDisconnect()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="disconnected_call modal-header position-relative"
+        [hidden]="callStatus != 'Call Disconnected' && callStatus != 'Executive Busy' && callStatus != 'Busy' && callStatus != 'BUSY'">
+        <h4 class="col-12 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc>
+          <span style="color: #ffffff !important"> Disconnected with {{
+            calledLead?.leadname }}</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" id="mandate_call_modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallMandateModalClose()">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <app-mandate-call-details *ngIf="isModalOpen" [calledLead]="calledLead"
+          [assignedRm]="assignedRm"></app-mandate-call-details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- pop up modal for calls in live for retail  -->
+<div *ngIf="isOnCallModalOpen" class="custom-angular-modal">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+      <div class="answered_call modal-header position-relative" [hidden]="callStatus == 'Call Disconnected'">
+        <h4 class="col-12 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc> On Call with {{
+          calledLead?.leadname
+          }}
+        </h4>
+        <button
+          *ngIf="((showCloseButton && callStatus == 'Answered') || (showCloseConnectingButton && callStatus == 'CONNECTING')) && callDirection != 'inbound'"
+          type="button" class="close" data-dismiss="modal" id="mandate_call_modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallDisconnect()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="disconnected_call modal-header position-relative" [hidden]="callStatus != 'Call Disconnected'">
+        <h4 class="col-12 m-0 text-center d-flex justify-content-center align-items-center"
+          style="gap:0.5rem;font-size: 20px !important;font-weight: 500;">
+          <dotlottie-wc src="https://lottie.host/c1f893c4-9817-41c0-a9db-30b173ad189c/VxouJL36tR.lottie"
+            style="width: 20px;height: 20px;" speed="1" autoplay loop></dotlottie-wc> Disconnected with {{
+          calledLead?.leadname }}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;position: absolute;right: 10px;"><span
+            aria-hidden="true" (click)="onCallRetailModalClose()">&times;</span><span
+            class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body">
+        <app-retail-call-details [calledLead]="calledLead" [assignedRm]="assignedRm"></app-retail-call-details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<div class="modal fade" id="auto_assign_settings" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog assign_modal ">
+    <div class="modal-content assign_modal_body" id="assign_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-1"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);;border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0 col-11 text-center"
+          style="color: #4D4D4D;font-size: 24px !important;font-weight: 400 !important;">Auto Assign Control</h4>
+        <button type="button" class="close style_close_btn col-1" data-dismiss="modal"
+          (click)="sourceHistoryModalClose()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="col-12 py-3">
+          <div class="main_head">Lead Stage Control</div>
+          <div class="sub_heads">Choose which lead stages should follow auto-assignment rules. Each stage can be enabled
+            or disabled independently.</div>
+
+          <div class="col-12 p-0 d-flex">
+            <div class="col-6 p-0">
+              <div class="option_1 py-3">
+                <span class="col-9 p-0">General Followups</span>
+                <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
+                    id="hidecheckboxid" value="followups" name='programming' (change)="getSelectedAssignSec()"
+                    style="width: 25px !important;height: 25px !important;"></span>
+              </div>
+              <div class="option_1 py-3">
+                <span class="col-9 p-0">Inactive Leads</span>
+                <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
+                    id="hidecheckboxid" value="inactive" name='programming' (change)="getSelectedAssignSec()"
+                    style="width: 25px !important;height: 25px !important;"></span>
+              </div>
+            </div>
+
+            <div class="col-6 p-0">
+              <div class="option_1 py-3">
+                <span class="col-7 p-0">Normal Call</span>
+                <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
+                    id="hidecheckboxid" value="nc" name='programming' (change)="getSelectedAssignSec()"
+                    style="width: 25px !important;height: 25px !important;"></span>
+              </div>
+              <div class="option_1 py-3">
+                <span class="col-7 p-0">Junk Leads</span>
+                <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
+                    id="hidecheckboxid" value="junk" name='programming' (change)="getSelectedAssignSec()"
+                    style="width: 25px !important;height: 25px !important;"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info_text">
+            <i class="fas fa-info-circle" style="color: #0b7ab2;"></i> When disabled, leads under that stage will not be
+            auto-assigned.
+          </div>
+
+          <div class="main_head pt-3">Auto Assign Duration</div>
+          <div class="sub_heads">Auto-assignment will be active only within the selected duration.</div>
+
+          <div class="radio_btn_row py-3 d-flex justify-content-between align-items-center">
+
+            <div class="d-flex gap_5 radio_options_style">
+              <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
+                  id="hidecheckboxid" value="30days" name='programmingdays' (change)="getDateRange()"
+                  style="width: 16px !important;height: 16px !important;">
+              </span>
+              Last 30 days
+            </div>
+
+            <div class="d-flex gap_5 radio_options_style">
+              <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
+                  id="hidecheckboxid" value="60days" name='programmingdays' (change)="getDateRange()"
+                  style="width: 16px !important;height: 16px !important;">
+              </span>
+              Last 60 days
+            </div>
+
+            <div class="d-flex gap_5 radio_options_style">
+              <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
+                  id="hidecheckboxid" value="90days" name='programmingdays' (change)="getDateRange()"
+                  style="width: 16px !important;height: 16px !important;"></span>
+              Last 90 days
+            </div>
+
+            <div class="d-flex gap_5 radio_options_style">
+              <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
+                  id="hidecheckboxid" value="custom" name='programmingdays' (change)="getDateRange()"
+                  style="width: 16px !important;height: 16px !important;">
+              </span>
+              {{selectedCustomOption}}
+              <div class="d-flex align-items-center">
+                <a class=" m-0" type="button" id="customLeadDropdown" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <i class="fas fa-caret-down" style="color: rgb(0, 0, 0);font-size: 16px;"></i>
+                </a>
+                <div class="dropdown-menu " aria-labelledby="customLeadDropdown"
+                  style="cursor:pointer;box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);">
+                  <a class="dropdown-item dropDownCursor" (click)="CustomDate('today')">Today</a>
+                  <a class="dropdown-item dropDownCursor" (click)="CustomDate('last7')">Last 7 days</a>
+                  <a class="dropdown-item dropDownCursor" (click)="CustomDate('last15')">Last 15 Days
+                    Visits</a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer ">
+        <button type="button" class="btn btn-secondary footer_close_btn m-0 col-5 py-0" data-dismiss="modal"
+          (click)="sourceHistoryModalClose()">Close</button>
+        <button type="button" class="btn btn-warning footer_submit_button col-5 py-0 m-0" (click)="finalSubmit()">Save &
+          Implement</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="switch_account" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog switch_modal ">
+    <div class="modal-content switch_modal_body" id="switch_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2" style="background: #D3ECFF;">
+        <h4 class="m-0 col-11 p-0 text-center"
+          style="color: #004B71;font-size: 24px !important;font-weight: 500 !important;">
+          <span *ngIf="confirmationSwitch == false">Switch Account</span>
+          <span *ngIf="confirmationSwitch == true">Confirm Switch</span>
+          <img class="ml-2" src="../../../assets/images/switch_pop_icon.png">
+        </h4>
+        <button type="button" class="close switch_style_close_btn col-1 p-0" data-dismiss="modal"
+          *ngIf="confirmationSwitch == false" (click)="switchModalClose()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600 !important;color: #000 !important;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="col-12 py-3 px-2" *ngIf="confirmationSwitch == false">
+          <input class="form-control search_switch" type="text" [(ngModel)]="switch_account_name"
+            placeholder="Search by Name" (input)="searchSwitchAccount()" />
+        </div>
+
+        <div class="col-12 p-0 row m-0 exec_main_container" *ngIf="confirmationSwitch == false">
+          <div class="col-6" *ngFor="let exec of executiveListData">
+            <div class="exec_card" *ngIf="executiveListData?.length > 0">
+              <div class="">
+                <div class="name_text">{{exec.name}}</div>
+                <div class="role_name_text">{{exec.RoleName}}</div>
+              </div>
+              <div class="">
+                <button type="button" class="btn btn-info m-0" (click)="getConfirmationSwitch(exec)">Switch <img
+                    src="../../../assets/images/switch_btn_icon.png">
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="no_exec_data" *ngIf="executiveListData?.length == '0'">
+            No Executives found....
+          </div>
+        </div>
+
+        <div class="col-12 text-center" *ngIf="confirmationSwitch == true">
+          <span style="font-size: 16px;font-weight: 300;">You’re about to switch accounts You will leave your Admin
+            account and continue as</span>
+          <div style="font-size: 22px;font-weight: 500;">{{selectedSwitchAccount.name}} -
+            {{selectedSwitchAccount.RoleName}}</div>
+          <div class="py-3" style="font-size: 20px;font-weight: 300;">Do You Want To Proceed ?</div>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-evenly" *ngIf="confirmationSwitch == true">
+        <button type="button" class="btn btn-secondary footer_close_btn m-0" data-dismiss="modal"
+          (click)="closeSwitchModal()">Close</button>
+        <button type="button" class="btn btn-primary m-0" (click)="switchToAcc()">Yes, Switch Account</button>
+      </div>
+    </div>
+  </div>
+</div>

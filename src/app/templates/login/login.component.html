@@ -1,0 +1,95 @@
+
+      <div class="login-body">
+        <div class="container">
+          <div class="login-content">
+            <div class="cntnt-main">
+              <div class="logo">
+                  <img src="../../../assets/images/SITE CRM Logo_1.png">
+              </div>
+
+              <form *ngIf="usernamelogin" class="loginwithusername_form" name="form" novalidate>
+                <div class="form-group ">
+                  <input type="text" class="form-control" name="name" id="name" placeholder="User Name" 
+                  [(ngModel)]="loginData.username" #name="ngModel" required style="width: 96%;">
+                </div>
+
+                <div class="form-group">
+                  <div class="d-flex justify-content-center align-items-center">
+                  <input type="password" class="form-control" id="password" placeholder="Password"
+                  name="password" [(ngModel)]="loginData.password" #password="ngModel" required>
+                  <span style="position: relative;right: 25px;color: #495057;"><i class="fa fa-eye" (click)="togglePasswordVisibility()"></i></span></div>
+                </div>
+                <div>
+                <button (click)="loginold()" id="log-btn" class="form-control btn_style gcb_btn" style="width: 96%;">LOGIN</button>
+                <img class="login_loader" *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              </div>
+              <div *ngIf="invalidCredentialMsg" [ngClass]="error">{{invalidCredentialMsg}}</div>
+              </form>
+
+              <form *ngIf="numberlogin" class="loginwithnumber_form" name="form" novalidate>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="number" id="number" placeholder="Enter Registered Number" 
+                  [(ngModel)]="loginData.number" #number="ngModel" required>
+                </div>
+
+                <div>
+                  <button (click)="login()" id="log-btn" class="form-control btn_style gcb_btn">LOGIN</button>
+                  <a hidden id="modalclick" data-toggle="modal" data-target="#myModal" class="form-control sbmt_btn btn_style gcb_btn">ModalSUBMIT</a>
+                  <!-- <img class="login_loader" *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+                </div>
+                <div *ngIf="invalidCredentialMsg" [ngClass]="error">{{invalidCredentialMsg}}</div>
+              </form>
+              <a class="mt-2 loginusername_btn" *ngIf="numberlogin" (click)="loginswap()">Login With Username/Password</a>
+              <a class="mt-2 loginusername_btn" *ngIf="usernamelogin" (click)="loginswap()">Login With OTP</a>
+            </div> 
+          </div>
+        </div>
+      </div>
+
+  <div id="map" style="height: 400px;display: none;"></div>
+
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center">
+                <div class="modal-content" style="width: 50%;">
+                  <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <form action="javascript: void(0)" class="otp-form" name="otp-form">
+                                <div class="title">
+                                  <h3>OTP VERIFICATION</h3>
+                                  <p class="info">An otp has been sent to <span>{{loginData.number}}</span></p>
+                                  <p class="info otptags resendtag">Resend the otp in <span id="time">00:30</span> Seconds <a
+                                      style="display: none;" (click)="otpresend()" class="otpresend"> - Resend OTP <i class="fa fa-repeat" aria-hidden="true"></i></a></p>
+                                  <p class="msg">Please enter OTP to verify</p>
+                                </div>
+                                <div class="otp-input-fields">
+                                  <input type="text" maxlength="1" class="otp__digit" *ngFor="let digit of otpArray; let i = index"
+                                    [(ngModel)]="otp[i]" name="otp{{ i }}" #otpInput (input)="onInputChange($event, i)"
+                                    (keydown)="onKeyDown($event, i)" />
+                                </div>
+                                <div class="result">
+                                  <p id="_otp" class="_notok">
+                                    <input type="hidden" class="form-control" id="otpselected" name="otpmodel" [(ngModel)]="loginData.otpmodel" #otpmodel="ngModel">
+                                  </p>
+                                </div>
+
+                        </form>
+                            <p id="_otp" class="_notok">
+                              <input type="hidden" class="form-control" id="otpselected" name="otpmodel" [(ngModel)]="loginData.otpmodel" #otpmodel="ngModel">
+                            </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+
+    <div *ngIf=filterLoader class="main-lds-ring-div">
+      <!-- <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div> -->
+       <img src="../../../assets/images/infinity_loader.gif">
+     </div>
+

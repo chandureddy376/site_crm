@@ -1,0 +1,248 @@
+<!-- HEADER -->
+
+<div>
+  <app-header></app-header>
+</div>
+
+<!-- HEADER -->
+<div class="btn_section" [ngStyle]="{'margin-left': isSidebarHovered ? '13rem' : '3rem'}">
+  <div class="col-9">
+    <div class="button_section  p-2 d-flex ">
+      <div class="planleadassign">
+        <a *ngIf=" adminview && userid != '40007'" class="add_class properties_section other_section " routerLink="/addproperty"
+        [class.active]="dataType === 'property'" [queryParams]="{type:'property'}">
+        Add Property
+      </a>
+
+      <a  class="add_class channel_section other_section" routerLink="/addproperty" [queryParams]="{type:'cp'}"
+        [class.active]="dataType === 'cp'">
+        CP Registration
+      </a>
+
+      <a *ngIf=" adminview && userid != '40007'" class="add_class builders_section other_section" routerLink="/addproperty"
+        [queryParams]="{type:'builders'}" [class.active]="dataType === 'builders'" >
+        Mandate Requests
+      </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-3 d-flex justify-content-end">
+  <span *ngIf="dataType != 'builders'"><button type="button" class="btn btn-warning addbtn" data-toggle="modal"
+    data-target="#add_exec" style="margin-right: 1.8rem;">{{addType}}</button></span>
+  </div>
+</div>
+<div class="active_content_main" [ngStyle]="{'padding-left': isSidebarHovered ? '15rem' : '5rem'}">
+  <div class="button_section" style="display: flow-root;">
+    <!-- <div class="leadassign">
+      <a *ngIf=" adminview" class="add_class properties_section other_section " routerLink="/addproperty"
+        [class.active]="dataType === 'property'" [queryParams]="{type:'property'}">
+        Add Property
+      </a>
+
+      <a class="add_class channel_section other_section" routerLink="/addproperty" [queryParams]="{type:'cp'}"
+        [class.active]="dataType === 'cp'">
+        CP Registration
+      </a>
+
+      <a *ngIf=" adminview" class="add_class builders_section other_section" routerLink="/addproperty"
+        [queryParams]="{type:'builders'}" [class.active]="dataType === 'builders'" >
+        Mandate Requests
+      </a>
+    </div> -->
+
+
+
+  <!-- this is the properties table  code -->
+  <div class="table-container ">
+    <div class="col-sm-12" *ngIf="dataType == 'property'">
+      <table class="active_table_main table table-striped table-bordered">
+        <thead>
+          <tr class="active_table_header">
+            <th>#</th>
+            <th style="width: 60%;">Name</th>
+            <th><span class="d-flex justify-content-between">Added Date 
+              <!-- <span><img src="../../../assets/images/sort.png" width="2rem"></span> -->
+            </span></th>
+          </tr>
+        </thead>
+        <tbody class="active_table_body">
+          <tr *ngFor="let select of addedpropertylists; let i = index"
+            [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+            <td>{{i+1}}</td>
+            <td>{{select.name}}</td>
+            <td>{{select.date | date: 'dd-MMM-yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- this is the channel partner table  code -->
+    <div class="col-sm-12" *ngIf="dataType == 'cp'">
+      <table class="active_table_main table table-striped table-bordered">
+        <thead>
+          <tr class="active_table_header">
+            <th>#</th>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Credentials</th>
+            <th>Details</th>
+            <th>Registered Data</th>
+          </tr>
+        </thead>
+        <tbody class="active_table_body">
+          <tr *ngFor="let select of cplists; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{select.CP_NAME}}</td>
+            <td>{{select.CP_NUMBER}}</td>
+            <td>
+              Username - {{select.CP_MAIL}}<br />
+              Password - {{select.CP_PASSWORD}}
+            </td>
+            <td>
+              Rera - {{select.rera}}<br />
+              GST - {{select.gst}}
+            </td>
+            <td>
+              Date - {{select.CREATED_DATE | date: 'dd-MMM-yyyy'}}<br />
+              Registered By{{select.addedby}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- this is the builders(mandate requests) table  code -->
+    <div class="col-sm-12 pt-1" *ngIf="dataType == 'builders'">
+      <table class="active_table_main table table-striped table-bordered">
+        <thead>
+          <tr class="active_table_header">
+            <th>#</th>
+            <th>Builder Name</th>
+            <th>Number</th>
+            <th>Mail</th>
+            <th>Property Name</th>
+            <th>Remarks</th>
+            <th>Requested Date</th>
+          </tr>
+        </thead>
+        <tbody class="active_table_body">
+          <tr *ngFor="let select of requestslists; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{select.BuilderName}}</td>
+            <td>{{select.MobileNo}}</td>
+            <td>{{select.BuilderMail}}<br /></td>
+            <td>{{select.PropertyName}}<br /></td>
+            <td>{{select.Remarks}}</td>
+            <td>{{select.CREATED_DATE | date: 'dd-MMM-yyyy'}}</td><br />
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <div class="main-lds-ring-div" *ngIf=filterLoader>
+    <!-- <div class="lds-ring" >
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+     <img src="../../../assets/images/">
+  </div>
+</div>
+
+
+<!-- this is form code for add property and add channel partner  -->
+<div class="modal fade" id="add_exec" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="new_executive">
+      <!-- <div  class="col-md-12 loader_div" *ngIf="filterLoader">
+        <span class="Centerer"></span>
+        <img src="../../../assets/images/loader.gif">
+      </div> -->
+      <div class="modal-header d-flex justify-content-center" *ngIf="dataType == 'property' && addType == 'Add Property'">
+        <h4> Add Property</h4>
+      </div>
+      <div class="modal-header d-flex justify-content-center" *ngIf="dataType == 'cp' && addType == 'Add CP'">
+        <h4> Add CP</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+
+        <div class="new_executive_form col-xs-12" style="align-items: center; justify-content: space-evenly;"
+          ng-style="{'height': dataType === 'property' ? '250px' : '450px'}">
+          <!-- this is form code for add property based on the condition -->
+          <form name="form" method="POST" *ngIf="dataType == 'property' && addType == 'Add Property'">
+            <div class="row">
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">Select Builder</label>
+                <search-dropdown [items]="builders" [size]="'small'" [label]="'name'" name="selectedBuilders"
+                  [(ngModel)]="selectedBuilders" (click)="builderchange($event)">
+                </search-dropdown>
+                {{builders?.name | json}}
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign" style="display: flex; flex-direction: column">
+                <label class="heads">Select Properties</label>
+                <p-multiSelect id="properties_dropdowm" [options]="properties" [(ngModel)]="selectedProperties" optionLabel="name" name="selectedProperties" (onChange)="propertychange($event)"
+                defaultLabel="Select Properties"  selectionLimit="5"></p-multiSelect>
+              </div>
+
+              <div class="col-12">
+                <button (click)="addproperties()" class="btn saveBtn">Add Properties</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- this is form code for add channel partner  based on condition-->
+          <form name="form" method="POST" *ngIf="dataType == 'cp' && addType == 'Add CP'">
+            <div class="row">
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">CP Name*</label>
+                <input class="form-control" id="custname" placeholder="Enter the Name" type="text" required>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">Contact Person*</label>
+                <input class="form-control" id="contactperson" placeholder="Enter the Name" type="text" required>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">CP Number*</label>
+                <input class="form-control" id="custnum" placeholder="Enter the Number" type="text" required>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">CP Mail*</label>
+                <input class="form-control" id="custmail" placeholder="Enter the Email" type="text" required>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">Secondary Mail(Optional)</label>
+                <input class="form-control" id="custmailsecondary" placeholder="Enter the Email" type="text">
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">GST No.</label>
+                <input class="form-control" id="gstno" placeholder="Enter the GST Number" type="text" required>
+              </div>
+
+              <div class="col-sm-6 form-group headingdesign">
+                <label class="heads">RERA No.</label>
+                <input class="form-control" id="rerano" placeholder="Enter the RERA Number" type="text" required>
+              </div>
+
+              <div class="col-12">
+                <button (click)="addnewcp()" class="btn saveBtn">Add CP</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

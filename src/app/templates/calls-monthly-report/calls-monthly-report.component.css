@@ -1,0 +1,98 @@
+.body-cntnts {
+  width: 99%;
+  margin: 25px 0px 10px 10px !important;
+  background: #F5F7F9;
+}
+
+/* .event-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: #ff4081;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+  } */
+
+.custom-letter {
+  font-weight: bold;
+  opacity: 0.6;
+}
+
+
+/* Ensure the calendar fills the parent */
+.calendar-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.e-calendar {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Target the month table */
+.e-calendar .e-content table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc !important;
+}
+
+/* Style day cells */
+.e-calendar .e-content td.e-day,
+.e-calendar .e-content td.e-other-month,
+.e-calendar .e-content td.e-cell {
+  border: 1px solid #ccc !important;
+  vertical-align: top;
+  position: relative;
+  padding: 35px;
+  text-align: center;
+}
+
+.e-calendar .e-content td.e-other-month {
+  filter: blur(1px);
+  opacity: 0.3;
+}
+
+::ng-deep .e-calendar .e-week-header th {
+  border: 1px solid #ccc !important;
+  text-align: center !important;
+  padding-block: 5px;
+}
+
+/* Optional: Improve layout on small screens */
+.e-calendar .e-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.e-footer-container,
+.e-icon-container {
+  display: none;
+}
+
+.e-header .e-day {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  background: #0582C1 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+app-root,
+.calendar-wrapper {
+  height: 100%;
+}

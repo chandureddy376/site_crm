@@ -1,0 +1,442 @@
+/* CENTER-CONTENTS */
+
+.main_count_header {
+    background: #0B7AB229;
+    color: #000000;
+    padding-inline: 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+}
+
+.body-cntnts {
+    margin: 10px 0px 10px 0px !important;
+    float: left;
+    background-color: #f4f4f4;
+    width: 99%;
+}
+
+.enquiry_content_main {
+    width: 100% !important;
+}
+
+.enquiry_content_main tbody tr td a.id_style {
+    text-decoration: underline;
+}
+
+.enquiry_content_main .tab_button_section .leadassign {
+    float: left;
+}
+
+.enquiry_content_main .tab_button_section .leadassign {
+    float: left;
+}
+
+.enquiry_content_main .tab_button_section .leadassign a {
+    text-decoration: none;
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 0px 5px 10px;
+    margin: 0 4px 0 0;
+    cursor: pointer;
+    float: left;
+    color: #999;
+}
+
+.enquiry_content_main .tab_button_section .leadassign a.active {
+    color: #0B7AB2;
+    text-decoration: underline 2px;
+    text-underline-offset: 10px;
+}
+
+/*============= Enquiry Table CSS Start =========================*/
+
+.enquiry_table_body {
+    font-size: 13px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.even-row {
+    background-color: white;
+}
+
+.odd-row {
+    background-color: #f4f4f4;
+}
+
+.CSassigned_table {
+    height: 680px;
+    overflow: auto;
+    width: 100%;
+}
+
+.assign_table {
+    height: 450px;
+    overflow: auto;
+    width: 100%;
+}
+
+
+.table-container {
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    border-radius: 12px;
+    background-color: white;
+    padding-top: 5px;
+}
+
+.content_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+    background: #0B7AB2;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.content_table_main thead tr th {
+    padding: 8px 25px 8px 8px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+    padding: 6px 6px 6px 6px;
+    color: #666666;
+    height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+    border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+.dropDownCursor {
+    cursor: pointer;
+}
+
+
+/*============= Enquiry Table CSS End =========================*/
+
+/* ASSIGN_TABLE_CSS_STARTS */
+
+.modal-dialog.assignlead_modal {
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+/* MODAL */
+
+#assign_leads {
+    height: 750px;
+    width: 100%;
+}
+
+#assign_leads .modal-header {
+    background: #0B7AB2;
+    text-align: center;
+}
+
+#assign_leads .modal-header h4 {
+    color: #fff;
+}
+
+#assign_leads .new_enquiry_form div.input_cmn_div {
+    padding: 0px 5px 10px 0px;
+}
+
+#assign_leads .new_enquiry_form div label {
+    font-size: 16px;
+    color: #666666;
+    font-weight: 400;
+    display: block;
+}
+
+#assign_leads .new_enquiry_form div input {
+    float: left;
+}
+
+#assign_leads .new_enquiry_form .save_btn {
+    margin: 0;
+    width: 100%;
+}
+
+#assign_leads .new_enquiry_form .save_btn button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#assign_leads .new_enquiry_form .save_btn button.approve {
+    background: #e5652e;
+    padding: 5px 79px;
+    height: 35px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 25px 0 0 0;
+    display: block;
+    text-align: center;
+    border: 0px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+#assign_leads .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -52px;
+    left: 0px;
+    color: #ffff;
+    transform: rotate(90deg);
+}
+
+/* RESPONSIVE_STARTS */
+input[type="radio"] {
+    display: none;
+}
+
+/* Acordion */
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: .0px 0em 0em .5em !important;
+    border: none !important;
+    color: rgba(191, 191, 191, 0.87) !important;
+    font-size: 12px !important;
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+::ng-deep .ui-multiselect {
+    width: 245px !important;
+    height: 2.71428571em !important;
+}
+
+::ng-deep body .ui-multiselect {
+    padding: 0.5em 0em !important;
+    border-radius: 0.25em !important;
+}
+
+::ng-deep .new_enquiry_form .leadsDrop .ui.selection.dropdown {
+    width: 265px !important;
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .enquiry_content_main {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .main_count_header {
+        padding-left: 0.2rem !important;
+    }
+
+    .body-cntnts {
+        padding-left: 0.2rem;
+    }
+}
+
+.dropdown-search-container {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-top: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu {
+    padding: 0 !important;
+}
+
+.filterspan {
+    color: #9f9b9b;
+    display: flex;
+    gap: 0.1rem;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}
+
+.chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.lds-ring {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    padding: 1% 48%;
+    height: 500px;
+}
+
+.crm-sub-container {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.panel-1 {
+    order: 1;
+    flex-grow: 1;
+    min-width: 50%;
+    background: #ddd;
+}
+
+.padding-medium {
+    padding: 0 16px;
+}
+
+.panel-content {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+::ng-deep bs-daterangepicker-container {
+    left: 49.5rem !important;
+    top: 235px !important;
+}
+
+.lead_count {
+    padding-left: 0.5rem;
+}
+
+.lead_count label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.chevron-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #b8afaf;
+}
+
+.chevron-btn.left {
+    margin-right: 2px;
+}
+
+.chevron-btn.right {
+    margin-left: 2px;
+}
+
+.main_suggested_div {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-top: 0.3rem;
+    padding-right: 0.5rem;
+}
+
+ul.ks-cboxtags {
+    list-style: none;
+    padding: 0px;
+    display: flex;
+    height: 3rem;
+    overflow: scroll;
+    gap: 0.5rem;
+}
+
+ul.ks-cboxtags li {
+    display: inline;
+}
+
+ul.ks-cboxtags li label {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 4px 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="radio"]:checked+label::before {
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="radio"]:checked+label {
+    border: 1px solid #0B7AB25c;
+    background-color: #0B7AB25c;
+    color: #0B7AB25c;
+    font-weight: 700;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="radio"] {
+    display: absolute;
+}
+
+ul.ks-cboxtags li input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+ul.ks-cboxtags li input[type="radio"]:focus+label {
+    border: 2px solid #0B7AB2;
+}

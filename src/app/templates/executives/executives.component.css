@@ -1,0 +1,749 @@
+/* CENTER-CONTENTS */
+
+.body-cntnts {
+    margin: 0px 0px 10px 10px !important;
+    width: 98%;
+    /* padding-left: 14.5rem; */
+}
+
+.myexecutive_main {
+    background: #f1f1f1;
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+/* css for buttons with green background */
+.main_count_header {
+    background: #f1f1f1;
+    color: #ffffff;
+    /* padding-left: 16em!important; */
+    padding-top: 2rem !important;
+    padding-inline: 1.5rem;
+    padding-bottom: .5rem;
+}
+
+/* aligning the buttons in row anf added gap in between */
+.main_count_header .button_section {
+    display: flex !important;
+    gap: 1rem;
+}
+
+#new_executive {
+    width: 40rem;
+    margin: 50px 0px 0px 0px;
+    /* height: 450px; */
+    overflow: scroll;
+}
+
+.loader_div {
+    width: 100%;
+    background-color: #3a3838a6;
+    height: 500px;
+    position: absolute;
+    text-align: center;
+    z-index: 99999;
+}
+
+.loader_div span.Centerer {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.loader_div img {
+    width: 15%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#new_executive .modal-header {
+    background: #0B7AB2;
+    text-align: center;
+}
+
+
+#new_executive .modal-header h4 {
+    color: #fff;
+}
+
+.create_new_executive {
+    cursor: pointer;
+}
+
+.modal-dialog {
+    width: 600px;
+}
+
+.update_wishes {
+    cursor: pointer;
+}
+
+/* .has-error .form-control {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+} */
+
+span.exec_table_prof i {
+    font-size: 26px;
+    color: #0B7AB2;
+}
+
+.myexecutive_main .button_section {
+    margin: 0;
+    padding: 0;
+    background-color: darkseagreen;
+}
+
+.myexecutive_main .button_section .create_new_executive {
+    float: left;
+    margin: 0px 6px 0 0;
+}
+
+.assign_team {
+    float: left;
+}
+
+.assign_team a {
+    background: #e5652e;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    padding: 12px 15px;
+}
+
+.myexecutive_main .button_section .update_wishes {
+    float: right;
+}
+
+.myexecutive_main .button_section .create_new_executive a {
+    background: #0B7AB2;
+    text-decoration: none;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    padding: 12px 15px;
+}
+
+.myexecutive_main .button_section .update_wishes a {
+    background: #0B7AB2;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    padding: 12px 15px;
+}
+
+.myexecutive_main .button_section .download {
+    float: right;
+}
+
+.myexecutive_main .button_section .download a {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #252525;
+    font-weight: 700;
+    padding: 6px 15px 0px 15px;
+}
+
+/*============= Executives Table CSS Start =========================*/
+
+.myexecutive_table_main {
+    width: 100%;
+    /* height: 638px; */
+}
+
+.myexecutive_table_body {
+    /* height: 638px; */
+    font-size: 13px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+span.myexecutive_date {
+    font-size: 13px;
+    position: absolute;
+    margin: 0px 0px 0px 4px;
+}
+
+.myexecutive_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 3px 0px 3px 0px;
+
+}
+
+.myexecutive_table_main thead {
+    background: #EBF8FF;
+}
+
+.myexecutive_table_main thead tr th {
+    padding: 8px 25px 8px 8px;
+    color: #00476A;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.myexecutive_table_main tbody tr td {
+    padding: 6px 6px 6px 6px;
+    color: #464646;
+    /* height: 30px; */
+}
+
+.myexecutive_table_main .myexecutive_table_body {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.myexecutive_table_main tbody tr td a.id_style {
+    border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+.edit_btn {
+    margin-right: 18px;
+    text-align: center;
+}
+
+.myexecutive_table_main tbody tr td a.btn_style {
+    cursor: pointer;
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 4px 30px 4px 30px;
+}
+
+.table-container {
+    /* box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    padding-block: 1rem;
+    border-radius: 12px; */
+    background-color: #F9FAFB;
+}
+
+.CSassigned_table {
+    overflow: auto;
+    width: 100%;
+    height: calc(100vh - 112px);
+}
+
+.crm-sub-container {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.panel-1 {
+    order: 1;
+    flex-grow: 1;
+    min-width: 50%;
+    background: #ddd;
+}
+
+.crm-auto-scroll {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.padding-medium {
+    padding: 0 16px;
+}
+
+.panel-content {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+#new_executive .new_executive_form .save_btn button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/*============= Table CSS End =========================*/
+/* RIGHT-side */
+/* MODAL */
+
+.modal.perform#new_performer {
+    width: 400px !important;
+    margin: 150px 0px 0px 500px !important;
+    height: 100%;
+    padding: 15px;
+}
+
+.modal.perform#new_performer .modal-dialog {
+    width: 370px;
+    margin: 0px;
+}
+
+.modal.perform#new_performer .save_btn button {
+    width: 100%;
+}
+
+#new_executive .new_executive_form div.input_cmn_div {
+    padding: 0px 15px 20px 15px;
+}
+
+.form-control.col-xs-12.exec_textarea {
+    width: 20rem;
+}
+
+#new_performer .new_executive_form div.input_cmn_div {
+    clear: both;
+    margin: 0 0 10px 0;
+    padding: 0 40px;
+}
+
+#new_executive .new_executive_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+    display: block;
+}
+
+#new_performer .new_executive_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+    display: block;
+}
+
+#new_executive .new_executive_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#new_performer .new_executive_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#new_executive .new_executive_form .save_btn {
+    margin: 0;
+}
+
+#new_performer .new_executive_form .save_btn {
+    margin: 0;
+}
+
+.actions.col-xs-12.save_btn {
+    text-align: center;
+}
+
+#new_executive .new_executive_form .save_btn button {
+    background: #0B7AB2;
+    padding: 5px 79px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0px;
+}
+
+
+#new_performer .new_executive_form .save_btn button {
+    background: #0B7AB2;
+    padding: 5px 79px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 25px 0 0 0;
+    display: block;
+    text-align: center;
+    border: 0px;
+}
+
+#new_executive .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -50px;
+    left: 2px;
+    color: #FCFCFC;
+    transform: rotate(90deg);
+}
+
+.add_team_close {
+    color: #FCFCFC;
+    font-size: 24px;
+    font-weight: 700;
+    background: none;
+    border: none;
+}
+
+/* css for the close icon on clicking update perform */
+.cancelButton {
+    align-items: end;
+    justify-content: center;
+}
+
+#new_performer .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: 5px;
+    right: 10px;
+    color: #000000;
+    transform: rotate(90deg);
+}
+
+/* added red color for the star symbol in form */
+.colorRed {
+    color: red;
+}
+
+/* in from on giving div the label and input is been displayed in the same line so to display in different line this css code is */
+.departmentDesginationStyles {
+    display: flex;
+    flex-direction: column;
+}
+
+.myexecutive_table_main .btn-outline-info {
+    color: #0B7AB2 !important;
+    border-color: #0B7AB2 !important;
+}
+
+.btn-outline-info:hover {
+    background-color: none !important;
+}
+
+.exec_department,
+.exec_designation {
+    width: 190px !important;
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: 0px 0em 0em 0em !important;
+    border: none !important;
+    color: rgba(191, 191, 191, 0.87) !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+::ng-deep .ui-multiselect {
+    width: 190px !important;
+    height: 35px !important;
+}
+
+::ng-deep .members_team .ui-multiselect {
+    width: 100% !important;
+    height: 35px !important;
+}
+
+::ng-deep body .ui-multiselect {
+    padding: 5px 10px 5px 10px !important;
+    border: 1px solid #a7a7a7 !important;
+}
+
+.filterspan {
+    color: #9f9b9b;
+    display: flex;
+    gap: 0.1rem;
+    width: 100%;
+    padding-bottom: 3px;
+}
+
+.chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}
+
+.dropdown-search-container {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-top: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu {
+    padding: 0 !important;
+}
+
+/* RESPONSIVE_STARTS */
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .body-cntnts {
+        width: 100%;
+    }
+
+    .myexecutive_main {
+        width: 100%;
+    }
+
+    .myexecutive_table_main {
+        height: 100%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .myexecutive_main {
+        width: 100%;
+    }
+
+    .myexecutive_table_main {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .body-cntnts {
+        padding-left: 0.2rem;
+    }
+
+    .main_count_header {
+        padding-left: 1.2em !important;
+    }
+}
+
+.button_section .planleadassign {
+    background-color: #ffffff !important;
+    border-radius: 50px;
+    padding-inline: 0.2rem;
+    padding-block: 0.2rem;
+    box-shadow: 0px 8px 24px 0px #959DA533;
+}
+
+.button_section .planleadassign a {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0 0px 0 0px;
+    cursor: pointer;
+    float: left;
+    color: #000000;
+    border: none;
+    padding: 5px 20px 5px 20px;
+}
+
+.button_section .planleadassign a.active {
+    color: #ffffff;
+    background: #0B7AB2;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    border-bottom: none;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.table-bordered {
+    border: none !important;
+}
+
+.table-bordered td {
+    border: none !important;
+}
+
+.table-bordered th {
+    border: none !important;
+}
+
+.table-striped tbody tr {
+    background-color: #ffffff !important;
+}
+
+.leadstatusdrop .btn-info {
+    color: #E5E7EB !important;
+    background-color: #EBF8FF !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.color-green {
+    color: #006900 !important;
+}
+
+.color-red {
+    color: #B14A41 !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+::ng-deep body .ui-dropdown {
+    width: 100% !important;
+}
+
+.submit_operations .btn-primary {
+    color: #fff;
+    background-color: #003A57 !important;
+    border-color: #003A57 !important;
+    padding-inline: 40px !important;
+}
+
+.submit_operations .btn-secondary {
+    color: #00476A !important;
+    background-color: #ffffff !important;
+    border-color: #00476A !important;
+    padding-inline: 40px !important;
+}
+
+::ng-deep .ui-dropdown-panel,
+::ng-deep .ui-multiselect-panel {
+    z-index: 9999 !important;
+}
+
+.modal-content {
+    overflow: visible !important;
+}
+
+.team_chip {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 16px;
+    padding: 3px 10px;
+    margin: 2px;
+    font-size: 12px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.remove_btn {
+    padding-inline: 15px;
+    padding-block: 3px;
+    background: #CD5D54;
+    color: #ffffff;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.show_all {
+    padding-inline: 5px;
+    padding-block: 2px;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    color: #0B7AB2;
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.popover-body {
+    font-size: 14px !important;
+}
+
+.add_prop {
+    border-radius: 50px;
+    background-color: #0B7AB2;
+    color: white;
+    padding: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul.ks-cboxtags {
+    list-style: none;
+    padding: 0px;
+}
+
+ul.ks-cboxtags li {
+    display: inline;
+}
+
+ul.ks-cboxtags li label {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 4px 6px;
+    cursor: pointer;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked+label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked+label {
+    border: 1px solid #0B7AB25c;
+    background-color: #bcd9e75c;
+    color: #0B7AB2;
+    font-weight: 700;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+    display: absolute;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:focus+label {
+    border: 2px solid #0B7AB2;
+}
+
+ul.ks-cboxtags li.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}

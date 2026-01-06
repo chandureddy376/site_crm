@@ -1,0 +1,477 @@
+<div>
+  <app-header></app-header>
+</div>
+
+<div class="body-cntnts"
+  [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '3.5rem' , 'height' : isExistChecker == true ? '100%' : '' }">
+  <div class="container">
+    <div class="login-content">
+      <div class="logo">
+        <img src="../../../assets/images/GRSamskruti.visit.jpg" *ngIf="samskruthiParam == '1'">
+        <img src="../../../assets/images/sitara.-visit.jpg" *ngIf="sitaraParam == '1'">
+        <img src="../../../assets/images/ranav_tranquil.jpeg" *ngIf="ranavParam == '1'">
+        <img src="../../../assets/images/Grswara.png" *ngIf="swaraParam == '1'">
+        <img src="../../../assets/images/reviva_by_ssi.png" *ngIf="revivaParam == '1'">
+      </div>
+
+      <form class="number_exist_form row m-0 col-12" name="form" novalidate>
+
+        <!-- name  -->
+        <div class="form-group col-6 pl-0 pt-3">
+          <h4 class="mb-1 text-left">Name :</h4>
+          <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" [(ngModel)]="username"
+            #name="ngModel" required style="width: 96% !important;">
+        </div>
+        <!-- number  -->
+        <div class="form-group col-6 px-0 pt-3">
+          <h4 class="mb-1 text-left">NO :</h4>
+          <input type="text" class="form-control" name="number" id="number" placeholder="Enter Number" maxlength="10"
+            [(ngModel)]="usernumber" #number="ngModel" (input)="checkNumberValidate()" required style="width: 96% ;">
+          <span class="d-flex" style="color: green;" *ngIf="rsvcount > 0">RSV - {{rsvcount}} Times Visited</span>
+        </div>
+
+        <!-- fresh triggered form  -->
+
+        <div class="freshvisitvisiblesection col-12 p-0 row m-0" style="display: none">
+          <!-- mail  -->
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">Email :</h4>
+            <input class="form-control" id="custmail" placeholder="Enter the Email" type="text" [(ngModel)]="usermail"
+              #mail="ngModel" name="mail" required style="width: 96%;">
+          </div>
+          <!-- executives  -->
+          <div class="form-group col-6 px-0 pt-3" [hidden]="roleid != '1'">
+            <h4 class="mb-1 text-left pl-1">Assisting Manager :</h4>
+            <select id="rm_dropdown" class="form-control ui dropdown" [(ngModel)]="selectedexec" name="selectedexec"
+              (change)="rmchange($event)" style="width: 96% !important;">
+              <option value="" selected>Select RM</option>
+              <option *ngFor="let rm of exevutivesList" value="{{rm.id}}">{{rm.name}}</option>
+            </select>
+          </div>
+          <!-- size -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Select Size :</h4>
+            <div class="wrapper">
+              <input type="radio" class="radiocheck" name="select3" value="1" id="option-1"
+                (click)="sizeselection($event)">
+              <input type="radio" class="radiocheck" name="select3" value="2" id="option-2"
+                (click)="sizeselection($event)">
+              <input type="radio" class="radiocheck" name="select3" value="3" id="option-3"
+                (click)="sizeselection($event)">
+              <input type="radio" class="radiocheck" name="select3" value="4" id="option-15"
+                (click)="sizeselection($event)">
+
+              <label for="option-1" class="option option-1"
+                [hidden]="ranavParam == '1' || sitaraParam == '1' || swaraParam == '1' || revivaParam == '1'">
+                <span>1 BHK</span>
+              </label>
+              <label for="option-2" class="option option-2"
+                [hidden]="ranavParam == '1' || sitaraParam == '1' || swaraParam == '1'">
+                <span>2 BHK</span>
+              </label>
+              <label for="option-3" class="option option-3" [hidden]="swaraParam == '1'">
+                <span>3 BHK</span>
+              </label>
+              <label for="option-15" class="option option-15"
+                [hidden]="sitaraParam == '1' || samskruthiParam == '1' || revivaParam == '1'">
+                <span>4 BHK</span>
+              </label>
+            </div>
+            <input type="hidden" id="sizeselect">
+          </div>
+          <!-- budget  -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Budget :</h4>
+            <div class="wrapper">
+              <input type="radio" class="radiocheck" name="select1" value="50L - 60L" id="option-4"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="70L - 80L" id="option-5"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="80L - ABOVE" id="option-6"
+                (click)="budgetselection($event)">
+
+              <input type="radio" class="radiocheck" name="select1" value="1Cr - 1.2Cr" id="option-19"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="1.2Cr - Above" id="option-20"
+                (click)="budgetselection($event)">
+
+
+              <input type="radio" class="radiocheck" name="select1" value="1.5Cr - 2Cr" id="option-16"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="2Cr - 2.5Cr" id="option-17"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="2.5Cr - 3Cr" id="option-18"
+                (click)="budgetselection($event)">
+
+              <input type="radio" class="radiocheck" name="select1" value="Below - 4CR" id="option-21"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="4CR - 4.5CR" id="option-22"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="4.5CR - Above" id="option-23"
+                (click)="budgetselection($event)">
+              <input type="radio" class="radiocheck" name="select1" value="75L - 1CR" id="option-24"
+                (click)="budgetselection($event)">
+
+              <label for="option-4" class="option option-4"
+                [hidden]="ranavParam == '1' || sitaraParam == '1' || swaraParam == '1' || revivaParam == '1'">
+                <span>50L - 60L</span>
+              </label>
+              <label for="option-5" class="option option-5"
+                [hidden]="ranavParam == '1' || sitaraParam == '1' || swaraParam == '1' || revivaParam == '1'">
+                <span>70L - 80L</span>
+              </label>
+              <label for="option-6" class="option option-6"
+                [hidden]="ranavParam == '1' || sitaraParam == '1' || swaraParam == '1' || revivaParam == '1'">
+                <span>80L - ABOVE</span>
+              </label>
+
+              <label for="option-19" class="option option-19" [hidden]="sitaraParam != '1'">
+                <span>1CR - 1.2CR</span>
+              </label>
+              <label for="option-20" class="option option-20" [hidden]="sitaraParam != '1'">
+                <span>1.2CR - ABOVE</span>
+              </label>
+
+              <label for="option-16" class="option option-16" [hidden]="ranavParam != '1' || sitaraParam == '1'">
+                <span>1.5CR - 2CR</span>
+              </label>
+              <label for="option-17" class="option option-17" [hidden]="ranavParam != '1'">
+                <span>2CR - 2.5CR</span>
+              </label>
+              <label for="option-18" class="option option-18" [hidden]="ranavParam != '1'">
+                <span>2.5CR - 3CR</span>
+              </label>
+
+              <label for="option-21" class="option option-21" [hidden]="swaraParam != '1'">
+                <span>Below - 4CR</span>
+              </label>
+              <label for="option-22" class="option option-22" [hidden]="swaraParam != '1'">
+                <span>4CR - 4.5CR</span>
+              </label>
+              <label for="option-23" class="option option-23" [hidden]="swaraParam != '1'">
+                <span>4.5CR - Above</span>
+              </label>
+              <label for="option-24" class="option option-24" [hidden]="revivaParam != '1'">
+                <span>75L - 1CR</span>
+              </label>
+
+            </div>
+            <input type="hidden" id="budgetselect">
+          </div>
+          <!-- Source  -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Source: </h4>
+            <div class="wrapper">
+              <input type="radio" class="radiocheck" name="select" value="Homes247-Walkin" id="option-7"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="Magicbricks-Walkin" id="option-8"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="Housing-Walkin" id="option-9"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="99acres-Walkin" id="option-10"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="Walkin" id="option-11"
+                (click)="sourceselection($event)">
+
+              <label for="option-7" class="option option-7">
+                <span>Homes247</span>
+              </label>
+              <label for="option-8" class="option option-8">
+                <span>Magicbricks</span>
+              </label>
+              <label for="option-9" class="option option-9">
+                <span>Housing</span>
+              </label>
+              <label for="option-10" class="option option-10">
+                <span>99acres</span>
+              </label>
+              <label for="option-11" class="option option-11">
+                <span>Walkin</span>
+              </label>
+            </div>
+            <div class="wrapper mt-2">
+              <input type="radio" class="radiocheck" name="select" value="Channel Partners-Walkin" id="option-12"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="Reference" id="option-13"
+                (click)="sourceselection($event)">
+              <input type="radio" class="radiocheck" name="select" value="Hoarding" id="option-14"
+                (click)="sourceselection($event)">
+
+              <label for="option-12" class="option option-12">
+                <span>Channel Partner</span>
+              </label>
+              <label for="option-13" class="option option-13">
+                <span>Reference</span>
+              </label>
+              <label for="option-14" class="option option-14">
+                <span>Hoardings</span>
+              </label>
+            </div>
+            <input type="hidden" id="sourceselect">
+
+            <div class="col-12 p-0"
+              [hidden]="usersource != 'Channel Partners-Walkin' && usersource != 'Reference' && usersource != 'Hoarding'">
+
+              <div class="form-group col-6 px-0 pt-3 cp_dropdown" [hidden]="usersource != 'Channel Partners-Walkin'">
+                <p-dropdown class="cp_dropdown_1" id="cp_dropdown" [options]="cpList" optionLabel="CP_NAME"
+                  defaultLabel="Select CP" [filter]="true" placeholder="Select CP"
+                  (onChange)="cpchange($event)"></p-dropdown>
+              </div>
+
+              <div class="form-group col-6 px-0 pt-3" [hidden]="usersource != 'Hoarding'">
+                <input class="form-control" id="custmail" placeholder="Please Enter Hoarding Reference Name" type="text"
+                  [(ngModel)]="cpname" name="cpname" required style="width: 96%;">
+              </div>
+
+              <div class="form-group col-6 px-0 pt-3" [hidden]="usersource != 'Reference'">
+                <input class="form-control" id="custmail" placeholder="Please Enter Reference Name" type="text"
+                  [(ngModel)]="cpname" name="cpname" required style="width: 96%;">
+              </div>
+            </div>
+
+          </div>
+          <!-- Priority -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Priority :</h4>
+            <div class="wrapper">
+              <input type="radio" class="radiocheck" name="select4" value="1" id="option-25"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select4" value="2" id="option-26"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select4" value="3" id="option-27"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select4" value="4" id="option-28"
+                (click)="prioritySelect($event)">
+              <label for="option-25" class="option option-25">
+                <span>HOT</span>
+              </label>
+              <label for="option-26" class="option option-26">
+                <span>WARM</span>
+              </label>
+              <label for="option-27" class="option option-27">
+                <span>COLD</span>
+              </label>
+              <label for="option-28" class="option option-28">
+                <span>JUNK</span>
+              </label>
+            </div>
+            <input type="hidden" id="priorityselect">
+          </div>
+          <!-- remarks  -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Visit Remarks (Optional) :</h4>
+            <textarea class="form-control addleadtextarea" id="textarea_remarks" [(ngModel)]="userRemarks"
+              #name="ngModel" name="userRemarks" style="width: 96%;"></textarea>
+          </div>
+
+          <div class="actions col-12 save_btn px-0 pt-3">
+            <button class="btn btn-warning " type="submit" (click)="exisitingPopUp('fresh')">Submit</button>
+          </div>
+        </div>
+
+        <!-- rsv triggered form -->
+
+        <div class="revisitvisiblesection col-12 p-0 row m-0" style="display: none">
+
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">First Visited On:</h4>
+            <input autocomplete="off" disabled type="text" class="form-control" id="visiteddate" style="width: 96%;">
+          </div>
+
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">Last Visited On:</h4>
+            <input autocomplete="off" disabled type="text" class="form-control" id="lastvisiteddate"
+              style="width: 96%;">
+          </div>
+
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">Assisted Manager:</h4>
+            <input type="text" disabled class="form-control" id="sendproperty2" style="width: 96%;">
+          </div>
+
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">Source:</h4>
+            <input type="text" disabled class="form-control" id="sourceselected2" style="width: 96%;">
+          </div>
+
+          <div class="form-group col-6 px-0 pt-3">
+            <h4 class="mb-1 text-left">Latest Remarks:</h4>
+            <textarea disabled class="form-control" id="remarks2" style="width: 96%;"></textarea>
+          </div>
+
+          <div class="form-group col-6 px-0 pt-3" [hidden]="roleid != '1'">
+            <h4 class="mb-1 text-left pl-1">Assisting Manager :</h4>
+            <select id="rm_dropdown" class="form-control ui dropdown" [(ngModel)]="selectedexec" name="selectedexec"
+              (change)="rmchange($event)" style="width: 96% !important;">
+              <option value="" selected>Select RM</option>
+              <option *ngFor="let rm of exevutivesList" value="{{rm.id}}">{{rm.name}}</option>
+            </select>
+          </div>
+          <!-- Priority -->
+         <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Priority :</h4>
+            <div class="wrapper">
+              <input type="radio" class="radiocheck" name="select5" value="1" id="option-29"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select5" value="2" id="option-30"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select5" value="3" id="option-31"
+                (click)="prioritySelect($event)">
+              <input type="radio" class="radiocheck" name="select5" value="4" id="option-32"
+                (click)="prioritySelect($event)">
+              <label for="option-29" class="option option-29">
+                <span>HOT</span>
+              </label>
+              <label for="option-30" class="option option-30">
+                <span>WARM</span>
+              </label>
+              <label for="option-31" class="option option-31">
+                <span>COLD</span>
+              </label>
+              <label for="option-32" class="option option-32">
+                <span>JUNK</span>
+              </label>
+            </div>
+            <input type="hidden" id="priorityselect">
+          </div>
+
+          <!-- remarks  -->
+          <div class="form-group col-12 px-0 pt-3">
+            <h4 class="mb-1 text-left">Visit Remarks (Optional) :</h4>
+            <textarea class="form-control addleadtextarea" id="address" [(ngModel)]="userRemarks" #address="ngModel"
+              name="address" style="width: 96%;"></textarea>
+          </div>
+
+          <div class="actions col-12 save_btn px-0 pt-3">
+            <button class="btn btn-warning " type="submit" (click)="exisitingPopUp('revisit')">Submit</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<button type="button" data-toggle="modal" data-target="#myOTPModal" id="modalotpclick" style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="myOTPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content" style="width: 50%;">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" id="otpModalClose" (click)="closeOtpModal()"><span
+              aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <form action="javascript: void(0)" class="otp-form" name="otp-form">
+            <div class="title">
+              <h3>OTP VERIFICATION</h3>
+              <p class="info">An otp has been sent to <span>{{usernumber}}</span></p>
+              <p class="info otptags resendtag">Resend the otp in <span id="time">00:30</span> Seconds <a
+                  style="display: none;" (click)="otpresend()" class="otpresend"> - Resend OTP <i class="fa fa-repeat"
+                    aria-hidden="true"></i></a></p>
+              <p style="display: none;" class="otptags info">This Visit will auto submit without otp in <span
+                  id="time2">00:15</span> Seconds</p>
+              <p class="msg">Please enter OTP to verify</p>
+            </div>
+            <div class="otp-input-fields">
+              <input type="text" maxlength="1" class="otp__digit" *ngFor="let digit of otpArray; let i = index"
+                [(ngModel)]="otp[i]" name="otp{{ i }}" #otpInput (input)="onInputChange($event, i)"
+                (keydown)="onKeyDown($event, i)" />
+            </div>
+
+            <!-- <div class="text-center mt-2">
+              <button class="btn btn-warning" type="submit" (click)="submitOTP()">Submit</button>
+            </div> -->
+            <div class="result">
+              <p id="_otp" class="_notok">
+                <input type="hidden" class="form-control" id="otpselected" name="otpmodel" [(ngModel)]="otpnumber"
+                  #otpmodel="ngModel">
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#exisiting_executives_leads_modal"
+  id="exisiting_executives_leads_detail" style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="exisiting_executives_leads_modal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog exisitinglead_modal">
+    <div class="modal-content exisiting_modal_body" id="exisiting_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0 col-12 p-0 text-center"
+          style="color: #4D4D4D;font-size: 24px !important;font-weight: 400 !important;">Confirm Lead
+          Handling</h4>
+        <button type="button" class="close style_close_btn" data-dismiss="modal" id="closeExisitingmodal">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <div class="">
+            </div>
+            <table class="content_table_main table" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+              [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Executive Name</th>
+                  <th>Status</th>
+                  <th>Last Updated On</th>
+                  <th>Lead Access</th>
+                </tr>
+              <tbody class="enquiry_table_body" *ngIf="existingExecutivesList">
+                <tr *ngFor="let exisiting of existingExecutivesList; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{exisiting?.execname}}</td>
+                  <td>{{(exisiting?.Lead_stage != 'Fresh'?exisiting?.Lead_stage:exisiting?.Lead_stage == 'Fresh' &&
+                    exisiting?.followup_status == '8' ? 'NC' :'Fresh' )}}</td>
+                  <td>
+                    <div
+                      *ngIf="exisiting?.Lead_stage != 'Fresh' && exisiting?.Lead_stage != 'USV' && exisiting?.status_idfk != '1'">
+                      {{exisiting?.lastupdated | date:'yy-M-d, h:mm a'}}</div>
+                    <div
+                      *ngIf="exisiting?.Lead_stage == 'Fresh' || (exisiting?.Lead_stage == 'USV' && exisiting?.status_idfk == '1')">
+                      {{exisiting?.nextaction_date}}, {{exisiting?.nextaction_time}}</div>
+                  </td>
+                  <td class="text-center">
+                    <div>
+                      <input type="radio" class="loopcheckbox hidecheckbox" id="hidecheckboxid" value="{{exisiting}}"
+                        name='programming' (change)="getselectedExecutives()" [attr.data-assign]="exisiting | json"
+                        style="display: none;width: 20px !important;height: 20px !important;">
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer ">
+        <!-- <button type="button" class="btn btn-secondary footer_close_btn m-0" data-dismiss="modal" (click)="clearSelectedData()">Close</button> -->
+        <button type="button" class="btn btn-warning footer_submit_button" (click)="finalSubmit()">Confirm &
+          Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

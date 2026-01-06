@@ -1,0 +1,366 @@
+<div class="face2facemaindiv">
+  <div *ngIf="buttonhiders">
+
+    <button *ngIf="hideafterfixed" type="button" class="btn btnTab stage_btns" (click)="onnegoFixed()"
+      title="Fix FinalNegotiation" [ngStyle]="{'border': negoFixed ? '1px solid #0B7AB2' : '1px solid #828282',
+  'background-color': negoFixed ? '#0B7AB240' : 'white',
+  'color': negoFixed ? '#0B7AB2' : '#403E3E', 'font-weight': negoFixed ? '700' : '400'}">
+      <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': negoFixed ? '#0B7AB2' : '#E2E2E2'}"
+          aria-hidden="true"></i></span>&nbsp;&nbsp;Fix FinalNegotiation
+    </button>
+    <button *ngIf="hidebeforefixed" type="button" class="btn btnTab stage_btns" (click)="onnegoreFix()"
+      title="Refix FinalNegotiation" [ngStyle]="{'border': negoreFix ? '1px solid #0B7AB2' : '1px solid #828282',
+                        'background-color': negoreFix ? '#0B7AB240' : 'white',
+                        'color': negoreFix ? '#0B7AB2' : '#403E3E', 'font-weight': negoreFix ? '700' : '400'}">
+      <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': negoreFix ? '#0B7AB2' : '#E2E2E2'}"
+          aria-hidden="true"></i></span>&nbsp;&nbsp;Refix FinalNegotiation
+    </button>
+    <button *ngIf="hidebeforefixed" type="button" class="btn btnTab stage_btns" (click)="onnegoDone()"
+      title="FinalNegotiation Done" [ngStyle]="{'border': negoDone ? '1px solid #0B7AB2' : '1px solid #828282',
+  'background-color': negoDone ? '#0B7AB240' : 'white',
+  'color': negoDone ? '#0B7AB2' : '#403E3E', 'font-weight': negoDone ? '700' : '400'}">
+      <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': negoDone ? '#0B7AB2' : '#E2E2E2'}"
+          aria-hidden="true"></i></span>&nbsp;&nbsp;FinalNegotiation Done
+    </button>
+    <button *ngIf="commonhide" type="button" class="btn btnTab stage_btns" (click)="onfollowup()" title="Follow up"
+      [ngStyle]="{'border': followup ? '1px solid #0B7AB2' : '1px solid #828282',
+    'background-color': followup ? '#0B7AB240' : 'white',
+    'color': followup ? '#0B7AB2' : '#403E3E', 'font-weight': followup ? '700' : '400'}">
+      <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': followup ? '#0B7AB2' : '#E2E2E2'}"
+          aria-hidden="true"></i></span>&nbsp;&nbsp;Follow Up
+    </button>
+    <button *ngIf="commonhide" type="button" class="btn btnTab stage_btns" (click)="onjunk()" title="move To junk"
+      [ngStyle]="{'border': junk ? '1px solid #0B7AB2' : '1px solid #828282',
+              'background-color': junk ? '#0B7AB240' : 'white',
+              'color': junk ? '#0B7AB2' : '#403E3E', 'font-weight': junk ? '700' : '400'}">
+      <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': junk ? '#0B7AB2' : '#E2E2E2'}"
+          aria-hidden="true"></i></span>&nbsp;&nbsp;Move To Junk
+    </button>
+
+  </div>
+
+  <input type="hidden" id="sectionselector">
+  <form [hidden]="!negoFixed" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">Fix the Meeting</h3> -->
+    <div class="row">
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Fix Negotiation Date</label>
+        <div class="ui calendar calendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="negonextactiondate" placeholder="Date">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Fix Negotiation Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="negonextactiontime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-6 form-group headingdesign" *ngIf="getselectedLeadExec?.suggestedprop.length > 1">
+      <label class="heads">Selected Visited Properties for the Final Negotiation</label>
+      <div class="main_suggested_div">
+        <ul class="ks-cboxtags">
+          <li *ngFor="let visited of visitedpropertylists; let i = index">
+            <input type="checkbox" id="negocheckbox{{i}}" value="{{visited.propid}}" name='programming'
+              (change)="selectsuggested(i,visited.propid,visited.name)" checked disabled>
+            <label for="negocheckbox{{i}}">{{visited.name}}</label>
+          </li>
+        </ul>
+        <p *ngIf="!visitedpropertylists?.length" class="comma-list">
+          No Properties Suggested Till Now
+        </p>
+      </div>
+  </div> -->
+
+      <div class="col-sm-12 form-group headingdesign">
+        <label class="heads">Remarks</label>
+        <textarea class="form-control" id="negotextarearemarks"
+          placeholder="Please Add any remarks for final negotiation"></textarea>
+      </div>
+      <button (click)="negofixing()" class="btn saveBtn mx-3">Save</button>
+    </div>
+  </form>
+
+  <form [hidden]="!negoreFix" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">Refix the Meeting</h3> -->
+    <div class="row">
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Negotiation Refixed Date</label>
+        <div class="ui calendar calendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="refixdate" placeholder="Date">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Negotiation Refixed Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="refixtime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-12 form-group headingdesign" *ngIf="getselectedLeadExec?.suggestedprop.length > 1">
+        <label class="heads">Selected Visited Properties for the Final Negotiation</label>
+        <div class="main_suggested_div">
+          <ul class="ks-cboxtags">
+            <li *ngFor="let visited of visitedpropertylists; let i = index">
+              <span *ngIf="visited.selection == '3'">
+                <input type="checkbox" id="suggestcheckbox{{i}}" value="{{visited.propid}}" name='programmingrefix'
+                (change)="refixsuggested(i,visited.propid,visited.name)" checked>
+              <label for="suggestcheckbox{{i}}">{{visited.name}}</label>
+              </span>            
+            </li>
+          </ul>
+          <p *ngIf="!visitedpropertylists?.length" class="comma-list">
+            No Properties Suggested Till Now
+          </p>
+        </div>
+    </div> -->
+
+      <div class="col-sm-12 form-group headingdesign">
+        <label class="heads">Remarks</label>
+        <textarea class="form-control" id="refixtextarearemarks"
+          placeholder="Please Add any remarks for final negotiation"></textarea>
+      </div>
+      <button (click)="negorefixing()" class="btn saveBtn mx-3">Save</button>
+    </div>
+  </form>
+
+  <form [hidden]="!negoDone" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">Meeting Details</h3> -->
+    <div class="row">
+
+      <div class="col-sm-12 form-group mt-4">
+        <table *ngIf="selectedpropertylists?.length" class="table table-bordered">
+          <tr>
+            <th>Property Name</th>
+            <th>Remarks</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let suggested of selectedpropertylists; let i = index">
+              <td style="width: 220px;">
+                <span>{{suggested.name}}</span>
+                <div class="btn-group-toggle" data-toggle="buttons">
+                  <label class="btn visitedBtn btn-outline-success">
+                    <input type="radio" name="options" id="hatchback" (click)="visitclick(i,suggested.name)"
+                      autocomplete="off"> Done
+                  </label>
+                  <label class="btn cancledBtn btn-outline-danger">
+                    <input type="radio" name="options" id="sedan" (click)="cancelclick(i,suggested.name)"
+                      autocomplete="off"> Not Done
+                  </label>
+                  <input type="hidden" id="visitupdate">
+                </div>
+              </td>
+              <td>
+                <textarea class="form-control mb-1" id="propertyremarks"
+                  placeholder="Write About the Final Negotiation"></textarea>
+                <a (click)="updatepropertyvisit(suggested.propid,suggested.name,i)"
+                  class="usvvisitupdate p-1 visitupdatebtn" style="display: none;">Save</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="crm-sub-container">
+          <div *ngIf="negotiatedproperty?.length" class="panel-1 crm-auto-scroll panel-content">
+            <table class="table table-bordered">
+              <tr>
+                <th style="color: #4CB32B">Negotiated Properties</th>
+                <th>Remarks</th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let negovisited of negotiatedproperty">
+                  <td>{{negovisited.name}}</td>
+                  <td>
+                    {{negovisited.remarks}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="cancelledpropertylists?.length" class="panel-2 crm-auto-scroll panel-content">
+            <table class="table table-bordered">
+              <tr>
+                <th style="color: red">Cancelled Properties</th>
+                <th>Remarks</th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let negocancelled of cancelledpropertylists">
+                  <td>{{negocancelled.name}}</td>
+                  <td>
+                    {{negocancelled.remarks}}
+                  </td>
+                </tr>
+                <p *ngIf="!cancelledpropertylists?.length">No Update Till Now</p>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Important Hidden Fields -->
+      <div class="col-sm-6 form-group headingdesign"
+        [hidden]="propertybasedFilter?.length && propertybasedFilter[0]?.followupdate != null">
+        <label class="heads">Negotiated Date</label>
+        <div class="ui calendar visitedcalendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="negovisiteddate" placeholder="Date">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 form-group headingdesign"
+        [hidden]="propertybasedFilter?.length && propertybasedFilter[0]?.followupdate != null">
+        <label class="heads">Negotiated Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="negovisitedtime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-12 form-group headingdesign ">  
+        <label class="heads">Site Visit Remarks</label>
+        <textarea class="form-control mb-1" id="propertyremarks" placeholder="Write About the Sitevisit"></textarea>
+      </div> -->
+      <!-- Important Hidden Fields -->
+
+
+
+
+
+      <!-- <div class="col-sm-12 form-group">
+        <label>Remarks for the FinalNegotiation</label>
+          <textarea class="form-control" id="negofinalremarks" placeholder="Please Add any update for this Final Negotiation"></textarea>
+      </div> -->
+
+
+      <div class="col-sm-12 form-group nextactionmaindiv" style="display: none;">
+        <h3 class="userDetailsTitle mt-3 mb-3">Select the Next Action</h3>
+        <button type="button" class="btn btnTab stage_btns nxtactionbtns" (click)="followupdownbtn()" [ngStyle]="{'border': followupdown ? '1px solid #0B7AB2' : '1px solid #828282',
+    'background-color': followupdown ? '#0B7AB240' : 'white',
+    'color': followupdown ? '#0B7AB2' : '#403E3E', 'font-weight': followupdown ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': followupdown ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;Follow Up
+        </button>&nbsp;
+        <button type="button" class="btn btnTab stage_btns nxtactionbtns" (click)="onrsvFixed()" [ngStyle]="{'border': rsvFixed ? '1px solid #0B7AB2' : '1px solid #828282',
+                            'background-color': rsvFixed ? '#0B7AB240' : 'white',
+                            'color': rsvFixed ? '#0B7AB2' : '#403E3E', 'font-weight': rsvFixed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': rsvFixed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;FIX RSV
+        </button>&nbsp;
+        <button type="button" class="btn btnTab stage_btns nxtactionbtns" (click)="onsubnegofixed()" [ngStyle]="{'border': subnegofixed ? '1px solid #0B7AB2' : '1px solid #828282',
+            'background-color': subnegofixed ? '#0B7AB240' : 'white',
+            'color': subnegofixed ? '#0B7AB2' : '#403E3E', 'font-weight': subnegofixed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': subnegofixed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;FIX FinalNegotiation
+        </button>&nbsp;
+        <button type="button" *ngIf="feedbackId != 1" class="btn btnTab stage_btns nxtactionbtns" (click)="onleadclosed()" [ngStyle]="{'border': leadclosed ? '1px solid #0B7AB2' : '1px solid #828282',
+            'background-color': leadclosed ? '#0B7AB240' : 'white',
+            'color': leadclosed ? '#0B7AB2' : '#403E3E', 'font-weight': leadclosed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': leadclosed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;Lead Closed
+        </button>&nbsp;
+      </div>
+
+      <div class="col-sm-12 form-group" *ngIf="followdownform">
+        <app-mandate-on-call-followupform [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm" [callStatus]="callStatus"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-followupform>
+      </div>
+      <div class="col-sm-12 form-group" *ngIf="rsvform">
+        <app-mandate-on-call-rsv [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-rsv>
+      </div>
+      <div class="col-sm-12 form-group" [hidden]="!finalnegoform">
+        <div class="row">
+          <div class="col-sm-6 form-group headingdesign">
+            <label class="heads">Next Action Date</label>
+            <div class="ui calendar calendardate">
+              <div class="ui input left icon datepickerdiv">
+                <i class="calendar icon"></i>
+                <input type="text" autocomplete="off" id="subnegonextactiondate" placeholder="Date">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 form-group headingdesign">
+            <label class="heads">Next Action Time</label>
+            <div class="ui calendar calendartime">
+              <div class="ui input left icon timepickerdiv">
+                <i class="time icon"></i>
+                <input class="form-control" autocomplete="off" id="subnegonextactiontime" type="text"
+                  placeholder="Time">
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-sm-6 form-group headingdesign" *ngIf="getselectedLeadExec?.suggestedprop.length > 1">
+          <label class="heads">Selected Visited Properties for the Final Negotiation</label>
+          <div class="main_suggested_div">
+            <ul class="ks-cboxtags">
+              <li *ngFor="let visited of visitedpropertylists; let i = index">
+                <input type="checkbox" id="subnegocheckbox{{i}}" value="{{visited.propid}}" name='programming'
+                (change)="selectsuggestedsub(i,visited.propid,visited.name)">
+                <label for="subnegocheckbox{{i}}">{{visited.name}}</label>
+              </li>
+            </ul>
+            <p *ngIf="!visitedpropertylists?.length" class="comma-list">
+              No Properties Suggested Till Now
+            </p>
+          </div>
+      </div> -->
+
+          <div class="col-sm-12 form-group headingdesign">
+            <label class="heads">Remarks</label>
+            <textarea class="form-control" id="subnegotextarearemarks"
+              placeholder="Please Add any remarks for final negotiation"></textarea>
+          </div>
+          <button (click)="negodonewithfixing()" class="btn saveBtn mx-3">Save</button>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group" *ngIf="leadclosedform">
+        <app-mandate-on-call-closed [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-closed>
+      </div>
+
+      <!-- <button class="btn saveBtn">Save</button> -->
+    </div>
+  </form>
+
+  <div class="col-sm-12 form-group" *ngIf="junkform">
+    <app-mandate-on-call-junk [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+      [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-junk>
+  </div>
+
+  <div class="col-sm-12 form-group" *ngIf=" followform">
+    <app-mandate-on-call-followupform [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm" [callStatus]="callStatus"
+      [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-followupform>
+  </div>
+
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>

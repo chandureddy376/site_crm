@@ -1,0 +1,194 @@
+   
+.login-body{
+    background-image: url(../../../assets/images/login.jpg);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 120% 150%;
+}
+.login-content{
+    background-color: #fff;
+    margin-top: 150px;
+    width: 50%;
+    top: calc(50% - 70px/2);
+    display: inline-block;
+}
+.cntnt-main{
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+.logo{
+    text-align: center;
+    margin-bottom: 26px;
+}
+.logo img{
+    width: 60%;
+}
+
+#name{
+    background: url(../../../assets/images/user.png) no-repeat scroll 18px 7px;
+    background-size: 17px;
+padding-left:50px;
+}
+
+#password{
+    background: url(../../../assets/images/password.png) no-repeat scroll 18px 7px;
+    background-size: 17px;
+padding-left:50px;
+}
+
+#log-btn{
+    border-radius: 0%;
+    font-weight: 700;
+    color: #000;
+    border: 1px solid #252525;
+    transition: 0.3s linear all;
+}
+#log-btn:hover{
+    background-color: #0B7AB2;
+    border: 1px solid #0B7AB2;
+    color: #fff;
+}
+
+.form-control:focus{
+border-color: #0B7AB2;
+}
+
+.form-group{
+    margin-bottom: 30px;
+}
+
+.login_loader{
+    position: absolute;
+    right: 506px;
+    top: 385px;
+}
+
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+}
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+}
+.modal-content {
+    /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+    width:inherit;
+    height:inherit;
+    /* To center horizontally */
+    margin: 0 auto;
+}
+
+.title {
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+  }
+  .title h3 {
+    font-weight: bold;
+  }
+  .title p {
+    font-size: 12px;
+    color: #118a44;
+  }
+  .title p.msg {
+    color: initial;
+    text-align: initial;
+    font-weight: bold;
+  }
+
+  .result {
+    max-width: 400px;
+    margin: auto;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .result p {
+    font-size: 24px;
+    font-family: "Antonio", sans-serif;
+    opacity: 1;
+    transition: color 0.5s ease;
+  }
+
+  .result p._ok {
+    color: green;
+  }
+
+  .result p._notok {
+    color: red;
+    border-radius: 3px;
+  }
+
+  .button[disabled] {
+    opacity: 0.5;
+  }
+  
+  #verify-btn{
+    color: #fff;
+    background: #e5652eba;
+    transition: 0.5s linear;
+  }
+
+.loginusername_btn{
+    width: 100%;
+    color: #656565;
+    display: block;
+    text-align: right;
+    cursor: pointer;
+}
+
+.otp-input-fields {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: auto;
+  background-color: white;
+  box-shadow: 0px 0px 8px 0px #02025044;
+  max-width: 400px;
+  width: auto;
+  padding: 40px;
+}
+
+.otp-input-fields input {
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid #2f8f1f;
+  text-align: center;
+  outline: none;
+  font-size: 16px;
+}
+
+.otp__digit {
+  width: 40px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.otpresend{
+  cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .cntnt-main{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+  }
+
+  .login-content{
+    width: 100%;
+  }
+}

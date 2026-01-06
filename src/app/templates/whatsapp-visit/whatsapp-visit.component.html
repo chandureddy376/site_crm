@@ -1,0 +1,448 @@
+<!-- HEADER -->
+<div>
+  <app-header></app-header>
+</div>
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+<div class="row main_count_header" [ngStyle]="{'padding-left': isSidebarHovered ? '16.5rem' : '5rem'}">
+  <div class="col-8 pl-0">
+    <div class="pl-2" style="font-size: 12px;">Whatsapp Fixed Visits</div>
+    <div class="button_section col-12 pr-0 pl-0 d-flex ">
+      <div class="planleadassign">
+        <a class="add_class total freshLeads_section active" routerLink="/whatsapp-visit"
+          [queryParams]="{leads:1,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName,visitFrom:visitedFrom,visitTo:visitedTo}">
+          Fresh Visits
+          <span>({{enquiryCount?enquiryCount:'0'}})</span>
+        </a>
+
+        <a class="add_class lead_section pendingLeads_section" routerLink="/whatsapp-visit"
+          [queryParams]="{leads:2,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName,visitFrom:visitedFrom,visitTo:visitedTo}">
+          Not Assigned Visits
+          <span>({{pendingLeads?pendingLeads:'0'}})</span>
+        </a>
+
+        <a class="add_class lead_section allLeads_section" routerLink="/whatsapp-visit"
+          [queryParams]="{leads:3,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName,visitFrom:visitedFrom,visitTo:visitedTo}">
+          All Visits Received
+          <span>({{allLeads?allLeads:'0'}})</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 pt-2 text-right">
+
+    <!-- <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="modal" data-target="#assign_lead"
+      aria-haspopup="true" aria-expanded="false" (click)="assignmodalfetch('2')" >
+      <i class="fas fa-share"></i>
+    </button> -->
+    <button type="button" class="btn btn-warning" (click)="refresh();"><i class="fas fa-redo"></i> Reset</button>
+
+  </div>
+
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '16rem' : '4.5rem'}">
+
+  <div class="enquiry_content_main">
+    <div class="table-container pl-0 pr-0">
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="propertyFilter && propertyid != ''">
+          <div class="p-2 chip">
+            {{propertyid}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="datefilterview && fromdate != '' && todate != ''">
+          <div class="p-2 chip">
+            Date: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="visitedDatefilterview && visitedFrom != '' && visitedTo != ''">
+          <div class="p-2 chip">
+            Fixed On: {{visitedFrom | date:'dd-MMM-yyyy'}} - {{visitedTo | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="visitedDateclose()">&times;</span>
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table pt-1 " #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th style="width: 14%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Lead Received</span>
+                      <span class="leadstatusdrop d-flex" *ngIf="leads == 2">
+                        <div id="nextActionDates" style="cursor: pointer;">
+                          <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>Name</th>
+                  <th>Number</th>
+                  <th style="width: 300px;">
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="propertyList?.length">
+                            <div *ngFor="let project of propertyList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <span (click)="onCheckboxChange(project.propertyname)">{{ project.propertyname }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!propertyList?.length" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th style="width: 14%;">
+                    <!-- <div class="d-flex justify-content-between align-items-center">
+                      <span>Visit Fixed On</span>
+                    </div> -->
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Visit Fixed On</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <div id="visitedOnDates" style="cursor: pointer;">
+                            <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th *ngIf="leads != 3"></th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let enquiry of enquiries; let i = index"
+                [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+                <tr>
+                  <td>{{i+1}}</td>
+
+                  <td>
+                    {{enquiry.datetime | date: 'EEEE, MMM d, y'}} <span *ngIf="enquiry.datetime">, {{enquiry.datetime |
+                      date : 'shortTime'}}</span>
+                  </td>
+
+                  <td>
+                    <a routerLink="/mandate-customers/{{enquiry.Lead_IDFK}}/{{userid}}/{{'0'}}/{{'mandate'}}">{{enquiry.name}}
+                    </a>
+                    <span *ngIf="enquiry?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                        style="width: 20px;"></span>
+                    <span *ngIf="enquiry?.qualified_leads == '3'"><img src="../../../../assets/images/not_qualified.svg"
+                        style="width: 20px;"></span><br />
+                  </td>
+
+                  <td>{{enquiry.number}}</td>
+
+                  <td>
+                    {{(enquiry.propertyname?enquiry.propertyname:'---')}}
+                  </td>
+
+                  <td>
+                    {{enquiry.visitdatetime | date:'EEEE, MMM d, y h:mm a'}}
+                  </td>
+                  <td class="text-center" *ngIf="leads != 3">
+                    <!-- <button type="button" data-toggle="modal" data-target="#assign_lead" class="btn btn-warning" (click)="assignmodalfetch('2',lead)"> <i class="fas fa-share"></i></button> -->
+                    <div class="assign_visit" data-toggle="modal" data-target="#assign_lead" (click)="assignmodalfetch('2',enquiry)"><i class="fas fa-share"></i> <span class="ml-1">Visit Assign</span></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center no-record" *ngIf="!enquiries">
+              No Records Found...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-lds-ring-div" *ngIf=filterLoader>
+    <!-- <div class="lds-ring" >
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+    <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+<!-- FOOTER-STARTS -->
+
+<!-- <div class="footer">
+  <div class="footer-cntnt">
+    <p>@2017, homes247.in</p>
+  </div>
+</div> -->
+
+<!-- FOOTER-ENDS -->
+
+<div *ngIf="loadershow" class="col-md-12 loader_div">
+  <span class="Centerer"></span>
+  <img src="../../../assets/images/loader.gif">
+</div>
+
+
+<div class="modal fade" id="assign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog assignlead_modal modal-dialog-centered">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-12 m-0">Assign The Leads</h4>
+      </div>
+
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" (click)="assignleadModalClose()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <!-- <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select Team</label>
+              <select class="form-control ui fluid dropdown" id="assigneeeTeam_dropdown"
+                (change)="selectedAssignTeam($event)" placeholder="Select Team" >
+                <option value="1" [selected]="selectedteamOption == '1'">Retail Team</option>
+                <option value="2">Mandate Team</option>
+              </select>
+            </div> -->
+
+            <div class="form-group col-4 input_cmn_div leadsDrop">
+              <label class="font-bold">Select Project</label>
+              <select id="property_dropdown" class="form-control ui dropdown exec_designation leadsDrop"
+                (change)="leadsType($event)">
+                <option value="">Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_info_name}}"
+                  [selected]="projects.property_idfk == propId">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-4 input_cmn_div">
+              <label class="font-bold">Select Executive Team</label>
+              <select class="form-control ui dropdown exec_designation" id="exec_designation"
+                (change)="getexecutives($event)">
+                <option value="all" selected>All</option>
+                <option value="50002">Relationship Executives</option>
+                <option value="50014">Customersupport Executives</option>
+              </select>
+            </div>
+
+            <div class="form-group col-4 input_cmn_div">
+              <label class="font-bold">Select Executives</label>
+              <p-multiSelect id="mandaterm_dropdown" [options]="mandateexecutives" [(ngModel)]="selectedEXEC"
+                [filter]="true" optionLabel="name" #customersupport="ngModel" name="customersupport"
+                defaultLabel="Select Executives" [showToggleAll]="showSelectAll"
+                (onChange)="executiveSelect($event,'mandate')"></p-multiSelect>
+            </div>
+
+            <!-- <div class="form-group col-3 input_cmn_div justify-content-center pt-3"
+              style="gap: 0.5rem;cursor: pointer;">
+              <label>Random Assign</label>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" (change)="checkActive($event)"
+                  [disabled]="maxSelectedLabels == 1">
+                <label class="custom-control-label" for="customSwitch1"></label>
+              </div>
+            </div> -->
+            <!-- multiple selection of exectives based on the leads count for mandate  selectionLimit="maxSelectedLabels"-->
+
+            <!-- <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select the Count</label>
+              <select id="counts_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div> -->
+
+            <div class="form-group col-2  input_cmn_div pt-3">
+              <!-- <button class="approve btn btn-warning" (click)="assigntorm()" type="submit"
+                [hidden]="assignmodalval == '0' || assignmodalval == '2'">Share Now</button> -->
+              <!-- <button class="approve btn btn-warning" (click)="assignMandatetorm()" type="submit">Share Now</button> -->
+                <button class="approve btn btn-warning" (click)="visitAssign()" type="submit">Share Now</button>
+              <button #cancel hidden type="button" class="btn btn-warning" data-dismiss="modal"></button>
+            </div>
+
+            <!-- <div class="assign_table">
+              <div class="text-right"><button type="button" class="btn btn-warning" (click)="resetPropertyFilter();"><i
+                    class="fas fa-redo refreshIcon"></i>Property Reset</button></div>
+              <table id="start2" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                (scrolled)="loadMore()" [infiniteScrollContainer]="'.assign_table'">
+                <thead>
+                  <tr class="header">
+                    <th>Sl.No</th>
+                    <th>Lead Received</th>
+                    <th>Name</th>
+                    <th style="width: 12%;">Mobile No</th>
+                    <th>
+                      <div class="d-flex justify-content-between">
+                        <span>Property</span>
+                        <div>
+                          <button class="btn btn-warning" type="button" id="propertyRetailDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="padding: 0px 5px !important;" (click)="retailPropget()">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu propertyBasedFilter" aria-labelledby="propertyRetailDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                            <div class="dropdown-search-container"><input type="text"
+                                class="form-control propretailsearch" placeholder="Search..."
+                                (input)="filterretailProjects($event)"
+                                style="margin-bottom: 2px;width: 288px !important;"></div>
+                            <div *ngIf="propertyList?.length">
+                              <div *ngFor="let project of propertyList">
+                                <label class="dropdown-item dropDownCursor mb-1">
+                                 <span (click)="onCheckboxChange(project.propertyname)">{{ project.propertyname
+                                    }}</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div *ngIf="!propertyList?.length" class="text-center" style="color: #666666;">
+                              <h4>No Properties Found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>Visit Fixed On</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <input type="hidden" id="selectedleads" [(ngModel)]="selectedRetailLeads" #assignedleads="ngModel"
+                    name="assignedleads" required>
+                  <tr *ngFor="let assign of enquiries; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign.Lead_IDFK}}" name='programmingretail' (change)="getselectedRetailleads(assign)"
+                          style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>{{assign.datetime | date: 'dd-MMM-yyyy , h:mm a'}}</td>
+                    <td>{{assign.name}}</td>
+                    <td>{{assign.number}}</td>
+                    <td>{{assign.propertyname}}</td>
+                    <td>{{assign.visitdatetime | date:'dd-MMM-yyyy , h:mm a'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+          </form>
+        </div>
+      </div>
+
+      <div *ngIf=filterLoader class="main-lds-ring-div">
+        <!-- <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> -->
+        <img src="../../../assets/images/infinity_loader.gif">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <button type="button" data-toggle="modal" data-target="#alreadyExist_leads_modal" id="alreadyExist_lead_detail"
+  style="display: none;">Show  Details</button>
+<div class="modal fade" id="alreadyExist_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog alreadyExistlead_modal">
+    <div class="modal-content enquiry_modal_body" id="alreadyExist_leads">
+      <div class="modal-header px-3 py-2" >
+        <h4 class="col-10 m-0">Duplicate Leads</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeModal()"><span aria-hidden="true">&times;</span><span
+            class="sr-only" >Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Number</th>
+                  <th>Mail</th>
+                  <th>Source</th>
+                  <th>Property Type</th>
+                  <th>Budget</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body" >
+                <tr *ngFor="let dup of duplicateLeadsInfo; let i = index"> 
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{dup.customer_name}}</td>
+                  <td>{{dup.customer_number}}</td>
+                  <td>{{dup.customer_mail}}</td>
+                  <td>{{dup.customer_source}}</td>
+                  <td>{{dup.customer_proptype}}</td>
+                  <td>{{dup.customer_budget}}</td>
+                  <td>{{dup.customer_address}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button class="btn btn-warning" type="button" (click)="addDuplicateLead()">Submit as Fresh Lead</button>
+          <button class="btn btn-secondary" type="button" (click)="cancelDuplicateLead()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

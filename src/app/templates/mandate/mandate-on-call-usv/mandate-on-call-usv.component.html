@@ -1,0 +1,375 @@
+<div class="face2facemaindiv">
+  <button *ngIf="hideafterfixed" type="button" class="btn btnTab mainbtns" (click)="onusvFixed()" [ngStyle]="{'border': usvFixed ? '1px solid #0B7AB2' : '1px solid #828282',
+                      'background-color': usvFixed ? '#0B7AB240' : 'white',
+                      'color': usvFixed ? '#0B7AB2' : '#403E3E', 'font-weight': usvFixed ? '700' : '400'}">
+    <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': usvFixed ? '#0B7AB2' : '#E2E2E2'}"
+        aria-hidden="true"></i></span>&nbsp;&nbsp;Fix USV
+  </button>
+  <button *ngIf="hiderefixed" type="button" class="btn btnTab mainbtns" (click)="onusvreFix()" [ngStyle]="{'border': usvreFix ? '1px solid #0B7AB2' : '1px solid #828282',
+                      'background-color': usvreFix ? '#0B7AB240' : 'white',
+                      'color': usvreFix ? '#0B7AB2' : '#403E3E', 'font-weight': usvreFix ? '700' : '400'}">
+    <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': usvreFix ? '#0B7AB2' : '#E2E2E2'}"
+        aria-hidden="true"></i></span>&nbsp;&nbsp;Refix USV
+  </button>
+  <button *ngIf="hidebeforefixed" type="button" class="btn btnTab mainbtns" (click)="onusvDone()" [ngStyle]="{'border': usvDone ? '1px solid #0B7AB2' : '1px solid #828282',
+  'background-color': usvDone ? '#0B7AB240' : 'white',
+  'color': usvDone ? '#0B7AB2' : '#403E3E', 'font-weight': usvDone ? '700' : '400'}">
+    <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': usvDone ? '#0B7AB2' : '#E2E2E2'}"
+        aria-hidden="true"></i></span>&nbsp;&nbsp;USV Done
+  </button>
+  <button *ngIf="leadclose" type="button" class="btn btnTab mainbtns" (click)="onfollowup()" [ngStyle]="{'border': followup ? '1px solid #0B7AB2' : '1px solid #828282',
+  'background-color': followup ? '#0B7AB240' : 'white',
+  'color': followup ? '#0B7AB2' : '#403E3E', 'font-weight': followup ? '700' : '400'}">
+    <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': followup ? '#0B7AB2' : '#E2E2E2'}"
+        aria-hidden="true"></i></span>&nbsp;&nbsp;Follow Up
+  </button>
+  <button *ngIf="junkmove" type="button" class="btn btnTab mainbtns" (click)="onjunk()" [ngStyle]="{'border': junk ? '1px solid #0B7AB2' : '1px solid #828282',
+            'background-color': junk ? '#0B7AB240' : 'white',
+            'color': junk ? '#0B7AB2' : '#403E3E', 'font-weight': junk ? '700' : '400'}">
+    <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': junk ? '#0B7AB2' : '#E2E2E2'}"
+        aria-hidden="true"></i></span>&nbsp;&nbsp;Move To Junk
+  </button>
+  <input type="hidden" id="sectionselector">
+  <form [hidden]="!usvFixed" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">Fix the Meeting</h3> -->
+    <div class="row">
+
+      <!-- <div class="col-sm-12 form-group headingdesign mb-0" *ngIf="getselectedLeadExec?.suggestedprop.length > 1">
+        <label class="heads">Select Property</label>
+        <div class="main_suggested_div">
+          <ul class="ks-cboxtags" >
+            <li *ngFor="let suggest of getselectedLeadExec?.suggestedprop; let i = index">
+              <input type="checkbox" id="checkbox{{i}}" value="{{suggest.propid}}" name='programmings'
+                (change)="selectsuggestedprop($event,i,suggest.propid,suggest.name)">
+              <label for="checkbox{{i}}" id="checkboxlabel{{i}}">{{suggest.name}}</label>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Fix USV Date</label>
+        <div class="ui calendar calendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="nextactiondate" placeholder="Date">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">Fix USV Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="nextactiontime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-12 form-group headingdesign">
+        <label class="heads">Remarks</label>
+        <textarea class="form-control" id="textarearemarks" placeholder=""></textarea>
+        <button (click)="usvfixing()" class="btn saveBtn mr-3">Save</button>
+      </div>
+    </div>
+  </form>
+
+  <form [hidden]="!usvreFix" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">ReFix the USV</h3> -->
+    <div class="row">
+      <!-- <div class="col-sm-12 form-group headingdesign">
+          <label class="heads">Suggest Properties</label>
+          <select class="ui fluid search dropdown onchangeforsuggestproperties02" multiple="">
+            <option value="">Select Properties</option>
+            <option *ngFor="let select of properties" value="{{select.id}}">{{select.name}}</option>
+          </select>
+          <a class="addsuggestion" (click)="addpropertiestolist02()">Add to the List</a>
+        </div> -->
+      <!-- <div class="col-sm-12 form-group headingdesign">
+          <label class="heads">Select the Suggested Properties for the USV</label>
+          <div class="main_suggested_div">
+            <ul class="ks-cboxtags">
+              <li *ngFor="let property of suggestedpropertylists; let i = index">
+                <span *ngIf="property.selection == '1'">
+                  <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                  (change)="refixsuggested(i,property.propid,property.name)" checked>
+                <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                </span>
+                <span *ngIf="property.selection != '1'">
+                  <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                  (change)="refixsuggested(i,property.propid,property.name)">
+                <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+                </span>
+              </li>
+            </ul>
+            <p *ngIf="!suggestedpropertylists?.length" class="comma-list">
+              No Properties Suggested Till Now
+            </p>
+          </div>
+        </div> -->
+
+      <!-- <div class="col-sm-12 form-group headingdesign mb-0" *ngIf="getselectedLeadExec?.suggestedprop.length > 1">
+          <label class="heads">Select Property</label>
+          <div class="main_suggested_div">
+            <ul class="ks-cboxtags" >
+            <li *ngFor="let property of suggestedpropertylists; let i = index">
+                <input type="checkbox" id="suggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+                (change)="refixsuggested(i,property.propid,property.name)" [checked]="property.selection == '1'" disabled>
+              <label for="suggestcheckbox{{i}}">{{property.name}}</label>
+            </li>
+            </ul>
+          </div>
+        </div> -->
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">USV Refixed Date</label>
+        <div class="ui calendar calendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="refixdate" placeholder="Date">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 form-group headingdesign">
+        <label class="heads">USV Refixed Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="refixtime" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group headingdesign">
+        <label class="heads">Remarks</label>
+        <textarea class="form-control" id="refixtextarearemarks" placeholder=""></textarea>
+        <button (click)="usvrefixing()" class="btn saveBtn mr-3">Save</button>
+      </div>
+    </div>
+  </form>
+
+  <form [hidden]="!usvDone" name="form" method="POST">
+    <!-- <h3 class="userDetailsTitle mt-3 mb-3">Meeting Details</h3> -->
+    <div class="row" [hidden]="!(activestagestatus && activestagestatus[0]?.stage == 'USV' && activestagestatus[0]?.stagestatus == '3')">
+
+      <div class="col-sm-12 form-group mt-4">
+        <table *ngIf="selectedpropertylists?.length" class="table table-bordered">
+          <tr>
+            <th>Property Name</th>
+            <th>Remarks</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let suggested of selectedpropertylists; let i = index">
+              <td style="width: 220px;">
+                <span>{{suggested.name}}</span>
+
+                <div class="btn-group-toggle" data-toggle="buttons">
+                  <label class="btn visitedBtn btn-outline-success">
+                    <input type="radio" name="options" id="hatchback" (click)="visitclick(suggested.name)"
+                      autocomplete="off"> Interested
+                  </label>
+                  <label class="btn cancledBtn btn-outline-danger">
+                    <input type="radio" name="options" id="sedan" (click)="cancelclick(suggested.name)"
+                      autocomplete="off"> Not Interested
+                  </label>
+                </div>
+              </td>
+              <td>
+                <textarea class="form-control mb-1" id="propertyremarks"
+                  placeholder="Write About the Sitevisit"></textarea>
+                <a (click)="updatepropertyvisit(suggested.propid,suggested.name)"
+                  class="usvvisitupdate p-1 visitupdatebtn mx-3" style="display: none;">Save</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="hidden" id="visitupdate">
+       
+        <div class="crm-sub-container">
+
+          <div *ngIf="visitedremarks" class="panel-1 crm-auto-scroll panel-content">
+            <table class="table table-bordered">
+              <tr>
+                <th style="color: #4CB32B">Visited Property</th>
+                <th>Remarks</th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let visited of visitedpropertylists">
+                  <td>{{visited.name}}</td>
+                  <td>
+                    {{visited.remarks}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="cancelledpropertylists?.length" class="panel-2 crm-auto-scroll panel-content">
+            <table class="table table-bordered">
+              <tr>
+                <th style="color: red">Cancelled Property</th>
+                <th>Remarks</th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let cancelled of cancelledpropertylists">
+                  <td>{{cancelled.name}}</td>
+                  <td>
+                    {{cancelled.remarks}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- <div [hidden]="!visitstatusupdate" class="row col-sm-12"> -->
+      <!-- <div class="col-12"> -->
+
+      <!-- Important Hidden Fields -->
+      <div class="col-sm-6 form-group headingdesign"
+        [hidden]="getselectedLeadExec?.walkintime != null || showSiteVisitDate == true">
+        <label class="heads">Site Visited Date</label>
+        <div class="ui calendar visitedcalendardate">
+          <div class="ui input left icon datepickerdiv">
+            <i class="calendar icon"></i>
+            <input type="text" autocomplete="off" id="USVvisiteddate" on-focus="datefocus()"
+              on-focusout="datefocusOut()" placeholder="Date">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 form-group headingdesign"
+        [hidden]="getselectedLeadExec?.walkintime != null || showSiteVisitDate == true">
+        <label class="heads">Site Visited Time</label>
+        <div class="ui calendar calendartime">
+          <div class="ui input left icon timepickerdiv">
+            <i class="time icon"></i>
+            <input class="form-control" autocomplete="off" id="USVvisitedtime" on-focus="timefocus()"
+              on-focusout="timefocusOut()" type="text" placeholder="Time">
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-12 form-group headingdesign ">
+        <label class="heads">Site Visit Remarks</label>
+        <textarea class="form-control mb-1" id="propertyremarks" placeholder="Write About the Sitevisit"></textarea>
+      </div> -->
+      <!-- Important Hidden Fields -->
+      <!-- <div class="col-sm-12 form-group headingdesign" *ngIf="nonsuggestedpropertylists?.length">
+    <label class="heads">Select More Properties for USV</label>
+    <div class="main_suggested_div">
+
+      <ul class="ks-cboxtags" *ngIf="afterselectvisitdate">
+        <li *ngFor="let property of nonsuggestedpropertylists; let i = index">
+          <span *ngIf="property.selection == '1'">
+            <input type="checkbox" id="moresuggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+            (change)="moresuggested(i,property.propid,property.name)" checked>
+            <label for="moresuggestcheckbox{{i}}">{{property.name}}</label>
+          </span>
+          <span *ngIf="property.selection != '1'">
+            <input type="checkbox" id="moresuggestcheckbox{{i}}" value="{{property.propid}}" name='programming'
+            (change)="moresuggested(i,property.propid,property.name)">
+          <label for="moresuggestcheckbox{{i}}">{{property.name}}</label>
+          </span>
+        </li>
+      </ul>
+
+      <ul class="ks-cboxtags" *ngIf="beforeselectvisitdate" (click)="moresuggestedbeforeselection()">
+        <li class="disabled" *ngFor="let property of nonsuggestedpropertylists; let i = index">
+          <span *ngIf="property.selection == '1'">
+            <input type="checkbox" id="moresuggestcheckbox{{i}}" value="{{property.propid}}" name='programming' checked>
+            <label for="moresuggestcheckbox{{i}}">{{property.name}}</label>
+          </span>
+          <span *ngIf="property.selection != '1'">
+            <input type="checkbox" id="moresuggestcheckbox{{i}}" value="{{property.propid}}" name='programming'>
+          <label for="moresuggestcheckbox{{i}}">{{property.name}}</label>
+          </span>
+        </li>
+      </ul>
+
+    </div>
+  </div> -->
+      <div class="col-sm-12 form-group nextactionmaindiv" style="display: none;">
+        <h3 class="userDetailsTitle mt-3 mb-3">Select the Next Action</h3>
+        <button type="button" class="btn btnTab nxtactionbtns" (click)="followupdownbtn()" [ngStyle]="{'border': followupdown ? '1px solid #0B7AB2' : '1px solid #828282',
+'background-color': followupdown ? '#0B7AB240' : 'white',
+'color': followupdown ? '#0B7AB2' : '#403E3E', 'font-weight': followupdown ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': followupdown ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;Follow Up
+        </button>&nbsp;
+        <button type="button" class="btn btnTab nxtactionbtns" (click)="onrsvFixed()" [ngStyle]="{'border': rsvFixed ? '1px solid #0B7AB2' : '1px solid #828282',
+                        'background-color': rsvFixed ? '#0B7AB240' : 'white',
+                        'color': rsvFixed ? '#0B7AB2' : '#403E3E', 'font-weight': rsvFixed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': rsvFixed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;FIX RSV
+        </button>&nbsp;
+        <button type="button" class="btn btnTab nxtactionbtns" (click)="onnegofixed()" [ngStyle]="{'border': negofixed ? '1px solid #0B7AB2' : '1px solid #828282',
+        'background-color': negofixed ? '#0B7AB240' : 'white',
+        'color': negofixed ? '#0B7AB2' : '#403E3E', 'font-weight': negofixed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': negofixed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;FIX FINALNEGOTIATION
+        </button>&nbsp;
+        <button type="button" *ngIf="feedbackId != 1" class="btn btnTab nxtactionbtns" (click)="onleadclosed()" [ngStyle]="{'border': leadclosed ? '1px solid #0B7AB2' : '1px solid #828282',
+        'background-color': leadclosed ? '#0B7AB240' : 'white',
+        'color': leadclosed ? '#0B7AB2' : '#403E3E', 'font-weight': leadclosed ? '700' : '400'}">
+          <span><i class="fa fa-check-circle selectMarek" [ngStyle]="{'color': leadclosed ? '#0B7AB2' : '#E2E2E2'}"
+              aria-hidden="true"></i></span>&nbsp;&nbsp;Lead Closed
+        </button>&nbsp;
+
+      </div>
+
+      <!-- </div> -->
+      <!-- </div> -->
+
+
+      <div class="col-sm-12 form-group" *ngIf="followdownform">
+        <app-mandate-on-call-followupform [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm" [callStatus]="callStatus"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-followupform>
+      </div>
+      <div class="col-sm-12 form-group" *ngIf="rsvform">
+        <app-mandate-on-call-rsv [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-rsv>
+      </div>
+      <div class="col-sm-12 form-group" *ngIf="finalnegoform">
+        <app-mandate-on-call-nego [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-nego>
+      </div>
+      <div class="col-sm-12 form-group" *ngIf="leadclosedform">
+        <app-mandate-on-call-closed [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+          [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-closed>
+      </div>
+      <!-- <button (click)="usvdoneupdate()" class="btn saveBtn">Save</button> -->
+    </div>
+
+    <div
+      *ngIf="activestagestatus && activestagestatus[0]?.stage == 'USV' && activestagestatus[0]?.stagestatus == '1' &&  activestagestatus[0]?.assignedvisits == null && (roleid == 50013 || roleid == 50014)">
+      <p class="updatevisit">Please Assign the Visit.</p>
+    </div>
+
+    <div
+      *ngIf="activestagestatus && activestagestatus[0]?.stage == 'USV' && activestagestatus[0]?.stagestatus == '1' && ((activestagestatus[0]?.assignedvisits == 1 && (roleid == 50013 || roleid == 50014)) || (roleid != 50013 && roleid != 50014))">
+      <p class="updatevisit">Waiting for the Site-Visit Updation...</p>
+    </div>
+  </form>
+
+  <div class="form-group" *ngIf="junkform">
+    <app-mandate-on-call-junk [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm"
+      [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-junk>
+  </div>
+
+  <div class="form-group" *ngIf=" followform">
+    <app-mandate-on-call-followupform [selectedExecId]="selectedExecId" [calledLead]="calledLead" [assignedRm]="assignedRm" [callStatus]="callStatus"
+      [selectedSuggestedProp]="selectedSuggestedProp"></app-mandate-on-call-followupform>
+  </div>
+
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>

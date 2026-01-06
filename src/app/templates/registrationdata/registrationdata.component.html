@@ -1,0 +1,378 @@
+<!-- HEADER -->
+<div>
+  <app-header></app-header>
+</div>
+
+
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+
+<div class="body-cntnts dimmable blurring searchHeader"
+  [ngStyle]="{'padding-left': isSidebarHovered ? '14rem' : '3rem'}">
+  <div class="enquiry_content_main">
+    <div class="row main_count_header">
+      <div class="lead_count">
+        <label>Total Registrations : {{registrationcounts}}</label>
+      </div>
+      <div style="display: flex;gap: 1rem;justify-content: center;align-items: end;">
+        <!-- <div class="calenderInput" >
+          <input class="form-control" id="todate" name="options" type="text" bsDaterangepicker autocomplete="off"
+              placeholder="Select Date" [(bsValue)]="dateRange" (bsValueChange)="onDateRangeSelected($event)" required>
+          <span class="calenderInputIcon" >
+              <i class="fas fa-calendar-alt"></i>
+          </span>
+      </div> -->
+        <!-- <div class="">
+          <input type="text" class="form-control" [(ngModel)]="filterproperties"
+            placeholder="Search with Property Name" />
+        </div> -->
+        <div class="">
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#assign_lead"
+            (click)="assignLead()"><i class="fas fa-share pr-1"></i>Assign</button>
+        </div>
+        <div class=" pt-2 text-right">
+          <button type="button" class="btn btn-warning" (click)="refresh()"><i class="fas fa-redo  pr-1"></i>
+            Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-container ml-3">
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="datefilterview && fromdate && todate">
+          <div class="p-2 chip">
+            Registered Date: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="propertyFilter && propertyName">
+          <div class="p-2 chip">
+            {{propertyName}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="executiveFilter && execid">
+          <div class="p-2 chip">
+            {{execname}}
+            <span class="closebtn" (click)="executiveclose()">&times;</span>
+          </div>
+        </span>
+      </div>
+      <div class="CSassigned_table ">
+        <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+          [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+          [infiniteScrollContainer]="'.CSassigned_table'">
+          <thead>
+            <tr class="header">
+              <th style="text-align: center;">#</th>
+              <th>Name</th>
+              <th>Mobile No</th>
+              <th>
+                <div class="d-flex justify-content-between">
+                  <span>Property</span>
+                  <div>
+                    <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                      <i class="fas fa-filter" style="color: white;"></i>
+                    </button>
+                    <div class="dropdown-menu propertyBasedFilter p-0" aria-labelledby="bookingLeadDropdown"
+                      style="cursor:pointer; max-height: 250px;max-width: 250px;; overflow-y: auto;">
+                      <!-- Filter Search  input -->
+                      <div class="dropsearch_input">
+                        <input type="text" class="form-control propsearch" placeholder="Search..."
+                          [(ngModel)]="searchTerm" (input)="filterProjects()" style="margin-bottom: 2px;">
+                      </div>
+                      <!-- Dropdown items with checkboxes -->
+                      <div class="prop_list_checkbox">
+                        <div *ngFor="let project of addedpropertylists">
+                          <label class="dropdown-item dropDownCursor mb-1">
+                            <span (click)="onCheckboxChange(project)">{{ project.name }}</span>
+                          </label>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Registration Date</span>
+                  <span class="leadstatusdrop d-flex">
+                    <!-- <div>
+                              <button class="btn btn-warning" type="button" id="datefilterDropdown" data-toggle="dropdown" (click)="showdateRange()"
+                                aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                <i class="fas fa-filter" style="color: white;"></i>
+                              </button>
+                              <div class="dropdown-menu " aria-labelledby="datefilterDropdown" style="cursor:pointer;padding: 0rem;display: none;">
+                                <div style="position: relative;display: none;">
+                                  <input #datepicker class="form-control" id="todate" name="options" type="text" bsDaterangepicker autocomplete="off"
+                                     placeholder="Select Date" [(bsValue)]="dateRange" (bsValueChange)="onDateRangeSelected($event)" required>
+                                  <span style="position: absolute; top: 25%;right: 10px; opacity: 75%;color: #0B7AB2;">
+                                    <i class="fas fa-calendar-alt"></i>
+                                  </span>
+                                </div>
+                              </div>
+                            </div> -->
+                    <div id="registrationDates" class="cursor-pointer">
+                      <i class="fas fa-calendar" style="color: white;cursor: pointer;"></i>&nbsp;
+                    </div>
+                  </span>
+                </div>
+              </th>
+              <!-- <th>Site Visit Date</th> -->
+              <th>
+                <div class="d-flex justify-content-between">
+                  <span>Registered RM</span>
+                  <div>
+                    <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                      <i class="fas fa-filter" style="color: white;"></i>
+                    </button>
+                    <div class="dropdown-menu propertyBasedFilter p-0" aria-labelledby="bookingLeadDropdown"
+                      style="cursor:pointer; max-height: 250px;max-width: 250px;; overflow-y: auto;">
+                      <!-- Filter Search  input -->
+                      <div class="dropsearch_input">
+                        <input type="text" class="form-control propsearch" placeholder="Search..."
+                          [(ngModel)]="searchExec" (input)="filterExecutives()" style="margin-bottom: 2px;">
+                      </div>
+                      <!-- Dropdown items with checkboxes -->
+                      <div class="prop_list_checkbox">
+                        <div *ngFor="let exec of executivesList">
+                          <label class="dropdown-item dropDownCursor mb-1">
+                            <span (click)="onCheckExecutiveChange(exec)">{{ exec.Name }}</span>
+                          </label>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="registrations" class="enquiry_table_body">
+            <tr *ngFor="let reg of registrations; let i = index">
+              <td style="text-align: center;">{{i+1}}</td>
+              <td>{{reg?.registered_name}}</td>
+              <td>{{reg?.registered_number}}</td>
+              <td>{{reg?.registered_property}}</td>
+              <td>{{reg?.registered_date | date: 'dd-MMM-yyyy'}}</td>
+              <!-- <td>{{reg?.sitevisit_date | date: 'dd-MMM-yyyy'}}</td> -->
+              <td>{{reg?.registered_RM}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center lead_norecord" *ngIf="!registrations">
+          No Leads Found.....
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+<!-- FOOTER-STARTS -->
+
+<div class="main-lds-ring-div" *ngIf=filterLoader>
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<!-- <div class="footer">
+  <div class="footer-cntnt">
+    <p>@2017, homes247.in</p>
+  </div>
+</div> -->
+
+<!-- FOOTER-ENDS -->
+
+<div class="modal fade" id="assign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog assignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0">Total Leads : {{registrationcounts}}</h4>
+        <div class="d-flex" style="gap: 0.2rem">
+          <label>Random Assign</label>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch5" (change)="checkRandom($event)"
+              [disabled]="maxSelectedLabels == 1">
+            <label class="custom-control-label" for="customSwitch5"></label>
+          </div>
+        </div>
+        <button type="button" class="close" id="closereassignmodal" data-dismiss="modal" (click)="backToMain()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <!-- <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign Team</label>
+              <select id="team_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="reassignTeam($event)">
+                <option value="">Select Team</option>
+                <option value="retail" [selected]="'retail' === team">Retail Team</option>
+                <option value="mandate" [selected]="'mandate' === team">Mandate Team</option>
+              </select>
+            </div> -->
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select Property</label>
+              <select id="property_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                (change)="reassignPropChange($event)">
+                <option value="" selected>Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                  [selected]="projects.property_idfk == selectedMandateProp">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign Executive Team</label>
+              <select id="retail_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="reassignExecTeam($event)">
+                <option value="" selected>All</option>
+                <option value="50002">Relationship Executives</option>
+                <option value="50014">Customersupport Executives</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Assign To</label>
+              <p-multiSelect id="mandateExec_dropdown" [options]="reassignListExecutives"
+                [(ngModel)]="selectedEXECUTIVES" [filter]="true" optionLabel="name" #customersupport="ngModel"
+                name="customersupport" defaultLabel="Select Executives"
+                (onChange)="reAssignexecutiveSelect($event)"></p-multiSelect>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Leads Count</label>
+              <select id="leadcount_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+
+            <div class="form-group col-2 input_cmn_div pt-3">
+              <button type="button" class="btn btn-warning" (click)="getAssignedLeadsList()">Assign Now</button>
+            </div>
+
+            <!-- list of reassign selected leads table  -->
+            <div class="assign_table1 pt-3">
+              <table id="start2" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'" (scrolled)="loadMore()">
+                <tbody class="enquiry_table_body">
+                  <tr *ngFor="let assign of registrations;let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign?.Lead_IDFK}}" name='programming' (change)="getselectedleads()"
+                          style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td style="width: 300px;">
+                      <div class="statuscard">{{assign?.registered_name}}</div>
+                    </td>
+                    <td>{{assign?.registered_number}}</td>
+                    <!-- <td>{{assign.source}}</td> -->
+                    <td>{{assign?.registered_property}}</td>
+                    <!-- <td>{{assign.leadDate | date: 'dd-MMM-yyyy'}}<br/>{{assign.leadTime}}</td> -->
+                    <td>{{assign?.registered_RM}}</td>
+                    <td>{{assign?.registered_date | date: 'dd-MMM-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#reassigned_leads_modal" id="reassign_leads_detail"
+  style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog reassignlead_modal" style="max-width: 70%;">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0"> Re-Assign Leads</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="assignleadModalClose()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <div class="">
+              <h3>ReAssigned Leads Details</h3>
+            </div>
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Fresh Assigned</th>
+                  <th>Re-Assigned</th>
+                  <th>Not Assigned</th>
+                  <th>Untouched Leads</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body" style="height: 0px;">
+                <tr *ngFor="let reassign of reassignedResponseInfo; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{reassign.execname}}</td>
+                  <td>{{reassign.fresh}}</td>
+                  <td>{{reassign.reassigned}}</td>
+                  <td>
+                    <div>Already in Fresh - {{reassign.exsiting}}</div>
+                    <div>Leads Capacity Reached - {{reassign.leads_skipped_executive_capacity}}</div>
+                    <!-- <div>24 hrs not Completed- {{reassign.leads_skipped_executive_capacity}}</div>
+                    <div>Moved as Junk - {{reassign.leads_skipped_executive_capacity}}</div> -->
+                    <div>Gr-Swara-Leads - {{reassign.gr_swara_leads_skipped}}</div>
+                  </td>
+                  <td>{{(reassign.totalleads?reassign.totalleads:'---')}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

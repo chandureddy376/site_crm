@@ -1,0 +1,488 @@
+<body class="g-sidenav-show  bg-gray-200">
+  <!-- HEADER -->
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main">
+    <app-header></app-header>
+  </aside>
+  <!-- HEADER -->
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg " [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '2.5rem'}">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+
+      <div class="container-fluid py-1 px-3">
+
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <!-- <span *ngIf="dashBoardType == 'mandate'"><li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;" routerLink="/mandate-dashboard" [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}">Pages</a>/</li></span>
+            <span *ngIf="dashBoardType == 'retail'"><li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;" routerLink="/retail-dashboard" [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard'}">Pages</a>/</li></span> -->
+
+          </ol>
+          <h6 class="font-weight-bolder mb-0" *ngIf="execname">{{execname}}'s Dashboard</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+            </div>
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">{{username}}</span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item dropdown px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="settings" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="settings">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center" (click)="logout()">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">Logout</span>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New feature</span> Coming Soon
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxxxxx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/small-logos/logo-spotify.svg"
+                          class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">xx xxxx</span> xx xxxxx xxxx
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- End Navbar -->
+    <div class="container-fluid" style="padding-inline:  1.5rem !important;">
+      <div class="row pb-4">
+
+        <div class="col-xl-12 col-sm-12 mb-xl-3 mb-3">
+          <!-- <div class=" btn-group btn-group-toggle float-left" [hidden]="dashBoardType == 'retail'">
+            <div class=" col-6 pl-0" >
+              <select class="form-control ui dropdown dashboard_dropdown mr-3" id="exec_designation"
+                (change)="selectedPropType($event)">
+                <option style="display:none" value="" selected>Select Team</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}"
+                [selected]="projects.property_idfk === propertyid">{{projects.property_info_name}}</option>
+              </select>
+            </div>
+            <div class=" col-6" >
+              <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" (change)="mandatermchange($event)">
+                <option value="">Select Executive</option>
+                <option value="all">All</option>
+                <option *ngFor="let executives of mandateexecutives" value="{{executives.id}}"
+                  [selected]="executives.id === execid">{{executives.name}}</option>
+              </select>
+            </div>
+          </div>   -->
+          <div class=" btn-group btn-group-toggle float-left">
+            <div  class="mr-3">
+              <select id="sourcelist_dropdown" class="form-control ui dropdown" (change)="sourcechange($event)">
+                <option value="">Select Source</option>
+                <!-- <option value="all">All</option> -->
+                <option *ngFor="let sourcelist of sourceList" value="{{sourcelist.source}}"
+                  [selected]="sourcelist.source === source">{{sourcelist.source}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class=" btn-group btn-group-toggle float-right">
+
+            <label class=" btn btn-sm btn-date btn-simple" routerLink="/visit-dashboard"
+              [queryParams]="{allvisits: 1,from:'', to:'',stage:stagevalue, stagestatus:stagestatusval,dashtype:'dashboard',type:dashBoardType}"
+              [ngClass]="{'active':clicked==true}">
+              <input checked="checked" name="options" type="radio" />
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                ALL TIME
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-single-02"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-date btn-simple ml-2" routerLink="/visit-dashboard"
+              [queryParams]="{todayvisited: 1,from:'', to:'',stage:stagevalue, stagestatus:stagestatusval,dashtype:'dashboard',type:dashBoardType}"
+              [ngClass]="{'active':clicked1==true}">
+              <input class=" d-none d-sm-none" name="options" type="radio" />
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                TODAY
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-gift-2"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-date btn-simple ml-2" routerLink="/visit-dashboard"
+              [queryParams]="{yesterdayvisited: 1,from:'', to:'',stage:stagevalue, stagestatus:stagestatusval,dashtype:'dashboard',type:dashBoardType}"
+              [ngClass]="{'active':clicked2==true}">
+              <input class=" d-none" name="options" type="radio" />
+
+              <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                YESTERDAY
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-tap-02"> </i>
+              </span>
+            </label>
+
+            <label class=" btn btn-sm btn-date btn-simple mx-2" [ngClass]="{'active':clicked3===true}">
+              <!-- <input class=" d-none" name="options" type="radio" bsDaterangepicker #dateInput [bsValue]="dateRange"
+                (bsValueChange)="onDateRangeSelected($event)" (click)="datePicker()" />
+              <span id="dateInput" routerLink="/visit-dashboard"
+                [queryParams]="{allvisits: 1,from:fromdate, to:todate, stage:stagevalue, stagestatus:stagestatusval,dashtype:'dashboard',type:dashBoardType}"
+                class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                {{datecustomfetch}}
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-tap-02"> </i>
+              </span> -->
+
+              <div #nextActionDates class="cursor-pointer d-none">
+                <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+              </div>
+              <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                {{datecustomfetch}}
+              </span>
+              <span class=" d-block d-sm-none">
+                <i class=" tim-icons icon-tap-02"> </i>
+              </span>
+            </label>
+
+            <p>
+              <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+                  class="fas fa-redo"></i>Reset</button>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-4">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">Total Visits</span>
+                <h3 class="mb-0">{{(totalCounts?totalCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate,stagestatus:'3',source:source,type:'visits'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateCounts?mandateCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandatePercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{filterData:'AllVisits',visitedfrom:fromdate, visitedto:todate,stagestatus:'3',source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailCounts?retailCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-4">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">USV</span>
+                <h3 class="mb-0">{{(usvCounts?usvCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateUsvCounts?mandateUsvCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateUSVPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{usv: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailUsvCounts?retailUsvCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailUSVPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-4">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">SV</span>
+                <h3 class="mb-0">{{(retailSvCounts?retailSvCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3" style="opacity: 25%;">
+                <div class="d-flex justify-content-between" >
+                <span class="text-sm color-blue" >Mandate</span>
+                <h6 class="mb-0" >{{('0')}}</h6>
+                </div>
+                <p-progressBar [value]="0" [showValue] ="false" class="color-blue" ></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{sv: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailSvCounts?retailSvCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="100" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">RSV</span>
+                <h3 class="mb-0">{{(rsvCounts?rsvCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalRsvCounts?mandateTotalRsvCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateRSVPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{rsv: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalRsvCounts?retailTotalRsvCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailRSVPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">FN</span>
+                <h3 class="mb-0">{{(fnCounts?fnCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalFnCounts?mandateTotalFnCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateFNPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{fn: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalFnCounts?retailTotalFnCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailFNPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">Closed</span>
+                <h3 class="mb-0">{{(closedCounts?closedCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{booked: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalClosedCounts?mandateTotalClosedCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateClosedPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{bkd: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalClosedCounts?retailTotalClosedCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailClosedPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">Booking Req</span>
+                <h3 class="mb-0">{{(bookingRequestVisitsCounts?bookingRequestVisitsCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{bookingRequest: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalBookingRequestCounts?mandateTotalBookingRequestCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateBReqPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{brs: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalBookingRequestCounts?retailTotalBookingRequestCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailBReqPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">Rejected</span>
+                <h3 class="mb-0">{{(rejectedVisitsCounts?rejectedVisitsCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{bookingRejected: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalRejectedCounts?mandateTotalRejectedCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateRejectedPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{brr: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'bookings'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalRejectedCounts?retailTotalRejectedCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailRejectedPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-sm-6 pt-5">
+          <div class="card hoverclass">
+            <div class="col-12 row m-0 pr-0 pl-0">
+              <div class="col-3 py-3 d-flex justify-content-center align-items-center flex-column" >
+                <span class="text-sm color-grey">Junk Visits</span>
+                <h3 class="mb-0">{{(junkVisitsCounts?junkVisitsCounts:'0')}}</h3>
+            </div>
+            <div class="col-9 text-center py-3">
+              <div class="col-12 py-3">
+                <div class="pb-3">
+                <div class="d-flex justify-content-between" routerLink="/mandate-lead-stages"
+                [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                <span class="text-sm color-blue">Mandate</span>
+                <h6 class="mb-0">{{(mandateTotalJunkVisitsCounts?mandateTotalJunkVisitsCounts:'0')}}</h6>
+                </div>
+                <p-progressBar [value]="mandateJunkPercentage" [showValue] ="false" class="color-blue"></p-progressBar>
+              </div>
+                <div class="d-flex justify-content-between pt-2" routerLink="/retail-lead-stages"
+                [queryParams]="{junkvisits: 1,visitedfrom:fromdate, visitedto:todate,source:source,type:'visits'}">
+                  <span class="text-sm color-darkblue">Retail</span>
+                  <h6 class="mb-0">{{(retailTotalJunkVisitsCounts?retailTotalJunkVisitsCounts:'0')}}</h6>
+                  </div>
+                  <p-progressBar [value]="retailJunkPercentage" [showValue] ="false" class="color-darkblue"></p-progressBar>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+    </div>
+  </main>
+  <div *ngIf=filterLoader class="main-lds-ring-div">
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+     <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</body>

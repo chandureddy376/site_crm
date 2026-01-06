@@ -1,0 +1,8 @@
+@media (min-width: 1920px) and (max-width: 2560px) {
+
+    .header_subdiv{
+        width: 97%;
+        float: left;
+      }
+
+}

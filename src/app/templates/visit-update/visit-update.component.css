@@ -1,0 +1,303 @@
+/* CENTER-CONTENTS */
+.body-cntnts {
+  margin: 25px 0px 10px 10px !important;
+  background-image: url(../../../assets/images/login.jpg);
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 120% 150%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.login-content {
+  background-color: #fff;
+  width: 70%;
+  display: inline-block;
+  padding-bottom: 50px;
+  padding-top: 30px;
+  margin-block: 2rem;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 50%;
+}
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 40px;
+}
+
+.wrapper .option {
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 2px solid lightgrey;
+  transition: all 0.3s ease;
+  margin-right: 4px;
+}
+
+.wrapper .option .dot::before {
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #0069d9;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+#option-1:checked:checked~.option-1,
+#option-2:checked:checked~.option-2,
+#option-3:checked:checked~.option-3,
+#option-4:checked:checked~.option-4,
+#option-5:checked:checked~.option-5,
+#option-6:checked:checked~.option-6,
+#option-7:checked:checked~.option-7,
+#option-8:checked:checked~.option-8,
+#option-9:checked:checked~.option-9,
+#option-10:checked:checked~.option-10,
+#option-11:checked:checked~.option-11,
+#option-12:checked:checked~.option-12,
+#option-13:checked:checked~.option-13,
+#option-14:checked:checked~.option-14,
+#option-15:checked:checked~.option-15, 
+#option-16:checked:checked~.option-16, 
+#option-17:checked:checked~.option-17, 
+#option-18:checked:checked~.option-18,
+#option-19:checked:checked~.option-19, 
+#option-20:checked:checked~.option-20,
+#option-21:checked:checked~.option-21,
+#option-22:checked:checked~.option-22, 
+#option-23:checked:checked~.option-23,
+#option-24:checked:checked~.option-24,
+#option-25:checked:checked~.option-25,
+#option-26:checked:checked~.option-26,
+#option-27:checked:checked~.option-27,
+#option-28:checked:checked~.option-28,
+#option-29:checked:checked~.option-29,
+#option-30:checked:checked~.option-30,
+#option-31:checked:checked~.option-31,
+#option-32:checked:checked~.option-32
+{
+  border-color: #0B7AB2;
+  background: #0B7AB2;
+}
+
+.wrapper .option span {
+  font-size: 14px;
+  color: #808080;
+}
+
+#option-1:checked:checked~.option-1 span,
+#option-2:checked:checked~.option-2 span,
+#option-3:checked:checked~.option-3 span,
+#option-4:checked:checked~.option-4 span,
+#option-5:checked:checked~.option-5 span,
+#option-6:checked:checked~.option-6 span,
+#option-7:checked:checked~.option-7 span,
+#option-8:checked:checked~.option-8 span,
+#option-9:checked:checked~.option-9 span,
+#option-10:checked:checked~.option-10 span,
+#option-11:checked:checked~.option-11 span,
+#option-12:checked:checked~.option-12 span,
+#option-13:checked:checked~.option-13 span,
+#option-14:checked:checked~.option-14 span,
+#option-15:checked:checked~.option-15 span,
+#option-16:checked:checked~.option-16 span,
+#option-17:checked:checked~.option-17 span,
+#option-18:checked:checked~.option-18 span,
+#option-19:checked:checked~.option-19 span,
+#option-20:checked:checked~.option-20 span,
+#option-21:checked:checked~.option-21 span,
+#option-22:checked:checked~.option-22 span,
+#option-23:checked:checked~.option-23 span,
+#option-24:checked:checked~.option-24 span,
+#option-25:checked:checked~.option-25 span,
+#option-26:checked:checked~.option-26 span,
+#option-27:checked:checked~.option-27 span,
+#option-28:checked:checked~.option-28 span,
+#option-29:checked:checked~.option-29 span,
+#option-30:checked:checked~.option-30 span,
+#option-31:checked:checked~.option-31 span,
+#option-32:checked:checked~.option-32 span
+ {
+  color: #fff;
+}
+
+::ng-deep .ui.selection.dropdown {
+  width: 96% !important;
+}
+
+.vertical-alignment-helper {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+.vertical-align-center {
+  /* To center vertically */
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-content {
+  /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+  width: inherit;
+  height: inherit;
+  /* To center horizontally */
+  margin: 0 auto;
+}
+
+.title {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.title h3 {
+  font-weight: bold;
+}
+
+.title p {
+  font-size: 12px;
+  color: #118a44;
+}
+
+.title p.msg {
+  color: initial;
+  text-align: initial;
+  font-weight: bold;
+}
+
+.otp-input-fields {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: auto;
+  background-color: white;
+  box-shadow: 0px 0px 8px 0px #02025044;
+  max-width: 400px;
+  width: auto;
+  padding: 40px;
+}
+
+.otp-input-fields input {
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid #2f8f1f;
+  text-align: center;
+  outline: none;
+  font-size: 16px;
+}
+
+.otp__digit {
+  width: 40px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.otpresend{
+  cursor: pointer;
+}
+
+::ng-deep .cp_dropdown_1 .ui-dropdown {
+    width: 100% !important;
+}
+
+.style_close_btn {
+  background: #FFFFFF !important;
+  border: 0.5px solid #D9D9D9 !important;
+  color: #656565 !important;
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
+  border-radius: 4px !important;
+}
+
+.exisiting_modal_body .modal-header .close {
+  margin: 0rem !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.exisiting_modal_body .modal-footer {
+  padding-block: 0.5rem !important;
+  padding-inline: 1rem !important;
+  display: flex !important;
+  justify-content: space-evenly !important;
+  align-items: center !important;
+  background: #F0FAFF !important;
+}
+
+.exisiting_modal_body .modal-footer .footer_close_btn {
+  /* width: 100% !important; */
+  border: 0.8px solid #007CBA !important;
+  background: #F0FAFF !important;
+  color: #007CBA !important;
+  box-shadow: none !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  padding-inline:40px !important;
+}
+
+.exisiting_modal_body .modal-footer .footer_submit_button{
+  border-radius: 6px !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  padding-inline:40px !important;
+}
+
+.btn-secondary .btn-secondary:hover,
+.btn-secondary:focus {
+  color: #0B7AB2;
+  background-color: #ffffff;
+  border: 1px solid #0B7AB2 !important;
+}
+
+.modal-dialog.exisitinglead_modal {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.content_table_main thead{
+  background: #DAEEFF !important;
+  color: #004061 !important;
+}
+
+.content_table_main thead th{
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  border: none !important;
+}
+
+#exisiting_executives_leads_modal{
+  top: 30px !important;
+}

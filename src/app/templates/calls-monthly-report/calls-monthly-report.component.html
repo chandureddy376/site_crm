@@ -1,0 +1,17 @@
+<div>
+  <app-header></app-header>
+</div>
+
+
+<div class="body-cntnts dimmable searchHeader" [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '3.5rem'}">
+  <div class="py-3">
+    <span style="color: #026CA2;font-size: 14px;">Call Counts are recorded daily, showing the total number of calls made
+      each day.</span>
+    <div style="color: #026CA2; font: 600; font-size: 16px;text-decoration: underline;">Click On the Month To Change
+    </div>
+  </div>
+  <div class="calendar-wrapper">
+    <ejs-calendar #calendarRef [value]="dateValue" (renderDayCell)="onRenderDayCell($event)"
+      (valueChange)="onMonthChange($event)"></ejs-calendar>
+  </div>
+</div>

@@ -1,0 +1,445 @@
+/* CENTER-CONTENTS */
+html,
+body {
+    overflow: hidden;
+}
+
+::ng-deep .dash_main_dash {
+    padding-bottom: 0.2rem !important;
+}
+
+.body-cntnts {
+    /* padding-left: 14.5rem; */
+    margin: 0px 0px 10px 8px !important;
+    width: 98.5% !important;
+    background-color: #ffffff;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* New Design concept from ROLO */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.main_count_header {
+    background: #0B7AB229;
+    color: #000000;
+    padding-left: 14.5em !important;
+    padding-inline: 1.5rem;
+    padding-top: 1.9rem;
+    padding-bottom: 0.3rem;
+}
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+    .body-cntnts {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .main_count_header {
+        padding-left: 0.2rem !important;
+    }
+
+    .body-cntnts {
+        padding-left: 0.2rem;
+    }
+}
+
+::ng-deep bs-daterangepicker-container {
+    position: absolute;
+    top: 205px !important;
+    left: 36rem !important
+}
+
+.btn-warning {
+    color: white;
+    background-color: #0B7AB2 !important;
+    border-color: #0B7AB2 !important;
+}
+
+::ng-deep .modal-dialog.add_prop_modal {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+::ng-deep .search-dropdown .search-dropdown__btn {
+    height: 38px !important;
+    width: 250px !important;
+    border: 1px solid #e6e6e6 !important;
+    border-radius: 0.25em !important;
+}
+
+::ng-deep .search-dropdown .search-dropdown__btn span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
+    color: rgba(191, 191, 191, 0.87) !important;
+    font-size: medium;
+}
+
+.heads {
+    color: rgb(68 68 68 / 87%) !important;
+}
+
+.coverImg input[type="file"] {
+    display: none;
+}
+
+.coverImg .custom-file-upload {
+    border: 1px solid orange;
+    display: inline-block;
+    padding: 2px 6px;
+    cursor: pointer;
+    position: absolute;
+    left: 14px;
+    background: orange;
+    color: white;
+    border-radius: 0px;
+    font-size: 10px;
+}
+
+.closeButton {
+    position: absolute;
+    top: -8px;
+    right: 32px;
+    padding: 0px 7px;
+    border-radius: 0px;
+    font-size: 16px;
+    color: rgb(0, 0, 0) !important;
+    background: none;
+    border: none;
+}
+
+.editButton {
+    position: absolute;
+    top: -8px;
+    right: 32px;
+    padding: 0px 7px;
+    border-radius: 0px;
+    font-size: 16px;
+    color: rgb(0, 0, 0) !important;
+    background: none;
+    border: none;
+}
+
+.videocloseButton {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    padding: 0px 7px;
+    border-radius: 0px;
+    font-size: 16px;
+    color: rgb(255 255 255) !important;
+    background: none;
+    border: none;
+}
+
+.filedisplaymaindiv {
+    display: inline-block;
+}
+
+.imagemaindiv {
+    float: left;
+    width: 45%;
+    height: 100px;
+    display: inline-table;
+}
+
+.videomaindiv {
+    float: left;
+    width: 45%;
+    height: 110px;
+    display: inline-table;
+}
+
+.videomaindiv video {
+    border: 5px solid #adadad;
+}
+
+.imagemaindiv img {
+    border: 2px solid #adadad;
+}
+
+/* .form-control {
+    border: 1px solid #d2d6da;
+    padding: 0.5rem !important;
+} */
+
+::ng-deep body .ui-dropdown {
+    width: 245px !important;
+}
+
+::ng-deep .ui-inputtext {
+    height: 2.5rem !important;
+    color: rgba(191, 191, 191, 0.87) !important;
+    ;
+}
+
+::ng-deep body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
+    background-color: #0B7AB2 !important;
+    color: #ffffff;
+}
+
+::ng-deep .search-dropdown .search-dropdown__dropdown__item {
+    padding: 0px 10px !important;
+    padding-left: 10px !important;
+}
+
+::ng-deep .search-dropdown .search-dropdown__dropdown {
+    width: 245px !important;
+}
+
+.main_prop_card {
+    border: 1px solid black;
+}
+
+.container,
+.container-fluid {
+    padding-left: var(--bs-gutter-x, 2.5rem) !important;
+}
+
+.card {
+    background-color: #f4f4f4 !important;
+}
+
+.card .card-header {
+    padding-inline: 1.5rem !important;
+    padding-block: 0.5rem !important;
+}
+
+.card .card-body {
+    padding-inline: 1.5rem !important;
+    padding-block: 0.5rem !important;
+}
+
+.hoverclass {
+    cursor: pointer;
+}
+
+.card_coverimg {
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.prop_text {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.color-black {
+    color: rgb(0, 0, 0);
+}
+
+.property_name {
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    text-decoration: underline;
+    top: 20%;
+}
+
+.sub_text {
+    position: absolute;
+    display: block;
+}
+
+.icon_list {
+    position: absolute;
+    top: 36%;
+    display: flex;
+    gap: 1rem;
+}
+
+.sub_header {
+    position: absolute;
+    background-color: #ffffff;
+    opacity: 90%;
+    padding-inline: 0.5rem;
+    padding-block: 0.3rem;
+    width: 100%;
+    bottom: 0;
+    height: 100px;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+}
+
+.color_blue {
+    color: #0B7AB2;
+}
+
+.gap-3px {
+    gap: 3px;
+}
+
+.sub_header .btn {
+    margin-bottom: 0rem !important;
+    padding: 0.3rem 0.3rem !important;
+    font-size: 0.7rem !important;
+    border-radius: 0.2rem !important;
+}
+
+.buttonwithicon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.propertType_text {
+    color: #0B7AB2 !important;
+}
+
+.edit_icon {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    right: 0;
+    color: #ffffff;
+    padding: 5px;
+    background-color: #0B7AB2;
+    border-bottom-left-radius: 10px;
+    cursor: pointer;
+}
+
+.property_copy .btn {
+    padding: 0.3rem 0.3rem;
+    font-size: 8px;
+    border-radius: 0.2rem;
+}
+
+.btn-danger,.btn.bg-gradient-danger {
+    box-shadow: none !important;
+}
+
+.blurred {
+    filter: blur(1px);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.clearfix {
+    background-color: #ffffff !important;
+}
+
+::ng-deep #new_executive .new_executive_form .ui.selection.dropdown {
+    width: 250px !important;
+    min-width: 100px !important;
+}
+
+::ng-deep #new_executive .new_executive_form .ui.selection.dropdown {
+    width: 250px !important;
+    min-width: 100px !important;
+}
+
+::ng-deep .ui.search.selection.dropdown > input.search {
+    padding: 0.67857143em 1em 0.67857143em 0.8em !important; 
+} 
+
+.noProp{
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    font-size: 16px;
+    font-weight: 800;
+    font-style: italic;
+}
+
+
+::ng-deep .btn-info {
+    color: #0B7AB2 !important;
+    background-color: #ffffff !important;
+    border:1px solid #0B7AB2  !important;
+}
+
+::ng-deep .btn-secondary {
+    color: #ffffff !important;
+    background-color: #0B7AB2 !important;
+    border:1px solid #0B7AB2  !important;
+}
+
+::ng-deep .btn-info, .btn.bg-gradient-info {
+    box-shadow: 0 3px 3px 0 #ffffff , 0 3px 1px -2px #ffffff , 0 1px 5px 0 #ffffff  !important;
+}
+
+.rounded-btn{
+    padding-block: 5px;
+    padding-inline: 15px;
+    border-radius: 2px;
+}
+
+.pricesheetfont{
+    font-weight: 800;
+    font-size: 12px;
+}
+
+::ng-deep .btn-info:active {
+    color: #ffffff !important;
+    background-color: #0B7AB2 !important;
+    border:1px solid #0B7AB2  !important;
+}
+
+
+.custom-file-label1 {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0.4rem !important;
+    gap: 0.5rem !important;
+    margin: 0 !important;
+}
+
+.viewuploadedFloorPlan{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0.4rem ; */
+    border: 1px solid #0B7AB2;
+}     
+
+.iconcolor {
+    color: #0B7AB2;;
+}
+
+.hover-icons {
+    position: absolute;
+    top: 50% !important;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    gap: 10px;
+    padding: 5px 15px;
+}
+
+.image-container:hover .hover-icons {
+    display: flex;
+}
+
+.image-container:hover{
+    background: #bdb6b6a9;  
+}
+
+.iconcolor1:hover {
+    color: #00679b;
+}
+
+.iconcolor1 {
+    font-size: 20px;
+    color: #0b7ab2;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search_input{
+    border-radius: 15px !important;
+    background-color: white !important;
+    width: 250px !important;
+    padding-inline: 15px !important;
+  }
+
+  

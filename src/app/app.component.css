@@ -1,0 +1,249 @@
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #0B7AB2 !important;
+  background-color: rgb(11 122 178 / 15%) !important;
+  border-color: #0B7AB2 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 3px 3px 0 rgb(30 150 233 / 15%), 0 3px 1px -2px rgb(111 148 166 / 20%), 0 1px 5px 0 rgb(62 102 122 / 15%);
+}
+
+.btn-danger[_ngcontent-c0],
+.btn-danger[_ngcontent-c0]:hover,
+.btn-danger[_ngcontent-c0]:focus {
+  color: #ffffff !important;
+  background-color: rgb(241 0 0 / 71%) !important;
+  border-color: #df5151 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 3px 3px 0 rgb(97 91 91 / 15%), 0 3px 1px -2px #9d908f, 0 1px 5px 0 rgb(158 166 170 / 15%);
+}
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #0B7AB2 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #0B7AB2 !important;
+}
+
+.h2colored {
+  color: #0B7AB2 !important;
+}
+
+.filterLoaderStyles {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 678px;
+  background: #ffffffad;
+  padding: 1% 48%;
+  z-index: 1234;
+}
+
+.lds-ring {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  padding: 1% 48%;
+  height: 500px;
+}
+
+.timeh2colored {
+  color: #df5151;
+}
+
+.reassignlead_modal {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.textblue {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: #EEF6FA;
+}
+
+.textgrey {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: #EDEDED;
+}
+
+.button_section .planleadassign {
+  background-color: #0B7AB2 !important;
+  border-radius: 50px;
+  padding-inline: 0.2rem;
+  padding-block: 0.2rem;
+}
+
+.button_section .planleadassign a {
+  flex-shrink: 0;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0px 0 0px;
+  cursor: pointer;
+  float: left;
+  color: #ffffff;
+  border: none;
+  padding: 5px 20px 5px 20px;
+}
+
+.button_section .planleadassign a.active {
+  color: #0B7AB2;
+  background: #ffffff;
+  border-radius: 50px;
+  border: 1px solid #0B7AB2;
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.content_table_main tbody tr {
+  width: 100%;
+  border-bottom: 1px solid #dddddd;
+  padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+  background: #0B7AB2;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.content_table_main thead tr th {
+  padding: 8px 25px 8px 8px;
+  color: #0B7AB2;
+  font-size: 14px;
+  font-weight: 400;
+  background: #EEF6FA;
+}
+
+.content_table_main tbody tr td {
+  padding: 6px 6px 6px 6px;
+  color: #4D4D4D;
+  background: #F6F6F6;
+  height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+  border: 1px solid #999;
+  padding: 4px 16px 4px 16px;
+}
+
+.assign_table1 {
+  height: 350px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.enquiry_table_body {
+  /* height: 638px; */
+  font-size: 13px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.detailed_btn {
+  padding: 0.5rem;
+  background: #EBF4F9;
+  color: #0B7AB2;
+  border: 1px solid #0B7AB2;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rounded_btn {
+  padding-inline: 6px;
+  padding-block: 2px;
+  border: 1px solid #0B7AB2;
+  border-radius: 40px;
+}
+
+.color-red {
+  color: rgb(245, 30, 30);
+}
+
+.color-green {
+  color: rgb(35, 250, 35);
+}
+
+.search_icon {
+  font-size: large;
+  position: absolute;
+  top: 2px;
+  left: 25px;
+  color: grey;
+}
+
+.gap-3 {
+  gap: 1rem;
+}
+
+.saveweekoffbtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
+
+video {
+  background-color: white;
+  display: block;
+  width: 40%;
+  height: auto;
+}
+
+.calls_data {
+  background: linear-gradient(180deg, rgba(183, 231, 255, 0.2) 0%, rgba(143, 213, 248, 0.2) 100%);
+  border-top-left-radius: 10px;
+  box-shadow: rgba(143, 213, 248, 0.2) 0px 5px 3px;
+  border: 1px solid #F0FAFF !important;
+  border-right: none !important;
+  backdrop-filter: blur(15px);
+}
+
+.calls_conatiner{
+  z-index: 99999999;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  width: 250px;
+}
+
+.text_number {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins';
+  color: #022D43;
+}
+
+.label_text {
+  color: #00476A;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'Poppins';
+}
+
+::ng-deep .call_exec .ui.selection.dropdown{
+  background: #D7E1E7 !important;
+  color: #748B99 !important;
+  border: none !important;
+  border-top-left-radius: 10px !important;
+}
+
+.toggle_icon {
+  padding-inline: 5px;
+  background: rgba(143, 213, 248, 0.2);
+  border-top-left-radius: 10px;
+}

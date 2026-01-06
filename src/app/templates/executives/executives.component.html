@@ -1,0 +1,781 @@
+<!-- HEADER -->
+
+<div>
+  <app-header></app-header>
+</div>
+
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+
+<div class="row main_count_header " [ngStyle]="{'margin-left': isSidebarHovered ? '13rem' : '2.5rem'}">
+  <div class="col-6 pt-2" style="padding-left:10px">
+    <!-- <div class="button_section">
+      <div class="create_new_executive">
+    
+      </div>
+    </div> -->
+    <div class="button_section col-12 pr-0 pl-0 d-flex ">
+      <div class="planleadassign">
+        <a class="add_class  executives_section active" routerLink="/Executives" [queryParams]="{executive:1}">
+          Executives
+        </a>
+
+        <a class="add_class lead_section team_section" routerLink="/Executives" [queryParams]="{team:1}">
+          Teams
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 pt-2 text-right update_wishes">
+    <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#new_performer">Performer
+      Update</button> -->
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add_exec"
+      *ngIf="executiveParam == 1" (click)="addNewExecutive()"><i class="fa fa-plus pr-1"></i> New Executive</button>
+
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add_team" *ngIf="teamParam == 1"
+      (click)="addTeam('Save')"><i class="fa fa-plus pr-1"></i> New Team</button>
+    <button type="button" class="btn btn-warning" (click)="refresh()"><i class="fa fa-redo pr-1"></i> Reset</button>
+  </div>
+</div>
+
+<div *ngIf=loadershow class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '14rem' : '3.5rem'}">
+  <div class="myexecutive_main" style="padding-left: 0.2rem;">
+    <div class="table-container ">
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="departmentFilter && departId">
+          <div class="p-2 chip">
+            {{ departName }}
+            <span class="closebtn" (click)="departClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="desginationFilter && desginId">
+          <div class="p-2 chip">
+            {{ desginName }}
+            <span class="closebtn" (click)="designationClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="propertyFilter && propid">
+          <div class="p-2 chip">
+            {{ propname }}
+            <span class="closebtn" (click)="propertyClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="teamLeadFilter && teamLeadId">
+          <div class="p-2 chip">
+            {{ teamLeadName }}
+            <span class="closebtn" (click)="teamLeadClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="teamMembersFilter && teamMembersIds">
+          <div class="p-2 chip">
+            {{ teamMembersName }}
+            <span class="closebtn" (click)="teamMembersClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="actStatusFilter && act_status">
+          <div class="p-2 chip">
+            {{ act_status == '0' ? 'Active' :'Inactive'}}
+            <span class="closebtn" (click)="statusClose()">&times;</span>
+          </div>
+        </span>
+      </div>
+      <div class="CSassigned_table ">
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-scroll panel-content">
+            <table class="myexecutive_table_main table table-striped table-bordered tid-table" infinite-scroll
+              [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead *ngIf="executiveParam == 1">
+                <tr class="myexecutive_table_header">
+                  <th class="text-center">S.No</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Properties</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                            <div class="dropdown-search-container"><input type="text" class="form-control desisearch"
+                                placeholder="Search..." [(ngModel)]="searchTerm_property" name="searchTerm_property"
+                                (input)="filterproperty()" style="margin-bottom: 2px;">
+                            </div>
+                            <div *ngFor="let prop of propertyList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <div (click)="onCheckboxChangeProperty(prop)">{{ prop.property_info_name }}</div> -->
+                                    <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox" id="hideExecutivecheckboxid"
+                                      value="{{prop.property_idfk}}" name='propertyFilter'
+                                      (change)="onCheckboxChangeMultiProperty(prop)">
+                                    {{ prop.property_info_name }}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Department</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                            <div *ngFor="let depart of exec_departments">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangeDepartment(depart)">{{ depart.departs }}</div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Designation</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                            <div class="dropdown-search-container"><input type="text" class="form-control desisearch"
+                                placeholder="Search..." [(ngModel)]="searchTerm_designation"
+                                name="searchTerm_designation" (input)="filterDesignation()" style="margin-bottom: 2px;">
+                            </div>
+                            <div *ngFor="let desi of designationList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangeDesignation(desi)">{{ desi.role }}</div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="execStatus('0')">Active</a>
+                            <a class="dropdown-item dropDownCursor" (click)="execStatus('1')">InActive</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <thead *ngIf="teamParam == 1">
+                <tr class="myexecutive_table_header">
+                  <th class="text-center">S.NO</th>
+                  <th>Team Name</th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Property Name</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                            <div class="dropdown-search-container"><input type="text" class="form-control desisearch"
+                                placeholder="Search..." [(ngModel)]="searchTerm_property" name="searchTerm_property"
+                                (input)="filterproperty()" style="margin-bottom: 2px;">
+                            </div>
+                            <div *ngFor="let prop of propertyList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangeProperty(prop)">{{ prop.property_info_name }}</div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Team Lead</span>
+                      <span class="leadstatusdrop d-flex">
+                      <div>
+                        <button class="btn btn-info" type="button" id="executiveDropdown" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: #00476A;"></i>
+                        </button>
+                          <div class="dropdown-menu propertyBasedFilter" aria-labelledby="executiveDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 350px;overflow-y: auto;">
+                            <!-- Filter Search  input -->
+                            <div class="dropdown-search-container">
+                              <input type="text" class="form-control executivesearch" placeholder="Search..."
+                                [(ngModel)]="searchTerm_teamlead" (input)="filterTeamLead()" style="margin-bottom: 2px;">
+                            </div>
+                            <!-- Dropdown items with checkboxes -->
+                            <div *ngIf="mandateExecutivesFilter?.length" class="d-flex">
+                              <!-- All & self Visit executive filter  -->
+                              <div class="exec_list_checkbox">
+                                <div *ngFor="let exec of mandateExecutivesFilter">
+                                  <label class="dropdown-item dropDownCursor mb-1">
+                                    <!-- <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox" id="hideExecutivecheckboxid"
+                                                                          value="{{exec?.id}}" name='executiveFilter' (change)="onCheckboxExecutiveChange('teamlead')"> -->
+                                    <div (click)="onCheckboxExecutiveChange('teamlead',exec)">{{ exec.name }}</div>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                              <h4>No Executives Found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Team Members</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="executiveDropdown" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu propertyBasedFilter" aria-labelledby="executiveDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 350px;overflow-y: auto;">
+                            <!-- Filter Search  input -->
+                            <div class="dropdown-search-container">
+                              <input type="text" class="form-control executivesearch" placeholder="Search..."
+                                [(ngModel)]="searchTerm_teammember" (input)="filterTeamMembers()" style="margin-bottom: 2px;">
+                            </div>
+                            <!-- Dropdown items with checkboxes -->
+                            <div *ngIf="mandateExecutivesFilter?.length" class="d-flex">
+                              <!-- All & self Visit executive filter  -->
+                              <div class="exec_list_checkbox">
+                                <div *ngFor="let exec of mandateExecutivesFilter">
+                                  <label class="dropdown-item dropDownCursor mb-1">
+                                    <input type="checkbox" class="mr-2 loopcheckbox hideExecutivecheckbox" id="hideExecutivecheckboxid"
+                                      value="{{exec?.id}}" name='executiveFilter'
+                                      (change)="onCheckboxExecutiveChange('teammembers',exec)">
+                                    {{ exec.name }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="!mandateExecutivesFilter?.length" class="text-center" style="color: #666666;">
+                              <h4>No Executives Found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex">
+                        <div>
+                          <button class="btn btn-info" type="button" id="assignStatusDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: #00476A;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignStatusDropdown" style="cursor:pointer;">
+                            <a class="dropdown-item dropDownCursor" (click)="execStatus('0')">Active</a>
+                            <a class="dropdown-item dropDownCursor" (click)="execStatus('1')">InActive</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngIf="myexecutives?.length && executiveParam == 1" class="myexecutive_table_body">
+                <tr *ngFor="let executive of myexecutives;let i = index">
+                  <td class="text-center">{{i + 1}}</td>
+                  <td>{{executive.Name}}
+                    <div>{{executive.Number}}</div>
+                  </td>
+                  <td>{{executive.Email}}</td>
+                  <td>
+                   
+                    <div *ngIf="executive.assignedprop && executive.assignedprop.length > 1" style="cursor: pointer;">
+                       <span class="add_prop" data-toggle="modal" data-target="#add_prop"  (click)="addProperty(executive)"><i class="fas fa-plus" style="color: #ffffff;"></i></span> {{executive.assignedprop[0]?.property_name}}
+                      <div class="property-popover" style="text-align: end;" [attr.data-content]="getProperties(executive.assignedprop)" data-toggle="popover" data-html="true">
+                        <span class="show_all">Show All <img src="../../../assets/images/greater_than_icon.png"></span>
+                      </div>
+                    </div>
+                    <div *ngIf="executive.assignedprop && executive.assignedprop.length == 1">
+                      <span class="add_prop" data-toggle="modal" data-target="#add_prop" (click)="addProperty(executive)"><i class="fas fa-plus" style="color: #ffffff;"></i></span> {{executive.assignedprop[0]?.property_name}}
+                    </div>
+
+                    <div style="font-size: 14px;font-weight: 900;font-style: italic;" *ngIf="executive.assignedprop.length == 0 || executive.assignedprop == null || executive.assignedprop == undefined || executive.assignedprop == ''">
+                      <span class="add_prop" data-toggle="modal" data-target="#add_prop"  (click)="addProperty(executive)"><i class="fas fa-plus" style="color: #ffffff;"></i></span> No Property Assigned
+                    </div>
+                    <ng-template #popoverContent>
+                      <div *ngFor="let prop of executive.assignedprop" style="font-size: 14px;">
+                        {{ prop.property_name }}
+                      </div>
+                    </ng-template>
+                  </td>
+                  <td>{{(executive.Department?executive.Department:'---')}}</td>
+                  <td>{{executive.Designation}}</td>
+                  <td
+                    [ngClass]="{'color-green': executive?.status == 'Active', 'color-red': executive?.status == 'Inactive'}">
+                    {{executive?.status}}
+                  </td>
+                  <td class="edit_btn">
+                    <a class="pointer" data-toggle="modal" data-target="#add_exec"><img
+                        src="../../../assets/images/edit_icon_exec.png" (click)="getexecutiveupdate(executive.ID)"></a>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="teamList?.length && teamParam == 1" class="myexecutive_table_body">
+                <tr *ngFor="let executive of teamList;let i = index">
+                  <td class="text-center">{{i + 1}}</td>
+                  <td>{{executive.TeamName}}</td>
+                  <td>{{executive.PropName}}</td>
+                  <td>{{executive.TeamLeadName}}</td>
+                  <td>
+                    <span *ngIf="executive.assignedmembers && executive.assignedmembers?.length > 1" style="text-decoration: underline;cursor: pointer;"  class="member-popover" [attr.data-content]="getMembers(executive.assignedmembers)" data-toggle="popover" data-html="true">{{executive.assignedmembers.length}} Members</span>
+                    <span *ngIf="executive.assignedmembers && executive.assignedmembers?.length == 1">{{executive.assignedmembers[0].TeamMeetName}}</span></td>
+                    <ng-template #popoverContent>
+                      <div *ngFor="let person of executive.assignedmembers" style="font-size: 14px;">
+                        {{ person.TeamName }}
+                      </div>
+                    </ng-template>
+                    <td
+                    [ngClass]="{'color-green': executive?.status == 'Active', 'color-red': executive?.status == 'Inactive'}">
+                    {{executive?.status}}</td>
+                  <td class="edit_btn">
+                    <a class="pointer" data-toggle="modal" data-target="#add_team"><img
+                        src="../../../assets/images/edit_icon_exec.png" (click)="getTeamupdate(executive,'Update')"></a>
+                  </td>
+                </tr>
+              </tbody>
+              <div class="no-record text-center" *ngIf="!teamList?.length && !myexecutives" style="left: 500px;">
+                No Records Found...
+              </div>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+<!-- SEMANTIC-MODAL-PERFORM-BIRTHDAY -->
+
+<div class="modal perform" tabindex="-1" role="dialog" aria-hidden="true" id="new_performer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="cancelButton">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="new_executive_form">
+        <form name="form" novalidate>
+          <div class="form-group input_cmn_div">
+            <label>Best Performer</label>
+            <input class="form-control" id="perfrm_name" type="text" [(ngModel)]="wishers.performer" name="name"
+              #name="ngModel" placeholder="Enter Best Performer" required>
+          </div>
+
+          <div class="form-group input_cmn_div">
+            <label>Birthday Person</label>
+            <input class="form-control" id="perfrm_bday" type="text" [(ngModel)]="wishers.birthday" name="bday"
+              #bday="ngModel" placeholder="Enter Birthday Person" required>
+          </div>
+
+          <div class="actions save_btn input_cmn_div">
+            <button type="submit" class="approve" (click)="addperformers()">Save</button>
+            <button hidden type="button" class="close" id="cancel_btn" data-dismiss="modal"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANTIC-MODAL-PERFORM-BIRTHDAY -->
+
+<!-- FOOTER-STARTS -->
+
+<!-- <div class="footer">
+  <div class="footer-cntnt">
+    <p>@2017, homes247.in</p>
+  </div>
+</div> -->
+
+<!-- FOOTER-ENDS -->
+
+<div class="modal fade" id="add_prop" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="new_executive">
+      <div class="modal-header d-flex" style="background: #EBF8FF !important;">
+        <h4 style="color: #00476A !important;">Add Properties</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="close" id="closePropertyForm" data-dismiss="modal" style="color: #00476A !important;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <div class="main_suggested_div">
+              <ul class="ks-cboxtags">
+                <li *ngFor="let property of addPropertyList; let i = index">
+                  <!-- <span *ngIf="property.assigned == '1'">
+                    <input type="checkbox" id="checkbox{{i}}" value="{{property.property_idfk}}" name='programming'
+                      (change)="selectsuggested(i,property)" checked>
+                    <label for="suggestcheckbox{{i}}">{{property.property_info_name}}</label>
+                  </span> -->
+                  <!-- <span *ngIf="property.assigned == '0'"> -->
+                    <input type="checkbox" id="checkbox{{i}}" value="{{property.property_idfk}}" name='programming'
+                      (click)="selectsuggested(i,property)"  [checked]="property.assigned == 1">
+                    <label for="checkbox{{i}}">{{property.property_info_name}}</label>
+                  <!-- </span> -->
+              </ul>
+            </div>
+            <div style="text-align: end;">
+              <button type="button" class="btn btn-warning" (click)="addNewProperties()">Add Properties</button>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add_exec" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="new_executive">
+      <div class="modal-header d-flex justify-content-center">
+        <h4>Executive Details Form </h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="close" id="closeExecutiveForm" data-dismiss="modal"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class="new_executive_form col-xs-12" style="align-items: center; justify-content: space-evenly;">
+          <form class="form-inline" name="form" novalidate>
+            <!-- <div style="display: flex;flex-direction: row; gap: 1rem;"> -->
+            <div class="form-group col-xs-6 input_cmn_div">
+              <div style="flex-direction: column;">
+                <label>Full Name <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <input class="form-control" placeholder="Enter the Name" type="text" [(ngModel)]="signupData.name"
+                    name="name" id="exec_name" #name="ngModel" required>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <input class="form-control" type="text" [(ngModel)]="editmodela.executives_name"
+                    name="executives_firstname" id="executives_firstname" #executives_firstname="ngModel" required>
+                  <input *ngIf="btn_name == 'Update'" class="form_control" type="hidden"
+                    [(ngModel)]="editmodela.executives_IDPK" name="executives_IDPK" id="executives_IDPK"
+                    #executives_IDPK="ngModel" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-6 input_cmn_div">
+              <div style="flex-direction: column;">
+                <label>Mobile No. <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <input class="form-control" placeholder="Enter the Mobile No" type="text" id="exec_mobile"
+                    [(ngModel)]="signupData.mobilenum" maxlength="10" #mobilenum="ngModel" required name="mobilenum">
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <input class="form-control" type="number" id="executives_number" maxlength="10"
+                    [(ngModel)]="editmodela.executives_number	" #executives_number="ngModel" required
+                    name="executives_number">
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+
+            <!-- <div class="form-group col-xs-6 input_cmn_div">
+              <div style="flex-direction: column;">
+                <label>D.O.B <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <input type="text" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                    class="form-control datetime" placeholder="DOB" [(ngModel)]="signupData.dobdate" name="dobdate"
+                    id="exec_date" #dobdate="ngModel" required>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <input class="form-control" id="executives_dob" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="editmodela.executives_dob"
+                    name="executives_dob" #executives_dob="ngModel" required>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="form-group col-xs-6 input_cmn_div">
+              <div style="flex-direction: column;">
+                <label>Official Mail <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <input class="form-control" id="exec_email" type="text" [(ngModel)]="signupData.email" name="email"
+                    placeholder="Enter the Mail" #email="ngModel" required>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <input class="form-control" id="executives_email" type="text"
+                    [(ngModel)]="editmodela.executives_email" name="executives_email" #executives_email="ngModel"
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-6 input_cmn_div ">
+              <div class="departmentDesginationStyles">
+                <label>Department <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <select class="form-control ui dropdown exec_department" id="exec_department"
+                    style="width:190px !important" [(ngModel)]="signupData.department" #department="ngModel"
+                    name="department" (change)="getdesgntns($event)" required>
+                    <option style="display:none" value="" selected>Select department</option>
+                    <option *ngFor="let depart of exec_departments" value="{{depart.id}}">{{depart.departs}}</option>
+                  </select>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <select class="form-control exec_department edit_depart" id="executive_department"
+                    style="width:190px !important" (change)="changedepart($event)" required>
+                    <option style="display:none" value="" selected>Select Designation</option>
+                    <option *ngFor="let depart of exec_departments" value="{{depart.id}}"
+                      [selected]="depart.id == editmodela.exec_dept_IDFK">{{depart.departs}}</option>
+                  </select>
+                  <!-- Hidden -->
+                  <input class="form-control" id="exec_dept_IDFK" type="hidden" [(ngModel)]="editmodela.exec_dept_IDFK"
+                    name="exec_dept_IDFK" #exec_dept_IDFK="ngModel">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-6 input_cmn_div"
+              [hidden]="!(signupData.department === '10001' || editmodela.exec_dept_IDFK == '10001')">
+              <div style="flex-direction: column;">
+                <label>Select Property <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <!-- <select class="form-control ui dropdown exec_prop" id="exec_prop" style="width:190px !important"
+                    [(ngModel)]="signupData.property" #property="ngModel" name="Property" required>
+                    <option style="display:none" value="" selected>Select Property</option>
+                    <option *ngFor="let prop of mandateprojects" value="{{prop.property_idfk}}">
+                      {{prop.property_info_name}}</option>
+                  </select>  (onChange)="reAssignexecutiveSelect($event)"-->
+                  <p-multiSelect id="exec_prop" [options]="mandateprojects" [(ngModel)]="selectedProperties"
+                    [filter]="true" optionLabel="property_info_name" optionValue="property_idfk"
+                    #customersupport="ngModel" name="customersupport" defaultLabel="Select Properties"
+                    (onChange)="getSelectedProperties($event)"></p-multiSelect>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <!-- <select class="form-control exec_prop edit_prop" id="executive_prop" style="width:190px !important"
+                    (change)="changeprop($event)" required>
+                    <option style="display:none" value="" selected>Select Property</option>
+                    <option *ngFor="let prop of mandateprojects" value="{{prop.property_idfk}}"
+                      [selected]="prop.property_idfk == editmodela.exec_prop_IDFK">{{prop.property_info_name}}</option>
+                  </select> -->
+                  <p-multiSelect id="edit_prop" [options]="mandateprojects" [(ngModel)]="editSelectedProperties"
+                    [filter]="true" optionLabel="property_info_name" optionValue="property_idfk"
+                    #customersupport="ngModel" name="customersupport" defaultLabel="Select Properties"
+                    (onChange)="getSelectedProperties($event)"></p-multiSelect>
+                  <!-- Hidden -->
+                  <input class="form-control" id="exec_prop_IDFK" type="hidden" [(ngModel)]="editmodela.exec_prop_IDFK"
+                    name="exec_prop_IDFK" #exec_prop_IDFK="ngModel">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-6 input_cmn_div">
+              <div class="departmentDesginationStyles">
+                <label>Designation <span class="colorRed">&#8727;</span></label>
+                <div *ngIf="btn_name == 'Save'">
+                  <select class="form-control ui dropdown exec_designation" id="exec_designation"
+                    style="width:190px !important" [(ngModel)]="signupData.designation" #designation="ngModel"
+                    name="designation" required>
+                    <option style="display:none" value="" selected>Select Designation</option>
+                    <option *ngFor="let desig of exec_desig" value="{{desig.role_id}}">{{desig.role}}</option>
+                  </select>
+                </div>
+                <div *ngIf="btn_name == 'Update'">
+                  <!-- <select *ngIf="default_desig" class="form-control exec_designation edit_depart"
+                    style="width:190px !important" id="executive_designation" name="designation"
+                    (change)="changedesgntns($event)" required>
+                    <option *ngFor="let desig of edit_desig" value="{{desig.role_id}}"
+                      [selected]="desig.role_id == editmodela.exec_desig_IDFK">{{desig.role}}</option>
+                  </select> -->
+
+                  <select class="form-control exec_designation edit_depart" style="width:190px !important"
+                    id="executive_designation" name="designation" (change)="changedesgntns($event)" required>
+                    <option style="display:none" value="" selected>Select Designation</option>
+                    <option *ngFor="let desig of edit_desig" value="{{desig.role_id}}"
+                      [selected]="desig.role_id == editmodela.exec_desig_IDFK">{{desig.role}}</option>
+                  </select>
+                  <!-- Hidden -->
+                  <input class="form-control" id="exec_desig_IDFK" type="hidden"
+                    [(ngModel)]="editmodela.exec_desig_IDFK" name="exec_desig_IDFK" #exec_desig_IDFK="ngModel">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-xs-6 input_cmn_div" *ngIf="btn_name == 'Update'">
+              <div class="departmentDesginationStyles">
+                <label>Status <span class="colorRed">&#8727;</span></label>
+                <div>
+                  <select class="form-control exec_designation edit_depart" style="width:190px !important"
+                    id="executive_designation" name="designation" (change)="activeStatuschange($event)" required>
+                    <option value="">Select Status</option>
+                    <option value="0" [selected]="'0' == selected_act_status">Active</option>
+                    <option value="1" [selected]="'1' == selected_act_status">InActive</option>
+                  </select>
+                  <!-- Hidden -->
+                </div>
+              </div>
+            </div>
+
+            <div style="flex-direction: column;">
+              <div class="form-group col-xs-12 input_cmn_div">
+                <div class="departmentDesginationStyles">
+                  <label>Address <span class="colorRed">&#8727;</span></label>
+                  <div *ngIf="btn_name == 'Save'">
+                    <textarea class="form-control col-xs-12 exec_textarea" id="exec_address" type="text"
+                      [(ngModel)]="signupData.address" name="address" #address="ngModel"></textarea>
+                  </div>
+                  <div *ngIf="btn_name == 'Update'">
+                    <textarea class="form-control col-xs-12 exec_textarea" id="executive_address" type="text"
+                      [(ngModel)]="editmodela.executive_address" name="executive_address"
+                      #executive_address="ngModel"></textarea>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="actions col-xs-12 save_btn input_cmn_div">
+                <button class="approve rounded" type="submit" (click)="executivesOperation()">{{btn_name}}</button>
+                <button class="rounded" type="button" data-dismiss="modal"
+                  (click)="clearExecutivesInfo()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="add_team" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="new_executive" style="height: auto !important;">
+      <div class="modal-header d-flex justify-content-between align-items-center py-2">
+        <h4 class="m-0" *ngIf="team_btn_name == 'Save'">Create New Team</h4>
+        <h4 class="m-0" *ngIf="team_btn_name == 'Update'">Update Team</h4>
+        <button type="button" class="add_team_close" id="closeTeamForm" data-dismiss="modal"
+          (click)="closeTeamModal()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="new_executive_form col-12 p-0 d-flex justify-content-between flex-column" style="height: 100%;">
+          <form class="form-inline" name="form" novalidate>
+
+            <div class="col-6 input_cmn_div p-3">
+              <div style="flex-direction: column;">
+                <label>Target Property</label>
+                <div>
+                  <p-dropdown appendTo="body" [options]="mandateprojects" [(ngModel)]="team_target_property"
+                    [filter]="true" optionLabel="property_info_name" name="team_target_property"
+                    placeholder="Select a Target Property" defaultLabel="Select a Target Property"
+                    (onChange)="getSelectedTeamProperty($event)"></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6 input_cmn_div p-3">
+              <div style="flex-direction: column;">
+                <label>Team Name</label>
+                <div>
+                  <!-- <input class="form-control" placeholder="Enter team Name" type="text" [(ngModel)]="team_name"
+                    name="name" id="team_name" #name="ngModel" required> -->
+                  <p-dropdown appendTo="body" [options]="teamNameList" [(ngModel)]="team_name" [filter]="true"
+                    optionLabel="TeamName" name="team_name" placeholder="Select a Team Name"
+                    defaultLabel="Select a Team Name" (onChange)="getSelectedTeamName($event)"></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 input_cmn_div p-3">
+              <div class="departmentDesginationStyles">
+                <label>Team Lead</label>
+                <div>
+                  <p-dropdown appendTo="body" [options]="mandateexecutives" [(ngModel)]="team_lead" [filter]="true"
+                    optionLabel="name" name="team_lead" defaultLabel="Select Team Lead" placeholder="Select Team Lead"
+                    (onChange)="getTeamLead($event)"></p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 input_cmn_div p-3">
+              <div class="departmentDesginationStyles">
+                <label>New Members</label>
+                <div class="members_team">
+                  <p-multiSelect [options]="mandateexecutives" appendTo="body" [(ngModel)]="team_mem_list"
+                    [filter]="true" optionLabel="name" optionValue="id" name="customersupport"
+                    defaultLabel="Select Team Members" placeholder="Select Team Members"
+                    (onChange)="getSelectedTeamMembers($event)">
+                  </p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 input_cmn_div p-3" *ngIf="SelectedTeamGroup?.length > 0"
+              style="overflow: scroll;height: calc(100vh - 420px);">
+              <table class="myexecutive_table_main table table-striped table-bordered tid-table">
+                <tbody class="myexecutive_table_body">
+                  <tr class="d-flex align-items-center justify-content-between"
+                    *ngFor="let executive of SelectedTeamGroup;let i = index">
+                    <td><img src="../../../assets/images/profileimg.png" style="width: 30px;" class="pr-1">
+                      {{executive.id.name}} <img class="pl-1" src="../../../assets/images/team_lead_creation_add.png"
+                        *ngIf="executive.type == 'lead'">
+                      <!-- <div>{{executive.Designation}}</div> -->
+                    </td>
+                    <!-- <td>{{executive.Email}}</td> -->
+                    <td><span class="remove_btn" (click)="removeExec(executive.id)">Remove <i
+                          class="fas fa-times pl-1"></i></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </form>
+          <div class="p-2 d-flex justify-content-end submit_operations" style="background-color: #DBDBDB;gap: 1rem;">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+              (click)="clearTeamInfo()">Cancel</button>
+            <button class="btn btn-primary" type="button" (click)="teamOperation()">{{team_btn_name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,258 @@
+<div>
+  <app-header></app-header>
+</div>
+
+<div class="body-cntnts dimmable searchHeader" [ngStyle]="{'padding-left': isSidebarHovered ? '14rem' : '3.2rem'}">
+
+  <div class="col-12 pt-1 pl-0">
+    <div class="float-left">
+      <!-- <input class="form-control search_input" type="text" [(ngModel)]="executive_name"
+        placeholder="Search Executive Name" (keyup)="searchExecutive()"
+        style="border-radius: 30px;width: 250px;height: 2.71428571em;" /> -->
+      <select id="rm_dropdown" class="form-control ui search dropdown dashboard_dropdown" (change)="rmchange($event)"
+        *ngIf="roleid == 1 || roleid == 2">
+        <option value="">Select Executive</option>
+        <option *ngFor="let exec of executivesList" value="{{exec.ID}}" [selected]="exec.ID === execid">
+          {{exec.Name}}</option>
+      </select>
+    </div>
+    <div class="btn-group btn-group-toggle float-right">
+      <span>
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/attendance-list"
+          [queryParams]="{today: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked===true}">
+          <input class=" d-none d-sm-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Today
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-gift-2"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/attendance-list"
+          [queryParams]="{last7: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked1===true}">
+          <input class=" d-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Last 7 days
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked2===true}">
+          <div #nextActionDates class="cursor-pointer d-none">
+            <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+          </div>
+          <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            {{datecustomfetch}}
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+      </span>
+      <p>
+        <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()">Reset <i
+            class="fas fa-redo"></i></button>
+      </p>
+    </div>
+  </div>
+
+  <div class="CSassigned_table pt-0" #scrollContainer>
+    <div class="crm-sub-container padding-medium-full">
+      <div class="panel-1 crm-auto-scrollrm panel-content">
+        <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+          [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+          [infiniteScrollContainer]="'.CSassigned_table'">
+          <thead>
+            <tr class="header">
+              <!-- ----------------------------sl no---------------------------- -->
+              <th *ngIf="roleid == '1' || roleid == '2'" class="text-center">EXECUITVE NAMES</th>
+              <th class="text-center">STATUS</th>
+              <th class="text-center">DATE</th>
+              <th class="text-center">CHECK-IN</th>
+              <th class="text-center">CHECK-OUT</th>
+              <th class="text-center">TOTAL PUNCHES</th>
+              <th class="text-center">TOTAL HOURS</th>
+              <th class="text-center" style="width: 10%;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listOfAttendanceHistory?.length" style="background: #ffffff !important;">
+            <tr *ngFor="let leads of listOfAttendanceHistory; let i = index" style="background: #ffffff !important;">
+              <td class="text-center" *ngIf="roleid == '1' || roleid == '2'">
+                <a class="cursor-pointer"
+                  style="color: #0B7AB2 !important;display: flex;justify-content: space-between;padding-inline: 1.5rem;"
+                  data-toggle="modal" data-target="#exec_log_history" (click)="clickedLogsHistroy(leads)">{{leads.name}}
+                  <!-- <span>
+                    <span class="online_text d-flex" *ngIf="leads.online_status == 'online'"> <span
+                        style="font-size: xxx-large;">&bull;</span> Online</span>
+                    <span class="offline_text d-flex" *ngIf="leads.online_status == 'offline'"> <span
+                        style="font-size: xxx-large;">&bull;</span> Offline 
+                        <span *ngIf="leads.logout_time">{{calculateOfflineTimings(leads)}}</span></span>
+                  </span> -->
+                </a>
+              </td>
+              <td class="text-center">
+                <div>
+                  <span class="online_text d-inline-flex align-items-center" style="gap: 3px;" *ngIf="leads.online_status == 'online'"> 
+                    <i class="fas fa-circle"></i> Online
+                  </span>
+
+                  <div class="d-inline-block" *ngIf="leads.online_status == 'offline'">
+                    <div class="offline_text text-center" [ngStyle]="{'border-radius' : leads.logout_time != null ? '5px' : '50px'}">
+                      <div class="px-1">
+                        <i class="fas fa-circle"></i> Offline
+                      </div>
+                      <div *ngIf="leads.logout_time">{{calculateOfflineTimings(leads)}}</div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center cursor-pointer" data-toggle="modal" data-target="#exec_log_history"
+                (click)="clickedLogsHistroy(leads)">{{leads.date | date: 'EEE, MMMM d, y'}}</td>
+              <td class="text-center" style="color: #006F00;">{{(leads.check_in ? leads.check_in : '---')}}</td>
+              <td class="text-center" style="color: #FA6161;">
+                <span
+                  *ngIf="leads.auto_checkOut == '0' || leads.auto_checkOut == null">{{(leads.check_out?leads.check_out:'---')}}</span>
+                <span *ngIf="leads.auto_checkOut == '1'" style="font-weight: 700;">Auto Check-Out</span>
+              </td>
+              <td class="text-center">{{(leads.check_count ? leads.check_count : '---')}}</td>
+              <td class="text-center">{{calculateTotalHours(leads)}}</td>
+              <td class="text-center">
+                <span
+                  [ngClass]="{'checkin_status' : leads.status == 'Present','checkout_status' : leads.status == 'Absent'}">{{leads.status}}</span>
+                <!-- <span *ngIf="leads.check_status == '1'" class="checkin_status">Present</span>
+                <span *ngIf="leads.check_status == '0'" class="checkout_status">Absent</span> -->
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="text-center no-record" *ngIf="!listOfAttendanceHistory">
+          No Records Found...
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="exec_log_history" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  data-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog execlog_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <h4 class="col-11 m-0 text-center">{{ selectedExecLogs?.date | date : 'EEEE, MMMM d' }} ATTENDANCE PUNCHES</h4>
+        <h4 class="col-1 m-0 p-0 text-right cursor-pointer" (click)="modalback()" data-dismiss="modal"><i
+            class="fas fa-times" style="font-size: 20px;"></i></h4>
+      </div>
+      <div class="modal-body p-0">
+        <div class="row m-0 p-0" *ngIf="executiveLogDetails">
+          <div [ngClass]="isPhotoClicked == true  ? 'col-7' : 'col-12'" class="p-0"
+            style="height: 450px !important;overflow-y: scroll !important;">
+            <div class="row m-0" *ngFor="let exec of executiveLogDetails"
+              style="border-bottom: 1px solid lightgrey;padding-block: 6px;padding-inline: 10px;"
+              [ngClass]="{'selected': exec?.track_IDPK == singleSelectionPhotoData?.track_IDPK }">
+              <div class="p-0 col-1 px-0" style="border-bottom: rgb(197, 193, 193);">
+                <span class="text-center d-flex flex-column cursor-pointer" (click)="clikedImage(exec)">
+                  <!-- <i class="fa fa-user"></i> -->
+                  <div>
+                    <img *ngIf="exec?.selfie_img == null || exec?.selfie-img == undefined"
+                      src="../../../assets/images/no_image_bg.png" class="round-image">
+                    <img *ngIf="exec?.selfie_img != null && exec?.selfie-img != undefined"
+                      [src]="'https://lead247-laravel-api.right2shout.in/selfie-img/' + exec?.selfie_img"
+                      class="round-image">
+                  </div>
+                  <div style="color: #3498DB;font-size: 10px;text-decoration: underline;">View</div>
+                </span>
+              </div>
+              <div class="col-11 py-1 pr-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span style="font-size: 16px;font-weight: 500;">
+                    <!-- <i class="far fa-clock" style="color: #0B7AB2 !;"></i>  -->
+                    <img src="../../../assets/images/clock-icon.png">
+                    {{exec.created_at | date:
+                    'h:mm a'}} <span>( {{(exec.device_type == '1' ? 'Mobile' : 'Desktop')}} )</span></span>
+                  <span>
+                    <span class="d-flex align-items-center" *ngIf="exec.check_status == 1"
+                      style="color: #6FBF4E;font-size: 16px;font-weight: 500;gap: 5px;">Check-In
+                      <!-- <i class="fas fa-sign-in-alt"></i> --> <img src="../../../assets/images/check-in-icon.png">
+                    </span>
+                    <span class="d-flex align-items-center" *ngIf="exec.check_status == 0"
+                      style="color: #D96570;font-size: 16px;font-weight: 500;gap: 5px;">Check-Out
+                      <!-- <i class="fas fa-sign-out-alt"></i> --> <img src="../../../assets/images/check-out-icon.png">
+                    </span>
+                  </span>
+                </div>
+                <div class="d-flex align-items-center" style="gap: 5px;" *ngIf="exec.address">
+                  <span>
+                    <!-- <i class="fas fa-map-marker-alt" style="color: #0B7AB2;font-size: 16px;"></i> --><img
+                      src="../../../assets/images/location-icon.png">
+                  </span>
+                  <span class="two-line-truncate" style="font-size: 12px;color: #727272;">{{exec.address}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-5 p-0" *ngIf="isPhotoClicked" style="background-color: #F3F3F3;">
+            <div class="card p-0 pt-0 card_coverimg" style="border: none;">
+              <span class="close_photo cursor-pointer" (click)="photoClose()"><i class="fa fa-times"
+                  style="font-size: 16px;"></i></span>
+              <img
+                *ngIf="singleSelectionPhotoData?.selfie_img != null && singleSelectionPhotoData?.selfie-img != undefined"
+                [src]="'https://lead247-laravel-api.right2shout.in/selfie-img/' + singleSelectionPhotoData?.selfie_img"
+                style="width: 100%;height: 100%;filter: brightness(0.9);">
+              <img
+                *ngIf="singleSelectionPhotoData?.selfie_img == null || singleSelectionPhotoData?.selfie-img == undefined"
+                src="../../../assets/images/no_image.png" style="width: 100%;height: 100%;">
+            </div>
+            <div class="box"
+              style="box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);padding: 5px;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;background: #ffffff;">
+              <span>
+                <div class="d-flex justify-content-between align-items-center pt-1">
+                  <span class="d-flex align-items-start" style="font-size: 16px;font-weight: 500;gap: 5px;">
+                    <!-- <i class="far fa-clock" style="color: #0B7AB2 !important;"></i> -->
+                    <img src="../../../assets/images/clock-icon.png">
+                    {{singleSelectionPhotoData?.created_at | date: 'h:mm
+                    a'}}</span>
+                  <span style="font-size: 16px;font-weight: 500;">
+                    <span class="d-flex align-items-center" *ngIf="singleSelectionPhotoData?.check_status == 1"
+                      style="color: #6FBF4E;gap: 5px;">Check-In
+                      <!-- <i class="fas fa-sign-in-alt"></i> --><img src="../../../assets/images/check-in-icon.png">
+                    </span>
+                    <span class="d-flex align-items-center" *ngIf="singleSelectionPhotoData?.check_status == 0"
+                      style="color: #D96570;gap: 5px;">Check-Out
+                      <!-- <i class="fas fa-sign-out-alt"></i> --> <img src="../../../assets/images/check-out-icon.png">
+                    </span>
+                  </span>
+                </div>
+              </span>
+              <div class="d-flex align-items-start" style="gap: 5px;">
+                <span>
+                  <!-- <i class="fas fa-map-marker-alt" style="color: #0B7AB2;font-size: 14px;"></i> -->
+                  <img src="../../../assets/images/location-icon.png">
+                </span>
+                <span style="font-size: 12px;color: #727272;">{{singleSelectionPhotoData?.address}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-0 no_record" *ngIf="executiveLogDetails?.length == 0">
+          <span> No Logs Found </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+   <img src="../../../assets/images/infinity_loader.gif">
+</div>

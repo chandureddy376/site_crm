@@ -1,0 +1,420 @@
+<router-outlet></router-outlet>
+
+<div class="calls_conatiner" *ngIf="currentUrl != '/login' && departId != '10005' && departId != null && departId != undefined">
+    <div class="d-flex justify-content-end align-items-center" (click)="toggleCallBox()"  style="cursor: pointer;width: 30px;position: absolute;z-index: 9999;top: -19px;right: 0;">
+    <span class="toggle_icon">
+      <i class="fas" [ngClass]="isCallBoxOpen ? 'fa-chevron-down' : 'fa-chevron-up'" style="font-size: 16px;"></i>
+    </span>
+  </div>
+  <div class="calls_data" [hidden]="!isCallBoxOpen">
+    <div class="col-12 p-0 call_exec">
+      <select id="rm_dropdown" class="form-control ui search dropdown dashboard_dropdown" (change)="rmchange($event)">
+        <option value="">Select Executive</option>
+        <option *ngFor="let executives of callsExecutivesList" value="{{executives.ID}}">{{executives.Name}}</option>
+      </select>
+    </div>
+    <div class="d-flex">
+      <div class="col-6 px-2 py-1" style="border-right: 1px solid #F0FAFF;">
+        <div class="label_text">Total Calls</div>
+        <div class="text_number">{{totalCallsCount}}</div>
+      </div>
+      <div class="col-6 px-2 py-1">
+        <div class="label_text">Connected</div>
+        <div class="text_number">{{connectedCount}}</div>
+      </div>
+    </div>
+    <div class="d-flex" style="border-top: 1px solid #F0FAFF;">
+      <div class="col-6 px-2 py-1" style="border-right: 1px solid #F0FAFF;">
+        <div class="label_text">Not Connected</div>
+        <div class="text_number">{{notConnectedCount}}</div>
+      </div>
+      <div class="col-6 px-2 py-1">
+        <div class="label_text">Total Talk Time</div>
+        <div class="text_number">{{convertSecondsToTime(TotalTalkTime)}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pr-3">
+  <button class="btn btn-primary d-none align-items-center justify-content-center starttimer" type="button"
+    (click)="onClickstartBreak()" data-toggle="modal" data-target="#start_break">Start Break <img
+      src="../../../assets/images/break.png" style="width: 1.3rem;" class="pl-1"></button>
+</div>
+
+<!-- start break modal  -->
+<div class="modal fade startbreak" id="start_break" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="new_executive">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" style="display: none;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class=""
+          style="display: flex;justify-content: center;align-items: center;flex-direction: column;text-align: center;">
+
+          <h2 class="h2colored" *ngIf="timerstarted == false && timeExceeded == false">Taking Quick Break</h2>
+          <span *ngIf="timerstarted == false && timeExceeded == false">You are about start a break.</span>
+          <span *ngIf="timerstarted == false && timeExceeded == false">Your CRM access will be temporarily paused untill
+            you check in</span>
+
+          <h2 class="h2colored" *ngIf="timerstarted == true && timeExceeded == false">You're on Break</h2>
+          <span *ngIf="timerstarted == true && timeExceeded == false">Your break has started</span>
+          <span *ngIf="timerstarted == true && timeExceeded == false">You need to check in to regain access to
+            CRM</span>
+
+          <h2 class="timeh2colored" *ngIf="timeExceeded == true">Time Exceeded</h2>
+          <span *ngIf="timeExceeded == true">Your Break Time has been Exceeded.</span>
+          <!-- <span *ngIf="timerstarted == false">Your CRM access will be temporarily paused untill you check in</span> -->
+
+          <div class="pt-5" style="font-size: 80px;"
+            [ngStyle]="{'color' : timeExceeded == false ? '#0B7AB2' : '#df5151' }">
+            <cd-timer format="hms" #basicTimer class="bootstrap-timer" [startTime]='startTime'></cd-timer>
+          </div>
+          <span class="pt-5" *ngIf="timerstarted == false">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-warning breaktimer" (click)="doActionBasicTimer('start')">Start
+              Break</button>
+          </span>
+
+          <span class="pt-5" *ngIf="timerstarted == true && timeExceeded == false">
+            <button type="button" class="btn btn-primary" (click)="doActionBasicTimer('stop')">Check In Now</button>
+          </span>
+
+          <span class="pt-5" *ngIf="timerstarted == true && timeExceeded == true">
+            <button type="button" class="btn btn-danger" (click)="doActionBasicTimer('stop')">Check In Now</button>
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filterLoaderStyles" *ngIf=filterloader>
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+   <img src="../assets/images/infinity_loader.gif">
+</div>
+
+<!-- Hourly Report For Executive Account  -->
+<button type="button" data-toggle="modal" data-target="#hourlyReport" id="hourlyReport_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="hourlyReport" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #0B7AB2 !important;color: white !important;">
+        <h4 class="col-10 m-0 text-center" style="font-size: 1.2rem;color: white;">Last 1 Hour Report (
+          {{uiTimesToDisplay}} )</h4>
+        <button type="button" class="close" id="hourlyModalClose" data-dismiss="modal" (click)="closeExecModal()"
+          style="color: white;font-size: 1.5rem;opacity: 1 !important;"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 p-0 row">
+
+          <div class="col-12 px-0 py-2 d-flex justify-content-center align-items-center flex-column">
+            <div>
+              Here's a summary of your CRM activity in last 1 hour.
+            </div>
+            <div>
+              Review and take necessary action
+            </div>
+          </div>
+
+          <div class="col-2"></div>
+          <div class="col-4 p-0">
+            <div class="col-12 p-0">
+              <div class="textblue">
+                <span>Untouched</span>
+                <span>{{unquieleadcounts}}</span>
+              </div>
+              <div class="textgrey">
+                <span>General Followups</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.generalfollowups == '0' , 'color-green' : executiveCounts[0]?.generalfollowups > 0}">{{executiveCounts[0]?.generalfollowups}}</span>
+              </div>
+              <div class="textblue">
+                <span>NC</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.NC == '0' , 'color-green' : executiveCounts[0]?.NC > 0}">{{executiveCounts[0]?.NC}}</span>
+              </div>
+              <div class="textgrey">
+                <span>USV Fix</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.usvfixed == '0' , 'color-green' : executiveCounts[0]?.usvfixed > 0}">{{executiveCounts[0]?.usvfixed}}</span>
+              </div>
+              <div class="textblue">
+                <span>USV Done</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.usvdone == '0' , 'color-green' : executiveCounts[0]?.usvdone > 0}">{{executiveCounts[0]?.usvdone}}</span>
+              </div>
+              <div class="textgrey">
+                <span>SV Fix</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.svfixed == '0' , 'color-green' : executiveCounts[0]?.svfixed > 0}">{{executiveCounts[0]?.svfixed}}</span>
+              </div>
+              <div class="textblue">
+                <span>SV Done</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.svdone == '0' , 'color-green' : executiveCounts[0]?.svdone > 0}">{{executiveCounts[0]?.svdone}}</span>
+              </div>
+              <div class="textgrey">
+                <span>RSV Fix</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.rsvfixed == '0' , 'color-green' : executiveCounts[0]?.rsvfixed > 0}">{{executiveCounts[0]?.rsvfixed}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 p-0">
+            <div class="col-12 p-0">
+              <div class="textgrey">
+                <span>RSV Done</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.rsvdone == '0' , 'color-green' : executiveCounts[0]?.rsvdone > 0}">{{executiveCounts[0]?.rsvdone}}</span>
+              </div>
+              <div class="textblue">
+                <span>FN Fix</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.fnfixed == '0' , 'color-green' : executiveCounts[0]?.fnfixed > 0}">{{executiveCounts[0]?.fnfixed}}</span>
+              </div>
+              <div class="textgrey">
+                <span>FN Done</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.fndone == '0' , 'color-green' : executiveCounts[0]?.fndone > 0}">{{executiveCounts[0]?.fndone}}</span>
+              </div>
+              <div class="textblue">
+                <span>Inactive</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.inactive == '0' , 'color-green' : executiveCounts[0]?.inactive > 0}">{{executiveCounts[0]?.inactive}}</span>
+              </div>
+              <div class="textgrey">
+                <span>Junk Leads</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.junkleads == '0' , 'color-green' : executiveCounts[0]?.junkleads > 0}">{{executiveCounts[0]?.junkleads}}</span>
+              </div>
+              <div class="textblue">
+                <span>Junk Visits</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.junkvisits == '0' , 'color-green' : executiveCounts[0]?.junkvisits > 0}">{{executiveCounts[0]?.junkvisits}}</span>
+              </div>
+              <div class="textgrey">
+                <span>Booking Requests</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.closingrequest == '0' , 'color-green' : executiveCounts[0]?.closingrequest > 0}">{{executiveCounts[0]?.closingrequest}}</span>
+              </div>
+              <div class="textblue">
+                <span>Booked</span>
+                <span *ngIf="executiveCounts && executiveCounts[0]"
+                  [ngClass]="{'color-red' : executiveCounts[0]?.leadclosed == '0' , 'color-green' : executiveCounts[0]?.leadclosed > 0}">{{executiveCounts[0]?.leadclosed}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-2"></div>
+        </div>
+
+        <div clas="col-12 px-0 "
+          style="display: flex; justify-content: center;padding-top: 1rem;align-items: center;flex-direction: column;">
+          <h5>Submitting Report</h5>
+          <dotlottie-player src="https://lottie.host/bb99ca0a-d4f6-4711-8ff4-410daaef27bc/vEUSoRU8Zv.lottie"
+            background="transparent" speed="1" style="width: 300px; height: 100px" loop autoplay></dotlottie-player>
+          <!-- <video autoplay loop muted playsinline>
+            <source src="../assets/videos/Animation - 1747897366783.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#hourlyReportAdmin" id="hourlyReportAdmin_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="hourlyReportAdmin" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #0B7AB2 !important;color: white !important;">
+        <h4 class="col-10 m-0 text-center" style="font-size: 1.2rem;color: white;">Last 1 Hour Report (
+          {{uiTimesToDisplay}} )</h4>
+        <button type="button" class="close" id="hourlyModalAdminClose" data-dismiss="modal"><span aria-hidden="true"
+            style="color: #FFFFFF;opacity: 1;">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 p-0 row">
+
+          <div class="col-12 px-0 pb-2">
+            <div class="button_section col-12 pr-0 pl-0 d-flex justify-content-center">
+              <div class="planleadassign">
+                <a class="add_class activity_rep active" (click)="reportTabActivity('activity')">
+                  Activities
+                  <span *ngIf="selectedReportType == 'activity'"><i class="fa fa-check"></i></span>
+                </a>
+
+                <a class="add_class zero_rep" (click)="reportTabActivity('zero')">
+                  Zero Report
+                  <span *ngIf="selectedReportType == 'zero'"><i class="fa fa-check"></i></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="assign_table1 pt-3">
+              <table class="content_table_main table table-bordered" infinite-scroll [fromRoot]="true"
+                [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'" *ngIf="selectedReportType == 'activity'">
+                <thead>
+                  <tr class="header">
+                    <th>Executives</th>
+                    <th class="text-center">Fixed</th>
+                    <th class="text-center">Done</th>
+                    <th class="text-center">Others</th>
+                    <th class="text-center">Overall</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <tr *ngFor="let exec of activityRepExeutives">
+                    <td>{{exec.ExecName}}</td>
+                    <td class="text-center">{{exec?.counts[0]?.visitsfixed}}</td>
+                    <td class="text-center">{{exec?.counts[0]?.visitsdone}}</td>
+                    <td class="text-center">{{exec?.counts[0]?.others}}</td>
+                    <td class="text-center">{{exec?.counts[0]?.overall}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="content_table_main table table-bordered" infinite-scroll [fromRoot]="true"
+                [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'" *ngIf="selectedReportType == 'zero'">
+                <thead style="background: #E170202B !important;">
+                  <tr class="header">
+                    <th class="text-center" style="color:#E84C0A;background: #E170202B !important;">Zero Activities
+                      Executives</th>
+                    <!-- <th class="text-center" style="color:#FFFFFF;background: #727272 !important;">Week-off Executives
+                    </th> -->
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body text-center">
+                  <tr *ngFor="let exec of zeroRepExecutives">
+                    <td style="background: #F6F6F6 !important;">{{exec.ExecName}}</td>
+                    <!-- <td style="background: #E3E3E3 !important;">{{exec.ExecName}}</td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer"
+          style="display: flex; justify-content: center;padding-top: 0.5rem;padding-bottom: 0rem;">
+          <span class="detailed_btn" (click)="viewMoreHourlyReport()">View Detail Report <span class="rounded_btn"><i
+                class="fa fa-greater-than"></i></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#weekoff_update" id="weekoff_detail" style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="weekoff_update" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog reassignlead_modal">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #0B7AB2 !important;color: white !important;">
+        <h4 class="col-12 m-0 text-center" style="font-size: 1.2rem;color: white;">Today's Status Update</h4>
+        <button type="button" class="close" id="weekoffclosebtn" data-dismiss="modal"><span aria-hidden="true"
+            style="color: #FFFFFF;opacity: 1;display: none;">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+          <div class="col-10">
+            <span class="search_icon"><i class="fa fa-search"></i></span>
+            <input class="form-control search_input" type="text" [(ngModel)]="executives_name"
+              placeholder="Search Executives Name" (keyup)="searchexecutives()"
+              style="border-radius: 15px;padding: .375rem 2.3rem;border: 1px solid #d2d6da;" />
+          </div>
+        </div>
+        <div class="col-12 row pt-2">
+          <div class="col-6 pr-0">
+            <div class="assign_table1">
+              <table class="content_table_main table table-bordered" infinite-scroll [fromRoot]="true"
+                [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'">
+                <thead style="background: #EBF4F9 !important;color:#0B7AB2">
+                  <tr class="header">
+                    <th class="text-center" style="font-weight: 500;font-size: 18px;">Active Executive</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <tr *ngFor="let exec of weekoffExecutiveList;let i=index">
+                    <td class="d-flex justify-content-between">
+                      <div class="d-flex align-items-center">{{exec.Name}}</div>
+                      <div class="d-flex align-items-center gap-3">
+                        <span class="d-flex align-items-center">
+                          <input type="radio" aria-label="Radio button for following text input" value="weekoff"
+                            name="{{ exec.Name }}-status" (change)="onStatusChange(exec, 'weekoff')">
+                          <p class="m-0 pl-1">Week-off</p>
+                        </span>
+                        <span class="d-flex align-items-center">
+                          <input type="radio" aria-label="Radio button for following text input" value="leave"
+                            name="{{ exec.Name }}-status" (change)="onStatusChange(exec, 'leave')">
+                          <p class="m-0 pl-1">Leave</p>
+                        </span>
+                        <span class="d-flex align-items-center">
+                          <input type="radio" aria-label="Radio button for following text input" value="inactive"
+                            name="{{ exec.Name }}-status" (change)="onStatusChange(exec, 'inactive')">
+                          <p class="m-0 pl-1">Inactive</p>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <div class="text-center pt-2">
+              <button class="btn btn-warning" type="button" (click)="selectedUnavilableExecs()">Add Unavailable
+                Executives</button>
+            </div> -->
+          </div>
+
+          <div class="col-6 p-0">
+            <div class="assign_table1">
+              <table class="content_table_main table table-bordered" infinite-scroll [fromRoot]="true"
+                [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'">
+                <thead>
+                  <tr class="header">
+                    <th class="text-center"
+                      style="font-weight: 500;font-size: 18px;color:#ffffff !important;background: #727272 !important;">
+                      Unavailable Executives</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body text-center">
+                  <tr *ngFor="let exec of updatedUnavilableExecutives">
+                    <td class="d-flex justify-content-between" style="background: #EDEDED !important;">
+                      <span>{{exec?.Name}}</span>
+                      <span style="color: #FA6161">{{exec?.status}}<i class="fa fa-times pl-3"
+                          (click)="closeExecutive(exec,i)"></i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="saveweekoffbtn"
+            *ngIf="(updatedUnavilableExecutives != 0 &&  updatedUnavilableExecutives != null && updatedUnavilableExecutives != undefined)">
+            <button class="btn btn-warning" type="button" (click)="saveUnavilableExecutives()">Save & Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

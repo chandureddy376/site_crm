@@ -1,0 +1,7 @@
+{
+    "/api/*":{
+        "target":"http://homes247.in",
+        "secure":false,
+        "logLevel":"debug"
+    }
+}

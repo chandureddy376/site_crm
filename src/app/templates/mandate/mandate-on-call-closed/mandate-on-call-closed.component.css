@@ -1,0 +1,403 @@
+.face2facemaindiv {
+    margin: 15px 0px 0px 0px;
+  }
+  .userDetailsTitle {
+    margin: 10px 0 3px 0;
+  }
+
+  .ui.segment .btn.active{
+    background: #0B7AB2;
+    border: 1px solid #0B7AB2;
+    box-shadow: none;
+  }
+
+  .ui.grid{
+    width: 100%;
+    display: inline-block;
+  }
+  .ui.grid > [class*="four wide"].column{
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+  .ui.grid > [class*="twelve wide"].column{
+    position: absolute;
+    right: 0;
+    top: 55px;
+    padding-top: 0;
+  }
+  
+  .face2facemaindiv label{
+    display: block;
+    margin: 15px 5px 5px 0;
+    font-size: 13px;
+    color: #252525;
+    font-weight: 400;
+  }
+
+  .buttonmain{
+    width: 100%;
+    position: relative;
+ 
+  }
+  
+  .face2facemaindiv textarea{
+    border: 1px solid #a7a7a7;
+      padding: 0px 7px;
+      width: 100%;
+      height: 60px;
+      font-size: 14px;
+      color: #666;
+  }
+
+  .closerequestform{
+    height: 565px;
+  }
+  
+  .face2facemaindiv button.closebtns{
+      float: right;
+      font-size: 14px;
+      color: #FFF;
+      font-weight: 400;
+      text-decoration: none;
+      margin: 0px 10px 10px 0;
+      display: block;
+      width: 20%;
+      text-align: center;
+  }
+
+  .face2facemaindiv button.acceptbtn{
+    background: green;
+  }
+  .face2facemaindiv button.rejectbtn{
+    background: red;
+  }
+  .face2facemaindiv button.requestbtn{
+    background: green;
+    float: right;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 10px 5px 0px 0px;
+    display: block;
+    text-align: center;
+  }
+
+  .main_suggested_div{
+    max-width: 640px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+  }
+  ul.ks-cboxtags {
+    list-style: none;
+    padding: 0px;
+}
+ul.ks-cboxtags li{
+  display: inline;
+}
+ul.ks-cboxtags li label{
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label {
+  border: 1px solid rgb(131, 65, 139);
+  background-color: rgba(131, 65, 139, 0.25);
+  color: rgb(131, 65, 139);
+  font-weight: 700;
+  transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+  display: absolute;
+}
+ul.ks-cboxtags li input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+ul.ks-cboxtags li input[type="checkbox"]:focus + label {
+  border: 2px solid #e9a1ff;
+}
+
+.comma-list {
+  display: inline;
+  list-style: none;
+  padding: 0px;
+}
+
+.headingdesign .heads {
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.5em;
+  padding-bottom: 15px;
+  position: relative;
+  color: #979393;
+  }
+  
+  .headingdesign .heads:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    height: 1px;
+    width: 95%;
+    max-width: 255px;
+    background-color: #979393;
+  }
+
+  .headingdesign .heads:before{
+    content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  width: 55px;
+  background-color: #979393;
+  }
+
+.datepickerdiv{
+  width: 100%;
+}
+
+.timepickerdiv{
+  width: 100%;
+}
+
+.wrapper{
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 40px;
+}
+.wrapper .option{
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 2px solid lightgrey;
+  transition: all 0.3s ease;
+  margin-right: 4px;
+}
+.wrapper .option .dot::before{
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #0069d9;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+input[type="checkbox"]{
+  display: none;
+}
+
+#option-1:checked:checked ~ .option-1,
+  #option-2:checked:checked ~ .option-2,
+  #option-3:checked:checked ~ .option-3,
+  #option-4:checked:checked ~ .option-4,
+  #option-5:checked:checked ~ .option-5,
+  #option-6:checked:checked ~ .option-6,
+  #option-7:checked:checked ~ .option-7,
+  #option-8:checked:checked ~ .option-8,
+  #option-9:checked:checked ~ .option-9,
+  #option-10:checked:checked ~ .option-10
+  {
+    border-color: #0B7AB2;
+    background: #0B7AB2;
+  }
+  #option-1-0:checked:checked ~ .option-1-0, 
+  #option-1-1:checked:checked ~ .option-1-1, 
+  #option-1-2:checked:checked ~ .option-1-2, 
+  #option-1-3:checked:checked ~ .option-1-3,
+  #option-1-4:checked:checked ~ .option-1-4,
+  #option-1-5:checked:checked ~ .option-1-5,
+  #option-2-0:checked:checked ~ .option-2-0, 
+  #option-2-1:checked:checked ~ .option-2-1, 
+  #option-2-2:checked:checked ~ .option-2-2, 
+  #option-2-3:checked:checked ~ .option-2-3,
+  #option-2-4:checked:checked ~ .option-2-4,
+  #option-2-5:checked:checked ~ .option-2-5,
+  #option-3-0:checked:checked ~ .option-3-0, 
+  #option-3-1:checked:checked ~ .option-3-1, 
+  #option-3-2:checked:checked ~ .option-3-2, 
+  #option-3-3:checked:checked ~ .option-3-3,
+  #option-3-4:checked:checked ~ .option-3-4,
+  #option-3-5:checked:checked ~ .option-3-5,
+  #option-4-0:checked:checked ~ .option-4-0, 
+  #option-4-1:checked:checked ~ .option-4-1, 
+  #option-4-2:checked:checked ~ .option-4-2, 
+  #option-4-3:checked:checked ~ .option-4-3,
+  #option-4-4:checked:checked ~ .option-4-4,
+  #option-4-5:checked:checked ~ .option-4-5,
+  #option-5-0:checked:checked ~ .option-5-0, 
+  #option-5-1:checked:checked ~ .option-5-1, 
+  #option-5-2:checked:checked ~ .option-5-2, 
+  #option-5-3:checked:checked ~ .option-5-3,
+  #option-5-4:checked:checked ~ .option-5-4,
+  #option-5-5:checked:checked ~ .option-5-5,
+  #option-6:checked:checked ~ .option-6,
+  #option-7:checked:checked ~ .option-7,
+  #option-8:checked:checked ~ .option-8,
+  #option-9:checked:checked ~ .option-9,
+  #option-10:checked:checked ~ .option-10
+  {
+    border-color: #0B7AB2;
+    background: #0B7AB2;
+  }
+  .wrapper .option span{
+    font-size: 14px;
+    color: #808080;
+  }
+  #option-1-0:checked:checked ~ .option-1-0 span, 
+  #option-1-1:checked:checked ~ .option-1-1 span, 
+  #option-1-2:checked:checked ~ .option-1-2 span, 
+  #option-1-3:checked:checked ~ .option-1-3 span,
+  #option-1-4:checked:checked ~ .option-1-4 span,
+  #option-1-5:checked:checked ~ .option-1-5 span,
+  #option-2-0:checked:checked ~ .option-2-0 span,
+  #option-2-1:checked:checked ~ .option-2-1 span,
+  #option-2-2:checked:checked ~ .option-2-2 span,
+  #option-2-3:checked:checked ~ .option-2-3 span,
+  #option-2-4:checked:checked ~ .option-2-4 span,
+  #option-2-5:checked:checked ~ .option-2-5 span,
+  #option-3-0:checked:checked ~ .option-3-0 span,
+  #option-3-1:checked:checked ~ .option-3-1 span,
+  #option-3-2:checked:checked ~ .option-3-2 span,
+  #option-3-3:checked:checked ~ .option-3-3 span,
+  #option-3-4:checked:checked ~ .option-3-4 span,
+  #option-3-5:checked:checked ~ .option-3-5 span,
+  #option-4-0:checked:checked ~ .option-4-0 span,
+  #option-4-1:checked:checked ~ .option-4-1 span,
+  #option-4-2:checked:checked ~ .option-4-2 span,
+  #option-4-3:checked:checked ~ .option-4-3 span,
+  #option-4-4:checked:checked ~ .option-4-4 span,
+  #option-4-5:checked:checked ~ .option-4-5 span,
+  #option-5-0:checked:checked ~ .option-5-0 span,
+  #option-5-1:checked:checked ~ .option-5-1 span,
+  #option-5-2:checked:checked ~ .option-5-2 span,
+  #option-5-3:checked:checked ~ .option-5-3 span,
+  #option-5-4:checked:checked ~ .option-5-4 span,
+  #option-5-5:checked:checked ~ .option-5-5 span,
+  #option-6:checked:checked ~ .option-6 span,
+  #option-7:checked:checked ~ .option-7 span,
+  #option-8:checked:checked ~ .option-8 span,
+  #option-9:checked:checked ~ .option-9 span,
+  #option-10:checked:checked ~ .option-10 span
+  {
+    color: #fff;
+  }
+
+  .coverImg input[type="file"] {
+    display: none;
+  }
+  
+  .coverImg .custom-file-upload {
+    border: 1px solid orange;
+    display: inline-block;
+    padding: 2px 6px;
+    cursor: pointer;
+    position: absolute;
+    left: 14px;
+    background: orange;
+    color: white;
+    border-radius: 0px;
+    font-size: 10px;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    padding: 0px 7px;
+    border-radius: 0px;
+    font-size: 12px;
+    color: white !important;
+    background: red !important;
+  }
+  .filedisplaymaindiv{
+    display: inline-block;
+  }
+  .imagemaindiv{
+    float: left;
+    width: 45%;
+    height: 225px;
+    display: inline-table;
+  }
+  .imagemaindiv img{
+    border: 5px solid #adadad;
+    
+  }
+  
+  .commonbtns{
+    margin: 4px 5px 4px 5px;
+  }
+
+  .actionbtns{
+		font-weight: 400;
+    font-size: 14px;
+    color: #808080;
+    border: 2px solid lightgrey;
+	  }
+
+  .iconmark{
+      color: #E2E2E2;
+  }
+
+  .actions{
+    border: 1px solid #0B7AB2;
+    background-color: #0B7AB240;
+    color: #0B7AB2;
+    font-weight: 700;
+  }
+
+  .selectMark{
+    color: #0B7AB2;
+  }

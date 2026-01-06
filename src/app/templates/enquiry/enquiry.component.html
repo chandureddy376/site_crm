@@ -1,0 +1,1114 @@
+<!-- HEADER -->
+<div>
+  <app-header></app-header>
+</div>
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+<div class="row main_count_header" [ngStyle]="{'padding-left': isSidebarHovered ? '16.5rem' : '5rem'}">
+  <div class="col-8 pt-2 pl-0">
+
+    <div class="button_section col-12 pr-0 pl-0 d-flex ">
+      <div class="planleadassign">
+        <a class="add_class total freshLeads_section active" routerLink="/Enquiry"
+          [queryParams]="{leads:1,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName}">
+          Fresh Leads
+          <span>({{enquiryCount}})</span>
+        </a>
+
+        <a class="add_class lead_section pendingLeads_section" routerLink="/Enquiry"
+          [queryParams]="{leads:2,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName}">
+          Pending Leads
+          <span>({{pendingLeads}})</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 pt-2 text-right">
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add_newlead"
+      (click)="getsourcelist()"><i class="fas fa-plus"></i></button>
+
+    <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="modal" data-target="#assign_lead"
+      aria-haspopup="true" aria-expanded="false" (click)="assignmodalfetch('2')">
+      <i class="fas fa-share"></i>
+    </button>
+    <!-- <div class="dropdown-menu " aria-labelledby="assignLeadDropdown">
+      <a class="dropdown-item dropDownCursor" data-toggle="modal" data-target="#assign_lead"
+        (click)="assignmodalfetch('1')">Assign To Retail</a>
+      <a class="dropdown-item dropDownCursor" data-toggle="modal" data-target="#assign_lead"
+        (click)="assignmodalfetch('2')">Assign To Mandate</a>
+    </div> -->
+    <button type="button" class="btn btn-warning" (click)="refresh();"><i class="fas fa-redo"></i> Reset</button>
+
+  </div>
+
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '16rem' : '4.5rem'}">
+
+  <div class="enquiry_content_main">
+    <div class="table-container pl-0 pr-0">
+      <!-- <div class="tab_button_section">
+        <div class="leadassign">
+          <a  class="add_class total freshLeads_section active" routerLink="/Enquiry"
+          [queryParams]="{leads:1,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName}">
+            Fresh Leads
+            <span>({{enquiryCount}})</span>
+          </a>
+
+          <a class="add_class lead_section pendingLeads_section"  routerLink="/Enquiry"
+          [queryParams]="{leads:2,from:fromdate,to:todate,source:source,property:propertyid,cityId:selectedCity,cityName:selectedCityName}">
+            Pending Leads
+            <span>({{pendingLeads}})</span>
+          </a>
+        </div>
+      </div> -->
+
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="propertyFilter && propertyid != ''">
+          <div class="p-2 chip">
+            {{propertyid}}
+            <span class="closebtn" (click)="propertyclose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="sourceFilter && source != ''">
+          <div class="p-2 chip">
+            {{(source == 'GR - Microsite' ? 'GR - campaign' : source)}}
+            <span class="closebtn" (click)="sourceClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="cityFilter && selectedCity != '' && selectedCityName != ''">
+          <div class="p-2 chip">
+            {{selectedCityName}}
+            <span class="closebtn" (click)="cityClose()">&times;</span>
+          </div>
+        </span>
+        <span *ngIf="datefilterview && fromdate != '' && todate != ''">
+          <div class="p-2 chip">
+            Date: {{fromdate | date:'dd-MMM-yyyy'}} - {{todate | date:'dd-MMM-yyyy'}}
+            <span class="closebtn" (click)="dateclose()">&times;</span>
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table pt-1 " #scrollContainer>
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1 crm-auto-scrollrm panel-content">
+            <table class=" content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore()"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>Source</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_source"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu sourceBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control sourcesearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_source" name="searchTerm_source"
+                              (input)="filtersource()" style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div class="source_list_checkbox">
+                            <div *ngFor="let sourcelist of sourcelist">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <input type="checkbox" class="mr-2 loopcheckbox hidesourcecheckbox"
+                                id="hidesourcecheckboxid" value="{{sourcelist?.source}}" name='sourceFilter'
+                                (change)="onCheckboxChangesource()"> -->
+                                <div (click)="onCheckboxChangesource(sourcelist.source)">{{ sourcelist.source }}</div>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th *ngIf="source == 'Homes247' || source == 'Homes247 - Whatsapp' || source == 'Homes247-Campaign'">
+                    <div class="d-flex justify-content-between">
+                      <span>City</span>
+                      <div *ngIf="roleid == '2'">
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_city"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu cityBasedFilter" aria-labelledby="bookingLeadDropdown_city"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+
+                          <div class="dropdown-search-container"><input type="text" class="form-control citysearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_city" name="searchTerm_city"
+                              (input)="filtercity()" style="margin-bottom: 2px;"></div>
+
+                          <div class="city_list_checkbox">
+                            <div *ngFor="let citylist of cities">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangecity(citylist)">{{ citylist.name }}</div>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <!-- <th style="width:12%">Mobile No</th> -->
+                  <th style="width: 300px;">
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                          <!-- Filter Search  input -->
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterProjects()"
+                              style="margin-bottom: 2px;"></div>
+                          <!-- Dropdown items with checkboxes -->
+                          <div *ngIf="propertyList?.length">
+                            <div *ngFor="let project of propertyList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <!-- <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox" id="hidepropcheckboxid"
+                             value="{{project?.propertyname}}" name='propFilter' (change)="onCheckboxChange()"> -->
+                                <span (click)="onCheckboxChange(project.propertyname)">{{ project.propertyname }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!propertyList?.length" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th style="width: 17%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Date</span>
+                      <span class="leadstatusdrop d-flex" *ngIf="leads == 2">
+                        <!-- <div>
+                      <button class="btn btn-warning" type="button" id="datefilterDropdown" data-toggle="dropdown"
+                        (click)="showdateRange()" aria-haspopup="true" aria-expanded="false"
+                        style="padding: 0px 5px !important;">
+                        <i class="fas fa-filter" style="color: white;"></i>
+                      </button>
+                      <div class="dropdown-menu " aria-labelledby="datefilterDropdown"
+                        style="cursor:pointer;padding: 0rem;display: none;">
+                        <div style="position: relative;display: none;">
+                          <input #datepicker class="form-control" id="todate" name="options" type="text"
+                            bsDaterangepicker autocomplete="off" placeholder="Select Date" [(bsValue)]="dateRange"
+                            (bsValueChange)="onDateRangeSelected($event)" required>
+                          <span style="position: absolute; top: 25%;right: 10px; opacity: 75%;color: #0B7AB2;">
+                            <i class="fas fa-calendar-alt"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div> -->
+                        <div id="nextActionDates" style="cursor: pointer;">
+                          <i class="fas fa-calendar" style="color: white;"></i>&nbsp;
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let enquiry of enquiries | duplicationPipe; let i = index"
+                [ngClass]="{'even-row': i % 2 == 0, 'odd-row': i % 2 != 0}">
+                <tr>
+                  <td>{{i+1}}</td>
+
+                  <td *ngIf="! enquiry?.duplicate?.length">
+                    <a (click)="detailsPageRedirection();redirectTO(enquiry)"
+                      style="cursor: pointer;color: #4183C4;text-decoration: none">{{enquiry.name}}
+                    </a>
+                    <span *ngIf="enquiry?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                        style="width: 20px;"></span>
+                    <span *ngIf="enquiry?.qualified_leads == '3'"><img src="../../../../assets/images/not_qualified.svg"
+                        style="width: 20px;"></span><br />
+                    {{enquiry.number}}
+                  </td>
+
+                  <td *ngIf="enquiry?.duplicate?.length">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      <a (click)="detailsPageRedirection();redirectTO(enquiry)"
+                        style="cursor: pointer;color: #4183C4;text-decoration: none">{{duplicates.name}}
+                      </a>
+                      <span (click)="rowidentifier(i)" class="duplicate_counts">{{enquiry?.duplicate?.length}}</span>
+                      <span *ngIf="enquiry?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
+                          style="width: 20px;"></span>
+                      <span *ngIf="enquiry?.qualified_leads == '3'"><img
+                          src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span>
+                    </span><br />
+                    {{duplicates.number}}
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length == 0">
+                    <span>{{(enquiry.source.indexOf('GR - Microsite')? enquiry.source : 'GR - campaign')}}</span>
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length > 0">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      {{(duplicates.source.indexOf('GR - Microsite')? duplicates.source : 'GR - campaign')}}
+                    </span>
+                  </td>
+
+                  <td
+                    *ngIf="(source == 'Homes247' || source == 'Homes247 - Whatsapp' || source == 'Homes247-Campaign')&& enquiry.duplicate?.length == 0">
+                    <span>{{enquiry.cityname}}</span>
+                  </td>
+
+                  <td
+                    *ngIf="(source == 'Homes247' || source == 'Homes247 - Whatsapp' || source == 'Homes247-Campaign')&& enquiry.duplicate?.length > 0">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      {{duplicates.cityname}}
+                    </span>
+                  </td>
+
+                  <!-- <td *ngIf="enquiry.duplicate?.length == 0">
+               
+              </td>
+              <td *ngIf="enquiry.duplicate?.length > 0">
+                <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                  
+                </span>
+              </td> -->
+
+                  <td *ngIf=" enquiry.duplicate?.length == 0">
+                    {{(enquiry.propertyname?enquiry.propertyname:'---')}}
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length > 0">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      {{(duplicates.propertyname?duplicates.propertyname:'---')}}
+                    </span>
+                  </td>
+
+                  <td *ngIf=" enquiry.duplicate?.length == 0">
+                    {{enquiry.date | date: 'dd-MMM-yyyy'}} <span *ngIf="enquiry.time">, {{enquiry.date | date :
+                      'shortTime'}}</span>
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length > 0">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      {{duplicates.datetime | date : 'dd-MMM-yyyy'}} <span
+                        *ngIf="duplicates.datetime">{{duplicates.datetime | date : 'shortTime'}}</span>
+                    </span>
+
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length == 0"
+                    class="d-flex justify-content-center align-items-center border-0 dropDownCursor">
+                    <i class="fa fa-trash-alt" style="color: red;" (click)="deleteLeads(enquiry.customer_IDPK)"></i>
+                  </td>
+
+                  <td *ngIf="enquiry.duplicate?.length > 0"
+                    class="d-flex justify-content-center align-items-center border-0 dropDownCursor">
+                    <span *ngFor="let duplicates of enquiry.duplicate | slice: 0: 1">
+                      <i class="fa fa-trash-alt" style="color: red;" (click)="deleteLeads(enquiry.customer_IDPK)"></i>
+                    </span>
+                  </td>
+
+                </tr>
+
+                <tr class="subduplicates hidden duplicateidentify-{{i}}" *ngIf="enquiry.duplicate?.length == 1">
+                  <td><i class="fas fa-level-up-alt"></i></td>
+                  <td>{{enquiry.name}}<br />{{enquiry.number}}</td>
+                  <td>{{(enquiry.source.indexOf('GR - Microsite')? enquiry.source : 'GR - campaign')}}</td>
+                  <td>{{(enquiry.propertyname?enquiry.propertyname:'---')}}</td>
+                  <td>{{enquiry.datetime | date : 'dd-MMM-yyyy'}} <span *ngIf="enquiry.datetime">, {{enquiry.datetime |
+                      date : 'shortTime'}}</span></td>
+                  <td class="d-flex justify-content-center align-items-center border-0 dropDownCursor"><i
+                      class="fa fa-trash-alt" style="color: red;" (click)="deleteLeads(enquiry.customer_IDPK)"></i></td>
+                </tr>
+
+                <tr class="loopone subduplicates hidden duplicateidentify-{{i}}"
+                  *ngFor="let duplicates of enquiry.duplicate">
+                  <td *ngIf="enquiry.duplicate?.length > 1"><i class="fas fa-level-up-alt"></i></td>
+                  <td *ngIf="enquiry.duplicate?.length > 1">{{duplicates.name}}<br />{{duplicates.number}}</td>
+                  <td *ngIf="enquiry.duplicate?.length > 1">{{(duplicates.source.indexOf('GR - Microsite')?
+                    duplicates.source : 'GR - campaign')}}</td>
+                  <td *ngIf="enquiry.duplicate?.length > 1">{{duplicates.propertyname}}</td>
+                  <td *ngIf="enquiry.duplicate?.length > 1">{{duplicates.datetime | date : 'dd-MMM-yyyy'}}<span
+                      *ngIf="enquiry.datetime">, {{enquiry.datetime | date : 'shortTime'}}</span></td>
+                  <td *ngIf="enquiry.duplicate?.length > 1"
+                    class="d-flex justify-content-center align-items-center border-0 dropDownCursor"><i
+                      class="fa fa-trash-alt" style="color: red;" (click)="deleteLeads(enquiry.customer_IDPK)"></i></td>
+                </tr>
+
+
+              </tbody>
+              <!-- </div> -->
+
+            </table>
+            <div class="text-center no-record" *ngIf="!enquiries">
+              No Records Found...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-lds-ring-div" *ngIf=filterLoader>
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+    <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+<!-- FOOTER-STARTS -->
+
+<!-- <div class="footer">
+  <div class="footer-cntnt">
+    <p>@2017, homes247.in</p>
+  </div>
+</div> -->
+
+<!-- FOOTER-ENDS -->
+
+
+<!-- MODAL FOR ADD LEADS -->
+<div class="modal fade addNewLead" id="add_newlead" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 100%;">
+    <div class="modal-content" id="new_executive">
+
+      <div class="modal-header">
+        <h4>Add Lead</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="close" id="addleadmod" (click)="modalclose()" data-dismiss="modal"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class="new_executive_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Client Name</label>
+              <input class="form-control" id="custname" placeholder="Enter the Name" type="text"
+                [(ngModel)]="model.name" #name="ngModel" name="name" required>
+            </div>
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Contact Number</label>
+              <input class="form-control" id="custnum" placeholder="Enter the Number" type="text" maxlength=10
+                [(ngModel)]="model.number" #number="ngModel" name="number" required>
+            </div>
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Client Email</label>
+              <input class="form-control" id="custmail" placeholder="Enter the Email" type="text"
+                [(ngModel)]="model.mail" #mail="ngModel" name="mail" required>
+            </div>
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Source</label>
+              <select id="source_dropdown" class="form-control ui dropdown" [(ngModel)]="model.source"
+                name="model.source" (change)="sourcechange($event)">
+                <option value="" selected>Select Source</option>
+                <option *ngFor="let sourcelist of sourcelist" value="{{sourcelist.source}}">{{sourcelist.source}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6 input_cmn_div flex-column align-items-start">
+              <label>Prefered Location</label>
+              <!-- <search-dropdown [items]="locality" [size]="'small'" [label]="'locality'" [uid]="'id'"
+                [(ngModel)]="selectedlocality"></search-dropdown>
+              <input type="hidden" id="customer_location" [(ngModel)]="selectedlocality"> -->
+
+              <select id="locality_dropdown" class="form-control ui dropdown" [(ngModel)]="selectedlocality"
+                name="selectedlocality" (change)="localitychange($event)">
+                <option value="" selected>Select Locality</option>
+                <option *ngFor="let local of locality" value="{{local.id}}">{{local.locality}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Priority</label>
+              <div class="wrapper">
+                <input type="radio" class="radiocheck" name="select4" value="1" id="option-24"
+                  (click)="prioritychange($event)">
+                <input type="radio" class="radiocheck" name="select4" value="2" id="option-25"
+                  (click)="prioritychange($event)">
+                <input type="radio" class="radiocheck" name="select4" value="3" id="option-26"
+                  (click)="prioritychange($event)">
+                <label for="option-24" class="option option-24">
+                  <span>HOT</span>
+                </label>
+                <label for="option-25" class="option option-25">
+                  <span>WARM</span>
+                </label>
+                <label for="option-26" class="option option-26">
+                  <span>COLD</span>
+                </label>
+              </div>
+              <input type="hidden" id="priorityselect">
+            </div>
+
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Type</label>
+              <div class="wrapper">
+                <input type="radio" class="radiocheck" name="select1" value="1" id="option-1"
+                  (click)="typeselection($event)">
+                <input type="radio" class="radiocheck" name="select1" value="2" id="option-2"
+                  (click)="typeselection($event)">
+                <input type="radio" class="radiocheck" name="select1" value="3" id="option-3"
+                  (click)="typeselection($event)">
+                <input type="radio" class="radiocheck" name="select1" value="4" id="option-19"
+                  (click)="typeselection($event)">
+                <label for="option-1" class="option option-1">
+                  <span>Apartment</span>
+                </label>
+                <label for="option-2" class="option option-2">
+                  <span>Villa</span>
+                </label>
+                <label for="option-3" class="option option-3">
+                  <span>Plot</span>
+                </label>
+                <label for="option-19" class="option option-19">
+                  <span>Villament</span>
+                </label>
+              </div>
+              <input type="hidden" id="proptypeselect">
+            </div>
+
+            <div class="form-group col-md-6 input_cmn_div">
+              <label>Possession With</label>
+              <div class="wrapper">
+                <input type="radio" class="radiocheck" name="select2" value="2" id="option-4"
+                  (click)="possessionselection($event)">
+                <input type="radio" class="radiocheck" name="select2" value="3" id="option-5"
+                  (click)="possessionselection($event)">
+                <input type="radio" class="radiocheck" name="select2" value="4" id="option-23"
+                  (click)="possessionselection($event)">
+                <input type="radio" class="radiocheck" name="select2" value="5" id="option-6"
+                  (click)="possessionselection($event)">
+                <label for="option-4" class="option option-4">
+                  <span>
+                    < 6 Months</span>
+                </label>
+                <label for="option-5" class="option option-5">
+                  <span>1 Year</span>
+                </label>
+                <label for="option-23" class="option option-23">
+                  <span>1-2 Year</span>
+                </label>
+                <label for="option-6" class="option option-6">
+                  <span>> 2 years</span>
+                </label>
+              </div>
+              <input type="hidden" id="possessionselect">
+            </div>
+
+            <div class="form-group col-md-12 input_cmn_div" [hidden]="model.propertytype == '3'">
+              <label>Select Size</label>
+              <div class="wrapper">
+                <input type="radio" class="radiocheck" name="select3" value="1" id="option-7"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="2" id="option-8"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="3" id="option-9"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="3.5" id="option-20"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="4" id="option-10"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="4.5" id="option-21"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="5" id="option-11"
+                  (click)="sizeselection($event)">
+                <input type="radio" class="radiocheck" name="select3" value="5.5" id="option-22"
+                  (click)="sizeselection($event)">
+                <label for="option-7" class="option option-7"
+                  [hidden]="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>1 BHK</span>
+                </label>
+                <label for="option-8" class="option option-8"
+                  [hidden]="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>2 BHK</span>
+                </label>
+                <label for="option-9" class="option option-9">
+                  <span>3 BHK</span>
+                </label>
+                <label for="option-20" class="option option-20"
+                  [hidden]="model.propertytype == undefined || model.propertytype == '1'">
+                  <span>3.5 BHK</span>
+                </label>
+                <label for="option-10" class="option option-10">
+                  <span>4 BHK</span>
+                </label>
+                <label for="option-21" class="option option-21"
+                  [hidden]="model.propertytype == undefined || model.propertytype == '1'">
+                  <span>4.5 BHK</span>
+                </label>
+                <label for="option-11" class="option option-11">
+                  <span>5 BHK</span>
+                </label>
+                <label for="option-22" class="option option-22"
+                  [hidden]="model.propertytype == undefined || model.propertytype == '1'">
+                  <span>5.5 BHK</span>
+                </label>
+              </div>
+              <input type="hidden" id="sizeselect">
+            </div>
+
+            <div class="form-group col-md-12 input_cmn_div">
+              <label>Budget</label>
+              <div class="wrapper">
+                <!-- <input type="radio" class="radiocheck" name="select" value="20L - 40L" id="option-12"
+                  (click)="budgetselection($event)"> -->
+                <input type="radio" class="radiocheck" name="select" value="< 60L" id="option-13"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="60L - 80L" id="option-14"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="80L - 1Cr" id="option-15"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="1Cr - 1.2Cr" id="option-16"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="> 1.2Cr" id="option-17"
+                  (click)="budgetselection($event)">
+                <!-- rates for villa and villament  -->
+                <input type="radio" class="radiocheck" name="select" value="1.5Cr - 2Cr" id="option-27"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="2Cr - 3Cr" id="option-28"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="3Cr - 4Cr" id="option-29"
+                  (click)="budgetselection($event)">
+                <input type="radio" class="radiocheck" name="select" value="> 4Cr" id="option-30"
+                  (click)="budgetselection($event)">
+
+                <!-- <input type="radio" class="radiocheck" name="select" value="Above 1Cr" id="option-18"
+                  (click)="budgetselection($event)"> -->
+                <!-- <label for="option-12" class="option option-12">
+                  <span>20L - 40L</span>
+                </label> -->
+                <label for="option-13" class="option option-13"
+                  *ngIf="model.propertytype == '1' || model.propertytype == '3' || model.propertytype == undefined">
+                  <span>
+                    < 60L</span>
+                </label>
+                <label for="option-14" class="option option-14"
+                  *ngIf="model.propertytype == '1' || model.propertytype == '3' || model.propertytype == undefined">
+                  <span>60L - 80L</span>
+                </label>
+                <label for="option-15" class="option option-15"
+                  *ngIf="model.propertytype == '1' || model.propertytype == '3' || model.propertytype == undefined">
+                  <span>80L - 1Cr</span>
+                </label>
+                <label for="option-16" class="option option-16"
+                  *ngIf="model.propertytype == '1' || model.propertytype == '3' || model.propertytype == undefined">
+                  <span>1Cr - 1.2Cr</span>
+                </label>
+                <label for="option-17" class="option option-17"
+                  *ngIf="model.propertytype == '1' || model.propertytype == '3' || model.propertytype == undefined">
+                  <span>> 1.2Cr</span>
+                </label>
+                <!-- villament and villa code  -->
+                <label for="option-27" class="option option-27"
+                  *ngIf="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>1.5Cr - 2Cr</span>
+                </label>
+                <label for="option-28" class="option option-28"
+                  *ngIf="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>2Cr - 3Cr</span>
+                </label>
+                <label for="option-29" class="option option-29"
+                  *ngIf="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>3Cr - 4Cr</span>
+                </label>
+                <label for="option-30" class="option option-30"
+                  *ngIf="model.propertytype == '2' || model.propertytype == '4'">
+                  <span>> 4Cr</span>
+                </label>
+
+                <!-- <label for="option-18" class="option option-18">
+                  <span>Above 1Cr</span>
+                </label> -->
+              </div>
+              <input type="hidden" id="budgetselect">
+            </div>
+
+            <div class="form-group col-md-12 input_cmn_div">
+              <label>Address</label>
+              <textarea class="form-control addleadtextarea" id="address" [(ngModel)]="model.address" #address="ngModel"
+                name="address"></textarea>
+            </div>
+
+            <div class="actions col-md-12 save_btn d-flex justify-content-between">
+              <button class="btn btn-info" (click)="openFileDialog()" type="button">Import CSV</button>
+              <input type="file" #fileInput accept=".csv" style="display: none" (change)="importcsvfile($event)" />
+
+              <button class="approve" type="submit" (click)="addenquiry()">Save</button>
+              <button hidden type="button" class="close" id="cancel" data-dismiss="modal"></button>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL FOR ADD LEADS -->
+
+<div *ngIf="loadershow" class="col-md-12 loader_div">
+  <span class="Centerer"></span>
+  <img src="../../../assets/images/loader.gif">
+</div>
+
+
+<div class="modal fade" id="assign_lead" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog assignlead_modal">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <!-- <h4 class="modalbackbtn" (click)="modalback()"><i class="fas fa-arrow-left"></i> Go Back</h4> -->
+        <h4 class="col-12 m-0">Assign The Leads</h4>
+      </div>
+
+
+
+      <!-- Assign to Retail -->
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" (click)="assignleadModalClose()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate>
+
+            <!-- <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select Team</label>
+              <select class="form-control ui fluid dropdown" id="assigneeeTeam_dropdown"
+                (change)="selectedAssignTeam($event)" placeholder="Select Team">
+                <option value="1" [selected]="selectedteamOption == '1'">Retail Team</option>
+                <option value="2">Mandate Team</option>
+              </select> -->
+            <!-- <select id="assigneee_dropdown" class="form-control ui fluid dropdown" 
+              (change)="selectedAssignTeam($event)" >
+              <option *ngFor="let team of assigneeTeam" value="{{team.value}}"
+                [selected]="team.value == selectedteamOption">
+                {{team.name}}</option>
+            </select> -->
+            <!-- </div> -->
+
+            <div class="form-group col-3 input_cmn_div leadsDrop" [hidden]="assignmodalval == '1'">
+              <label class="font-bold">Select Mandate Project</label>
+              <select id="property_dropdown" class="form-control ui dropdown exec_designation leadsDrop"
+                (change)="leadsType($event)">
+                <option value="">Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_info_name}}"
+                  [selected]="projects.property_idfk == propId">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div" [hidden]="assignmodalval == '1'">
+              <label class="font-bold">Select Executive Team</label>
+              <select class="form-control ui dropdown exec_designation" id="exec_designation"
+                (change)="getexecutives($event)">
+                <option value="all" selected>All</option>
+                <option value="50002">Relationship Executives</option>
+                <option value="50014">Customersupport Executives</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div" [hidden]="assignmodalval == '1'">
+              <label class="font-bold">Select Executives</label>
+              <p-multiSelect id="mandaterm_dropdown" [options]="mandateexecutives" [(ngModel)]="selectedEXEC"
+                [filter]="true" optionLabel="name" #customersupport="ngModel" name="customersupport"
+                defaultLabel="Select Executives" [showToggleAll]="showSelectAll"
+                (onChange)="executiveSelect($event,'mandate')"></p-multiSelect>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div justify-content-center pt-3"
+              style="gap: 0.5rem;cursor: pointer;">
+              <label>Random Assign</label>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" (change)="checkActive($event)"
+                  [disabled]="maxSelectedLabels == 1">
+                <label class="custom-control-label" for="customSwitch1"></label>
+              </div>
+            </div>
+
+
+            <div class="form-group col-3 input_cmn_div">
+              <label class="font-bold">Select the Count</label>
+              <select id="counts_dropdown" class="form-control ui fluid dropdown" (change)="selectcounts($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+                <option value="350">350</option>
+                <option value="400">400</option>
+                <option value="450">450</option>
+                <option value="500">500</option>
+              </select>
+            </div>
+
+
+            <!-- <div class="form-group col-3 input_cmn_div" [hidden]="assignmodalval == '0' || assignmodalval == '1'">
+              <select id="mandateTeam_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="teamchange($event)">
+                <option value="">Select Team</option>
+                <option value="all">All</option>
+                <option value="1" [selected]="'1' === team">Direct Team</option>
+                <option value="2" [selected]="'2' === team">Inhouse Team</option>
+              </select>
+            </div> -->
+
+
+            <!-- <div class="form-group col-3 input_cmn_div" [hidden]="assignmodalval == '2' ">
+              <label class="font-bold">Select Executives</label>
+              <p-multiSelect id="rm_dropdown" [options]="executives" [(ngModel)]="selectedRetEXEC" [filter]="true"
+                optionLabel="ExecName" name="selectedLeads" defaultLabel="Select Executives"
+                [showToggleAll]="showSelectAll" (onChange)="executiveSelect($event,'retail')"></p-multiSelect>
+            </div> -->
+            <!-- multiple selection of exectives based on the leads count for Retail   selectionLimit="maxSelectedLabels"-->
+
+            <!-- multiple selection of exectives based on the leads count for mandate  selectionLimit="maxSelectedLabels"-->
+
+            <div class="form-group col-2  input_cmn_div pt-3">
+              <!-- <button class="approve btn btn-warning" (click)="assigntorm()" type="submit"
+                [hidden]="assignmodalval == '0' || assignmodalval == '2'">Share Now</button> -->
+              <button class="approve btn btn-warning" (click)="assignMandatetorm()" type="submit"
+                [hidden]="assignmodalval == '0' || assignmodalval == '1'">Share Now</button>
+              <button #cancel hidden type="button" class="btn btn-warning" data-dismiss="modal"></button>
+            </div>
+
+            <div class="assign_table">
+              <div class="text-right"><button type="button" class="btn btn-warning" (click)="resetPropertyFilter();"><i
+                    class="fas fa-redo refreshIcon"></i>Property Reset</button></div>
+              <table id="start2" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                (scrolled)="loadMore()" [infiniteScrollContainer]="'.assign_table'">
+                <thead>
+                  <tr class="header">
+                    <th>Sl.No</th>
+                    <th>Name</th>
+                    <th>Source</th>
+                    <th
+                      *ngIf="(source == 'Homes247' || source == 'Homes247 - Whatsapp' || source == 'Homes247-Campaign')">
+                      City</th>
+                    <th>Mobile No</th>
+                    <!-- <th>Property</th> -->
+                    <th>
+                      <div class="d-flex justify-content-between">
+                        <span>Property</span>
+                        <div>
+                          <button class="btn btn-warning" type="button" id="propertyRetailDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="padding: 0px 5px !important;" (click)="retailPropget()">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu propertyBasedFilter" aria-labelledby="propertyRetailDropdown"
+                            style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                            <!-- Filter Search  input -->
+                            <div class="dropdown-search-container"><input type="text"
+                                class="form-control propretailsearch" placeholder="Search..."
+                                (input)="filterretailProjects($event)"
+                                style="margin-bottom: 2px;width: 288px !important;"></div>
+                            <!-- Dropdown items with checkboxes -->
+                            <div *ngIf="propertyList?.length">
+                              <div *ngFor="let project of propertyList">
+                                <label class="dropdown-item dropDownCursor mb-1">
+                                  <!-- <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox" id="hidepropcheckboxid"
+                                   value="{{project?.propertyname}}" name='propFilter' (change)="onCheckboxChange()"> -->
+                                  <span (click)="onCheckboxChange(project.propertyname)">{{ project.propertyname
+                                    }}</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div *ngIf="!propertyList?.length" class="text-center" style="color: #666666;">
+                              <h4>No Properties Found</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody class="enquiry_table_body">
+                  <input type="hidden" id="selectedleads" [(ngModel)]="selectedRetailLeads" #assignedleads="ngModel"
+                    name="assignedleads" required>
+                  <tr *ngFor="let assign of enquiries | duplicationPipe; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hidecheckbox" id="hidecheckboxid"
+                          value="{{assign.customer_IDPK}}" name='programmingretail' (change)="getselectedRetailleads()"
+                          style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>{{assign.name}}</td>
+                    <td>{{assign.source}}</td>
+                    <td
+                      *ngIf="(source == 'Homes247' || source == 'Homes247 - Whatsapp' || source == 'Homes247-Campaign')">
+                      {{assign.cityname}}
+                    </td>
+                    <td>{{assign.number}}</td>
+                    <td>{{assign.propertyname}}</td>
+                    <td>{{assign.date | date: 'dd-MMM-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Assign to Mandate -->
+      <!-- <div [hidden]="builderleadassignmodal && teamselectionmodal" class="modal-body">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+        <div class="new_enquiry_form col-xs-12">
+          <form class="form-inline" name="form" novalidate> -->
+
+      <!-- <div class="form-group col-3 input_cmn_div leadsDrop">
+              <select class="form-control ui dropdown exec_designation leadsDrop" value="GR Sitara"
+                (change)="leadsType($event)">
+                <option style="display:none" value="" selected>Select Leads</option>
+                <option value="16793" selected="selected">GR Sitara</option>
+                <option value="1830">GR Samskruthi</option>
+              </select>
+            </div> -->
+
+      <!-- <div class="form-group col-3 input_cmn_div leadsDrop">
+              <select id="property_dropdown" class="form-control ui dropdown exec_designation leadsDrop"
+                (change)="leadsType($event)">
+                <option value="">Select Project</option>
+                <option *ngFor="let projects of mandateprojects" value="{{projects.property_idfk}}" [selected]="projects.property_idfk == propertyid">
+                  {{projects.property_info_name}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <select class="form-control ui fluid dropdown" (change)="selectcountsForBuilders($event)">
+                <option style="display:none" value="" selected>Select Lead Count</option>
+                <option value="Manual">Manual Select</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <select id="project_dropdown" class="form-control ui dropdown dashboard_dropdown mr-1"
+                (change)="teamchange($event)">
+                <option value="">Select Team</option>
+                <option value="all">All</option>
+                <option value="1" [selected]="'1' === team">Direct Team</option>
+                <option value="2" [selected]="'2' === team">Inhouse Team</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div justify-content-center" style="gap: 0.5rem">
+              <label>Random Assign</label>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch2" (change)="checkActive($event)"
+                  [disabled]="maxSelectedLabels == 1">
+                <label class="custom-control-label" for="customSwitch2"></label>
+              </div>
+            </div>
+
+            <div class="form-group col-3 input_cmn_div">
+              <p-multiSelect id="rm_dropdown" [options]="mandateexecutives" [(ngModel)]="selectedEXEC" [filter]="true"
+                optionLabel="name" #customersupport="ngModel" name="customersupport" defaultLabel="Select Executives"
+                [showToggleAll]="showSelectAll" selectionLimit="maxSelectedLabels"
+                (onChange)="executiveSelect($event,'mandate')"></p-multiSelect>
+            </div>
+
+            <div class="form-group col-9 input_cmn_div justify-content-end">
+              <button class="approve btn btn-warning" (click)="assignMandatetorm()" type="submit">Share Now</button>
+              <button #cancel class="btn btn-warning" hidden type="button" data-dismiss="modal"></button>
+            </div>
+
+            <div class="assign_table1">
+              <table id="start3" class="content_table_main table table-striped table-bordered" infinite-scroll
+                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                (scrolled)="loadMoreForRetail()" [infiniteScrollContainer]="'.assign_table1'">
+                <thead>
+                  <tr class="header">
+                    <th>Select Leads</th>
+                    <th>Name</th>
+                    <th>Source</th>
+                    <th>Mobile No</th>
+                    <th>Property</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="enquiries?.length" class="enquiry_table_body">
+                  <input type="hidden" id="selectedleads" [(ngModel)]="selectedMandateLeads" #assignedleads="ngModel"
+                    name="assignedleads" required>
+                  <tr *ngFor="let assign of builderleads; let i = index">
+                    <td>
+                      <div>
+                        <input type="checkbox" class="mr-4 loopcheckbox hideBuilderCheckbox" id="hidebuildercheckboxid"
+                          value="{{assign?.customer_IDPK}}" name='programmingmandate'
+                          (change)="getselectedMandateleads()" style="display: none;">
+                        <label>{{i+1}}</label>
+                      </div>
+                    </td>
+                    <td>{{assign?.name}}</td>
+                    <td>{{assign?.source}}</td>
+                    <td>{{assign?.number}}</td>
+                    <td>{{assign?.propertyname}}</td>
+                    <td>{{assign?.date | date: 'dd-MMM-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div> -->
+
+      <div *ngIf=filterLoader class="main-lds-ring-div">
+        <!-- <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> -->
+        <img src="../../../assets/images/infinity_loader.gif">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" data-toggle="modal" data-target="#alreadyExist_leads_modal" id="alreadyExist_lead_detail"
+  style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="alreadyExist_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog alreadyExistlead_modal">
+    <div class="modal-content enquiry_modal_body" id="alreadyExist_leads">
+      <div class="modal-header px-3 py-2">
+        <h4 class="col-10 m-0">Duplicate Leads</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Number</th>
+                  <th>Mail</th>
+                  <th>Source</th>
+                  <th>Property Type</th>
+                  <th>Budget</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body">
+                <tr *ngFor="let dup of duplicateLeadsInfo; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{dup.customer_name}}</td>
+                  <td>{{dup.customer_number}}</td>
+                  <td>{{dup.customer_mail}}</td>
+                  <td>{{dup.customer_source}}</td>
+                  <td>{{dup.customer_proptype}}</td>
+                  <td>{{dup.customer_budget}}</td>
+                  <td>{{dup.customer_address}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div>
+          <button class="btn btn-warning" type="button" (click)="addDuplicateLead()">Submit as Fresh Lead</button>
+          <button class="btn btn-secondary" type="button" (click)="cancelDuplicateLead()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" data-toggle="modal" data-target="#assigned_leads_modal" id="assign_leads_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="assigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog reassignlead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="reassign_leads">
+      <div class="modal-header">
+        <h4 class="col-10 m-0"> Assigned Leads Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"
+            (click)="assignleadModalClose()">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="assign_table1 pt-3">
+            <table class="content_table_main table table-striped table-bordered" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead>
+                <tr class="header">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Fresh Assigned</th>
+                  <th>Not Assigned</th>
+                  <th>Untouched Leads</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body">
+                <tr *ngFor="let assign of assignedResponseInfo; let i = index">
+                  <td>
+                    <div>
+                      <label>{{i+1}}</label>
+                    </div>
+                  </td>
+                  <td>{{assign.execname}}</td>
+                  <td>{{assign.fresh}}</td>
+                  <td>
+                    <div>Already in Fresh - {{assign.exsiting}}</div>
+                    <div>Leads Capacity Reached - {{assign.leads_skipped_executive_capacity}}</div>
+                    <!-- <div>Moved as Junk - {{assign.leads_skipped_executive_capacity}}</div> -->
+                    <div>Gr-Swara-Leads - {{assign.gr_swara_leads_skipped}}</div>
+                  </td>
+                  <td>{{assign.initial_lead_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+.main_count_header {
+    /* background: darkseagreen; */
+    color: #000000;
+    padding-left: 16.5em !important;
+    padding-inline: 1.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+#new_executive .new_executive_form div.input_cmn_div {
+    padding: 0px 15px 20px 15px;
+    float: left;
+}
+
+#new_executive .new_executive_form div label {
+    font-size: 15px;
+    color: #666666;
+    font-weight: 400;
+}
+
+#new_executive .new_executive_form div input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+}
+
+#new_executive .new_executive_form div textarea {
+    width: 100% !important;
+    height: 90px;
+    color: #666666;
+}
+
+#new_executive .new_executive_form .save_btn {
+    margin: 0;
+    text-align: right;
+}
+
+#new_executive .new_executive_form .save_btn button {
+    background: #0B7AB2;
+    padding: 5px 79px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0px;
+}
+
+::ng-deep .ui.selection.dropdown{
+    min-height: 2.4em !important;
+    line-height: 0.75em !important;
+}
+
+::ng-deep body{
+    background-color: #f4f4f4;
+}
+
+::ng-deep .ui-multiselect{
+    width: 100% !important;
+    height: calc(1.5em + .75rem + 2px) !important;
+
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label{
+    padding: 0 !important;
+    color: rgba(191, 191, 191, 0.87);
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background: rgba(0, 0, 0, 0.03) !important;
+    color: rgba(0, 0, 0, 0.95) !important;
+}

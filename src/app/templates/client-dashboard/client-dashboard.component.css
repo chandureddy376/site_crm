@@ -1,0 +1,89 @@
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+  padding-left: var(--bs-gutter-x, 2.5rem) !important;
+}
+
+.btn-danger.btn-simple {
+  background: #f0f2f5 !important;
+  color: #727272 !important;
+  border: 1px solid #727272 !important;
+  border-radius: 5px !important;
+}
+
+.btn-danger.btn-simple :hover {
+  background-color: none !important;
+}
+
+.btn-danger.btn-simple.active {
+  background-color: #0B7AB2 !important;
+  border: 1px solid #0B7AB2 !important;
+  color: #ffffff !important;
+  background-image: none !important;
+}
+
+.btn-danger,
+.btn.bg-gradient-danger {
+  box-shadow: none !important;
+}
+
+::ng-deep bs-daterangepicker-container {
+  left: 730px !important;
+  top: 125px !important
+}
+
+.card .card-header {
+  padding-inline: 1.5rem !important;
+  padding-block: 0.5rem !important;
+}
+
+.card .card-body {
+  padding-inline: 1.5rem !important;
+  padding-block: 0.5rem !important;
+}
+
+h6 {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+::ng-deep .propertDrop .ui.selection.dropdown {
+  min-height: 1em !important;
+}
+
+
+::ng-deep .propertDrop .ui.search.dropdown>.text {
+  bottom: 3px !important;
+}
+
+.form-switch .form-check-input:checked {
+  border-color: #0B7AB2 !important;
+  background-color: #0B7AB2 !important;
+}
+
+.buttonwithicon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.bg-gradient-setting {
+  background-image: linear-gradient(195deg, #0B7AB2 50%, #0B7AB2 50%);
+}
+
+.shadow-primary {
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgb(0 0 0 / 40%) !important;
+}
+
+.navbar-vertical.navbar-expand-xs {
+  max-width: 0em !important;
+}

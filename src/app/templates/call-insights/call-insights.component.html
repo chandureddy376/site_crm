@@ -1,0 +1,234 @@
+<body class="g-sidenav-show  bg-gray-200">
+  <!-- HEADER -->
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main">
+    <app-header></app-header>
+  </aside>
+  <!-- HEADER -->
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg "
+    [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '2.5rem'}">
+    <div class="container-fluid pb-2" style="padding-inline:  1.5rem !important;">
+      <div class="row" *ngIf=" roleid == '1' || this.roleid == '2'" style="padding-top: 3.5rem;">
+        <div class="col-xl-12 col-sm-12 mb-xl-4 mb-4">
+          <div class=" btn-group btn-group-toggle float-left align-items-baseline">
+            <div class="mr-3">
+              <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" (change)="rmchange($event)">
+                <option value="">Select Executive</option>
+                <option *ngFor="let executives of mandateexecutives" value="{{executives.id}}"
+                  [selected]="executives.id === execid">{{executives.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class=" btn-group btn-group-toggle float-right">
+            <span>
+
+              <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/call-dashboard"
+                [queryParams]="{today: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked===true}">
+                <input class=" d-none d-sm-none" name="options" type="radio" />
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Today
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-gift-2"> </i>
+                </span>
+              </label>
+
+              <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/call-dashboard"
+                [queryParams]="{last7: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked1===true}">
+                <input class=" d-none" name="options" type="radio" />
+                <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  Last 7 days
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+
+              <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked2===true}">
+                <div #nextActionDates class="cursor-pointer d-none">
+                  <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                </div>
+                <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+
+            </span>
+            <p>
+              <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+                  class="fas fa-redo"></i>Reset</button>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4" style="width: 20% !important;">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div class="text-center mt-n4 position-absolute">
+                <img src="../../../assets/images/total-calls.png">
+              </div>
+              <div class="text-center pt-1">
+                <p class="mb-0 text-capitalize font-16">Total Calls</p>
+                <h4 class="mb-0">{{'254'}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-1">
+              <p class="mb-0 pl-1 footer_text"><span class="">Inbound Calls - {{'10'}}</span></p>
+              <p class="mb-0 pl-1 footer_text"><span class="">Outbound Calls - {{'155'}}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4" style="width: 20% !important;">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div class="text-center mt-n4 position-absolute">
+                <img src="../../../assets/images/answered-calls.png">
+              </div>
+              <div class="text-center pt-1">
+                <p class="mb-0 text-capitalize font-16">Answered Calls</p>
+                <h4 class="mb-0">{{'154'}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-1">
+              <p class="mb-0 pl-1 footer_text"><span class="">Inbound Calls - {{'142'}}</span></p>
+              <p class="mb-0 pl-1 footer_text"><span class="">Outbound Calls - {{'12'}}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4" style="width: 20% !important;">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div class="text-center mt-n4 position-absolute">
+                <img src="../../../assets/images/live_calls.png">
+              </div>
+              <div class="text-center pt-1">
+                <p class="mb-0 text-capitalize font-16">Live Calls</p>
+                <h4 class="mb-0">{{'2'}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-1">
+              <p class="mb-0 pl-1 footer_text"><span class="">Inbound Calls - {{'0'}}</span></p>
+              <p class="mb-0 pl-1 footer_text"><span class="">Outbound Calls - {{'2'}}</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4" style="width: 20% !important;">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div class="text-center mt-n4 position-absolute">
+                <img src="../../../assets/images/missed.png">
+              </div>
+              <div class="text-center pt-1">
+                <p class="mb-0 text-capitalize font-16 pl-3">Abondoned Calls</p>
+                <h4 class="mb-0">{{'8'}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-3">
+              <p class="mb-0 pl-1 footer_text"><span class="">Inbound Calls - {{'8'}}</span></p>
+              <!-- <p class="mb-0 pl-1 footer_text" style="visibility: hidden;"><span class="">Outbound Calls - {{'155'}}</span></p> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4" style="width: 20% !important;">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div class="text-center mt-n4 position-absolute">
+                <img src="../../../assets/images/call-queue.png">
+              </div>
+              <div class="text-center pt-1">
+                <p class="mb-0 text-capitalize font-16 pl-3">Call Queue Calls</p>
+                <h4 class="mb-0">{{'1'}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center p-1" style="visibility: hidden;">
+              <p class="mb-0 pl-1 footer_text"><span class="">Inbound Calls - {{'8'}}</span></p>
+              <p class="mb-0 pl-1 footer_text"><span class="">Outbound Calls - {{'155'}}</span></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="row mt-4 mb-4 ">
+        <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+
+          <div class="card" style="margin-top: 1rem !important;">
+            <div class="card-header pb-0" style="padding-block: 0.5rem !important;padding-inline: 1.5rem !important;">
+              <h5 class="hoverclass">Executive's Call Status</h5>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive" style="height: 200px;">
+                <table class="table align-items-center mb-0">
+
+                  <thead>
+                    <tr style="background: #F8F8F8;">
+                      <th class="text-uppercase text-xs">NAME</th>
+                      <th class="text-uppercase text-xs ">STATUS</th>
+                      <th class="text-uppercase text-xs">TOTAL CALLS</th>
+                      <th class="text-uppercase text-xs">ANSWERED CALLS</th>
+                      <th class="text-uppercase text-xs">AVG SPEED CALLS</th>
+                      <th class="text-uppercase text-xs">ABONDONED CALLS</th>
+                      <th class="text-uppercase text-xs">TOTAL CALL DURATIONS</th>
+                      <th class="text-uppercase text-xs">BREAKS DURATIONS</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let todays of executiveTodayInfo; let i = index">
+                      <td class="align-middle">
+                        <span
+                          class="text-xs font-weight-bold cursor-pointer text-decoration-underline">{{todays.name}}</span>
+                      </td>
+                      <td class="align-middle">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].All_Visits}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].USV}}</span>
+                      </td>
+                      <td class="align-middle text-sm">
+                        <span class="text-xs font-weight-bold">{{todays.counts[0].RSV}}</span>
+                      </td>
+                      <td> <span class="text-xs font-weight-bold">{{todays.counts[0].Final_Negotiation}}</span></td>
+                    </tr>
+                  </tbody>
+                  <div class="font-weight-bold pt-3 d-flex justify-content-center"
+                    *ngIf="executiveTodayInfo?.length == 0"
+                    style="position: relative;top: 60px;left: 170px;border: none;">
+                    NO DATA FOUND ...!
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <div *ngIf=filterLoader class="main-lds-ring-div">
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+     <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</body>

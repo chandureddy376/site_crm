@@ -1,0 +1,874 @@
+<div>
+  <app-header></app-header>
+</div>
+<!-- *ngIf="roleid != 1" -->
+<div class="row main_count_header" [ngStyle]="{'padding-left':isSidebarHovered ? '15.3rem' : '4.6rem'}">
+
+  <div class="col-4 py-0 px-1 whatsup-chat-main-container" *ngIf="!isSearchGlobal">
+    <div style="position: sticky;z-index: 1;top: 0;">
+      <div class="col 12 p-0 d-flex justify-content-between align-items-center pt-2"
+        style="padding-right: 0.5rem !important;">
+        <!-- <div class="col-10 p-0">
+          <img src="../../../assets/images/WhatsApp-logo.png">
+        </div> -->
+        <!-- search input based on number and name  -->
+        <div class="px-0 d-flex justify-content-between align-items-center"
+          [ngClass]="roleid == '1' ? 'col-10' : 'col-11'">
+          <i class="fa fa-search search_in"></i>
+          <input class="whatsapp-input form-control search_input" type="text" [(ngModel)]="search_client_name"
+            placeholder="Search by Name/Number" (ngModelChange)="searchSubject.next($event)" autocomplete="off"
+            style="border-radius: 8px;width: 100%;height: 2.3em;padding: .2rem 4rem;color: #54656f;background: #f0f2f5;" />
+          <span class="search_close_icon" (click)="clearSearchedResult()" *ngIf="search_client_name?.length > 0"><i
+              class="fa fa-times"></i></span>
+        </div>
+        <!-- search input based on number and name  -->
+        <div class="d-flex gap justify-content-around align-items-center cursor-pointer p-0"
+          [ngClass]="roleid == 1 ? 'col-2' : 'col-1'">
+          <span class="cursor-pointer" (click)="globalSearch()" *ngIf="roleid == 1">
+            <img src="../../../assets/images/top-search_whatsapp.svg">
+          </span>
+          <span class="list_more_options cursor-pointer">
+            <div class="dropleft cursor-pointer">
+              <a class="" id="more_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" style="font-size: 15px;color: #54656f !important;"></i>
+              </a>
+              <!-- <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+              style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+              <a class="dropdown-item dropDownCursor" (click)="getSelectedGroupMem()">New Group</a>
+            </div> -->
+            </div>
+          </span>
+        </div>
+      </div>
+      <!-- search input based on number and name  -->
+      <!-- <div class="col-12 px-0 d-flex justify-content-between align-items-center">
+        <i class="fa fa-search search_in"></i>
+        <input class="whatsapp-input form-control search_input" type="text" [(ngModel)]="search_client_name"
+          placeholder="Search by Name/Number" (keyup)="searchClient()" autocomplete="off"
+          style="border-radius: 8px;width: 100%;height: 2.3em;padding: .2rem 4rem;color: #54656f;background: #f0f2f5;" />
+      </div> -->
+      <!-- search input based on number and name  -->
+      <!-- executives filter for Admin account -->
+      <div class="button_section col-12 p-0 py-2 d-flex justify-content-between">
+        <div class="chats_cat_types d-flex justify-content-evenly" style="gap: 0.25rem !important;">
+          <a class="add_class all_chat active" routerLink="/client-chat" [queryParams]="{allchat:1}"
+            (click)="selectedChatType('all')">All</a>
+          <a class="add_class unread_chat" routerLink="/client-chat" [queryParams]="{unreadchat:1}"
+            (click)="selectedChatType('unread')">Unread</a>
+        </div>
+        <div class="admin_executives_filter" [hidden]="roleid != 1">
+          <p-dropdown id="rm_dropdown" [options]="searchExecutivesList" optionLabel="Name" filter="true"
+            [(ngModel)]="selectedexec" defaultLabel="Select Executive" placeholder="Select Executive"
+            (onChange)="executiveSelect($event)">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <!-- executives filter for Admin account *ngIf="roleid == 1"-->
+    <!-- list of client chat -->
+    <div class="chat-list-container" style="overflow: scroll;cursor: pointer;" *ngIf="clientsList?.length > 0">
+      <div class="col-12 p-0 chat_list d-flex" *ngFor="let exec of clientsList; let index = index"
+        [ngClass]="{'selected': exec.customer_number == chatid }" (click)="selectedchat(exec,index)">
+        <!-- user icon img  -->
+        <div class="col-2 px-1 text-center">
+          <img src="../../../assets/images/user-logo-whatsapp.png">
+        </div>
+        <!-- user icon img  -->
+        <div class="col-10 p-0">
+          <!-- name and last message date & time  -->
+          <div class="col-12 px-2 d-flex justify-content-between">
+            <div class="col-10 p-0 show_text_mes">
+              <h5 class="m-0">{{exec.customer_name}}</h5>
+            </div>
+            <div class="col-2 p-0">
+              <span class="text-color-gr " [ngStyle]="{'color' : exec.unreadcount > 0 ? '#25D366' : '#667781'}"
+                style="text-align: end;">{{(exec.latest_message_time?exec.latest_message_time:'') | date: 'hh:mm a'}}
+              </span>
+            </div>
+          </div>
+          <!-- name and last message date & time  -->
+          <!-- last message and count  -->
+          <div class="col-12 p-0 px-2 d-flex justify-content-between">
+            <div class="col-10 p-0 show_text_mes">
+              <span class="text-color-gr col-10 p-0"
+                [ngStyle]="{'font-weight' : exec.unreadcount > 0 ? '700' : '400' ,  'color': exec.unreadcount > 0 ? '#3B4A54' : '#667781' }">
+                <img src="../../../assets/images/status-dblcheck.png" alt=""
+                  *ngIf="exec.unreadcount == 0 && exec.latest_message_content">
+                {{(exec.latest_message_content?exec.latest_message_content:'')}}
+              </span>
+            </div>
+            <div class="col-2 p-0 d-flex justify-content-center">
+              <span class="unread_messages" *ngIf="exec.unreadcount > 0"
+                [ngStyle]="{'width' : exec.unreadcount > '99' ? 'auto' : '20px'}">{{exec.unreadcount}}
+              </span>
+            </div>
+          </div>
+          <!-- last message and count  -->
+        </div>
+      </div>
+      <div *ngIf=searchfilterLoader class="loader-inside-container">
+        <!-- <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> -->
+        <img src="../../../assets/images/infinity_loader.gif">
+      </div>
+    </div>
+    <div class="chat-list-container d-flex justify-content-center align-items-center"
+      style="overflow: scroll;cursor: pointer;" *ngIf="clientsList?.length == 0">
+      <span style="font-size: 22px;font-weight: bold;font-style: italic;color: #008069 !important;">No Active
+        Chats</span>
+    </div>
+    <!-- list of client chat -->
+  </div>
+
+  <div class="col-4 py-0 px-1 whatsup-chat-main-container" *ngIf="isSearchGlobal">
+    <!-- Lead search section  -->
+    <div style="position: sticky;z-index: 1;top: 0;">
+      <div class="col 12 px-3 d-flex justify-content-start align-items-center py-3"
+        style="padding-right: 0.5rem !important;gap: 1.5rem;">
+        <span class="cursor-pointer" (click)="goBackToHome()"><i class="fa fa-arrow-left"
+            style="font-size: 20px;"></i></span>
+        <span>Lead Search</span>
+      </div>
+      <!-- global search input based on number and name  -->
+      <div class="col-12 px-0 d-flex justify-content-between align-items-center">
+        <i class="fa fa-search search_in"></i>
+        <input class="whatsapp-input form-control search_input" type="text" [(ngModel)]="global_search_client"
+          placeholder="Search by Name/Number" (keyup)="globalSearchClient()" autocomplete="off"
+          style="border-radius: 50px;width: 100%;height: 2.3em;padding: .2rem 4rem;color: #54656f;background: #ffffff;" />
+      </div>
+      <!-- global search input based on number and name  -->
+
+    </div>
+    <!-- Lead search section  -->
+    <!-- list of client chat -->
+    <div class="chat-list-container" style="overflow: scroll;cursor: pointer;height: calc(100vh - 128px) !important"
+      *ngIf="clientsList?.length > 0">
+      <div class="col-12 p-0 chat_list d-flex" *ngFor="let exec of clientsList; let index = index"
+        [ngClass]="{'selected': exec.customer_number == chatid}" (click)="selectedchat(exec,index)">
+        <!-- user icon img  -->
+        <div class="col-2 px-1 text-center">
+          <img src="../../../assets/images/user-logo-whatsapp.png">
+        </div>
+        <!-- user icon img  -->
+        <div class="col-10 p-0">
+          <!-- name and last message date & time  -->
+          <div class="col-12 px-2 d-flex justify-content-between">
+            <div class="col-10 p-0 show_text_mes">
+              <h5 class="m-0">{{exec.customer_number}}</h5>
+            </div>
+            <div class="col-2 p-0">
+              <span class="text-color-gr " [ngStyle]="{'color' : exec.unreadcount > 0 ? '#25D366' : '#667781'}"
+                style="text-align: end;">{{(exec.latest_message_time?exec.latest_message_time:'') | date: 'hh:mm a'}}
+              </span>
+            </div>
+          </div>
+          <!-- name and last message date & time  -->
+          <!-- last message and count  -->
+          <div class="col-12 p-0 px-2 d-flex justify-content-between">
+            <div class="col-10 p-0 show_text_mes">
+              <span class="text-color-gr col-10 p-0"
+                [ngStyle]="{'font-weight' : exec.unreadcount > 0 ? '700' : '400' ,  'color': exec.unreadcount > 0 ? '#3B4A54' : '#667781' }">
+                <img src="../../../assets/images/status-dblcheck.png" alt="" *ngIf="exec.unreadcount == 0">
+                {{(exec.latest_message_content?exec.latest_message_content:'')}}
+              </span>
+            </div>
+            <div class="col-2 p-0 d-flex justify-content-center">
+              <span class="unread_messages" *ngIf="exec.unreadcount > 0"
+                [ngStyle]="{'width' : exec.unreadcount > '99' ? 'auto' : '20px'}">{{exec.unreadcount}}
+              </span>
+            </div>
+          </div>
+          <!-- last message and count  -->
+        </div>
+      </div>
+      <div *ngIf=searchfilterLoader class="loader-inside-container">
+        <!-- <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> -->
+        <img src="../../../assets/images/infinity_loader.gif">
+      </div>
+    </div>
+    <div class="chat-list-container d-flex justify-content-center align-items-center"
+      style="overflow: scroll;cursor: pointer;" *ngIf="clientsList?.length == 0">
+      <span style="font-size: 22px;font-weight: bold;font-style: italic;color: #008069 !important;">No Active
+        Chats</span>
+    </div>
+    <!-- list of client chat -->
+  </div>
+
+
+  <div class="py-0 px-0 single-chat-container" *ngIf="selectedPersonChat"
+    [ngClass]="isSearch == true  ? 'col-5' : 'col-8'">
+    <!-- selected client name and search icons  -->
+    <div class="col-12 p-0 chat_list d-flex" style="height: 50px !important;">
+      <div class="col-1 p-0 text-center">
+        <span><img src="../../../assets/images/user-logo-whatsapp.png" style="width: 35px;height:35px;"></span>
+      </div>
+      <div class="col-9 p-0">
+        <div class="col-12 p-0 d-flex justify-content-between show_text_mes">
+          <span style="font-size: 16px;" class="m-0">{{selectedPersonChat.customer_name}}</span>
+        </div>
+      </div>
+      <div class="col-2 p-0 d-flex" style="justify-content: space-evenly;">
+        <span (click)="searchDetailMessage()">
+          <i class="fa fa-search cursor-pointer" style="font-size: 16px;color: #54656F;"></i>
+        </span>
+        <span>
+          <div>
+            <a class="dropleft cursor-pointer" id="more_btn2" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <i class="fa fa-ellipsis-v" style="font-size: 16px;color: #54656F;"></i>
+            </a>
+            <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn2"
+              style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+              <a class="dropdown-item dropDownCursor" (click)="closechat()">Close Chat</a>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <!-- selected client name and search icons  -->
+
+    <!-- assignees list  -->
+    <div class="col-12 assignees_list d-flex gap align-items-center " *ngIf="roleid == 1 || roleid == 2">
+      <div class="" style="color: #3F3F3F;">Assignees : </div>
+      <div class="d-flex gap-2">
+        <div *ngFor="let assignee of assignedExecutivesList">
+          <label class="d-flex assignee_text_name mb-0">
+            {{ assignee.exec_name }}
+            <input type="radio" class="radiocheck" name="select4" [checked]="assignee.exec_id == checkedExecutive"
+              [value]="assignee.exec_id" (click)="assigneechange($event)" />
+            <span class="radio-mark"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- assignees list  -->
+
+    <!-- message list container for the selected Chat  -->
+    <div #messageContainer class="col-12 p-0 text_process pt-1 px-0"
+      [ngStyle]="{height : roleid == 1 || roleid == 2 ? 'calc(100dvh - 185px)' : 'calc(100dvh - 155px)'}"
+      (scroll)="onScroll()">
+      <div *ngFor="let message of messageList;let i = index;trackBy: trackByFn" class="px-4">
+        <!-- This is receiver sending message code  -->
+        <div class="col-12 px-0 row m-0 py-1 "
+          *ngIf="(message.sender_id != userid && message?.sender_id != checkedExecutive) && message.item_type == 'message'"
+          [attr.id]="'chat-item-' + message.item_id">
+          <div class="p-0"
+            [ngClass]="[isSearch == true  ? 'col-6' : 'col-11' , selectedMessageOption == 'forward' ? 'dis' : '']">
+            <div *ngIf="selectedMessageOption == 'forward'" class="pl-2">
+              <input type="checkbox" [checked]="selectedMessages.includes(message)"
+                (click)="onMessageSelect($event,message)">
+            </div>
+            <span *ngIf="message?.deleted == '1' && message?.sender_id != userid" class="delete_message">This message
+              was deleted.</span>
+            <div class="message-bubble" style="border-top-left-radius: 0 !important;" *ngIf="message?.deleted != '1'">
+              <span class="arrow" [ngStyle]="{'display' : selectedMessageOption == 'forward' ? 'none' : ''}"><i
+                  class="fa fa-play" style="transform: rotate(60deg);color: #ffffff;"></i></span>
+              <div class="dropright message_options_icon">
+                <a class="more_options_down_arrow" id="more_btn1" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false" (click)="externalOptionMes(message)">
+                  <i class="fa fa-chevron-down" style="font-size: 14px;"></i>
+                </a>
+                <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+                  style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                  <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('reply',message)"><i
+                      class="fa fa-reply"></i> Reply</a>
+                  <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('forward',message)"><i
+                      class="fa fa-share"></i> Forward</a>
+                  <a class="dropdown-item dropDownCursor message-options"
+                    (click)="messageOptions('replywithmessage',message)"><i class="fa fa-reply"></i> Reply with
+                    Message</a>
+                </div>
+              </div>
+              <div class="forwarded_text" *ngIf="message.forwarded == '1'"><i class="fa fa-share"></i>Forwarded</div>
+              <div class="message-content">
+                <div class="message-text-container">
+                  <div class="replied_message" *ngIf="message.replied_message && message.replied_to_whom"
+                    (click)="searchedMessageClicked(message,'rep')">
+                    <span *ngIf="message?.replied_to_whomid != userid"
+                      style="color: #2196F3;font-weight: 600;">{{message?.replied_to_whom}}</span>
+                    <span *ngIf="message?.replied_to_whomid == userid"
+                      style="color: #2196F3;font-weight: 600;">You</span>
+                    <div class="show_text_mes">{{message.replied_message}}</div>
+                  </div>
+                  <div class="message-text" [title]="message.content" (copy)="onCopy($event, message.content)">
+                    <ng-container *ngFor="let part of message.content | highlightNumbers">
+                      <!-- Render line breaks -->
+                      <ng-container *ngIf="part.isLineBreak; else textPart">
+                        <br />
+                      </ng-container>
+
+                      <!-- Render regular or phone text -->
+                      <ng-template #textPart>
+                        <span *ngIf="part.isPhoneNumber" class="mobile-number"
+                          (click)="numberClicked(part.text, $event)">
+                          {{ part.text }}
+                        </span>
+                        <span *ngIf="!part.isPhoneNumber && !part.isBold && !part.isItalic && !part.isLink">
+                          {{ part.text }}
+                        </span>
+                        <strong *ngIf="!part.isPhoneNumber && part.isBold">
+                          {{ part.text }}
+                        </strong>
+                        <em *ngIf="!part.isPhoneNumber && part.isItalic">
+                          {{ part.text }}
+                        </em>
+                        <a *ngIf="!part.isPhoneNumber && part.isLink" [href]="part.text" target="_blank"
+                          rel="noopener noreferrer" class="hyperlink">
+                          {{ part.text }}
+                        </a>
+                      </ng-template>
+                    </ng-container>
+                  </div>
+                  <div class="timestamp">
+                    <span *ngIf="message.edited == '1'" class="edited_text px-1">Edited</span>
+                    <span *ngIf="message.edited == '1'">{{(message.updated_at?message.updated_at:'') | date: 'hh:mm
+                      a'}}</span>
+                    <!-- *ngIf="message.edited == '0'" -->
+                    <span *ngIf="message.edited == '0'">{{(message.created_at?message.created_at:'') | date: 'hh:mm
+                      a'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- This is receiver sending attachment code  -->
+        <div class="col-12 px-0 row m-0 py-1"
+          *ngIf="(message.sender_id != userid && message?.sender_id != checkedExecutive) && message.item_type == 'message_with_attachment'">
+          <div class="p-0" [ngClass]="isSearch == true  ? 'col-6' : 'col-11'">
+            <span *ngIf="message?.deleted == '1' && message?.sender_id != userid" class="delete_message">This message
+              was deleted.</span>
+            <div class="message-bubble p-0" style="border-top-left-radius: 0 !important;">
+              <span class="arrow"><i class="fa fa-play" style="transform: rotate(60deg);color: #ffffff;"></i></span>
+              <div class="dropleft message_options_icon">
+                <a class="more_options_down_arrow_attachment" id="more_btn1" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false" (click)="externalOptionMes(message)">
+                  <i class="fa fa-chevron-down" style="font-size: 14px;"></i>
+                </a>
+                <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+                  style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                  <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('reply',message)"><i
+                      class="fa fa-reply"></i> Reply</a>
+                  <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('forward',message)"><i
+                      class="fa fa-share"></i> Forward</a>
+                </div>
+              </div>
+              <div class="forwarded_text" *ngIf="message.forwarded == '1'"><i class="fa fa-share"></i>Forwarded</div>
+              <!-- <div class="message-bubble p-0" *ngIf="message.deleted != '1'">
+                <span class="arrow"><i class="fa fa-play" style="transform: rotate(60deg);color: #ffffff;"></i></span>
+                <div class="dropleft message_options_icon">
+                  <a class="more_options_down_arrow" id="more_btn1" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false" (click)="externalOptionMes(message)">
+                    <i class="fa fa-chevron-down" style="font-size: 14px;"></i>
+                  </a>
+                  <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+                    style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                    <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('reply',message)"><i
+                        class="fa fa-reply"></i> Reply</a>
+                    <a class="dropdown-item dropDownCursor message-options"
+                      (click)="messageOptions('forward',message)"><i class="fa fa-share"></i> Forward</a>
+                  </div>
+                </div> -->
+              <div class="message-content">
+                <div class="message-text">
+                  <div class="col-12 p-0">
+                    <div class="">
+                      <div class="image-container d-flex justify-content-center" style="padding: 5px;">
+                        <ng-container *ngIf="message.attachment_type == 'application/pdf'">
+                          <div class="d-flex" style="justify-content: space-evenly;gap: 0.5rem;">
+                            <div class="d-flex align-items-center"><i class="far fa-file-pdf"
+                                style="color: #ff0000;font-size:100px;"></i></div>
+                            <div class="">
+                              <span style="font-size: 14px;">{{message.attachment_name}}</span>
+                            </div>
+                            <div class="d-flex align-items-end cursor-pointer">
+                              <i class="fa fa-download" (click)="downloadPDFClient(message)"></i>
+                            </div>
+                          </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="message.attachment_type == 'video/mp4'">
+                          <video width="150" height="100%" controls>
+                            <source [src]="getImagesFilesUrlForClient(message)" type="video/mp4">
+                            Your browser does not support the video tag.
+                          </video>
+                        </ng-container>
+
+                        <ng-container *ngIf="message.attachment_type == 'audio/mpeg'">
+                          <div style="flex-direction: column;">
+                            <audio class="media-item" [src]="getImagesFilesUrlForClient(message)" controls>
+                              Your browser does not support the audio element.
+                            </audio>
+                          </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="message.attachment_type == 'image/jpeg'">
+                          <img class="mr-2 p-3 cursor-pointer" [src]="getImagesFilesUrlForClient(message)" height="100%"
+                            width="150" (click)="showImageInTab(message)" alt="Uploaded Image">
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="timestamp"> {{(message.created_at ? message.created_at:'') | date: 'hh:mm a'}}</div>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 p-0 row m-0 py-1 d-flex justify-content-center"
+          *ngIf="message.item_type == 'member_left' || message.item_type == 'member_removed' || message.item_type == 'message_date'">
+          <!-- <span class="left_mem" *ngIf="message.item_type == 'member_left' ">{{(message.event_admin_id == userid?
+              'you' : (message.event_user_id == userid ? 'you' : message.sender_name))}} left</span>
+            <span class="left_mem" *ngIf="message.item_type == 'member_removed' ">{{(message.event_admin_id == userid ?
+              'you' : message.event_admin_name)}} removed {{(message.event_user_id == userid ? 'you' :
+              message.sender_name)}}</span> -->
+          <span class="left_mem" *ngIf="message.item_type == 'message_date'" [attr.id]="'date-' + message.created_at">{{
+            message?.created_at }}</span>
+        </div>
+
+        <!-- if the logged-in person sending message code  -->
+        <div class="col-12 px-0 py-1 d-flex gap align-items-center"
+          *ngIf="(message.sender_id == userid || message?.sender_id == checkedExecutive) && message.item_type == 'message'"
+          [attr.id]="'chat-item-' + message.item_id"
+          [ngStyle]="{'justify-content' : selectedMessageOption == 'forward' ? 'space-between' : 'end'}">
+          <div *ngIf="selectedMessageOption == 'forward'" class="pl-2">
+            <input type="checkbox" [checked]="selectedMessages.includes(message)"
+              (click)="onMessageSelect($event,message)">
+          </div>
+          <span *ngIf="message?.deleted == '1' && message?.sender_id == userid" class="delete_message"
+            style="background-color: #d9fdd3 !important;">You deleted this message.</span>
+          <div class="message-bubble"
+            style="background-color: #d9fdd3 !important;border-top-right-radius: 0 !important;"
+            *ngIf="message.deleted != '1'">
+            <span class="own_arrow"><i class="fa fa-play" style="transform: rotate(0deg);color: #d9fdd3;"></i></span>
+            <!-- <div class="dropleft message_options_icon">
+              <a class="more_options_down_arrow" id="more_btn1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" (click)="externalOptionMes(message)">
+                <i class="fa fa-chevron-down" style="font-size: 14px;"></i>
+              </a>
+              <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+                style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('reply',message)"><i
+                    class="fa fa-reply"></i> Reply</a>
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('forward',message)"><i
+                    class="fa fa-share"></i> Forward</a>
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('edit',message)"
+                  *ngIf="isEditenable"><i class="fa fa-pencil-alt"></i> Edit</a>
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('delete',message)"
+                  *ngIf="isDelete"><i class="fa fa-trash"></i> Delete</a>
+                <a class="dropdown-item dropDownCursor message-options"
+                  (click)="messageOptions('replywithmessage',message)"><i class="fa fa-reply"></i> Reply with
+                  Message</a>
+              </div>
+            </div> -->
+            <div class="forwarded_text" *ngIf="message?.forwarded == '1'"><i class="fa fa-share"></i>Forwarded</div>
+            <div class="message-content">
+              <div class="message-text-container">
+                <div class="replied_message" *ngIf="message.replied_message && message.replied_to_whom"
+                  (click)="searchedMessageClicked(message,'rep')">
+                  <span *ngIf="message?.replied_to_whomid != userid"
+                    style="color: #2196F3;font-weight: 600;">{{message?.replied_to_whom}}</span>
+                  <span *ngIf="message?.replied_to_whomid == userid" style="color: #2196F3;font-weight: 600;">You</span>
+                  <div class="show_text_mes">{{message.replied_message}}</div>
+                </div>
+                <div class="message-text" [title]="message.content" (copy)="onCopy($event, message.content)">
+                  <ng-container *ngFor="let part of message.content | highlightNumbers">
+                    <!-- Render line breaks -->
+                    <ng-container *ngIf="part.isLineBreak; else textPart">
+                      <br />
+                    </ng-container>
+
+                    <!-- Render regular or phone text -->
+                    <ng-template #textPart>
+                      <span *ngIf="part.isPhoneNumber" class="mobile-number" (click)="numberClicked(part.text, $event)">
+                        {{ part.text }}
+                      </span>
+                      <span *ngIf="!part.isPhoneNumber && !part.isBold && !part.isItalic && !part.isLink">
+                        {{ part.text }}
+                      </span>
+                      <strong *ngIf="!part.isPhoneNumber && part.isBold">
+                        {{ part.text }}
+                      </strong>
+                      <em *ngIf="!part.isPhoneNumber && part.isItalic">
+                        {{ part.text }}
+                      </em>
+                      <a *ngIf="part.isLink " [href]="part.text" target="_blank" rel="noopener noreferrer"
+                        class="hyperlink">
+                        {{ part.text }}
+                      </a>
+                    </ng-template>
+                  </ng-container>
+                </div>
+                <div class="timestamp">
+                  <span *ngIf="message.edited == '1'" class="edited_text px-1">Edited</span>
+                  <span *ngIf="message.edited == '1'">{{(message.updated_at?message.updated_at:'') | date: 'hh:mm
+                    a'}}</span>
+                  <span *ngIf="message.edited == '0'">{{(message.created_at?message.created_at:'') | date: 'hh:mm
+                    a'}}</span>
+                  <img src="../../../assets/images/status-dblcheck.png" style="width: 14px;" *ngIf="message.item_id">
+                  <i class="far fa-clock" style="color: #6A7175;font-size: 12px;font-weight: 500;"
+                    *ngIf="message.item_id == '' || message.item_id == undefined || message.item_id == null"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- if the logged-in person sending attachment code  -->
+        <div class="col-12 px-0 py-1 d-flex justify-content-end"
+          *ngIf="(message.sender_id == userid || message?.sender_id == checkedExecutive) && message.item_type == 'message_with_attachment'">
+          <span *ngIf="message?.deleted == '1' && message?.sender_id == userid" class="delete_message"
+            style="background-color: #d9fdd3 !important;">You deleted this message.</span>
+          <div class="message-bubble p-0"
+            style="background-color: #d9fdd3 !important;border-top-right-radius: 0 !important;"
+            *ngIf="message.deleted != '1'">
+            <span class="own_arrow"><i class="fa fa-play" style="transform: rotate(0deg);color: #d9fdd3;"></i></span>
+            <!-- <div class="dropleft message_options_icon">
+              <a class="more_options_down_arrow_attachment" id="more_btn1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" (click)="externalOptionMes(message)">
+                <i class="fa fa-chevron-down" style="font-size: 14px;"></i>
+              </a>
+              <div class="dropdown-menu propertyBasedFilter" aria-labelledby="more_btn1"
+                style="cursor:pointer; max-height: 250px;max-width: auto;overflow-y: auto;overflow-x: hidden;">
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('reply',message)"><i
+                    class="fa fa-reply"></i> Reply</a>
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('forward',message)"><i
+                    class="fa fa-share"></i> Forward</a>
+                <a class="dropdown-item dropDownCursor message-options" (click)="messageOptions('delete',message)"><i
+                    class="fa fa-trash"></i> Delete</a>
+                <a class="dropdown-item dropDownCursor message-options"
+                  (click)="messageOptions('replywithmessage',message)"><i class="fa fa-reply"></i> Reply with
+                  Message</a>
+              </div>
+            </div> -->
+            <div class="forwarded_text" *ngIf="message?.forwarded == '1'"><i class="fa fa-share"></i>Forwarded</div>
+            <div class="message-content">
+              <div class="message-text">
+                <div class="col-12 p-0">
+                  <div class="">
+                    <div class="image-container d-flex justify-content-center" style="padding: 5px;">
+                      <ng-container *ngIf="message?.attachment_name?.endsWith('.pdf'); else checkImageOrVideo">
+                        <div class="d-flex" style="justify-content: space-evenly;gap: 0.5rem;">
+                          <div class="d-flex align-items-center"><i class="far fa-file-pdf"
+                              style="color: #ff0000;font-size: xx-large;"></i></div>
+                          <div class="">
+                            <span style="font-size: 14px;">{{message.attachment_name}}</span>
+
+                            <!-- <div style="font-size: 12px;">
+                              <span>. PDF</span>
+                            </div> -->
+
+                          </div>
+                          <!-- <div class="d-flex align-items-end cursor-pointer">
+                            <i class="fa fa-download" (click)="downloadPDF(message)"></i>
+                          </div> -->
+                        </div>
+                      </ng-container>
+
+                      <ng-template #checkImageOrVideo>
+                        <ng-container *ngIf="isVideo(message.attachment_name); else checkAudio">
+                          <video width="150" height="100%" controls>
+                            <source [src]="getImagesFilesUrl(message)" type="video/mp4">
+                            Your browser does not support the video tag.
+                          </video>
+                        </ng-container>
+
+                        <ng-template #checkAudio>
+                          <ng-container *ngIf="isAudio(message.attachment_name); else showImage">
+                            <div style="flex-direction: column;">
+                              <audio class="media-item"
+                                src="https://test-chat.right2shout.in{{message.attachment_path}}" controls>
+                                Your browser does not support the audio element.
+                              </audio>
+                            </div>
+                          </ng-container>
+                        </ng-template>
+
+                        <ng-template #showImage>
+                          <img class="mr-2 p-3 cursor-pointer" [src]="getImagesFilesUrl(message)" height="100%"
+                            width="150" (click)="showImageInTab(message)" alt="Uploaded Image">
+                        </ng-template>
+                      </ng-template>
+                      <!-- <div>{{message.message}}</div> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="timestamp"> {{(message.created_at?message.created_at:'') | date: 'hh:mm a'}}
+                  <!-- <i class="fa fa-check-double" style="color: #2196F3;"></i> -->
+                  <img src="../../../assets/images/status-dblcheck.png" style="width: 14px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- to dispaly the list of selected files   [ngClass]="roleid == 1 || roleid == 2 ? 'attachment_section_admin' : 'attachment_section_exec'"-->
+
+      <div *ngIf="shouldShowArrow" class="showArrow"><i class="fa fa-arrow-down icon_btn"
+          (click)="scrollToBottom()"></i>
+      </div>
+    </div>
+    <!-- message list container for the selected Chat  -->
+
+    <!-- lower Send photos and send message section  -->
+    <div class="col-12 send_text row m-0" *ngIf="selectedMessageOption != 'forward'">
+      <div class="col-12 p-0 row m-0 " [hidden]="imagesFiles?.length == 0">
+        <!-- <div class="col-12 p-0 m-0 attachment_section" [hidden]="imagesFiles?.length == 0"> -->
+        <div class="col-2"
+          style="border-right: 1px solid lightgrey;height: 80px;display: flex;justify-content: center;align-items: center;"
+          *ngFor="let img of imagesFiles; let i = index;">
+          <div class="d-flex">
+            <span class="closefile"><i class="fa fa-times" (click)="removeFiles(img,i)"></i></span>
+            <div class="image-container d-flex justify-content-center">
+              <ng-container *ngIf="img?.name?.endsWith('.pdf'); else checkImageOrVideo">
+                <img class="media-item" src="../../../assets/images/pdfred.png" style="max-width: 60% !important;"
+                  alt="PDF Icon">
+              </ng-container>
+
+              <!-- Else, show image for JPEG/PNG -->
+              <ng-template #checkImageOrVideo>
+                <ng-container *ngIf="isVideo(img?.name); else checkAudio">
+                  <video class="media-item" [src]="imageUrls[i]" controls>
+                    Your browser does not support the video tag.
+                  </video>
+                </ng-container>
+
+                <ng-template #checkAudio>
+                  <ng-container *ngIf="isAudio(img?.name); else showImage">
+                    <div style="flex-direction: column;">
+                      <audio class="media-item" [src]="imageUrls[i]" controls style="width: 140px; height: 30px;">
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  </ng-container>
+                </ng-template>
+
+                <!-- Show image for JPEG/PNG -->
+                <ng-template #showImage>
+                  <img class="media-item" [src]="imageUrls[i]" alt="Uploaded Image">
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+      <div class="col-12 px-1">
+        <div *ngIf="selectedMessageOption == 'reply' || selectedMessageOption == 'replywithmessage'"
+          class="reply_message">
+          <span *ngIf="selectedOptionText?.sender_id != userid"
+            style="color: #12B28C;font-weight: 600;">{{selectedOptionText?.sender_name}}</span>
+          <span *ngIf="selectedOptionText?.sender_id == userid" style="color: #12B28C;font-weight: 600;">You</span>
+          <div class="d-flex justify-content-between">
+            <span class="show_text_mes">
+              {{selectedOptionText?.content}}
+            </span>
+            <span class="cursor-pointer" (click)="closeReplyContent()">
+              <i class="fa fa-times-circle" style="font-weight: 400;font-size: 16px;"></i>
+            </span>
+          </div>
+        </div>
+        <span *ngIf="!isMessageBlocked">
+          <span>
+            <span class="icon_plus cursor-pointer" (click)="addimages()" style="left: 15px;bottom: 6px;">
+              <i class="fa fa-plus" style="font-size: 20px;"></i>
+            </span>
+            <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 100MB" type="file"
+              data-max-size="100000000" (change)="Imageuploads('0',$event)" class="custom-file-input"
+              id="imagesFile{{'0'}}" name="filename" style="display: none;" multiple>
+            <label class="custom-file-label1 file-label" for="imagesFile{{'0'}}" style="display: none;"><span>Upload
+                Files</span><i class="fa fa-upload"></i></label>
+          </span>
+          <textarea class="form-control message_input" id="chatting_input_field" type="text" [(ngModel)]="send_message"
+            autocomplete="off" placeholder="Type a Message" (keydown)="onKeyUp($event)" [rows]="textareaRows"
+            style="padding: .375rem 2.5rem !important;border-radius: 10px !important;"
+            (input)="adjustRows()"></textarea>
+        </span>
+
+        <span class="text-center" *ngIf="isMessageBlocked" style="color: #A8A8A8;">
+          <p>You can't send messages to this group because you're no longer a member.</p>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="col-12 d-flex justify-content-between align-items-center pt-3 row m-0"
+      *ngIf="selectedMessageOption == 'forward'">
+      <!-- to dispaly the list of selected files  -->
+      <span class="d-flex justify-content-center align-items-center" style="gap: 1rem;font-size: 16px;"> <i
+          class="fa fa-times" (click)="closeForward()"></i> {{selectedMessages?.length}} Selected</span>
+      <span *ngIf="selectedMessages?.length > 0" (click)="moveToForwardModal()"> <i class="fa fa-share"
+          style="font-size: 16px;"></i></span>
+    </div>
+    <!-- lower Send photos and send message section  -->
+  </div>
+
+  <div class="p-0 col-8 d-flex justify-content-center align-items-center" *ngIf="!selectedPersonChat">
+    <img src="../../../assets/images/whatsapp-chat-bg.png">
+  </div>
+
+  <div class="col-3 search_mes p-0" *ngIf="isSearch == true">
+    <div>
+      <div class="col-12 py-3 d-flex" style="border-bottom: 2px solid #667781;">
+        <div class="col-1 p-0">
+          <i class="fa fa-times cursor-pointer" style="color: #3b4a54;;" (click)="closeMessageSearch()"></i>
+        </div>
+        <div class="col-11 p-0">
+          Search messages
+        </div>
+      </div>
+      <div class="col-12 py-2" style="border-bottom: 1px solid #e9edef;">
+        <!-- <div class="col-12 p-0"> -->
+        <i class="fa fa-search mes_search_icon"></i>
+        <input class="form-control search_messages" type="text" [(ngModel)]="messages_search" placeholder="Search"
+          (keyup)="searchMessagesInp()" autocomplete="off"
+          style="border-radius: 4px ;width: 100%;height: 2.71428571em;padding: .375rem 2rem;" />
+        <!-- </div> -->
+      </div>
+
+      <div class="col-12 search_messages_body"
+        *ngIf=" searchedMessageList?.length == 0 && (messages_search == '' || messages_search == undefined || messages_search == null)">
+        Search for messages within {{selectedPersonChat?.customer_name}}
+      </div>
+
+      <div class="col-12 search_messages_body"
+        *ngIf=" searchedMessageList?.length == 0 && (messages_search != '' && messages_search != undefined && messages_search != null)">
+        No messages found.
+      </div>
+
+      <div class="col-12 search_message_container" *ngIf=" searchedMessageList?.length > 0">
+        <div class="p-1 cursor-pointer" style="border-bottom: 1px solid rgb(209, 206, 206);color: #878989;"
+          *ngFor="let searchedMes of searchedMessageList" (click)="searchedMessageClicked(searchedMes,'search')">
+          <div class="" style="font-size: 10px;">{{searchedMes.created_at | date: 'dd/mm/yyyy'}} ,
+            {{searchedMes.created_at | date: 'hh:mm a'}}</div>
+          <i class="fa fa-check-double" style="color: #2196F3;"></i> {{searchedMes.content}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="row main_count_header d-flex justify-content-center align-items-center" *ngIf="roleid == 1"
+  style="height:100%">
+  <span style="font-size: 30px;font-weight: 700;"><i class="fab fa-whatsapp" style="color: #12B28C;"></i> What's App
+    chat feature coming Soon....</span>
+</div> -->
+
+<!-- ----------------------------Forward Message Popup Modal ---------------------------- -->
+<button type="button" data-toggle="modal" data-target="#forward_message_modal" id="forward_message_btn"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="forward_message_modal" role="dialog">
+  <div class="modal-dialog create_group_modal" style="max-width: 350px !important;">
+    <div class="modal-content" style="border-radius: 15px !important;">
+      <div class="modal-header" style="border-bottom:none !important">
+        <h4 class="modal-title">Forward To</h4>
+        <div>
+          <button type="button" class="close" data-dismiss="modal" id="forwardClose">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body col-12 py-0" style="overflow: auto;height: 80vh;">
+        <div class="add_mem_search">
+          <input class="form-control search_input" type="text" [(ngModel)]="executive_name" placeholder="Search"
+            (keyup)="searchForwardMessageExecutive()" autocomplete="off"
+            style="border-radius: 40px;width: 100%;height: 2.71428571em;padding: .375rem 2rem;" />
+        </div>
+        <div id="filtermaindiv" class="filterspan my-2 mx-1">
+          <span *ngFor="let exec of selectedForwardExecutives;let i = index">
+            <div class="p-1 chip">
+              {{exec.customer_name}}
+              <span class="closebtn" (click)="forwardExecutiveclose(i,exec)">&times;</span>
+            </div>
+          </span>
+        </div>
+        <div *ngIf="selectedForwardExecutives?.length > 0">
+          <button class="btn btn-warning" type="button" style="width: 100%;" (click)="forwardMessage()">Forward</button>
+        </div>
+        <div id="start5 group_members" *ngFor="let executive of clientsList ; let i = index" style="margin: 10px;">
+          <span class="">
+            <input type="checkbox" class="mr-4 loopcheckbox forwardhidecheckbox" id="forwardcheckboxid"
+              value="{{ executive }}" name='programmingForword' [checked]="isSelectedForwardExecutives(executive)"
+              (change)="getselectedForwardMessagesMembers()" [attr.data-assign]="executive | json"
+              style="display: none;" [disabled]="selectedForwardExecutives?.length >= 5">
+          </span>
+          <span class="icon_user mr-1" style="height: 30px !important;width: 30px !important;">
+            <i class="fa fa-users" style="font-size: 15px;"></i>
+          </span>
+          <span>{{executive.customer_name}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ---------------------------- Forward Message Popup Modal ---------------------------- -->
+
+<!-- Toast container -->
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" [class.show]="showToast"
+  [class.hide]="!showToast"
+  style="position: fixed; top: 4rem; right: 1rem; min-width: 250px; opacity: 1; transition: opacity 0.3s ease-in-out;background: #ffffff;">
+  <div class="toast-header">
+    <strong class="mr-auto">{{popoverNumber }} Number copied!</strong>
+    <button type="button" class="ml-2 mb-1 close" aria-label="Close" (click)="showToast = false">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- popover container -->
+<div *ngIf="popoverNumber" class="popover"
+  [ngStyle]="{'top.px': popoverPosition?.top + 10, 'left.px': popoverPosition?.left}"
+  (click)="$event.stopPropagation()">
+  <span style="font-size: 16px; display: flex;gap: 0.5rem;align-items: center;justify-content: center;cursor: pointer;"
+    (click)="copyNumber()"><i class="far fa-copy" style="font-size: 20px;"></i> Copy Phone Number</span>
+</div>
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<button type="button" data-toggle="modal" data-target="#isChecknumber" id="ischeckModal" style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="isChecknumber" tabindex="-1" role="dialog" data-backdrop="static"
+  aria-labelledby="defModalHead" style="top: 45px !important;overflow: hidden;" aria-hidden="true">
+  <div class="modal-dialog call_lead_modal modal-lg">
+    <div class="modal-content enquiry_modal_body" id="call_leads">
+      <div class="modal-header p-0 m-0">
+        <button type="button" class="close d-none" data-dismiss="modal" id="isCheckNumberclose"
+          style="font-size: 25px !important;font-weight: 500;color: #ffffff !important;"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <div class="spinner-border text-primary my-3">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div style="font-size: 16px; font-weight: 500;" class="pt-2">
+          We are checking the number in the database.<br>Please wait for a moment...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

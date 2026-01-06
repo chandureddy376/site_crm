@@ -1,0 +1,280 @@
+/* CENTER-CONTENTS */
+
+
+.body-cntnts {
+    margin: 15px 0px 10px 10px !important;
+    width: 98% !important;
+	/* padding-left: 13.8rem !important; */
+}
+
+.enquiry_content_main {
+    width: 100% !important;
+}
+
+.enquiry_content_main .button_section{
+	margin:0;
+	float: left;
+	width: 75%;
+}
+
+.enquiry_content_main tbody tr td a.id_style{
+    text-decoration: underline;
+}
+
+.enquiry_content_main .button_section:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+
+
+.enquiry_content_main .button_section .create_new_enquiry{
+	float:left;
+}
+
+.enquiry_content_main .button_section .leadassign{
+	float:left;
+}
+
+.main_count_header{
+    background: #0B7AB229;
+    color: #000000;
+	padding-bottom:0.5rem;
+	display: flex;
+	justify-content:space-between !important;
+	align-items: end !important;
+	gap: 1rem !important; 
+	padding-inline: 1.5rem !important; 
+	padding-top: 1rem;
+  }
+
+.enquiry_content_main .button_section .create_new_enquiry a{
+	background:#6a1abb;
+	text-decoration:none;
+	display:block;
+	font-size:14px;
+	color:#FFF;
+	font-weight:600;
+	padding:12px 15px;
+	cursor: pointer;
+	margin: 0 4px 0 0;
+}
+
+.enquiry_content_main .button_section .leadassign a{
+	background:#14a226;
+	text-decoration:none;
+	display:block;
+	font-size:14px;
+	color:#FFF;
+	font-weight:600;
+	padding:12px 15px;
+	cursor: pointer;
+}
+
+.enquiry_content_main .button_section .download{
+	float:right;
+}
+
+.enquiry_content_main .button_section .download a{
+	text-decoration:none;
+	display:block;
+	font-size:14px;
+	color:#252525;
+	font-weight:700;
+	padding:6px 15px 0px 15px;
+}
+
+/*============= Enquiry Table CSS Start =========================*/
+
+.enquiry_table_body{
+    /* height: 638px; */
+    font-size: 13px;
+    overflow-y:auto;
+    width: 100%;
+}
+
+.CSassigned_table{
+    height: 680px;
+	overflow: auto;
+	width: 100%;
+	padding-left: 0rem;
+}
+
+.table-container{
+	box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    padding-block: 1rem;
+    border-radius: 12px;
+    background-color: white;
+	margin-top: 10px !important;
+}
+
+  .content_table_main tbody tr{
+	  width: 100%;
+	  border-bottom: 1px solid #dddddd;
+	  padding: 8px 0px 2px 0px;
+  }
+
+  .content_table_main thead{
+	background-color: #05abe0;
+	position: sticky;
+	top: 0;	
+	z-index: 1;
+  }
+
+.content_table_main thead tr th{
+	padding:8px 25px 8px 15px;
+	color:#FFF;
+	font-size:13px;
+	font-weight:400;
+}
+
+.content_table_main tbody tr td{
+    padding: 6px 6px 6px 6px;
+    color: #666666;
+    height: 42px;
+}
+
+.content_table_main .enquiry_table_body{
+	border-bottom:1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style{
+	border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+.lead_count
+{
+	margin: 5px 0 0px 5px;
+	width: 17rem;
+}
+
+.lead_count label{
+	font-size: 17px;
+}
+
+::ng-deep bs-daterangepicker-container {
+	left: 500px !important;
+    top: 185px !important;
+}
+
+.calenderInput{
+	position: relative;
+}
+
+.calenderInputIcon{
+	position: absolute;
+	 top: 25%;
+	 right: 10px;
+	 opacity: 75%;color: #0B7AB2;
+}
+
+/* RESPONSIVE_STARTS */
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+
+	
+	.enquiry_content_main{
+		width: 100%;
+	}
+}
+
+@media (max-width: 1000px) {
+    .body-cntnts {
+        padding-left: 0.2rem !important;
+    }
+}
+
+.filterspan{
+	color: #9f9b9b;
+    display: flex;
+    gap: 0.1rem;
+    padding-bottom: 3px;
+    width: 100%;
+}
+
+.chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+	cursor: pointer;
+  }
+
+  .modal-dialog.assignlead_modal {
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.assign_table1 {
+    height: 450px;
+    overflow: auto;
+    width: 100%;
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: 0px 0em 0em .5em !important;
+    border: none !important;
+    color:rgba(191, 191, 191, 0.87) !important;
+    font-size: 16px !important;
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #000000 !important   ;
+}
+
+::ng-deep .ui-multiselect {
+    width: 245px !important;
+    height: 2.71428571em !important;
+}
+ 
+::ng-deep body .ui-multiselect {    
+    padding: 0.5em 0em !important;
+}
+
+.filterLoaderStyles{
+	position: relative;
+	top: 0;
+	width: 100%;
+    height: 678px;
+    background: #ffffffad;
+    padding: 1% 48%;
+    z-index: 1234;
+}
+
+	.lds-ring {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		padding: 1% 48%;
+		height: 500px;
+	}
+
+	.modal-header{
+		background-color: #0B7AB2 !important;
+		color: white;
+		align-items: center !important;
+		padding: 0.5rem 0.5rem !important;
+	}
+
+	.close{
+		color: white !important;
+		opacity: 1;
+	}
+
+	.lead_norecord{
+		position: relative;
+		top: 220px;
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.dropsearch_input{
+		position: sticky;
+		top: 0;
+		background: #fff;
+		padding-top: 3px;
+		border-bottom: 1px solid #ddd;
+	}

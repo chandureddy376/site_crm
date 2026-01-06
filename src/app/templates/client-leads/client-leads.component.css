@@ -1,0 +1,467 @@
+/* CENTER-CONTENTS */
+.body-cntnts {
+	width: 98%;
+	margin: 25px 0px 10px 10px !important;
+	/* padding-left: 14.5rem !important; */
+}
+
+.enquiry_content_main {
+	width: 100% !important;
+}
+
+.enquiry_content_main .button_section {
+	margin: 0;
+	float: left;
+}
+
+.enquiry_content_main tbody tr td a.id_style {
+	text-decoration: underline;
+}
+
+.enquiry_content_main .button_section:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.main_count_header {
+	background:  #0B7AB229;
+	color: #000000;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 0.5rem;
+	padding-top: 0.6rem;
+	padding-inline: 1rem;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry {
+	float: left;
+}
+
+.enquiry_content_main .button_section .leadassign {
+	float: left;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry a {
+	background: #6a1abb;
+	text-decoration: none;
+	display: block;
+	font-size: 14px;
+	color: #FFF;
+	font-weight: 600;
+	padding: 12px 15px;
+	cursor: pointer;
+	margin: 0 4px 0 0;
+}
+
+.enquiry_content_main .button_section .leadassign a {
+	background: #14a226;
+	text-decoration: none;
+	display: block;
+	font-size: 14px;
+	color: #FFF;
+	font-weight: 600;
+	padding: 12px 15px;
+	cursor: pointer;
+}
+
+.enquiry_content_main .button_section .download {
+	float: right;
+}
+
+.enquiry_content_main .button_section .download a {
+	text-decoration: none;
+	display: block;
+	font-size: 14px;
+	color: #252525;
+	font-weight: 700;
+	padding: 6px 15px 0px 15px;
+}
+
+/*============= Enquiry Table CSS Start =========================*/
+
+.enquiry_table_body {
+	/* height: 638px; */
+	font-size: 13px;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.reset i {
+	color: #fff;
+	padding: 0 0px 0px 6px;
+}
+
+.CSassigned_table {
+	height: 680px;
+	overflow: auto;
+	width: 100%;
+	padding-left: 0rem;
+}
+
+.table-container {
+	box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+	padding-block: 0.5rem;
+	border-radius: 12px;
+	background-color: white;
+	margin-top: 10px;
+}
+
+.content_table_main tbody tr {
+	width: 100%;
+	border-bottom: 1px solid #dddddd;
+	padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+	background-color: #05abe0;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.even-row {
+	background-color: white;
+}
+
+.odd-row {
+	background-color: #f4f4f4;
+}
+
+.content_table_main thead tr th {
+	padding: 8px 25px 8px 8px;
+	color: #FFF;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+	padding: 6px 6px 6px 6px;
+	color: #666666;
+	height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+	border: 1px solid #999;
+	padding: 4px 16px 4px 5px;
+}
+
+.lead_count {
+	padding-left: 0.5rem;
+}
+
+.lead_count label {
+	font-size: 12px;
+}
+
+.date_filter {
+	float: left;
+	margin: 5px 0 0px 10px;
+}
+
+.source_filter {
+	float: left;
+	margin: 5px 0 0px 10px;
+}
+
+
+::ng-deep bs-daterangepicker-container {
+	left: 390px !important;
+	top: 95px !important
+}
+
+/* RESPONSIVE_STARTS */
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+	.enquiry_content_main {
+		width: 100%;
+	}
+}
+
+.form-control {
+	height: calc(1.7em + .75rem + 2px) !important;
+}
+
+@media (max-width: 1000px) {
+	.main_count_header {
+		/* padding-top: 3rem !important; */
+		padding-left: 0.2rem !important;
+	}
+
+	.body-cntnts {
+		padding-left: 0.2rem !important;
+	}
+}
+
+.dropdown-search-container {
+    position: sticky;
+    top: 0; 
+    background: #fff;
+    padding-top: 3px;
+    border-bottom: 1px solid #ddd; 
+  }
+
+  .dropdown-menu {
+    padding: 0 !important;
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: .0px 0em 0em .5em !important;
+    border: none !important;
+    color: rgba(191, 191, 191, 0.87) !important;
+    font-size: 12px !important;
+}
+
+::ng-deep body .ui-multiselect .ui-multiselect-item.ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #000000 !important   ;
+}
+
+::ng-deep .ui-multiselect {
+    width: 245px !important;
+    height: 2.71428571em !important;
+}
+ 
+::ng-deep body .ui-multiselect {    
+    padding: 0.5em 0em !important;
+}
+
+::ng-deep .new_enquiry_form .leadsDrop .ui.selection.dropdown {
+    width: 265px !important;
+}
+
+#assign_leads{
+    height: 750px;
+    width: 100%;
+}
+
+.modal-dialog.assignlead_modal{
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+#assign_leads .close {
+    position: relative;
+    z-index: 99;
+    opacity: 9;
+    top: -52px;
+    left: 0px;
+    color: #ffff;
+    transform: rotate(90deg);
+}
+
+#assign_leads {
+    height: 750px;
+    width: 100%;
+}
+
+#assign_leads .modal-header {
+    background: #0B7AB2;
+    text-align: center;
+}
+
+#assign_leads .modal-header h4 {
+    color: #fff;
+}
+
+.assign_table {
+    height: 450px;
+    overflow: auto;
+    width: 100%;
+}
+
+.content_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+    background: #0B7AB2;
+}
+
+.content_table_main thead tr th {
+    padding: 8px 25px 8px 8px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+    padding: 6px 6px 6px 6px;
+    color: #666666;
+    height: 42px;
+}
+
+.content_table_main .enquiry_table_body {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_style {
+    border: 1px solid #999;
+    padding: 4px 16px 4px 16px;
+}
+
+ @media (min-width: 576px) {
+    .form-inline .form-control {
+        display: inline-block;
+        width: 300px;
+        vertical-align: middle;
+		
+    }
+
+	.form-inline label {
+		justify-content: flex-start !important;
+	}
+}
+
+.filterspan{
+	color: #9f9b9b;
+    display: flex;
+	gap: 0.1rem;
+    width: 100%;
+    padding-bottom: 3px ;
+}
+
+.chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+  }
+
+  .closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .closebtn:hover {
+    color: #000;
+  }
+
+  .refreshIcon{
+	position: relative;
+	right: 5px;
+  }
+
+  .filterLoaderStyles{
+	position: relative;
+	top: 0;
+	width: 100%;
+    height: 678px;
+    background: #ffffffad;
+    padding: 1% 48%;
+    z-index: 1234;
+}
+
+	.lds-ring {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		padding: 1% 48%;
+		height: 500px;
+	}
+
+
+	.enquiry_content_main .tab_button_section .leadassign a {
+		text-decoration: none;
+		display: block;
+		font-size: 14px;
+		font-weight: 600;
+		padding: 0px 0px 10px 10px;
+		margin: 0 4px 0 0;
+		cursor: pointer;
+		float: left;
+		color: #999;
+	}
+	
+	.enquiry_content_main .tab_button_section .leadassign a.active {
+		color: #0B7AB2;
+		text-decoration: underline 2px;
+		text-underline-offset: 10px;
+	}
+
+	.subduplicates {
+		background-color: #31353D !important;
+		color: #fff;
+	}
+	
+	.subduplicates i {
+		transform: rotate(90deg);
+		margin: 8px 0px 0px 25px;
+	}
+	
+	.content_table_main tbody tr.subduplicates td {
+		color: #fff;
+	}
+
+	span.duplicate_counts {
+		padding: 0px 4px 0px 4px;
+		border-radius: 18px;
+		border: 1px solid #017da5;
+		color: red;
+		margin: 0px 0px 0px 6px;
+		cursor: grab;
+	}
+
+	::ng-deep bs-daterangepicker-container {
+		left: 49.5rem !important;
+		top: 235px !important;
+	}
+
+	.cursor-pointer{
+		cursor:pointer ;
+	}
+
+.button_section .planleadassign {
+    background-color: #ffffff !important;
+    border-radius: 50px;
+    padding-inline: 0.2rem;
+    padding-block: 0.2rem;
+}
+
+.button_section .planleadassign a {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0px 0 0px;
+    cursor: pointer;
+    float: left;
+    color: #000000;
+    border: none;
+    padding: 5px 10px 5px 10px;
+}
+
+.button_section .planleadassign a.active {
+    color: #ffffff;
+    background: #0B7AB2;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.statuscard{
+    display: flex;
+    justify-content: center;
+}
+.statusbatch{
+    padding-block: 0.1rem;
+    padding-inline: 1rem ;
+    border: 1px solid #0B7AB2;
+    border-radius: 30px;
+    background-color: #0B7AB240;
+    color: #0B7AB2;
+}

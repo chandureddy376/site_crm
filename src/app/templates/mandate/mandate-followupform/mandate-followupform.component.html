@@ -1,0 +1,67 @@
+<div class="face_to_drop_form">
+  <form name="form" method="POST">
+    <div class="facetoface_comments_section">
+      <div class="row">
+        <div class="col-sm-12 form-group headingdesign">
+          <label class="heads">Reasons To Followup</label>
+          <div>
+            <button *ngFor="let section of followupsections; let i = index" id="followupsection"
+              (click)="followupactionclick(i,section.followup_section_IDPK,section.followup_categories)" type="button"
+              class="btn btnTab commonbtns actionbtns actions{{i}}">
+              <span><i class="fa fa-check-circle iconmark selectMark{{i}}"
+                  aria-hidden="true"></i></span>&nbsp;&nbsp;{{section.followup_categories}}
+            </button>&nbsp;
+          </div>
+        </div>
+
+        <!-- <div class="col-sm-12 form-group headingdesign" *ngIf="getselectedLeadExec?.suggestedprop?.length > 1">
+            <label class="heads">Select Property</label>
+            <div class="main_suggested_div">
+              <ul class="ks-cboxtags" >
+                <li *ngFor="let suggest of getselectedLeadExec?.suggestedprop; let i = index">
+                  <input type="checkbox" id="checkbox{{i}}" value="{{suggest.propid}}" name='programmings'
+                    (change)="selectsuggestedprop($event,i,suggest.propid,suggest.name)">
+                  <label for="checkbox{{i}}" id="checkboxlabel{{i}}">{{suggest.name}}</label>
+                </li>
+              </ul>
+              </div>
+              </div> -->
+
+        <div class="col-sm-6 form-group headingdesign" [hidden]="!isFreshLead">
+          <label class="heads">Followup Date</label>
+          <div class="ui calendar calendardate">
+            <div class="ui input left icon datepickerdiv">
+              <i class="calendar icon"></i>
+              <input class="form-control" type="text" autocomplete="off" id="folloupdate" placeholder="Date">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 form-group headingdesign" [hidden]="!isFreshLead">
+          <label class="heads">Followup Time</label>
+          <div class="ui calendar calendartime">
+            <div class="ui input left icon timepickerdiv">
+              <i class="time icon"></i>
+              <input class="form-control" autocomplete="off" id="followuptime" type="text" placeholder="Time">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 form-group headingdesign" *ngIf="followsectiondata == '1' || followsectiondata == '8'">
+          <label class="heads" [hidden]="!isFreshLead">Remarks</label>
+          <textarea class="form-control" id="followuptextarearemarks" placeholder="" [hidden]="!isFreshLead"></textarea>
+        </div>
+        <div class="col-sm-12 form-group headingdesign">
+        <button (click)="addfollowupdata()" type="submit" class="btn saveBtn mr-3">Save</button>
+      </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+  <img src="../../../../assets/images/infinity_loader.gif">
+</div>

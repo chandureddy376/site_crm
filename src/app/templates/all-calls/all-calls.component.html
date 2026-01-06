@@ -1,0 +1,583 @@
+<div>
+  <app-header></app-header>
+</div>
+
+
+<div class="body-cntnts blurring searchHeader" [ngStyle]="{'padding-left': isSidebarHovered ? '14.5rem' : '3.5rem'}">
+
+  <div class="col-12 pt-3">
+    <div class="float-left font_pop">
+      <!-- <h4>All Calls</h4> -->
+      <div class="mr-3" *ngIf="roleid == 1 || roleid == 2 || role_type == 1">
+        <select id="rm_dropdown" class="form-control ui search dropdown dashboard_dropdown" (change)="rmchange($event)">
+          <option value="">Select Executive</option>
+          <option *ngFor="let executives of executivesList" value="{{executives.ID}}"
+            [selected]="executives.ID == execid">{{executives.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-group btn-group-toggle float-right font_pop">
+      <span>
+        <label class=" btn btn-sm btn-simple btn-danger ml-1" routerLink="/all-calls"
+          [queryParams]="{todayvisited: 1,execid:execid, execname:execname}" [ngClass]="{'active':clicked===true}">
+          <input class=" d-none d-sm-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Today
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-gift-2"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/all-calls"
+          [queryParams]="{yesterdayvisited: 1,execid:execid, execname:execname}"
+          [ngClass]="{'active':clicked3===true}">
+          <input class=" d-none" name="options" type="radio" />
+        
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Yesterday
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-simple btn-danger ml-1" routerLink="/all-calls"
+          [queryParams]="{last7: 1,execid:execid,execname:execname}" [ngClass]="{'active':clicked1===true}">
+          <input class=" d-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Last 7 days
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-simple btn-danger mx-1" [ngClass]="{'active':clicked2===true}">
+          <div #nextActionDates class="cursor-pointer d-none">
+            <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+          </div>
+          <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            {{datecustomfetch}}
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+      </span>
+      <p>
+        <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+            class="fas fa-redo"></i>Reset</button>
+      </p>
+    </div>
+  </div>
+
+  <div class="pt-0 d-flex col-12 p-0" style="width: 100%;padding-inline: 0.7rem;">
+
+    <!-- <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pl-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;" routerLink="/all-calls-listing"
+          [queryParams]="{allcalls:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/total-calls.png">
+          </div>
+          <div class="text-center pt-1">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Total Calls</p>
+            <h4 class="mb-0 font_pop">{{totalCallsCount}}</h4>
+          </div>
+        </div>
+        <div class="card-footer" style="padding-block: 1.3rem;">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pr-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;" routerLink="/all-calls-listing"
+          [queryParams]="{connected:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/live_calls.png">
+          </div>
+          <div class="text-center pt-1">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Connected</p>
+            <h4 class="mb-0 font_pop">{{connectedCalls}}</h4>
+          </div>
+        </div>
+        <div class="card-footer" style="padding-block: 1.3rem;">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pr-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;" routerLink="/all-calls-listing"
+          [queryParams]="{active:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/active-calls.png">
+          </div>
+          <div class="text-center pt-1">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Active</p>
+            <h4 class="mb-0 font_pop">{{activeCallsCount}}</h4>
+          </div>
+        </div>
+        <div class="card-footer" style="padding-block: 1.3rem;">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pr-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;" routerLink="/all-calls-listing"
+          [queryParams]="{inactive:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/inactive_icon.png">
+          </div>
+          <div class="text-center pt-1">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Inactive</p>
+            <h4 class="mb-0 font_pop">{{inActiveCallsCount}}</h4>
+          </div>
+        </div>
+        <div class="card-footer" style="padding-block: 1.3rem;">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pr-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/missed.png">
+          </div>
+          <div class="text-center pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{missed:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Missed</p>
+            <h4 class="mb-0 font_pop">{{missedCallsCount}}</h4>
+          </div>
+        </div>
+        <div class="card-footer px-0 py-2 text-center" routerLink="/all-calls-listing"
+          [queryParams]="{missed:1,from:fromdate,to:todate,execid:execid,execname:execname,status:'reconnect'}">
+          <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">
+              Re-Connected - {{reConnectedCallsCount}}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-2 mb-xl-0 mb-4 pr-0">
+      <div class="card hoverclass">
+        <div class="card-header" style="padding-block: 0.5rem !important;" routerLink="/all-calls-listing"
+          [queryParams]="{visitsfixed:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+          <div class="text-center mt-n4 position-absolute top-10 left_20">
+            <img src="../../../assets/images/visit-fixed.png">
+          </div>
+          <div class="text-center pt-1">
+            <p class="mb-0 text-capitalize font-16 pl-4 font_pop">Visits Fixed</p>
+            <h4 class="mb-0 font_pop">{{visitsCallsCount}}</h4>
+          </div>
+        </div>
+        <div class="card-footer" style="padding-block: 1.3rem;">
+        </div>
+      </div>
+    </div> -->
+
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #E5F6FE 104.6%);;border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{allcalls:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Total Calls</p>
+            <h4 class="mb-0 above_count_size">{{totalCallsCount}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/total_calls.png" alt="">
+          </div>
+        </div>
+        <div style="padding-block: 0.8rem;"></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #EAE8FF 104.6%);border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{connected:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Connected Calls</p>
+            <h4 class="mb-0 above_count_size">{{connectedCalls}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/connected_calls.png" alt="">
+          </div>
+        </div>
+        <div style="padding-block: 0.8rem;"></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #EDFFE9 104.6%);border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{active:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Active Calls</p>
+            <h4 class="mb-0 above_count_size">{{activeCallsCount}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/active_calls.png" alt="">
+          </div>
+        </div>
+        <div style="padding-block: 0.8rem;"></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #FFE3E3 104.6%);border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{inactive:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Inactive Calls</p>
+            <h4 class="mb-0 above_count_size">{{inActiveCallsCount}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/inactive_calls.png" alt="">
+          </div>
+        </div>
+        <div style="padding-block: 0.8rem;"></div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #FFEDF3 104.6%);border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{missed:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Missed Calls</p>
+            <h4 class="mb-0 above_count_size">{{missedCallsCount}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/missed_calls.png" alt="">
+          </div>
+        </div>
+        <div class="px-0 py-0 text-center cursor-pointer" routerLink="/all-calls-listing"
+          [queryParams]="{missed:1,from:fromdate,to:todate,execid:execid,execname:execname,status:'reconnect'}">
+          <p class="mb-0"><span class="text-sm font-weight-bolder" style="color: #AE1D50;">
+              Re-Connected - {{reConnectedCallsCount}}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-2 col-sm-4 mb-xl-0 mb-4">
+      <div class="card-header p-1 pt-1"
+        style="box-shadow: 0px 2px 3.1px 0px #959DA533;border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #FFF1D0 104.6%);border: 2px solid white;">
+        <div class="d-flex justify-content-between p-1">
+          <a class="pt-1" routerLink="/all-calls-listing"
+            [queryParams]="{visitsfixed:1,from:fromdate,to:todate,execid:execid,execname:execname}">
+            <p class="above_label_size mb-0">Visits Fixed</p>
+            <h4 class="mb-0 above_count_size">{{visitsCallsCount}}</h4>
+          </a>
+          <div>
+            <img class="setting_icon" src="../../../assets/images/visit_fixed_calls.png" alt="">
+          </div>
+        </div>
+        <div style="padding-block: 0.8rem;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mt-3 col-12 m-0">
+
+    <div class="col-lg-6 col-md-12 pl-0">
+      <div class="card px-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="px-3 pt-2 font_pop" style="font-size: 20px;color: #000000;">Live Calls</span>
+          <button class="btn btn-info refresh_btn" type="button" (click)="getLiveCallsData()">Refresh <i
+              class="fas fa-redo pl-1"></i></button>
+        </div>
+        <div class="card-body px-0 py-2">
+          <div class="table-responsive missed_table" #scrollContainer>
+            <table class="all_calls_table">
+              <thead class="text-center">
+                <tr class="header">
+                  <th>Lead Details</th>
+                  <th>Executive Details</th>
+                  <th>Start Time</th>
+                  <th>Call Duration</th>
+                  <th>Call Type</th>
+                  <th>Mode of Call</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body text-center">
+                <tr *ngFor="let live of liveCallsList; let i = index">
+                  <td>{{live.leadname}}
+                    <div style="color: #0B7AB2;text-decoration: underline;">{{live.callto}}</div>
+                  </td>
+                  <td>{{live.name}}</td>
+                  <td>{{live.starttime}}</td>
+                  <td>{{getDurationTime(live.starttime)}}</td>
+                  <td>{{live.direction}}</td>
+                  <td>{{(live.modeofcall ? live.modeofcall : '---')}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="font-weight-bold pt-3 d-flex justify-content-center font_pop" *ngIf="liveCallsList?.length == 0"
+              style="position: relative;top: 100px;border: none;">
+              NO DATA FOUND ...!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12 pr-0">
+      <div class="card px-0">
+        <span class="px-3 pt-2 font_pop" style="font-size: 20px;color: #000000;">Missed Calls</span>
+        <div class="card-body px-0 py-2">
+          <div class="table-responsive missed_table" #scrollContainer>
+            <table class="all_calls_table" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+              [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [infiniteScrollContainer]="'.missed_table'"
+              (scrolled)="loadMoreMissedCallsLeads()">
+              <thead>
+                <tr class="header font_pop">
+                  <!-- ----------------------------sl no---------------------------- (scrolled)="loadmoreForOverdues()"-->
+                  <th style="width: 2%;">#</th>
+                  <th>Name</th>
+                  <th *ngIf="roleid == 1 || roleid == 2">Executive</th>
+                  <th>Missed On</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="missedCallsList?.length" class="table_body font_pop">
+                <tr *ngFor="let leads of missedCallsList; let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{leads.leadname}}
+                    <div *ngIf="roleid == 1 || roleid == 2">{{leads.callto}}</div>
+                    <div *ngIf="(roleid == 50001 || roleid == 50002 ||roleid == 50013 || roleid == 50014) && leads?.callto" class="call_des  cursor-pointer"
+                      (click)="triggerCall(leads,'mandate')"><img src="../../../../assets/images/call_btn.png"></div>
+                    <!-- <div *ngIf="(roleid == 50013 || roleid == 50014) && leads?.callto" class="call_des  cursor-pointer"
+                      (click)="triggerCall(leads,'retail')"><img src="../../../../assets/images/call_btn.png"></div> -->
+                  </td>
+                  <td *ngIf=" roleid == 1 || roleid == 2">{{leads.name}}</td>
+                  <td>{{leads.starttime | date:'dd-MM-yyyy'}}
+                    <div>{{leads.starttime | date:'shortTime'}}</div>
+                  </td>
+                  <td>
+                    <span class="missed_call" *ngIf="leads?.missedid == '1'"><img
+                        src="../../../assets/images/missed_call_btn.png" style="width: 12px;"> {{'Missed'}}</span>
+                    <span class="reconnected_call" *ngIf="leads?.missedid == '2'"><i class="fa fa-check"
+                        style="width: 12px;"></i>{{'Reconnected'}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="font-weight-bold pt-3 d-flex justify-content-center font_pop"
+              *ngIf="missedCallsList?.length == 0" style="position: relative;top: 100px;border: none;">
+              NO DATA FOUND ...!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <div class="col-lg-12 col-md-12 pt-2">
+        <!-- today's table -->
+        <div class="card px-0">
+          <span class="px-3 pt-2 font_pop" style="font-size: 20px;color: #000000;">All Calls</span>
+          <div class="card-body px-0 py-2">
+            <div class="table-responsive CSassigned_table" #scrollContainer>
+              <table class="all_calls_table" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+                [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [infiniteScrollContainer]="'.CSassigned_table'"
+                (scrolled)="loadMoreAllCallsLeads()">
+                <thead>
+                  <tr class="header font_pop">
+                    <!-- ----------------------------sl no---------------------------- (scrolled)="loadmoreForOverdues()"-->
+                    <th style="width: 2%;">#</th>
+                    <th style="width: 22%;">Name </th>
+                    <th class="d-flex justify-content-between" *ngIf="roleid == 1 || roleid == 2">
+                      <span>Executive</span>
+                      <!-- <span class="leadstatusdrop d-flex">
+                                                          <div>
+                                                            <button class="btn btn-secondary" type="button" id="callStatusDropdown" data-toggle="dropdown"
+                                                              aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                                              <i class="fas fa-filter" style="color: #5D5D5D;"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu sourceBasedFilter" aria-labelledby="bookingLeadDropdown_source"
+                                                              style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+                                                              <div class="dropdown-search-container"><input type="text" class="form-control execuitvesearch"
+                                                                  placeholder="Search..." [(ngModel)]="searchTerm_executive" name="searchTerm_executive"
+                                                                  (input)="filterExecutive()" style="margin-bottom: 2px;">
+                                                              </div>
+                                                              <div class="source_list_checkbox">
+                                                                <div *ngFor="let exec of executivesList">
+                                                                  <label class="dropdown-item dropDownCursor mb-1">
+                                                                    <div (click)="onCheckboxChangeExec(exec)">{{ exec.Name }}</div>
+                                                                  </label>
+                                                                </div>
+                                                              </div>
+                                        
+                                                            </div>
+                                                          </div>
+                                                        </span> -->
+                    </th>
+                    <!-- <th>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                          <span>Call Status</span>
+                                                          <span class="leadstatusdrop d-flex">
+                                                            <div>
+                                                              <button class="btn btn-secondary" type="button" id="callStatusDropdown" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                                                <i class="fas fa-filter" style="color: #5D5D5D;"></i>
+                                                              </button>
+                                                              <div class="dropdown-menu " aria-labelledby="callStatusDropdown" style="cursor:pointer;">
+                                                                <a class="dropdown-item dropDownCursor" (click)="callStatus('Answered')">Answered</a>
+                                                                <a class="dropdown-item dropDownCursor" (click)="callStatus('Missed')">Missed</a>
+                                                                <a class="dropdown-item dropDownCursor" (click)="callStatus('Busy')">Busy</a>
+                                                              </div>
+                                                            </div>
+                                                          </span>
+                                                        </div>
+                                                      </th> -->
+                    <th>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>Start Time</span>
+                        <!-- <div  id="nextActionDates" style="cursor: pointer;">
+                                                            <i class="fas fa-filter"></i>&nbsp;
+                                                          </div> -->
+                      </div>
+                    </th>
+                    <th style="width: 12%;">End Time</th>
+                    <th style="width: 12%;">Call Duration</th>
+                    <th style="width: 12%;" class="text-center">Recordings</th>
+                    <!-- <th>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                          <span>Call Type</span>
+                                                          <span class="leadstatusdrop d-flex">
+                                                            <div>
+                                                              <button class="btn btn-secondary" type="button" id="callTypeDropdown" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                                                                <i class="fas fa-filter" style="color: #5D5D5D;"></i>
+                                                              </button>
+                                                              <div class="dropdown-menu " aria-labelledby="callTypeDropdown" style="cursor:pointer;">
+                                                                <a class="dropdown-item dropDownCursor" (click)="callType('Inbound')">Inbound</a>
+                                                                <a class="dropdown-item dropDownCursor" (click)="callType('Outbound')">Outbound</a>
+                                                              </div>
+                                                            </div>
+                                                          </span>
+                                                        </div>
+                                                      </th> -->
+                  </tr>
+                </thead>
+                <tbody *ngIf="allCallsList?.length" class="table_body font_pop">
+                  <tr *ngFor="let leads of allCallsList; let i = index">
+                    <td>{{i+1}}</td>
+                    <td style="width: 150px;">{{leads.leadname}}
+                      <!-- <div *ngIf="roleid == 1 || roleid == 2">{{leads.callto}}</div> -->
+                      <div *ngIf="leads?.callto" class="call_des cursor-pointer" (click)="triggerCall(leads,'mandate')">
+                        <img src="../../../../assets/images/call_btn.png">
+                      </div>
+                      <!-- <div *ngIf="(roleid == 50003 || roleid == 50004) && leads?.callto" class="call_des cursor-pointer"
+                                (click)="triggerCall(leads,'retail')"><img src="../../../../assets/images/call_btn.png"></div> -->
+                    </td>
+                    <td *ngIf=" roleid == 1 || roleid == 2">{{leads.name}}</td>
+                    <td>{{leads.starttime | date:'shortTime'}}
+                      <div>{{leads.starttime | date:'dd-MM -yyyy'}}</div>
+                    </td>
+                    <td>
+                      <!-- {{leads.endtime | date:'dd-MM-yyyy'}} -->
+                      <div>{{leads.endtime | date:'shortTime'}}</div>
+                    </td>
+                    <td>{{leads.answeredtime}}</td>
+                    <td>
+                      <div style="flex-direction: column;">
+                        <audio class="media-item" [src]="leads.filename" [attr.controlsList]="canDownload ? null : 'nodownload'" controls (play)="onAudioPlay($event)">
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    </td>
+                    <!-- <td>{{leads.direction}}</td> -->
+                  </tr>
+                </tbody>
+              </table>
+              <div class="font-weight-bold pt-3 d-flex justify-content-center font_pop" *ngIf="allCallsList?.length == 0"
+                style="position: relative;top: 100px;border: none;">
+                NO DATA FOUND ...!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <div *ngIf=all_calls_filterLoader class="main-lds-ring-div">
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+    <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+
+</div>
+
+
+<!-- ----------------------------Live Calls Info table---------------------------- -->
+<button type="button" data-toggle="modal" data-target="#live_calls_modal" id="live_calls_detail"
+  style="display: none;">Show Details</button>
+<div class="modal fade" id="live_calls_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog liveCalls_modal">
+    <div class="modal-content enquiry_modal_body" id="live_calls">
+      <div class="modal-header">
+        <h4 class="col-12 m-0 text-center" style="color: #ffffff;">Live Calls</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeLiveCallsModal()"
+          style="color: #ffffff;opacity: unset;position: absolute;right: 10px;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="new_enquiry_form col-xs-12">
+          <div class="live_call_refresh_btn" style="text-align: end;"><button type="button"
+              class="btn btn-outline-info text-end" (click)="getLiveCallsData()"><i class="fa fa-redo"></i>
+              Refresh</button></div>
+          <div class="assign_table1 pt-3">
+            <table class="content_table_main live_calls_table table table-striped" infinite-scroll [fromRoot]="true"
+              [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.assign_table1'">
+              <thead class="text-center">
+                <tr class="header">
+                  <th>Lead Details</th>
+                  <th style="width: 25%;">Executive Details</th>
+                  <th>Start Time</th>
+                  <th>Call Duration</th>
+                  <th>Call Type</th>
+                  <th>Mode of Call</th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body text-center">
+                <tr *ngFor="let live of liveCallsList; let i = index">
+                  <td>{{live.leadname}}
+                    <div style="color: #0B7AB2;text-decoration: underline;">{{live.callto}}</div>
+                  </td>
+                  <td>{{live.name}}</td>
+                  <td>{{live.starttime}}</td>
+                  <td>{{getDurationTime(live.starttime)}}</td>
+                  <td>{{live.direction}}</td>
+                  <td>{{(live.modeofcall ? live.modeofcall : '---')}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf=filterLoader class="main-lds-ring-div">
+          <img src="../../../assets/images/infinity_loader.gif">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ----------------------------After reassign Info table---------------------------- -->

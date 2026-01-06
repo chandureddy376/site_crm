@@ -1,0 +1,128 @@
+.body-cntnts {
+    width: 100%;
+    margin: 25px 0px 10px 10px !important;
+    background: #F5F7F9;
+  }
+  
+  .btn-danger.btn-simple {
+    background: #f0f2f5 !important;
+    color: #727272 !important;
+    border: 1px solid #727272 !important;
+    border-radius: 5px !important;
+  }
+  
+  .btn-danger.btn-simple.active {
+    background-color: #0B7AB2 !important;
+    border: 1px solid #0B7AB2 !important;
+    color: #ffffff !important;
+    background-image: none !important;
+  }
+  
+  .buttonwithicon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: .25rem .5rem !important;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .CSassigned_table {
+    overflow: hidden;
+    width: 99%;
+    height: 680px;
+  }
+  
+  .padding-medium {
+    padding: 0 16px;
+  }
+  
+  .even-row {
+    background-color: white;
+  }
+  
+  .odd-row {
+    background-color: #f4f4f4;
+  }
+
+  .content_table_main tbody tr td {
+    padding: 10px 4px 10px 4px;
+    color: #666666;
+    width: 150px;
+    position: relative;
+  }
+
+  .content_table_main thead tr th {
+    padding: 8px 0px 8px 6px;
+    color: #5D5D5D;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  
+ .content_table_main .enquiry_table_body {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+ .table-container{
+  box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+  border-radius: 12px;
+  padding-block: 0.5rem;
+  background-color: white;
+}
+  
+  .btn-secondary {
+    color: #5D5D5D;
+    background-color: #D5D5D5 !important;
+    border-color: #D5D5D5 !important;
+  }
+  
+  .liveCalls_modal{
+    max-width: 1050px;
+    margin: 0 auto;
+  }
+  
+  .enquiry_modal_body .modal-header{
+    background: #0B7AB2 !important;
+    color: #ffffff;
+  }
+
+.content_table_main tbody tr {
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+  background: #D5D5D5 !important;
+  color: #5D5D5D !important;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.new_executive_form div.input_cmn_div {
+  padding: 0px 15px 20px 15px;
+  float: left;
+}
+
+.new_executive_form div label {
+  font-size: 15px;
+  color: #666666;
+  font-weight: 400;
+}
+
+.new_executive_form div input {
+  width: 100% !important;
+  padding: 5px 10px;
+  height: 35px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666666;
+}
+
+::ng-deep .ui.selection.dropdown{
+  width: 100% !important;
+}

@@ -1,0 +1,659 @@
+<div>
+  <app-header></app-header>
+</div>
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+<div class="row main_count_header" [ngStyle]="{'padding-left': isSidebarHovered ? '16rem' : '5rem'}">
+
+  <div class="col-12 pt-2">
+
+    <div class=" btn-group btn-group-toggle float-left" style="font-style: italic;padding-left: 10px;color: #0B7AB2;">
+      <h4>
+        Complete Houlry Report
+      </h4>
+    </div>
+
+    <div class=" btn-group btn-group-toggle float-right">
+
+      <span>
+
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/hourly-report"
+          [queryParams]="{today: 1,execid:execid, execname:execname,fromtime:fromTime,totime:toTime}"
+          [ngClass]="{'active':clicked===true}">
+          <input class=" d-none d-sm-none" name="options" type="radio" />
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Today
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-gift-2"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple ml-1" routerLink="/hourly-report"
+          [queryParams]="{last7: 1,execid:execid, execname:execname,fromtime:fromTime,totime:toTime}"
+          [ngClass]="{'active':clicked1===true}">
+          <input class=" d-none" name="options" type="radio" />
+
+          <span class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            Last 7 days
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+        <label class=" btn btn-sm btn-danger btn-simple mx-1" [ngClass]="{'active':clicked2===true}">
+          <div #nextActionDates class="cursor-pointer d-none">
+            <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+          </div>
+          <span id="nextActionDates" class=" d-none d-sm-block d-md-block d-lg-block d-xl-block">
+            {{datecustomfetch}}
+          </span>
+          <span class=" d-block d-sm-none">
+            <i class=" tim-icons icon-tap-02"> </i>
+          </span>
+        </label>
+
+      </span>
+
+      <span class="mr-1" *ngIf="roleid == '1' || roleid == '2'">
+        <button type="button" class="btn btn-warning p-1" data-toggle="modal" data-target="#manual_report_push">Send
+          Report</button>
+      </span>
+
+      <span>
+        <button type="button" class="btn btn-warning buttonwithicon p-1" (click)="refresh()"><i
+            class="fas fa-redo"></i>Reset</button>
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '13rem' : '2rem'}">
+
+  <div class="col-12 row d-flex pr-0">
+
+    <div class="col-2 p-0 listof_times d-flex flex-column" *ngIf="roleid == 1 || roleid == '2'">
+
+      <div class="text-center py-3 d-flex justify-content-around align-items-center border-bot"
+        *ngIf="fromDate == toDate">
+        <i class="fa fa-less-than cursor-pointer" style="color: #0B7AB2;" (click)="changeDate('previous')"></i>
+        <span style="color: #4A6E80;font-size: 14px;font-weight: 500;">{{formattedDate }}</span>
+        <i class="fa fa-greater-than cursor-pointer" style="color: #0B7AB2;" (click)="changeDate('next')"></i>
+      </div>
+
+      <div class="text-center py-3 d-flex justify-content-around align-items-center border-bot"
+        *ngIf="fromDate != toDate">
+        <span style="color: #4A6E80;font-size: 12px;font-weight: 500;">{{ fromDate }} to {{ toDate }}</span>
+      </div>
+
+      <a class="text-center py-3 time_zone overall_day cursor-pointer border-bot active"
+        (click)="selectedTimeZone('overall')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>Overall</span>
+      </a>
+      <a class="text-center py-3 time_zone overall_day cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>Overall</span>
+      </a>
+
+      <a class="text-center py-3 time_zone before9_day cursor-pointer border-bot" (click)="selectedTimeZone('before9')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>Before 9:30AM</span>
+      </a>
+      <a class="text-center py-3 time_zone before9_day cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>Before 9:30AM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list cursor-pointer border-bot" (click)="selectedTimeZone('09:30')"
+        *ngIf="(fromDate == toDate && (execid == '' || execid == undefined || execid == null))">
+        <span>9:30AM - 10:30AM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>9:30AM - 10:30AM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list1 cursor-pointer border-bot" (click)="selectedTimeZone('10:30')"
+        *ngIf="(fromDate == toDate && (execid == '' || execid == undefined || execid == null))">
+        <span>10:30AM - 11:30AM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list1 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>10:30AM - 11:30AM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list2 cursor-pointer border-bot" (click)="selectedTimeZone('11:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>11:30AM - 12:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list2 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>11:30AM - 12:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list3 cursor-pointer border-bot" (click)="selectedTimeZone('12:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>12:30PM - 1:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list3 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>12:30PM - 1:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list4 cursor-pointer border-bot" (click)="selectedTimeZone('1:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>1:30PM - 2:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list4 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>1:30PM - 2:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list5 cursor-pointer border-bot" (click)="selectedTimeZone('2:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>2:30PM - 3:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list5 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>2:30PM - 3:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list6 cursor-pointer border-bot" (click)="selectedTimeZone('3:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>3:30PM - 4:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list6 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>3:30PM - 4:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list7 cursor-pointer border-bot" (click)="selectedTimeZone('4:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>4:30PM - 5:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list7 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>4:30PM - 5:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list8 cursor-pointer border-bot" (click)="selectedTimeZone('5:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>5:30PM - 6:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list8 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>5:30PM - 6:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone time_list9 cursor-pointer border-bot" (click)="selectedTimeZone('6:30')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>6:30PM - 7:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone time_list9 cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>6:30PM - 7:30PM</span>
+      </a>
+
+      <a class="text-center py-3 time_zone after7_day cursor-pointer border-bot" (click)="selectedTimeZone('after7')"
+        *ngIf="fromDate == toDate && (execid == '' || execid == undefined || execid == null)">
+        <span>After 7:30PM</span>
+      </a>
+      <a class="text-center py-3 time_zone after7_day cursor-pointer border-bot"
+        *ngIf="fromDate != toDate || (execid != '' && execid != undefined && execid != null)" data-toggle="tooltip"
+        data-placement="right" title="Time Selection not Allowed"
+        [ngClass]="{'blurred' : fromDate != toDate || (execid != '' && execid != undefined && execid != null)}">
+        <span>After 7:30PM</span>
+      </a>
+
+    </div>
+
+    <div class="col-10 pr-0" style="background: #FFFFFF;"
+      [ngClass]="{ 'col-10': roleid == '1' || roleid == '2', 'col-12': roleid != '1' && roleid != '2' }">
+
+      <div clas="col-12"
+        style="display: flex;align-items: center;gap: 1rem;justify-content: space-between;padding-block: 0.5rem;padding-left: 15px !important;">
+
+        <span class="d-flex align-items-center gap-05">Show Only Zero Activities
+          <span class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" (change)="checkActive($event)">
+            <label class="custom-control-label" for="customSwitch1"></label>
+          </span>
+        </span>
+
+        <div class="d-flex">
+
+          <div class="mr-3"
+            *ngIf="(execid == '' || execid == undefined || execid == null) && (roleid == 1 || roleid == '2')">
+            <input class="form-control search_input" type="text" [(ngModel)]="executive_name"
+              placeholder="Search Executive Name" (keyup)="searchExecutive()"
+              style="border-radius: 30px;width: 250px;height: 2.71428571em;" />
+          </div>
+
+          <div [hidden]="roleid != 1 && roleid != '2'" class="mr-3">
+            <select id="team_dropdown" class="form-control dropdown dashboard_dropdown mr-3" style="height: 2.71428571em !important;padding: 0.78571429em 2.1em 0.78571429em 1em !important;"
+              (change)="teamchange($event)">
+              <option value="">Select Team</option>
+              <option value="0" [selected]="'0' == team">Inhouse Team</option>
+              <option value="1" [selected]="'1' == team">Ranav Team</option>
+            </select>
+          </div>
+          <div class="mr-3" [hidden]="roleid != 1 && roleid != '2' && role_type != '1'">
+            <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" [(ngModel)]="execid"
+              (change)="rmchange($event)">
+              <option value="">Select Executive</option>
+              <option *ngFor="let exec of retailExecutives" value="{{exec.ID}}">
+                {{(exec.ID == execid ? 'My Activity' : exec.Name)}}</option>
+            </select>
+          </div>
+
+          <!-- <div class="mr-3" [hidden]="role_type != '1'">
+            <select id="rm_dropdown" class="form-control ui dropdown dashboard_dropdown" [(ngModel)]="execid"
+              (change)="rmchange($event)">
+              <option value="">Select Executive</option>
+              <option *ngFor="let exec of mandateExecutives" value="{{exec.ID}}">
+                {{exec.Name}}</option>
+            </select>
+          </div> -->
+
+        </div>
+
+      </div>
+
+      <div class="col-12 row d-flex executive_overview_card pr-0 pb-2"
+        *ngIf="(execid == '' || execid == undefined || execid == null) && (roleid == 1 || roleid == 2)">
+
+        <div class="col-4 pt-2 pr-0" *ngFor="let exec of pagedExecutives" style="border: 1xp solid #0B7AB2;">
+          <div class="p-2 d-flex justify-content-between bg-blue"
+            [ngClass]="{'bg-blue': exec && exec?.counts && exec?.counts[0]?.overall > 0, 'bg-orange': exec && exec?.counts && exec?.counts[0]?.overall <= 0}">
+            <span>{{exec.ExecName}}</span>
+            <span *ngIf="exec && exec?.counts">Overall Activity : {{exec?.counts[0]?.overall}}</span>
+          </div>
+          <div class="col-12 row p-0 m-0"
+            [ngStyle]="{'border' : exec && exec?.counts && exec?.counts[0]?.overall > 0 ? '1px solid #0B7AB2' : '1px solid #EC9251'}">
+            <div class="col-6 p-0">
+              <div class="col-12 p-0">
+                <div class="textgrey cursor-pointer" (click)="listingSectionclicked()">
+                  <span>Untouched</span>
+                  <span *ngIf="exec && exec?.counts">{{exec?.counts[0]?.untouched}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'GF',exec?.ExecName,'','')">
+                  <span>General Followups</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.generalfollowups == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.generalfollowups > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.generalfollowups}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'NC',exec?.ExecName,'','')">
+                  <span>NC</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.NC == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.NC > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.NC}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'USV-Fix',exec?.ExecName,'','')">
+                  <span>USV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.usvfixed == '0' , 'color-green' :exec && exec?.counts &&  exec?.counts[0]?.usvfixed > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.usvfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'USV-Done',exec?.ExecName,'','')">
+                  <span>USV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.usvdone == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.usvdone > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.usvdone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'SV-Fix',exec?.ExecName,'','')">
+                  <span>SV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.svfixed == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.svfixed > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.svfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'SV-Done',exec?.ExecName,'','')">
+                  <span>SV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.svdone == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.svdone > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.svdone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'RSV-Fix',exec?.ExecName,'','')">
+                  <span>RSV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.rsvfixed == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.rsvfixed > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.rsvfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'RSV-Done',exec?.ExecName,'','')">
+                  <span>RSV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.rsvdone == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.rsvdone > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.rsvdone}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 p-0">
+              <div class="col-12 p-0">
+
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'FN-Fix',exec?.ExecName,'','')">
+                  <span>FN Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.fnfixed == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.fnfixed > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.fnfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'FN-Done',exec?.ExecName,'','')">
+                  <span>FN Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.fndone == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.fndone > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.fndone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'Inactive',exec?.ExecName,'','')">
+                  <span>Inactive</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.inactive == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.inactive > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.inactive}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'JunkLeads',exec?.ExecName,'','')">
+                  <span>Junk Leads</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.junkleads == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.junkleads > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.junkleads}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'JunkVisits',exec?.ExecName,'','')">
+                  <span>Junk Visits</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.junkvisits == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.junkvisits > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.junkvisits}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'BR',exec?.ExecName,'','')">
+                  <span>Booking Requests</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.closingrequest == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.closingrequest > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.closingrequest}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'Booked',exec?.ExecName,'','')">
+                  <span>Booked</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.leadclosed == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.leadclosed > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.leadclosed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(exec?.ExecId,'Others',exec?.ExecName,'','')">
+                  <span>Others</span>
+                  <span
+                    [ngClass]="{'color-red' : exec && exec?.counts && exec?.counts[0]?.others == '0' , 'color-green' : exec && exec?.counts && exec?.counts[0]?.others > 0}"
+                    *ngIf="exec && exec?.counts">{{exec?.counts[0]?.others}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center align-items-center" *ngIf="executivesList?.length == 0">
+          <h4 style="font-style: italic;">No Executives Found</h4>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between py-2 align-items-end">
+          <!-- <button class="btn btn-warning" (click)="adminpreviousPage()" [disabled]="currentPage === 0" style="height: 33px;">Previous</button>
+          <button class="btn btn-warning" (click)="adminnextPage()" style="height: 33px;" [disabled]="(currentPage + 1) * this.startIndex >= retailExecutives?.length">Next</button> -->
+          <button class="btn btn-warning" (click)="adminpreviousPage()" [disabled]="currentPage == 0"
+            style="height: 33px;">Previous</button>
+          <button class="btn btn-warning" (click)="adminnextPage()" style="height: 33px;"
+            [disabled]="(currentPage == totalPagesForAdmin-1)">Next</button>
+        </div>
+
+      </div>
+
+      <div class="col-12 row d-flex pr-0 pb-2 executive_overview_card"
+        *ngIf="(execid != '' && execid != undefined && execid != null) || (roleid != 1 && roleid != 2)">
+
+        <div class="col-4 pt-2 pr-0" *ngFor="let exec of executivesList" style="border: 1xp solid #0B7AB2;">
+          <div class="p-2 d-flex justify-content-between bg-blue"
+            [ngClass]="{'bg-blue': exec?.overall > 0, 'bg-orange': exec?.overall <= 0}">
+            <span *ngIf="exec?.starttime == '00:00' && exec?.endtime == '09:30'">Before 9:30 AM</span>
+            <span *ngIf="exec?.starttime == '19:31' && exec?.endtime == '23:59'">After 7:30 PM</span>
+            <span
+              *ngIf="exec?.starttime != '00:00' && exec?.endtime != '09:30' && exec?.starttime != '19:31' && exec?.endtime != '23:59'">{{
+              convertTimeToDate(exec?.starttime) | date : 'hh:mm a'}} - {{ convertTimeToDate(exec?.endtime) | date :
+              'hh:mm a'}}</span>
+            <span *ngIf="exec">Overall Activity : {{exec?.overall}}</span>
+          </div>
+          <div class="col-12 row p-0 m-0"
+            [ngStyle]="{'border' : exec?.overall > 0 ? '1px solid #0B7AB2' : '1px solid #EC9251'}">
+            <div class="col-6 p-0">
+              <div class="col-12 p-0">
+                <div class="textgrey" (click)="listingSectionclicked()">
+                  <span>Untouched</span>
+                  <span>{{(totalPendingCount?totalPendingCount:'0')}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'GF',rmName,exec?.starttime,exec?.endtime)">
+                  <span>General Followups</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.generalfollowups == '0' , 'color-green' : exec?.generalfollowups > 0}">{{exec?.generalfollowups}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'NC',rmName,exec?.starttime,exec?.endtime)">
+                  <span>NC</span>
+                  <span [ngClass]="{'color-red' : exec?.NC == '0' , 'color-green' : exec?.NC > 0}">{{exec?.NC}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'USV-Fix',rmName,exec?.starttime,exec?.endtime)">
+                  <span>USV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.usvfixed == '0' , 'color-green' : exec?.usvfixed > 0}">{{exec?.usvfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'USV-Done',rmName,exec?.starttime,exec?.endtime)">
+                  <span>USV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.usvdone == '0' , 'color-green' : exec?.usvdone > 0}">{{exec?.usvdone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'SV-Fix',rmName,exec?.starttime,exec?.endtime)">
+                  <span>SV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.svfixed == '0' , 'color-green' : exec?.svfixed > 0}">{{exec?.svfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'SV-Done',rmName,exec?.starttime,exec?.endtime)">
+                  <span>SV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.svdone == '0' , 'color-green' : exec?.svdone > 0}">{{exec?.svdone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'RSV-Fix',rmName,exec?.starttime,exec?.endtime)">
+                  <span>RSV Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.rsvfixed == '0' , 'color-green' : exec?.rsvfixed > 0}">{{exec?.rsvfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'RSV-Done',rmName,exec?.starttime,exec?.endtime)">
+                  <span>RSV Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.rsvdone == '0' , 'color-green' : exec?.rsvdone > 0}">{{exec?.rsvdone}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 p-0">
+              <div class="col-12 p-0">
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'FN-Fix',rmName,exec?.starttime,exec?.endtime)">
+                  <span>FN Fix</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.fnfixed == '0' , 'color-green' : exec?.fnfixed > 0}">{{exec?.fnfixed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'FN-Done',rmName,exec?.starttime,exec?.endtime)">
+                  <span>FN Done</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.fndone == '0' , 'color-green' : exec?.fndone > 0}">{{exec?.fndone}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'Inactive',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Inactive</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.inactive == '0' , 'color-green' : exec?.inactive > 0}">{{exec?.inactive}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'JunkLeads',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Junk Leads</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.junkleads == '0' , 'color-green' : exec?.junkleads > 0}">{{exec?.junkleads}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'JunkVisits',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Junk Visits</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.junkvisits == '0' , 'color-green' : exec?.junkvisits > 0}">{{exec?.junkvisits}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'BR',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Booking Requests</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.closingrequest == '0' , 'color-green' : exec?.closingrequest > 0}">{{exec?.closingrequest}}</span>
+                </div>
+                <div class="textblue cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'Booked',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Booked</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.leadclosed == '0' , 'color-green' : exec?.leadclosed > 0}">{{exec?.leadclosed}}</span>
+                </div>
+                <div class="textgrey cursor-pointer"
+                  (click)="listingSectionclicked(rmid,'Others',rmName,exec?.starttime,exec?.endtime)">
+                  <span>Others</span>
+                  <span
+                    [ngClass]="{'color-red' : exec?.others == '0' , 'color-green' : exec?.others > 0}">{{exec?.others}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center align-items-center" *ngIf="executivesList?.length == 0">
+          <h4 style="font-style: italic;">No Data Found</h4>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between py-2 align-items-end">
+          <button class="btn btn-warning" (click)="previousPage()" [disabled]="currentPage == 0"
+            style="height: 33px;">Previous</button>
+          <button class="btn btn-warning" (click)="nextPage()" [disabled]="(currentPage >= totalPages-1) "
+            style="height: 33px;">Next</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="main-lds-ring-div" *ngIf=filterLoader>
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+   <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<!-- pop up for pushing the data manual -->
+<div class="modal fade" id="manual_report_push" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog sendreport_modal modal-xl">
+    <div class="modal-content enquiry_modal_body" id="assign_leads">
+      <div class="modal-header">
+        <span>
+          <h4 class="col-12 m-0">Report Sending</h4>
+        </span>
+        <span>
+          <button type="button" class="close" data-dismiss="modal" id="leadAssignClose"
+            (click)="closesendreport()"><span aria-hidden="true">&times;</span><span
+              class="sr-only">Close</span></button>
+        </span>
+      </div>
+
+      <div class="modal-body">
+        <div class="new_enquiry_form ">
+          <div style="display: flex; gap:3rem">
+
+            <div class="form-group col-5 input_cmn_div">
+              <label class="font-bold">Select Date</label>
+
+              <div id="sendReportDates" class="cursor-pointer d-flex">
+                <i class="fas fa-calendar" style="position: absolute; bottom: 14px;right: 30px;"></i>&nbsp;
+                <input placeholder="Select DateRange" class="form-control" [(ngModel)]="selectedDateRange" type="text"
+                  required>&nbsp;
+              </div>
+            </div>
+
+            <div class="form-group col-5 input_cmn_div">
+              <label class="font-bold">Select Time Slot</label>
+              <select id="time_dropdown" class="form-control ui dropdown dashboard_dropdown mr-3"
+                (change)="getselectedtime($event)">
+                <option value="" selected>Select Time</option>
+                <option value="9:30 - 10:30">9:30 - 10:30</option>
+                <option value="10:30 - 11:30">10:30 - 11:30</option>
+                <option value="11:30 - 12:30">11:30 - 12:30</option>
+                <option value="12:30 - 13:30">12:30 - 1:30</option>
+                <option value="13:30 - 14:30">1:30 - 2:30</option>
+                <option value="14:30 - 15:30">2:30 - 3:30</option>
+                <option value="15:30 - 16:30">3:30 - 4:30</option>
+                <option value="16:30 - 17:30">4:30 - 5:30</option>
+                <option value="17:30 - 18:30">5:30 - 6:30</option>
+                <option value="18:30 - 19:30">6:30 - 7:30</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-group col-3s input_cmn_div justify-content-end ml-3">
+            <button class="approve btn btn-warning" (click)="pushReport()" type="submit">Send</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

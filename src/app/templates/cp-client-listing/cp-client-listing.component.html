@@ -1,0 +1,596 @@
+<!-- HEADER -->
+
+<div>
+  <app-header></app-header>
+</div>
+
+<!-- HEADER -->
+
+<!-- MAIN-CONTENTS -->
+
+<div class="row main_count_header " [ngStyle]="{'margin-left': isSidebarHovered ? '13rem' : '2.5rem'}">
+  <div class="col-8 pt-2" style="padding-left:10px">
+    <div class="button_section col-12 pr-0 pl-0 d-flex ">
+      <div class="planleadassign">
+        <a class="add_class lead_section paid_section" routerLink="/client-list"
+          [queryParams]="{paid:1,cityId:selectedcity,cityName:selectedCityName,localityId:selectedLocalityIds,localityName:selectedLocalityName,propName:propertyname,propid:propertyid,status:selectedStatus}">
+          Paid Clients
+          <span>({{paidCount}})</span>
+        </a>
+
+        <a class="add_class lead_section unpaid_section" routerLink="/client-list"
+          [queryParams]="{unpaid:1,cityId:selectedcity,cityName:selectedCityName,localityId:selectedLocalityIds,localityName:selectedLocalityName,propName:propertyname,propid:propertyid,status:selectedStatus}">
+          UnPaid Clients
+          <span>({{unpaidCount}})</span>
+        </a>
+        <a class="add_class lead_section trail_section" routerLink="/client-list"
+          [queryParams]="{trail:1,cityId:selectedcity,cityName:selectedCityName,localityId:selectedLocalityIds,localityName:selectedLocalityName,propName:propertyname,propid:propertyid,status:selectedStatus}">
+          Trail Clients
+          <span>({{trailCount}})</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 pt-2 text-right update_wishes">
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add_client">Add Client</button>
+    <button type="button" class="btn btn-warning" (click)="refresh()">Reset</button>
+  </div>
+</div>
+
+<div class="body-cntnts dimmable blurring" [ngStyle]="{'padding-left': isSidebarHovered ? '14rem' : '3.5rem'}">
+  <div class="myexecutive_main" style="padding-left: 0.2rem;">
+    <div class="table-container ">
+      <div id="filtermaindiv" class="filterspan ml-2">
+        <span *ngIf="cityFilter && selectedcity != '' && selectedCityName != ''">
+          <div class="p-2 chip">
+            {{selectedCityName}}
+            <span class="closebtn" (click)="cityClose()">&times;</span>
+          </div>
+        </span>
+
+        <span *ngIf="localityFilter && selectedLocalityIds != '' && selectedLocalityName != ''">
+          <div class="p-2 chip">
+            {{selectedLocalityName}}
+            <span class="closebtn" (click)="localityClose()">&times;</span>
+          </div>
+        </span>
+
+        <span *ngIf="propertyFilter && propertyid != '' && propertyname != ''">
+          <div class="p-2 chip">
+            {{propertyname}}
+            <span class="closebtn" (click)="propertyClose()">&times;</span>
+          </div>
+        </span>
+
+        <span *ngIf="statusFilter && selectedStatus != ''">
+          <div class="p-2 chip">
+            {{selectedStatus}}
+          </div>
+        </span>
+      </div>
+
+      <div class="CSassigned_table ">
+        <div class="crm-sub-container padding-medium-full">
+          <div class="panel-1  crm-auto-scrollrm panel-content">
+            <table class="content_table_main table table-striped table-bordered tid-table" infinite-scroll
+              [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              [infiniteScrollContainer]="'.CSassigned_table'">
+              <thead>
+                <tr class="header">
+                  <th style="width: 3%;">#</th>
+                  <th>Name</th>
+                  <th>Mail</th>
+                  <th style="width: 10%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>Status</span>
+                      <span class="leadstatusdrop d-flex">
+                        <!-- <span style="font-size: 14px;">{{selectedLeadStatus}}</span> -->
+                        <div>
+                          <button class="btn btn-warning" type="button" id="assignLeadDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                            <i class="fas fa-filter" style="color: white;"></i>
+                          </button>
+                          <div class="dropdown-menu " aria-labelledby="assignLeadDropdown" style="cursor:pointer;">
+                            <!-- <a class="dropdown-item dropDownCursor" (click)="clientStatus('All')">All</a> -->
+                            <a class="dropdown-item dropDownCursor" (click)="clientStatus('Active')">Active</a>
+                            <a class="dropdown-item dropDownCursor" (click)="clientStatus('Inactive')">Inactive</a>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="d-flex justify-content-between">
+                      <span>City</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_city"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu cityBasedFilter" aria-labelledby="bookingLeadDropdown_city"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+
+                          <div class="dropdown-search-container"><input type="text" class="form-control citysearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_city" name="searchTerm_city"
+                              (input)="filtercity()" style="margin-bottom: 2px;"></div>
+
+                          <div class="city_list_checkbox">
+                            <div *ngFor="let citylist of cities">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <div (click)="onCheckboxChangecity(citylist)">{{ citylist.name }}</div>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th *ngIf="cityFilter">
+                    <div class="d-flex justify-content-between">
+                      <span>Locality</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown_locality"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu localityBasedFilter" aria-labelledby="bookingLeadDropdown_locality"
+                          style="cursor:pointer; max-height: 250px;max-width: 250px;overflow-y: auto;overflow-x: hidden;">
+
+                          <div class="dropdown-search-container"><input type="text" class="form-control localitysearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_locality" name="searchTerm_locality"
+                              (input)="filterlocality()" style="margin-bottom: 2px;"></div>
+
+                          <div *ngIf="cpLocalityList?.length">
+                            <div *ngFor="let local of cpLocalityList">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hidelocalcheckbox"
+                                  id="hidelocalcheckboxid" value="{{local.locality_IDPK}}" name='locFilter'
+                                  (change)="onCheckChangeLocality()">
+                                {{local.locality_name}}
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="!cpLocalityList?.length" class="text-center" style="color: #666666;">
+                            <h4>No Locality Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th *ngIf="cityFilter">
+                    <div class="d-flex justify-content-between">
+                      <span>Property</span>
+                      <div>
+                        <button class="btn btn-warning" type="button" id="bookingLeadDropdown" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
+                          <i class="fas fa-filter" style="color: white;"></i>
+                        </button>
+                        <div class="dropdown-menu propertyBasedFilter" aria-labelledby="bookingLeadDropdown"
+                          style="cursor:pointer; max-height: 250px;max-width: 300px;overflow-y: auto;">
+                          <div class="dropdown-search-container"><input type="text" class="form-control propsearch"
+                              placeholder="Search..." [(ngModel)]="searchTerm_property" name="searchTerm"
+                              (input)="filterProjects()" style="margin-bottom: 2px;"></div>
+                          <div *ngIf="propertiesListFromCP?.length > 0">
+                            <div *ngFor="let project of propertiesListFromCP">
+                              <label class="dropdown-item dropDownCursor mb-1">
+                                <input type="checkbox" class="mr-2 loopcheckbox hidepropcheckbox"
+                                  id="hidepropcheckboxid" value="{{project?.property_id}}" name='propFilter'
+                                  (change)="onCheckPropertyChange()">
+                                {{project.property_name}}
+                              </label>
+                            </div>
+                          </div>
+                          <div *ngIf="propertiesListFromCP?.length == 0" class="text-center" style="color: #666666;">
+                            <h4>No Properties Found</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>UserName</th>
+                  <th>Password</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="enquiry_table_body">
+                <tr *ngFor="let client of cpClients;let i = index">
+                  <td class="users_img">{{i+1}}
+                  </td>
+                  <td>
+                    <div>{{client.client_name}}</div>
+                    <div>{{client.client_number}}</div>
+                  </td>
+                  <td>{{client.client_email}}</td>
+                  <td>{{(client.client_status == '1' ? 'Active' :'Inactive')}}</td>
+                  <td>{{client.city_name}}</td>
+                  <td *ngIf="cityFilter">
+                    <div>
+                      <div>
+                        <div class="propertyname_td" *ngIf="client?.client_locality">
+                          <p class="m-1">{{client?.client_locality[0]?.locality_name}}</p>
+                        </div>
+
+                        <span *ngIf="client && client?.client_locality && client?.client_locality.length > 1">
+                          <span class="showall_prop popper{{i}}" data-toggle="popover" data-placement='right'
+                            tabindex="0" (click)="showall(i)">Show All</span>
+                          <div class="popover_content_wrapper{{i}}" style="display: none">
+                            <p *ngFor="let loc of client?.client_locality; let i = index"
+                              class="m-1 pl-2 suggested_proj">
+                              {{loc.locality_name}}</p>
+                          </div>
+                        </span>
+                      </div>
+                      <p *ngIf="client?.client_locality?.length == 0" class="d-flex justify-content-center"
+                        style="font-size: 10px;font-style: italic;font-weight: 600;">No Locality Updated</p>
+                    </div>
+                  </td>
+                  <td *ngIf="cityFilter">
+                    <div>
+                      <div>
+                        <div class="propertyname_td" *ngIf="client?.client_property">
+                          <p class="m-1">{{client?.client_property[0]?.property_name}}</p>
+                        </div>
+
+                        <span *ngIf="client?.client_property.length > 1">
+                          <span class="showall_prop propertypopper{{i}}" data-toggle="popover" data-placement='right'
+                            tabindex="0" (click)="propShowall(i)">Show All</span>
+                          <div class="property_popover_content_wrapper{{i}}" style="display: none">
+                            <p *ngFor="let loc of client?.client_property; let i = index"
+                              class="m-1 pl-2 suggested_proj">
+                              {{loc.property_name}}</p>
+                          </div>
+                        </span>
+                      </div>
+                      <p *ngIf="client?.client_property?.length == 0" class="d-flex justify-content-center"
+                        style="font-size: 10px;font-style: italic;font-weight: 600;">No Properties Updated</p>
+                    </div>
+                  </td>
+                  <td>{{(client.client_username ? client.client_username :'---')}}</td>
+                  <td>{{(client.client_password ?client.client_password :'---')}}</td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 1.5rem;">
+                      <span><i class="fa fa-edit" data-toggle="modal" data-target="#edit_client"
+                          (click)="editClient(client)"
+                          style="color: rgb(101 149 101);font-size: 18px;cursor: pointer;"></i></span>
+                      <span><i class="fa fa-eye" data-toggle="modal" data-target="#viewAgreement"
+                          (click)="selectViewClient(client)"
+                          style="color: #0B7AB2;font-size: 18px;cursor: pointer;"></i></span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="no-record text-center" *ngIf="! cpClients?.length">
+          No Clients Found...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MAIN-CONTENTS -->
+<div class="clearfix"></div>
+
+
+<div *ngIf=filterLoader class="main-lds-ring-div">
+  <!-- <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> -->
+   <img src="../../../assets/images/infinity_loader.gif">
+</div>
+
+<div class="modal fade" id="add_client" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog modal-lg add_client_modal">
+    <div class="modal-content enquiry_modal_body" id="alreadyExist_leads">
+      <div class="modal-header px-3 py-2">
+        <h4 class="col-10 m-0">CP Client Registration</h4>
+        <button type="button" class="close" data-dismiss="modal" id="clientModalCloase"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_executive_form col-12 row m-0">
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Company Name <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Name" type="text" name="name" id="client_company_name"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Primary Name <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Name" type="text" name="name" id="client_name"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Contact No. <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Mobile No" type="text" id="client_mobile"
+                maxlength="10" required name="mobilenum">
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Primary Mail <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" id="client_email" type="text" name="email" placeholder="Enter the Mail"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select City <span class="colorRed">&#8727;</span></label>
+              <p-dropdown id="city_dropdown" [options]="cities" filter="true" optionLabel="name"
+                [(ngModel)]="selectedcitiesOptions" name="selectedLeads" defaultLabel="Select City"
+                placeholder="Select City" (onChange)="citychange($event)">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Locality</label>
+              <p-multiSelect id="locality_dropdown" [options]="localitiesListForAdd"
+                [(ngModel)]="selectedLocalitiesOptions" [filter]="true" optionLabel="locality"
+                defaultLabel="Select Localities" (onChange)="localitychange($event)"></p-multiSelect>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Properties</label>
+              <p-multiSelect id="property_dropdown" [options]="propertiesList" [(ngModel)]="selectedPropertiesOptions"
+                [filter]="true" optionLabel="PropertyName" defaultLabel="Select Properties"
+                (onChange)="propertychange($event)"></p-multiSelect>
+
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Pack <span class="colorRed">&#8727;</span></label>
+              <p-dropdown id="client_pack" [options]="packList" filter="true" optionLabel="name"
+                [(ngModel)]="clientPack" name="clientPack" defaultLabel="Select Pack" placeholder="Select Pack"
+                (onChange)="packchange($event)">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <!-- file upload for for Agreement -->
+          <div class="form-group col-sm-12 input_cmn_div">
+            <div class="col-12 p-0">
+              <label>Upload Agreement:
+                <span style="color: #999;">Accepted File Size: 10MB</span><br />
+                <span style="color: #999;">Supported Format: PDF/PNG/JPEG/WEBP</span>
+              </label>
+            </div>
+
+            <div class="custom-file mb-3 col-6">
+              <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 10MB" type="file"
+                data-max-size="10000000" (change)="agreementuploads('0',$event)" class="custom-file-input"
+                id="customFile{{'0'}}" name="filename" multiple>
+              <label class="custom-file-label file-label" for="customFile{{'0'}}">Choose file</label>
+            </div>
+            <!-- Uploaded file displaying before submission for brochure-->
+            <div class="filedisplaymaindiv col-12 p-0 row m-0">
+              <div class="col-4 imagemaindiv p-0" *ngFor='let url of agreementFiles; let i = index'>
+                <div class="image-container d-flex justify-content-center">
+                  <ng-container *ngIf="url?.name.endsWith('.pdf'); else showImage">
+                    <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="150" width="150"
+                      alt="PDF Icon">
+                  </ng-container>
+
+                  <!-- Else, show image for JPEG/PNG -->
+                  <ng-template #showImage>
+                    <img class="mr-2 p-3" [src]="getagreementUrl(url,'post')" height="150" width="150"
+                      alt="Uploaded Image">
+                  </ng-template>
+                  <div class="hover-icons" *ngIf="url?.name">
+                    <i class="fa fa-eye iconcolor1" (click)="viewagreement(url,'post')"> </i>
+                    <i class="fa fa-times iconcolor1" (click)="removeAgreementFile(i)"> </i>
+                  </div>
+                </div>
+                <div style="font-size: 10px;font-weight:500;display: flex;justify-content: center;">{{url.name}}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="float-right">
+          <button class="btn btn-warning" type="button" (click)="createClient()">Create</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+       
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_client" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+  <div class="modal-dialog modal-lg add_client_modal">
+    <div class="modal-content enquiry_modal_body" id="alreadyExist_leads">
+      <div class="modal-header px-3 py-2">
+        <h4 class="col-10 m-0">{{ editClientData?.client_name }} Client Updation</h4>
+        <button type="button" class="close" data-dismiss="modal" id="clientModalCloase" (click)="closeEditModal()"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="new_executive_form col-12 row m-0">
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Company Name <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Name" type="text" name="name"
+                id="edit_client_company_name" required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Primary Name <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Name" type="text" name="name" id="edit_client_name"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Contact No. <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" placeholder="Enter the Mobile No" type="text" id="edit_client_mobile"
+                maxlength="10" required name="mobilenum">
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div">
+            <div style="flex-direction: column;">
+              <label>Primary Mail <span class="colorRed">&#8727;</span></label>
+              <input class="form-control" id="edit_client_email" type="text" name="email" placeholder="Enter the Mail"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select City <span class="colorRed">&#8727;</span></label>
+              <p-dropdown id="city_dropdown" [options]="cities" filter="true" optionLabel="name"
+                [(ngModel)]="selectedcitiesOptions" name="selectedLeads" defaultLabel="Select City"
+                placeholder="Select City" (onChange)="citychange($event)">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Locality</label>
+              <p-multiSelect id="locality_dropdown" [options]="localitiesListForAdd"
+                [(ngModel)]="selectedLocalitiesOptions" [filter]="true" optionLabel="locality"
+                defaultLabel="Select Localities" (onChange)="localitychange($event)"></p-multiSelect>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Properties</label>
+              <p-multiSelect id="property_dropdown" [options]="propertiesList" [(ngModel)]="selectedPropertiesOptions"
+                [filter]="true" optionLabel="PropertyName" defaultLabel="Select Properties"
+                (onChange)="propertychange($event)"></p-multiSelect>
+            </div>
+          </div>
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Pack <span class="colorRed">&#8727;</span></label>
+              <p-dropdown id="client_pack" [options]="packList" filter="false" optionLabel="name"
+                [(ngModel)]="clientPack" name="clientPack" defaultLabel="Select Pack" placeholder="Select Pack"
+                (onChange)="packchange($event)">
+              </p-dropdown>
+            </div>
+          </div>
+
+
+          <div class="form-group col-6 input_cmn_div ">
+            <div class="departmentDesginationStyles d-flex flex-column">
+              <label>Select Status <span class="colorRed">&#8727;</span></label>
+              <p-dropdown id="client_status" [options]="clientStatusList" filter="false" optionLabel="name" [(ngModel)]="clientstatusid"
+                name="clientstatusid" defaultLabel="Select Status" placeholder="Select Status" (onChange)="statuschange($event)">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <!-- file upload for for Agreement -->
+          <!-- <div class="form-group col-sm-12 input_cmn_div">
+            <div class="col-12 p-0">
+              <label>Upload Agreement:
+                <span style="color: #999;">Accepted File Size: 10MB</span><br />
+                <span style="color: #999;">Supported Format: PDF/PNG/JPEG/WEBP</span>
+              </label>
+            </div>
+
+            <div class="custom-file mb-3 col-6">
+              <input title="Upload file smaller than 10MB" placeholder="Upload file smaller than 10MB" type="file"
+                data-max-size="10000000" (change)="agreementuploads('0',$event)" class="custom-file-input"
+                id="customFile{{'0'}}" name="filename" multiple>
+              <label class="custom-file-label file-label" for="customFile{{'0'}}">Choose file</label>
+            </div>
+            <div class="filedisplaymaindiv col-12 p-0 row m-0">
+              <div class="col-4 imagemaindiv p-0" *ngFor='let url of agreementFiles; let i = index'>
+                <div class="image-container d-flex justify-content-center">
+                  <ng-container *ngIf="url?.name.endsWith('.pdf'); else showImage">
+                    <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="150" width="150"
+                      alt="PDF Icon">
+                  </ng-container>
+
+                  <ng-template #showImage>
+                    <img class="mr-2 p-3" [src]="getagreementUrl(url,'post')" height="150" width="150"
+                      alt="Uploaded Image">
+                  </ng-template>
+                  <div class="hover-icons" *ngIf="url?.name">
+                    <i class="fa fa-eye iconcolor1" (click)="viewagreement(url,'post')"> </i>
+                    <i class="fa fa-times iconcolor1" (click)="removeAgreementFile(i)"> </i>
+                  </div>
+                </div>
+                <div style="font-size: 10px;font-weight:500;display: flex;justify-content: center;">{{url.name}}</div>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+        <div class="float-right">
+          <button class="btn btn-warning" type="button" (click)="UpdateClient()">Update</button>
+          <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ----------------------------View agreement---------------------------- -->
+<div class="modal fade" id="viewAgreement" role="dialog" *ngIf="selectedClientAgreement?.client_docs?.length >0">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Agreement Details of {{selectedClientAgreement?.client_name}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body col-12 row m-0">
+        <div class="col-4" *ngFor="let client of selectedClientAgreement?.client_docs">
+          <div class="">
+            <div class="image-container d-flex justify-content-center">
+              <ng-container *ngIf="client?.doc_name.endsWith('.pdf'); else showImage">
+                <img class="mr-2 p-3" src="../../../../assets/images/pdfred.png" height="200" width="200"
+                  alt="PDF Icon">
+              </ng-container>
+
+              <ng-template #showImage>
+                <img class="mr-2 p-3" [src]="getagreementUrl(client,'view')" height="200" width="200"
+                  alt="Uploaded Image">
+              </ng-template>
+              <div class="hover-icons" *ngIf="client?.doc_name">
+                <i class="fa fa-eye iconcolor1" (click)="viewagreement(client,'view')"> </i>
+                <i class="fa fa-download iconcolor1" (click)="downloadAgreement(client)"> </i>
+              </div>
+            </div>
+            <div style="font-size: 10px;font-weight:500;display: flex;justify-content: center;">{{client.doc_name}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- ----------------------------View agreement---------------------------- -->

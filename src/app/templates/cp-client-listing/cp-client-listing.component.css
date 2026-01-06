@@ -1,0 +1,417 @@
+/* CENTER-CONTENTS */
+
+.body-cntnts {
+    margin: 10px 0px 10px 10px !important;
+    width: 98%;
+}
+
+.myexecutive_main {
+    background: #f4f4f4;
+    float: left;
+	width:100%;
+	height:100%;
+}
+
+/* css for buttons with green background */
+.main_count_header{
+    background: #0B7AB229;
+    color: #ffffff;
+    padding-top: 2rem !important;
+    padding-inline: 1.5rem;
+    padding-bottom: .5rem;
+  }
+
+  /* aligning the buttons in row anf added gap in between */
+  .main_count_header .button_section{
+    display: flex !important;
+    gap:1rem;
+  }
+
+.modal-dialog {
+    width: 600px;
+}
+
+.update_wishes{
+    cursor: pointer;
+}
+
+span.exec_table_prof i{
+    font-size: 26px;
+    color: #0B7AB2;
+} 
+
+.myexecutive_main .button_section{
+	margin:0;
+    padding:0;
+    background-color: darkseagreen;
+}
+
+.assign_team{
+    float: left;
+}
+
+.assign_team a{
+    background: #e5652e;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    padding: 12px 15px;
+}
+
+
+.myexecutive_main .button_section .update_wishes a{
+	background:#0B7AB2;
+	text-decoration:none;
+	display:block;
+	font-size:14px;
+	color:#000000;
+	font-weight:600;
+	padding:12px 15px;
+}
+
+.myexecutive_main .button_section .download{
+	float:right;
+}
+
+.myexecutive_main .button_section .download a{
+	text-decoration:none;
+	display:block;
+	font-size:14px;
+	color:#252525;
+	font-weight:700;
+	padding:6px 15px 0px 15px;
+}
+
+/*============= Executives Table CSS Start =========================*/
+
+.myexecutive_table_main{
+    width:100%;
+    height: 638px;
+}
+
+.myexecutive_table_body{
+    height: 638px;
+    font-size: 13px;
+    overflow-y:auto;
+    width: 100%;
+}
+
+span.myexecutive_date{
+    font-size: 13px;
+    position: absolute;
+    margin: 0px 0px 0px 4px;
+}
+
+.users_img{
+    text-align: center;
+}
+
+.users_img img{
+    border-radius: 70px;
+    width: 25%;
+    margin: -10px 0px 0px 0px;
+}
+
+.edit_btn{
+    margin-right: 18px;
+}
+
+.table-container{
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+    padding-block: 1rem;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.CSassigned_table{
+    height: 680px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+	width: 100%;
+}
+
+.crm-sub-container {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.panel-1 {
+    order: 1;
+    flex-grow: 1;
+    min-width: 50%;
+    background: #ddd;
+}
+
+.crm-auto-scroll {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.padding-medium {
+    padding: 0 16px;
+}
+
+.panel-content {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+.no-record{
+    position: relative;
+    top: 220px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/*============= Table CSS End =========================*/
+
+.form-control.col-xs-12.exec_textarea{
+    width: 20rem;
+}
+
+
+.actions.col-xs-12.save_btn{
+    text-align: center;
+}
+ /* css for the close icon on clicking update perform */
+.cancelButton{
+    align-items: end;
+    justify-content: center;
+}
+
+/* added red color for the star symbol in form */
+.colorRed{
+    color: red;
+}
+
+.btn-outline-info:hover {
+    background-color:none !important;
+}
+
+/* RESPONSIVE_STARTS */
+
+@media (min-width: 1920px) and (max-width: 2560px) {
+	.body-cntnts{
+		width: 100%;
+	}
+	.myexecutive_main{
+		width: 100%;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	.myexecutive_main{
+		width: 100%;
+	}
+}
+
+@media (max-width: 1000px) {
+    .body-cntnts {
+        padding-left: 0.2rem;
+    }
+    .main_count_header{
+        padding-left: 1.2em !important;
+    }
+}
+
+.content_table_main tbody tr{  
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead{
+  background: #05abe0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.content_table_main thead tr th{
+  padding:10px 0px 10px 6px;
+  color:#FFF;
+  font-size:13px;
+  font-weight:400;
+}
+
+.content_table_main tbody tr td{
+  padding: 10px 4px 10px 4px;
+  color: #666666;
+  width: 150px;
+  position: relative;
+}
+
+.content_table_main tbody tr td:nth-child(1){
+  width: 10px !important;
+}
+
+.content_table_main tbody tr td:nth-child(2){
+  width: 300px;
+}
+
+.content_table_main .enquiry_table_body{
+  border-bottom:1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_reassgn{
+  border: 1px solid #999;
+  padding: 4px 6px 4px 6px;
+  cursor: pointer;
+}
+
+.iconcolor {
+    color: #0B7AB2;
+    ;
+}
+
+.hover-icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    gap: 10px;
+    padding: 5px 15px;
+}
+
+.image-container:hover .hover-icons {
+    display: flex;
+}
+
+/* .image-container:hover {
+    background: #bdb6b6a9;
+} */
+
+.iconcolor1:hover {
+    color: #00679b;
+}
+
+.iconcolor1 {
+    font-size: 20px;
+    color: #0b7ab2;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.filterspan{
+	color: #9f9b9b;
+    display: flex;
+    gap: 0.1rem;
+    width: 100%;
+    padding-bottom: 5px ;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .closebtn:hover {
+    color: #000;
+  } 
+
+  .chip {
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+  }
+
+  ::ng-deep .leadstatusdrop .ui.selection.dropdown{
+    background: #0B7AB2 !important;
+    border: none !important;
+    min-width: 4em !important;
+    color: white !important;
+    min-height:0rem !important
+}
+
+.lead_count {
+	padding-left: 0.5rem;
+}
+
+.lead_count label {
+	font-size: 14px;
+    color: black;
+    font-weight: 600;
+}
+
+::ng-deep body .ui-dropdown {
+    width: 17rem !important;
+}
+
+::ng-deep .ui-multiselect {
+    width: 245px !important;
+    height: 2.428571em !important;
+}
+
+::ng-deep .ui-multiselect .ui-multiselect-label {
+    padding: 0 0px 0px 0px;
+    white-space: nowrap;
+}
+
+.dropdown-search-container {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-top: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.propertyname_td {
+    height: 45px !important;
+    overflow: hidden;
+}
+
+.showall_prop {
+    font-size: 12px;
+    float: right;
+    font-style: italic;
+    font-weight: 800;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.button_section .planleadassign {
+    background-color: #ffffff !important;
+    border-radius: 50px;
+    padding-inline: 0.2rem;
+    padding-block: 0.2rem;
+}
+
+.button_section .planleadassign a {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0px 0 0px;
+    cursor: pointer;
+    float: left;
+    color: #000000;
+    border: none;
+    padding: 5px 10px 5px 10px;
+}
+
+.button_section .planleadassign a.active {
+    color: #ffffff;
+    background: #0B7AB2;
+    border-radius: 50px;
+    border: 1px solid #0B7AB2;
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 14px;
+}

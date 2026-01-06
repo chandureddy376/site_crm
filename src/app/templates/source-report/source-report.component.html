@@ -1,0 +1,1336 @@
+<body class="g-sidenav-show  bg-gray-200">
+  <!-- HEADER -->
+  <!-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main"> -->
+  <app-header></app-header>
+  <!-- </aside> -->
+  <!-- HEADER -->
+  <main class="main-content position-relative border-radius-lg max-height-vh-100"
+    [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '3.5rem'}" [ngClass]="{'margin-0' : departId == '10005'}">
+    <!-- Navbar -->
+    <!-- <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+            </div>
+          </div>
+          <ul class="navbar-nav  justify-content-end  align-items-baseline">
+            <li class="pr-3" *ngIf="roleid != 1 && roleid != '2'">
+              <button class="btn btn-primary d-flex align-items-center justify-content-center" type="button"
+                data-toggle="modal" data-target="#start_break">Start Break <img src="../../../assets/images/break.png"
+                  style="width: 1.3rem;" class="pl-1"></button>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">{{username}}</span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item dropdown px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="settings" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog fixed-plugin-button-nav hoverclass"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="settings">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center" (click)="logout()">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">Logout</span>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell hoverclass"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New feature</span> Coming Soon
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxxxxx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/small-logos/logo-spotify.svg"
+                          class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">xx xxxx</span> xx xxxxx xxxx
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          xx xxx
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
+    <!-- End Navbar -->
+    <div class="container-fluid pb-2 pl-0" style="padding-inline: 1rem !important;padding-top: 1.8rem !important;">
+      <div class="row" [ngStyle]="{'padding-top': departId == '10005' ? '1.5rem' : '0rem'}">
+        <div class="col-12 mb-2">
+          <!-- <div class=" btn-group btn-group-toggle float-left">
+            <div *ngIf="viewallBoolean"><button class="btn btn-warning buttonwithicon p-2" type="button"
+                (click)="sourceDashreturn()"><i class="fas fa-chevron-left"></i>back</button></div>
+          </div> -->
+          <!-- <div class=" btn-group btn-group-toggle float-right col-md-12 col-sm-12"> -->
+          <div class=" btn-group btn-group-toggle d-flex justify-content-end">
+            <span class="p-0">
+              <label class=" btn btn-sm btn-danger btn-simple ml-1 mb-0" routerLink="/source-dashboard"
+                [queryParams]="{todayvisited: 1,from:fromdate, to:todate,dashtype:'dashboard',source:selectedSource,category:sourceCategory}"
+                [ngClass]="{'active':clicked1===true}">
+                <input class=" d-none d-sm-none" name="options" type="radio" (click)="$event.stopPropagation()" />
+                <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                  Today
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-gift-2"> </i>
+                </span>
+              </label>
+
+              <label class=" btn btn-sm btn-danger btn-simple ml-1 mb-0" routerLink="/source-dashboard"
+                [queryParams]="{yesterdayvisited: 1,from:fromdate, to:todate,dashtype:'dashboard',source:selectedSource,category:sourceCategory}"
+                [ngClass]="{'active':clicked2===true}">
+                <input class=" d-none" name="options" type="radio" (click)="$event.stopPropagation()" />
+
+                <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                  Yesterday
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+
+              <label class=" btn btn-sm btn-danger btn-simple mb-0" routerLink="/source-dashboard"
+                [queryParams]="{last7: 1,from:fromdate, to:todate,dashtype:'dashboard',source:selectedSource,category:sourceCategory}"
+                [ngClass]="{'active':clicked3===true}">
+                <input checked="checked" class=" d-none d-sm-none" name="options" type="radio"
+                  (click)="$event.stopPropagation()" />
+
+                <span class="d-sm-block d-md-block d-lg-block d-xl-block">
+                  Last 7 days
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-single-02"> </i>
+                </span>
+              </label>
+
+              <label class=" btn btn-sm btn-danger btn-simple mx-1 mb-0" [ngClass]="{'active':clicked===true}">
+                <div #nextActionDates class="cursor-pointer d-none">
+                  <i class="fas fa-filter" style="color: white;"></i>&nbsp;
+                </div>
+                <span id="nextActionDates" class=" d-sm-block d-md-block d-lg-block d-xl-block">
+                  {{datecustomfetch}}
+                </span>
+                <span class=" d-block d-sm-none">
+                  <i class=" tim-icons icon-tap-02"> </i>
+                </span>
+              </label>
+            </span>
+            <p class="reset_btn p-0 d-flex justify-content-end">
+              <button type="button" class="btn btn-warning buttonwithicon p-2 mb-0" (click)="refresh()"><i
+                  class="fas fa-redo"></i>Reset</button>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 row d-flex align-items-center pr-0" *ngIf="!viewallBoolean && departId != '10005'">
+          <div class="col-12 pr-0">
+
+            <div class="main_suggested_div">
+              <!-- <button class="chevron-btn left" (click)="scrollLeft()">
+              <i class="fa fa-chevron-left"></i>
+            </button> -->
+              <ul class="ks-cboxtags" #sourceList>
+                <li *ngFor="let source of dashboardSourceList; let i = index">
+                  <input type="radio" id="sourcecheckbox{{i}}" value="{{source?.source}}" name='programming1'
+                    [(ngModel)]="selectedSource" (change)="selectsuggested(source.source)">
+                  <label for="sourcecheckbox{{i}}">{{source.source}}</label>
+                </li>
+              </ul>
+              <!-- <button class="chevron-btn right" (click)="scrollRight()">
+              <i class="fa fa-chevron-right"></i>
+            </button> -->
+            </div>
+
+          </div>
+          <!-- <div class="col-1 px-0 d-flex justify-content-end align-items-center">
+            <span class="viewall" (click)="showAllSource()">View All>></span>
+          </div> -->
+        </div>
+
+        <!-- <div class="col-12 row m-0"> -->
+        <div class="col-xl-6 col-md-6 col-sm-12 m-0 p-0">
+          <div class="row m-0 p-0" *ngIf="departId != '10005'">
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Total Leads' && sourceCategory != 'Assigned' && sourceCategory != 'Pending'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Total Leads' || sourceCategory == 'Assigned' || sourceCategory == 'Pending' ? '2px solid #02ABFF' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(55deg, #ffffff 50%, #E5F6FE 130%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Total Leads')"
+                    [ngClass]="{'total_leads_active' : sourceCategory == 'Total Leads'}">
+                    <p class="above_label_size mb-0">Total Leads</p>
+                    <h4 class="mb-0 above_count_size">{{totalLeadcounts?.total || 0}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/settings_with_bg.png" alt="">
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between col-10 p-0">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Assigned')"
+                    [ngClass]="{'assigned_active' : sourceCategory == 'Assigned'}">
+                    <p class="mb-0" style="color: #004E76;"><span class="count_bottom_label">
+                        <div class="footer_label">Assigned</div>
+                        <div class="footer_count">{{totalLeadcounts?.Assigned}}</div>
+                      </span></p>
+                  </a>
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Pending')"
+                    [ngClass]="{'pending_active' : sourceCategory == 'Pending'}">
+                    <p class="mb-0" style="color: #004E76;"><span class="count_bottom_label">
+                        <div class="footer_label">Pending</div>
+                        <div class="footer_count">{{totalLeadcounts?.pending}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Touched' && sourceCategory != 'Untouched' && sourceCategory != 'Inactive' && sourceCategory != 'Junk Leads'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Touched' || sourceCategory == 'Untouched' || sourceCategory == 'Inactive' || sourceCategory == 'Junk Leads' ? '2px solid #C68984' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 50%, #FFE4E1 165%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between p-0">
+                  <div class="d-flex col-10 p-0 justify-content-between">
+                    <a class="cursor-pointer col-6 py-1 px-3" (click)="getCategoryLeads('Untouched')"
+                      [ngClass]="{'untouched_active' : sourceCategory == 'Untouched'}">
+                      <p class="above_label_size mb-0">UnTouched</p>
+                      <h4 class="mb-0 above_count_size">{{totalLeadcounts?.Untouched}}</h4>
+                    </a>
+                    <a class="cursor-pointer col-6 py-1 px-3" (click)="getCategoryLeads('Touched')"
+                      [ngClass]="{'touched_active' : sourceCategory == 'Touched'}">
+                      <p class="above_label_size mb-0">Touched</p>
+                      <h4 class="mb-0 above_count_size">{{totalLeadcounts?.Touched}}</h4>
+                    </a>
+                  </div>
+                  <div class="col-2 p-0 text-end">
+                    <img class="setting_icon" src="../../../../assets/images/flash_with_bg.png" alt="">
+                  </div>
+                </div>
+
+                <div class="p-0 col-10 d-flex justify-content-between">
+                  <a class="cursor-pointer col-6 py-1 px-3" (click)="getCategoryLeads('Inactive')"
+                    [ngClass]="{'inactive_active' : sourceCategory == 'Inactive'}">
+                    <p class="mb-0"><span class="count_bottom_label" style="color: #73322D;">
+                        <div class="footer_label">Inactive</div>
+                        <div class="footer_count">{{totalLeadcounts?.Inactive}}</div>
+                      </span></p>
+                  </a>
+                  <a class="cursor-pointer col-6 py-1 px-3" (click)="getCategoryLeads('Junk Leads')"
+                    [ngClass]="{'junk_leads_active' : sourceCategory == 'Junk Leads'}">
+                    <p class="mb-0"><span class="count_bottom_label" style="color: #73322D;">
+                        <div class="footer_label">Junk Leads </div>
+                        <div class="footer_count">{{totalLeadcounts?.JunkLeads}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Active Leads' && sourceCategory != 'General Followups' && sourceCategory != 'NC' && sourceCategory != 'USV Fix'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Active Leads' || sourceCategory == 'General Followups' || sourceCategory == 'NC' || sourceCategory == 'USV Fix' ? '2px solid #FDB100' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(43deg, #ffffff 45%, #FFE371 345%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class=" py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Active Leads')"
+                    [ngClass]="{'active_leads_active' : sourceCategory == 'Active Leads'}">
+                    <p class="above_label_size mb-0">Active Leads</p>
+                    <h4 class="mb-0 above_count_size">{{totalLeadcounts?.ActiveLeads}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/bulb_with_bg.png" alt="">
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between col-10 p-0">
+                  <a class="cursor-pointer py-1 px-3" (click)="getCategoryLeads('General Followups')"
+                    [ngClass]="{'followup_active' : sourceCategory == 'General Followups'}">
+                    <p class="mb-0"><span class="count_bottom_label" style="color: #5D4100;">
+                        <div class="footer_label">G.Followups</div>
+                        <div class="footer_count">{{totalLeadcounts?.GeneralFollowup}}</div>
+                      </span></p>
+                  </a>
+                  <a class="cursor-pointer py-1 px-3" (click)="getCategoryLeads('NC')"
+                    [ngClass]="{'nc_active' : sourceCategory == 'NC'}">
+                    <p class="mb-0"><span class="count_bottom_label" style="color: #5D4100;">
+                        <div class="footer_label">NC</div>
+                        <div class="footer_count">{{totalLeadcounts?.NC}}</div>
+                      </span></p>
+                  </a>
+                  <a class="cursor-pointer py-1 px-3" (click)="getCategoryLeads('USV Fix')"
+                    [ngClass]="{'usv_fix_active' : sourceCategory == 'USV Fix'}">
+                    <p class="mb-0"><span class="count_bottom_label" style="color: #5D4100;">
+                        <div class="footer_label">USV Fix</div>
+                        <div class="footer_count">{{totalLeadcounts?.USV_fix}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'All Visits' && sourceCategory != 'USV' && sourceCategory != 'RSV' && sourceCategory != 'FN'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' : sourceCategory == 'All Visits' || sourceCategory == 'USV' || sourceCategory == 'RSV' || sourceCategory == 'FN' ? '2px solid #8576FF' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 65%, #DBD8FF 180%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <!-- <div class="col-8 p-0 pt-1 d-flex justify-content-between "> -->
+                  <a class="cursor-pointer py-1 px-3" (click)="getCategoryLeads('All Visits')"
+                    [ngClass]="{'all_visits_active' : sourceCategory == 'All Visits'}">
+                    <p class="mb-0 above_label_size">All Visits</p>
+                    <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.AllVisits}}</h4>
+                  </a>
+                  <!-- </div> -->
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/navigate_with_bg.png" alt="">
+                  </div>
+                </div>
+
+                <div class="col-10 p-0 d-flex justify-content-between">
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('USV')" [ngClass]="{'usv_active' : sourceCategory == 'USV'}">
+                    <div class="footer_label">USV</div>
+                    <div class="footer_count">{{visitsLeadcounts?.USV}}</div>
+                  </a>
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('RSV')" [ngClass]="{'rsv_active' : sourceCategory == 'RSV'}">
+                    <div class="footer_label">RSV</div>
+                    <div class="footer_count">{{visitsLeadcounts?.RSV}}</div>
+                  </a>
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('FN')" [ngClass]="{'fn_active' : sourceCategory == 'FN'}">
+                    <div class="footer_label">FN</div>
+                    <div class="footer_count">{{visitsLeadcounts?.FN}}</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Booking Request' && sourceCategory != 'Booking Request Rejected' && sourceCategory != 'Booking Request Pending'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Booking Request' || sourceCategory == 'Booking Request Rejected' || sourceCategory == 'Booking Request Pending' ? '2px solid #F3883D' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(55deg, #ffffff 50%, #FFB884 300%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request')"
+                    [ngClass]="{'booking_request_active' : sourceCategory == 'Booking Request'}">
+                    <p class="above_label_size mb-0">Booking Request</p>
+                    <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.BRequest}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/calendar_with_bg.png" alt="">
+                  </div>
+                </div>
+                <div class="col-10 p-0 d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request Rejected')"
+                    [ngClass]="{'booking_rejected_active' : sourceCategory == 'Booking Request Rejected'}">
+                    <p class="mb-0" style="color: #944004;">
+                      <span class="count_bottom_label">
+                        <div class="footer_label">Rejected</div>
+                        <div class="footer_count">{{visitsLeadcounts?.BRejected}}</div>
+                      </span>
+                    </p>
+                  </a>
+
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request Pending')"
+                    [ngClass]="{'booking_pending_active' : sourceCategory == 'Booking Request Pending'}">
+                    <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">
+                        <div class="footer_label">D.Pending</div>
+                        <div class="footer_count">{{visitsLeadcounts?.BPending}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Closed Leads' && sourceCategory != 'Junk visits'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' : sourceCategory == 'Closed Leads' ? '2px solid #38A03C' : sourceCategory == 'Junk visits'  ? '2px solid #F3883D' : '2px solid white' }"
+                style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 50%, #D3FFC9 180%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Closed Leads')"
+                    [ngClass]="{'closed_active' : sourceCategory == 'Closed Leads'}">
+                    <p class="above_label_size mb-0">Closed Leads</p>
+                    <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.BClosed}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/closed_with_bg.png" alt="">
+                  </div>
+                </div>
+                <div class="d-flex">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Junk visits')"
+                    [ngClass]="{'junk_visits_active' : sourceCategory == 'Junk visits'}">
+                    <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">
+                        <div class="footer_label">Junk Visits </div>
+                        <div class="footer_count">{{visitsLeadcounts?.JunkVisits}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row m-0 p-0" *ngIf="departId == '10005'">
+            <div class="col-xl-4 col-md-4 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Total Leads' && sourceCategory != 'Assigned' && sourceCategory != 'Pending'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Total Leads' || sourceCategory == 'Assigned' || sourceCategory == 'Pending' ? '2px solid #02ABFF' : '2px solid white'}"
+                style="border-radius: 10px !important;background: linear-gradient(84.03deg, #FFFFFF 32.95%, #E5F6FE 104.6%);;box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-3 px-3 cursor-pointer" (click)="getCategoryLeads('Total Leads')">
+                    <p class="above_label_size mb-0">Total Leads</p>
+                    <h4 class="mb-0 above_count_size">{{totalLeadcounts?.total || 0}}</h4>
+                  </a>
+                  <div class="py-3 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/settings_with_bg.png" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-8 col-md-8 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Touched' && sourceCategory != 'Untouched' && sourceCategory != 'Inactive' && sourceCategory != 'Junk Leads' && sourceCategory != 'Active Leads'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Touched' || sourceCategory == 'Untouched' || sourceCategory == 'Inactive' || sourceCategory == 'Junk Leads' || sourceCategory == 'Active Leads' ? '2px solid #FDB100' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(43deg, #ffffff 45%, #FFE371 345%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between p-0">
+                  <div class="d-flex col-10 p-0 justify-content-between">
+                    <a class=" py-3 px-3 col-4 cursor-pointer" (click)="getCategoryLeads('Active Leads')"
+                      [ngClass]="{'active_leads_active' : sourceCategory == 'Active Leads'}">
+                      <p class="above_label_size mb-0" style="color: #5D4100 !important;">Active Leads</p>
+                      <h4 class="mb-0 above_count_size" style="color: #5D4100 !important;">
+                        {{totalLeadcounts?.act_lds_hs_mb_count}}</h4>
+                    </a>
+                    <a class="cursor-pointer col-4 py-3 px-3" (click)="getCategoryLeads('Inactive')"
+                      [ngClass]="{'inactive_count_active' : sourceCategory == 'Inactive'}">
+                      <p class="above_label_size mb-0" style="color: #5D4100 !important;">Inactive</p>
+                      <h4 class="mb-0 above_count_size" style="color: #5D4100 !important;">{{totalLeadcounts?.Inactive}}
+                      </h4>
+                    </a>
+                    <a class="cursor-pointer col-4 py-3 px-3" (click)="getCategoryLeads('Junk Leads')"
+                      [ngClass]="{'junk_count_active' : sourceCategory == 'Junk Leads'}">
+                      <p class="above_label_size mb-0" style="color: #5D4100 !important;">Junk Leads</p>
+                      <h4 class="mb-0 above_count_size" style="color: #5D4100 !important;">
+                        {{totalLeadcounts?.JunkLeads}}</h4>
+                    </a>
+                  </div>
+                  <div class="col-2 py-3 px-1 text-start">
+                    <img class="setting_icon" src="../../../../assets/images/bulb_with_bg.png" alt="">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'All Visits' && sourceCategory != 'USV' && sourceCategory != 'RSV' && sourceCategory != 'FN'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' : sourceCategory == 'All Visits' || sourceCategory == 'USV' || sourceCategory == 'RSV' || sourceCategory == 'FN' ? '2px solid #8576FF' : '2px solid white'}"
+                style="border-radius: 10px !important;background: linear-gradient(81.57deg, #FFFFFF 54.53%, #DBD8FF 268.32%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <div class="col-xl-10 col-md-10 col-sm-9 p-0 pt-1 d-flex justify-content-between ">
+                    <a class="cursor-pointer py-1 px-3" (click)="getCategoryLeads('All Visits')"
+                      [ngClass]="{'all_visits_active' : sourceCategory == 'All Visits'}">
+                      <p class="mb-0 above_label_size">All Visits</p>
+                      <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.AllVisits}}</h4>
+                    </a>
+                  </div>
+                  <div class="col-xl-2 col-md-2 col-sm-3 py-1 px-3 text-end">
+                    <img class="setting_icon" src="../../../../assets/images/navigate_with_bg.png" alt="">
+                  </div>
+                </div>
+
+                <div class="col-10 p-0 d-flex justify-content-between">
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('USV')" [ngClass]="{'usv_active' : sourceCategory == 'USV'}">
+                    <div class="footer_label">USV</div>
+                    <div class="footer_count">{{visitsLeadcounts?.USV}}</div>
+                  </a>
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('RSV')" [ngClass]="{'rsv_active' : sourceCategory == 'RSV'}">
+                    <div class="footer_label">RSV</div>
+                    <div class="footer_count">{{visitsLeadcounts?.RSV}}</div>
+                  </a>
+                  <a class="mb-0 count_bottom_label cursor-pointer py-1 px-3" style="color: #0F0082;"
+                    (click)="getCategoryLeads('FN')" [ngClass]="{'fn_active' : sourceCategory == 'FN'}">
+                    <div class="footer_label">FN</div>
+                    <div class="footer_count">{{visitsLeadcounts?.FN}}</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Booking Request' && sourceCategory != 'Booking Request Rejected' && sourceCategory != 'Booking Request Pending'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' :  sourceCategory == 'Booking Request' || sourceCategory == 'Booking Request Rejected' || sourceCategory == 'Booking Request Pending' ? '2px solid #F3883D' : '2px solid white'}"
+                style="border-radius: 10px !important;background:linear-gradient(55deg, #ffffff 50%, #FFB884 300%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request')"
+                    [ngClass]="{'booking_request_active' : sourceCategory == 'Booking Request'}">
+                    <p class="above_label_size mb-0">Booking Request</p>
+                    <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.BRequest}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/calendar_with_bg.png" alt="">
+                  </div>
+                </div>
+                <div class="col-10 p-0 d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request Rejected')"
+                    [ngClass]="{'booking_rejected_active' : sourceCategory == 'Booking Request Rejected'}">
+                    <p class="mb-0" style="color: #944004;">
+                      <span class="count_bottom_label">
+                        <div class="footer_label">Rejected</div>
+                        <div class="footer_count">{{visitsLeadcounts?.BRejected}}</div>
+                      </span>
+                    </p>
+                  </a>
+
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Booking Request Pending')"
+                    [ngClass]="{'booking_pending_active' : sourceCategory == 'Booking Request Pending'}">
+                    <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">
+                        <div class="footer_label">D.Pending</div>
+                        <div class="footer_count">{{visitsLeadcounts?.BPending}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 col-sm-12 mb-xl-0 mb-0 pt-3" *ngIf="!viewallBoolean"
+              [ngClass]="{'opacity_1' : sourceCategory != 'Closed Leads' && sourceCategory != 'Junk visits'}">
+              <div class="card-header p-0"
+                [ngStyle]="{'border' : sourceCategory == 'Closed Leads' ? '2px solid #38A03C' : sourceCategory == 'Junk visits'  ? '2px solid #F3883D' : '2px solid white' }"
+                style="border-radius: 10px !important;background:linear-gradient(50deg, #ffffff 50%, #D3FFC9 180%);box-shadow: 0px 2px 3.1px 0px #959DA533;">
+                <div class="d-flex justify-content-between">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Closed Leads')"
+                    [ngClass]="{'closed_active' : sourceCategory == 'Closed Leads'}">
+                    <p class="above_label_size mb-0">Closed Leads</p>
+                    <h4 class="mb-0 above_count_size">{{visitsLeadcounts?.BClosed}}</h4>
+                  </a>
+                  <div class="py-1 px-3">
+                    <img class="setting_icon" src="../../../../assets/images/closed_with_bg.png" alt="">
+                  </div>
+                </div>
+                <div class="d-flex">
+                  <a class="py-1 px-3 cursor-pointer" (click)="getCategoryLeads('Junk visits')"
+                    [ngClass]="{'junk_visits_active' : sourceCategory == 'Junk visits'}">
+                    <p class="mb-0" style="color: #944004;"><span class="count_bottom_label">
+                        <div class="footer_label">Junk Visits </div>
+                        <div class="footer_count">{{visitsLeadcounts?.JunkVisits}}</div>
+                      </span></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- table code need to written -->
+        <div class="col-xl-6 col-md-6 col-sm-12 p-0">
+          <div class="table-container mt-3"
+            [ngStyle]="{'border' : sourceCategory == 'Total Leads' || sourceCategory == 'Assigned' || sourceCategory == 'Pending' ? '1px solid #02ABFF' : sourceCategory == 'Touched' || sourceCategory == 'Untouched' || (departId != '10005' && sourceCategory == 'Inactive') || (departId != '10005' && sourceCategory == 'Junk Leads') ? '1px solid #C68984' : sourceCategory == 'Active Leads' || sourceCategory == 'General Followups' || sourceCategory == 'NC' || sourceCategory == 'USV Fix' || (departId == '10005' && sourceCategory == 'Inactive') || (departId == '10005' && sourceCategory == 'Junk Leads') ? '1px solid #FDB100' : sourceCategory == 'All Visits' || sourceCategory == 'USV' || sourceCategory == 'RSV' || sourceCategory == 'FN' ? '1px solid #8576FF' : sourceCategory == 'Booking Request' || sourceCategory == 'Booking Request Rejected' || sourceCategory == 'Booking Request Pending' || sourceCategory == 'Junk visits' ? '1px solid #F3883D' : sourceCategory == 'Closed Leads' ? '1px solid #38A03C' : 'white'}">
+            <div id="filtermaindiv" class="filterspan"
+              [ngStyle]="{'color' : sourceCategory == 'Total Leads' || sourceCategory == 'Assigned' || sourceCategory == 'Pending' ? '#02ABFF' : sourceCategory == 'Touched' || sourceCategory == 'Untouched' || (departId != '10005' && sourceCategory == 'Inactive') || (departId != '10005' && sourceCategory == 'Junk Leads') ? '#C68984' : sourceCategory == 'Active Leads' || sourceCategory == 'General Followups' || sourceCategory == 'NC' || sourceCategory == 'USV Fix' || (departId == '10005' && sourceCategory == 'Inactive') || (departId == '10005' && sourceCategory == 'Junk Leads') ? '#FDB100' : sourceCategory == 'All Visits' || sourceCategory == 'USV' || sourceCategory == 'RSV' || sourceCategory == 'FN' ? '#8576FF' : sourceCategory == 'Booking Request' || sourceCategory == 'Booking Request Rejected' || sourceCategory == 'Booking Request Pending' || sourceCategory == 'Junk visits' ? '#F3883D' : sourceCategory == 'Closed Leads' ? '#38A03C' : 'black' ,
+              'background' : sourceCategory == 'Total Leads' || sourceCategory == 'Assigned' || sourceCategory == 'Pending' ? '#F2FBFF' : sourceCategory == 'Touched' || sourceCategory == 'Untouched' || (departId != '10005' && sourceCategory == 'Inactive') || (departId != '10005' && sourceCategory == 'Junk Leads') ? '#FFE9E7' : sourceCategory == 'Active Leads' || sourceCategory == 'General Followups' || sourceCategory == 'NC' || sourceCategory == 'USV Fix' || (departId == '10005' && sourceCategory == 'Inactive') || (departId == '10005' && sourceCategory == 'Junk Leads') ? '#FFF8DA' : sourceCategory == 'All Visits' || sourceCategory == 'USV' || sourceCategory == 'RSV' || sourceCategory == 'FN' ? '#F6F5FF' : sourceCategory == 'Booking Request' || sourceCategory == 'Booking Request Rejected' || sourceCategory == 'Booking Request Pending' || sourceCategory == 'Junk visits' ? '#FFF4EB' : sourceCategory == 'Closed Leads' ? '#F4FFF1' : 'white' }">
+              <span class="col-xl-6 col-md-6 col-sm-12">
+                {{sourceCategory}}
+              </span>
+              <span class="col-xl-6 col-md-6 col-sm-12" *ngIf="sourceCategory == 'Total Leads'">
+                <div class="tab_button_section col-12 pr-0 pl-0 d-flex justify-content-end">
+                  <div class="unique_duplicate">
+                    <a class="add_class lead_section uniqueLeads_section active"
+                      (click)="uniqueDuplicateTabs('unique')">
+                      Unique - <span>{{uniqueCounts}}</span>
+                    </a>
+
+                    <a class="add_class lead_section duplicatesLeads_section"
+                      (click)="uniqueDuplicateTabs('duplicate')">
+                      Duplicate - {{duplicateCounts}}
+                    </a>
+                  </div>
+                </div>
+              </span>
+            </div>
+
+            <div class="CSassigned_table" #scrollContainer>
+              <div class="crm-sub-container padding-medium-full">
+                <div class="panel-1 crm-auto-scrollrm panel-content">
+                  <table class="content_table_main table" infinite-scroll [fromRoot]="true" [scrollWindow]="false"
+                    [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreleads()"
+                    [infiniteScrollContainer]="'.CSassigned_table'">
+                    <thead>
+                      <tr class="header">
+                        <th class="text-center" style="width: 5%;">#</th>
+                        <th>Lead Details</th>
+                        <th *ngIf="departId != '10005'">Source</th>
+                        <th *ngIf="departId == '10005'">Date</th>
+                        <th *ngIf="selectedUniqueDuplicateTab != 'duplicate'">Stage</th>
+                        <th *ngIf="selectedUniqueDuplicateTab != 'duplicate'" style="width: 10%;text-align: center;">
+                          Action</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="callerleads?.length" class="enquiry_table_body">
+                      <tr *ngFor="let leads of callerleads; let i = index">
+                        <td class="text-center">{{i+1}}</td>
+                        <td class="">
+                          {{leads?.name}}
+                          <!-- <div class="ml-2 dulpicate_data d-inline-flex align-items-center">
+                            <span class="showall_prop popper{{i}}" data-toggle="popover" data-placement='right' tabindex="0"
+                              (click)="showall(i)">3 <img class="" src="../../../../src/assets/images/duplicate_count_icon.svg" alt=""></span>
+                            <div class="popover_content_wrapper{{i}}" style="display: none">
+                              <div class="py-1 px-2 pop_data" *ngFor="let lead of callerleads">
+                                <div> <span class="inner_pop_data">Recevied On : </span>
+                                  <span class="pop_over_date">{{lead?.enquirydate | date : 'yy-M-d , h:mm a'}}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <div class="ml-2 call_count_data d-inline-flex align-items-center" *ngIf="leads.totalcall > 0">
+                            <span class="d-flex align-items-center"><span style="color: #3E7200;">{{leads.activecall}}</span> /{{leads?.totalcall}} <img class="ml-1" width="12px" src="../../../assets/images/call_icon_source_dash.png" alt=""></span>
+                          </div>
+                          <div *ngIf="departId != '10005'">{{leads?.number}}</div>
+                        </td>
+                        <td>
+                          <div *ngIf="departId != '10005'">{{leads?.source}}</div>
+                          <div>{{leads?.enquirydate | date : 'yy-M-d'}} , {{leads?.enquirydate | date: 'h:mm a'}}</div>
+                          <!-- <div></div> -->
+                        </td>
+                        <td *ngIf="selectedUniqueDuplicateTab != 'duplicate'">
+                          <span *ngIf="leads?.leadstage && departId == '10005' && sourceCategory != 'Inactive' && sourceCategory != 'Active Leads' && sourceCategory != 'Junk Leads'">{{leads?.leadstage}}</span>
+                          <span *ngIf="leads?.leadstage && departId != '10005'">{{leads?.leadstage}}</span>
+                          <span *ngIf="!leads?.leadstage && departId != '10005'"
+                            style="font-size: 14px;font-style: italic;font-weight: 900;text-align: center;">Not Assign</span>
+                          <span *ngIf="departId == '10005' && sourceCategory == 'Inactive'">Inactive</span>
+                          <span *ngIf="departId == '10005' && sourceCategory == 'Active Leads'">Active</span>
+                           <span *ngIf="departId == '10005' && sourceCategory == 'Junk Leads'">Junk</span>
+                        </td>
+                        <td class="text-center cursor-pointer" *ngIf="selectedUniqueDuplicateTab != 'duplicate'">
+                          <span class="" data-toggle="modal" data-target="#source_history"
+                            (click)="getLeadHistory(leads)"><img
+                              src="../../../assets/images/actions_btn_source.png"></span>
+                          <!-- <div style="overflow: hidden;white-space: normal;">
+                            <span *ngIf="leads.autoremarks">{{leads.autoremarks}}</span>
+                          </div>
+                          <span *ngIf="!leads.autoremarks"
+                            style="word-wrap: break-word;font-size: 14px;font-style: italic;font-weight: 900;display: flex;align-items: center;justify-content: center;">No
+                            Remarks</span> -->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="text-center lead_norecord" *ngIf="!callerleads?.length">
+                No Leads Found.....
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">account_tree</i>
+              </div>
+              <div class="text-center pt-1">
+                <p class="text-sm mb-0 text-capitalize">Total Leads</p>
+                <h4 class="mb-0">{{totalLeadcounts?.total || 0}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly">
+              <span class="card-footer p-3 text-center">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"
+                    *ngIf="totalLeadcounts?.Assigned">Assigned - {{totalLeadcounts?.Assigned}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">Pending -
+                    {{totalLeadcounts?.pending || 0}}</span></p>
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-5" *ngIf="!viewallBoolean">
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">account_tree</i>
+              </div>
+              <div class="text-center pt-1" >
+                <p class="text-sm mb-0 text-capitalize">Assigned</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.Assigned">{{totalLeadcounts?.Assigned}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3 text-center" >
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.Untouched">Untouched - {{totalLeadcounts?.Untouched}}</span></p>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-4 col-sm-6 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">touch_app</i>
+              </div>
+              <div class="d-flex justify-content-evenly pl-3">
+                <div class="text-center pt-1">
+                  <p class="text-sm mb-0 text-capitalize">UnTouched</p>
+                  <h4 class="mb-0" *ngIf="totalLeadcounts?.Untouched">{{totalLeadcounts?.Untouched}}</h4>
+                </div>
+                <div class="text-center pt-1">
+                  <p class="text-sm mb-0 text-capitalize">Touched</p>
+                  <h4 class="mb-0" *ngIf="totalLeadcounts?.Touched">{{totalLeadcounts?.Touched}}</h4>
+                </div>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly ">
+              <span class="card-footer p-3 text-center ">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"
+                    *ngIf="totalLeadcounts?.Inactive">Inactive - {{totalLeadcounts?.Inactive}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center ">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"
+                    *ngIf="totalLeadcounts?.JunkLeads">Junk Leads - {{totalLeadcounts?.JunkLeads}}</span></p>
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1">
+                <span>
+                  <p class="text-sm mb-0 text-capitalize">Active Leads</p>
+                  <h4 class="mb-0" *ngIf="totalLeadcounts?.ActiveLeads">{{totalLeadcounts?.ActiveLeads}}</h4>
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-center ">
+              <span class="card-footer p-3 text-center ">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder"
+                    *ngIf="totalLeadcounts?.GeneralFollowup">General Followups -
+                    {{totalLeadcounts?.GeneralFollowup}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center ">
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">NC - {{totalLeadcounts?.NC}}</span>
+                </p>
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-8 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean"> 
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">published_with_changes</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-evenly " >
+                <span >
+                  <p class="text-sm mb-0 text-capitalize" >All Visits</p>
+                  <h4 class="mb-0 text-center" *ngIf="totalLeadcounts?.AllVisits">{{totalLeadcounts?.AllVisits}}</h4>
+                </span>
+                <span >
+                <p class="text-sm mb-0 text-capitalize">Active Visits</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.ActiveVisits">{{totalLeadcounts?.ActiveVisits}}</h4>
+              </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer" style="padding: 1.2rem !important;">
+              <div style="display:flex;justify-content: space-around;gap: 2rem;padding-inline: 0.5rem;padding-top: 1rem;">
+              <span class="mb-0  text-center text-danger text-sm font-weight-bolder" >USV - <span class="font-normal subcontentclr " *ngIf="totalLeadcounts?.USV"> {{totalLeadcounts?.USV}}</span></span>
+              <span class="mb-0  text-center text-danger text-sm font-weight-bolder">SV - <span class="font-normal subcontentclr " *ngIf="totalLeadcounts?.SV" > {{totalLeadcounts?.SV}}</span></span>
+              <span class="mb-0  text-center text-danger text-sm font-weight-bolder" >RSV - <span class="font-normal subcontentclr " *ngIf="totalLeadcounts?.RSV" > {{totalLeadcounts?.RSV}}</span></span>
+              <span class="mb-0  text-center text-danger text-sm font-weight-bolder" >FN - <span class="font-normal subcontentclr " *ngIf="totalLeadcounts?.FN" > {{totalLeadcounts?.FN}}</span></span>
+             </div>
+            </div> 
+          </div>
+        </div> -->
+
+
+        <!-- <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass"> -->
+        <!-- <div class="card-header px-3 pt-2" style="padding-inline: 1.5rem !important;padding-block: 1rem !important;">
+              <div style="left: 20px !important;"
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">published_with_changes</i>
+              </div>
+            </div> -->
+
+        <!-- <div class="card-header" style="padding-inline: 1.5rem !important;padding-block: 1rem !important;">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">library_books</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-center " style="gap: 4rem;padding-left: 1rem;">
+                <span>
+                  <p class="text-sm mb-0 text-capitalize text-center">All Visits</p>
+                  <h4 class="mb-0 text-center">{{totalLeadcounts?.AllVisits}}</h4>
+                </span>
+              </div>
+            </div>
+
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center"
+              style="padding-inline: 1.5rem !important;padding-block: 0.6rem !important;">
+              <div class="col-12 px-0">
+                <div class="col-12 d-flex justify-content-around align-items-center pl-2">
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">USV</p>
+                    <h4 class="mb-0 text text-center"> {{totalLeadcounts?.USV}}</h4>
+                  </span>
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">RSV</p>
+                    <h4 class="mb-0 text-center"> {{totalLeadcounts?.RSV}}</h4>
+                  </span>
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">FN</p>
+                    <h4 class="mb-0 text-center"> {{totalLeadcounts?.FN}}</h4>
+                  </span>
+                </div>
+              </div>
+            </div> -->
+        <!-- <div class="col-12 pr-0">
+              <div class="col-12 d-flex justify-content-center align-items-center px-0"
+                style="border-right: 1px solid #7b809a33;">
+                <span>
+                  <p class="text-sm mb-0 text-capitalize text-center">All Visits</p>
+                  <h4 class="mb-0 text-center">{{totalLeadcounts?.AllVisits}}</h4>
+                </span>
+              </div>
+              <div class="col-12 px-0">
+                <div class="col-12 d-flex justify-content-around align-items-center pl-2 pr-3 py-3">
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">USV</p>
+                    <h4 class="mb-0 text text-center"> {{totalLeadcounts?.USV}}</h4>
+                  </span>
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">RSV</p>
+                    <h4 class="mb-0 text-center"> {{totalLeadcounts?.RSV}}</h4>
+                  </span>
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">FN</p>
+                    <h4 class="mb-0 text-center"> {{totalLeadcounts?.FN}}</h4>
+                  </span>
+                </div>
+              </div>
+            </div> -->
+        <!-- <hr class="dark horizontal my-0"> -->
+        <!-- <div class="card-footer" style="padding: 0rem !important;--bs-gutter-x: 0rem !important;">
+              <div class="col-12 d-flex pr-0">
+                <div class="col-4 d-flex justify-content-center align-items-center px-0"
+                  style="border-right: 1px solid #7b809a33;">
+                  <span>
+                    <p class="text-sm mb-0 text-capitalize text-center">Active Visits</p>
+                    <h4 class="mb-0 text-center" *ngIf="totalLeadcounts?.ActiveVisits">{{totalLeadcounts?.ActiveVisits}}
+                    </h4>
+                  </span>
+                </div>
+                <div class="col-8 px-0"> -->
+        <!-- <div class="col-12 d-flex justify-content-around align-items-center back-blue-color px-2 py-2">
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.usvfix">Fixed -
+                      {{totalLeadcounts?.usvfix}}</span>
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.svfix">Fixed -
+                      {{totalLeadcounts?.svfix}}</span>
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.rsvfix">Fixed -
+                      {{totalLeadcounts?.rsvfix}}</span>
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.fnfix">Fixed -
+                      {{totalLeadcounts?.fnfix}}</span>
+                  </div> -->
+        <!-- <div class="col-12 d-flex justify-content-around align-items-center back-blue-color px-2 py-2">
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.USV">Fixed -
+                      {{totalLeadcounts?.USV_fix}}</span>
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.RSV">Fixed -
+                      {{totalLeadcounts?.RSV_fix}}</span>
+                    <span class="text-center text-blue" *ngIf="totalLeadcounts?.FN">Fixed -
+                      {{totalLeadcounts?.FN_fix}}</span>
+                  </div> -->
+        <!-- <div class="col-12 d-flex justify-content-around align-items-center back-green-color  px-2 py-2">
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.usvdone">Done -
+                      {{totalLeadcounts?.usvdone}}</span>
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.svdone">Done -
+                      {{totalLeadcounts?.svdone}}</span>
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.rsvdone">Done
+                      -{{totalLeadcounts?.rsvdone}}</span>
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.fndone">Done -
+                      {{totalLeadcounts?.fndone}}</span>
+                  </div> -->
+        <!-- <div class="col-12 d-flex justify-content-around align-items-center back-green-color  px-2 py-2">
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.USV">Done -
+                      {{totalLeadcounts?.USV_done}}</span>
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.RSV">Done
+                      -{{totalLeadcounts?.RSV_done}}</span>
+                    <span class="text-center text-green" *ngIf="totalLeadcounts?.FN">Done -
+                      {{totalLeadcounts?.FN_done}}</span>
+                  </div> -->
+        <!-- </div>
+              </div>
+            </div> -->
+        <!-- </div>
+        </div> -->
+
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass">
+            <div class="card-header" style="padding-inline: 1.5rem !important;padding-block: 1rem !important;">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">library_books</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-center " style="gap: 4rem;padding-left: 1rem;">
+                <span>
+                  <p class="text-sm mb-0 text-capitalize">Booking Request</p>
+                  <h4 class="mb-0 text-center">{{totalLeadcounts?.BRequest}}</h4>
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center"
+              style="padding-inline: 1.5rem !important;padding-block: 1.6rem !important;">
+              <div class="d-flex justify-content-center " style="gap: 4rem;padding-left: 1.5rem;">
+                <span>
+                  <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Rejected - <span
+                      class="text-sm ">{{totalLeadcounts?.BRejected}}</span></p>
+                </span>
+
+                <span>
+                  <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Pending - <span
+                      class="text-sm ">{{totalLeadcounts?.BPending}}</span></p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass">
+            <div class="card-header" style="padding-inline: 1.5rem !important;padding-block: 1rem !important;">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">handshake</i>
+              </div>
+              <div class="pt-1 d-flex justify-content-center " style="gap: 4rem;padding-left: 1rem;">
+                <span>
+                  <p class="text-sm mb-0 text-capitalize">Closed Leads</p>
+                  <h4 class="mb-0 text-center">{{totalLeadcounts?.BClosed}}</h4>
+                </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer text-center"
+              style="padding-inline: 1.5rem !important;padding-block: 1.6rem !important;">
+              <div class="d-flex justify-content-center " style="gap: 4rem;padding-left: 1.5rem;">
+                <span>
+                  <p class="mb-0 redclr text-center text-sm font-weight-bolder text-danger">Junk Visits - <span
+                      class="text-sm ">{{totalLeadcounts?.JunkVisits}}</span></p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- not yet confirmed this last row cards  might be removed based on the discussion-->
+        <!-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1">
+                <span >
+                <p class="text-sm mb-0 text-capitalize">USV</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.NC">{{totalLeadcounts?.NC}}</h4>
+              </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly ">
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.GeneralFollowup">Fixed - {{totalLeadcounts?.GeneralFollowup}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.USV">Done - {{totalLeadcounts?.USV}}</span></p>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1">
+                <span >
+                <p class="text-sm mb-0 text-capitalize">SV</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.ActiveLeads">{{totalLeadcounts?.ActiveLeads}}</h4>
+              </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly ">
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.GeneralFollowup">Fixed - {{totalLeadcounts?.GeneralFollowup}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.SV">Done - {{totalLeadcounts?.SV}}</span></p>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1">
+                <span >
+                <p class="text-sm mb-0 text-capitalize">RSV</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.ActiveLeads">{{totalLeadcounts?.ActiveLeads}}</h4>
+              </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly ">
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.GeneralFollowup">Fixed - {{totalLeadcounts?.GeneralFollowup}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.RSV">Done - {{totalLeadcounts?.RSV}}</span></p>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 pt-18" *ngIf="!viewallBoolean">
+          <div class="card hoverclass" >
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-setting shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">notifications_active</i>
+              </div>
+              <div class="text-center pt-1">
+                <span >
+                <p class="text-sm mb-0 text-capitalize">FN</p>
+                <h4 class="mb-0" *ngIf="totalLeadcounts?.ActiveLeads">{{totalLeadcounts?.ActiveLeads}}</h4>
+              </span>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="d-flex justify-content-evenly ">
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.GeneralFollowup">Fixed - {{totalLeadcounts?.GeneralFollowup}}</span></p>
+              </span>
+              <span class="card-footer p-3 text-center " >
+                <p class="mb-0"><span class="text-danger text-sm font-weight-bolder" *ngIf="totalLeadcounts?.FN">Done - {{totalLeadcounts?.FN}}</span></p>
+            </span>
+            </div>
+          </div>
+        </div> -->
+        <!-- not yet confirmed this last row cards  -->
+        <div class="d-flex flex-wrap" *ngIf="viewallBoolean">
+          <div class="col-12 p-0 d-flex justify-content-between align-items-center">
+            <div class="button_section  p-2 d-flex ">
+              <div class="planleadassign">
+
+                <a class="add_class pending_section other_section" [ngClass]="{'active':sourceType == 'portal'}"
+                  (click)="sourceTypeChange('portal')">
+                  My Portals
+                </a>
+
+                <a class="add_class followups_section other_section" [ngClass]="{'active':sourceType == 'campaign'}"
+                  (click)="sourceTypeChange('campaign')">
+                  My Campaigns
+                </a>
+
+
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center" style="gap: 0.2rem">
+              <label class="m-0" style="color: #0B7AB2;font-size: 20px;">Lead</label>
+              <span class="custom-control custom-switch" style="cursor: pointer;">
+                <input type="checkbox" class="custom-control-input" id="customSwitch5"
+                  [checked]="sourceInfoType != 'leads'" (change)="checkRandom($event)">
+                <label class="custom-control-label" for="customSwitch5"></label>
+              </span>
+              <label class="m-0" style="color: #003D5B;font-size: 20px;">Properties</label>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4 pt-3" *ngFor="let source of sourcelist;let i = index">
+            <!-- <div class="card hoverclass">
+            <div class="card-header p-3 pt-2" >
+              <div class="row">
+                <label class="p-0 m-0 font-20" [ngStyle]="{'color': getColor(i)}"> {{source.source}}</label>
+                <div class="col-md-12  pt-2 d-flex pr-0 pl-0">
+                  
+                <div class="col-4 d-flex flex-column pr-0 pl-0">
+                <div class="">
+                  <div class="blackColor text-center">{{source?.Sourcename[0]?.total}}</div>
+                  <div class="blackColor font-size_10 text-center">Total Leads</div>
+                </div>
+                <div class="pt-2">
+                  <div class="blackColor text-center ">{{source?.Sourcename[0]?.totalvisits}}</div>
+                  <div class=" blackColor font-size_10 text-center ">Total Visits</div>
+                </div>
+                </div>
+
+                <div class="col-4 d-flex flex-column pr-0 pl-0">
+                  <div class="invisible">
+                    <div class="blackColor text-center ">test</div>
+                    <div class="blackColor font-size_10 text-center ">test</div>
+                  </div>
+                  <div class="pt-2">
+                    <div class="blackColor text-center ">{{source?.Sourcename[0]?.junkvisits}}</div>
+                    <div class=" blackColor font-size_10 text-center ">Junk Visits</div>
+                  </div>
+                </div>
+
+                  <div class="col-4 d-flex flex-column pr-0 pl-0">
+                    <div class="">
+                      <div class="blackColor text-center">{{source?.Sourcename[0]?.junkleads}}</div>
+                      <div class="blackColor font-size_10 text-center">Junk Leads</div>
+                    </div>
+                    <div class="pt-2">
+                      <div class="blackColor text-center ">{{source?.Sourcename[0]?.closure}}</div>
+                      <div class=" blackColor font-size_10 text-center ">Closure</div>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+            <div class="card hoverclass">
+              <div class="col-12 row m-0 pr-0 pl-0">
+                <div class="pt-2">
+                  <div class="d-flex justify-content-between">
+                    <!-- <h5 class="p-0 m-0" [ngStyle]="{'color': getColor(i)}"> {{source.source}}</h5><br /> -->
+                    <h5 class="p-0 m-0"> {{source.source}}</h5><br />
+                  </div>
+                  <div *ngIf="sourceInfoType == 'leads'">{{(source?.Sourcename[0]?.totalvisits == '0' ? 0 :
+                    ((source?.Sourcename[0]?.totalvisits/source?.Sourcename[0]?.total)*100) | number : '1.0-2')}}% From
+                    Source</div>
+                </div>
+                <div class="col-12 py-3" [hidden]="sourceInfoType != 'leads'">
+                  <div class="d-flex justify-content-between">
+                    <span class="text-lg color-blue">Total Leads</span>
+                    <h6 class="mb-0">{{source?.Sourcename[0]?.total}}</h6>
+                  </div>
+                  <p-progressBar [value]="(source?.Sourcename[0]?.total/uniqueTotalLeadsCounts)*100" [showValue]="false"
+                    class="color-blue"></p-progressBar>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg color-violet">Total Visits</span>
+                    <h6 class="mb-0">{{source?.Sourcename[0]?.totalvisits}}</h6>
+                  </div>
+                  <p-progressBar [value]="(source?.Sourcename[0]?.totalvisits/source?.Sourcename[0]?.total)*100"
+                    [showValue]="false" class="color-violet"></p-progressBar>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg color-red">Junk Leads</span>
+                    <h6 class="mb-0">{{source?.Sourcename[0]?.junkleads}}</h6>
+                  </div>
+                  <p-progressBar [value]="(source?.Sourcename[0]?.junkleads/source?.Sourcename[0]?.total)*100"
+                    [showValue]="false" class="color-red"></p-progressBar>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg color-darkred">Junk Visits</span>
+                    <h6 class="mb-0">{{source?.Sourcename[0]?.junkvisits}}</h6>
+                  </div>
+                  <p-progressBar [value]="(source?.Sourcename[0]?.junkvisits/source?.Sourcename[0]?.totalvisits)*100"
+                    [showValue]="false" class="color-darkred"></p-progressBar>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg color-green">Closure</span>
+                    <h6 class="mb-0">{{source?.Sourcename[0]?.closure}}</h6>
+                  </div>
+                  <p-progressBar [value]="(source?.Sourcename[0]?.closure/source?.Sourcename[0]?.totalvisits)*100"
+                    [showValue]="false" class="color-green"></p-progressBar>
+                </div>
+
+                <div class="col-12 py-3" [hidden]="sourceInfoType != 'properties'">
+                  <div class="d-flex justify-content-between">
+                    <span class="text-lg">GR Sitara</span>
+                    <h6 class="mb-0 count_color">425</h6>
+                  </div>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg">GR Samskruthi</span>
+                    <h6 class="mb-0 count_color">357</h6>
+                  </div>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg">GR Swara</span>
+                    <h6 class="mb-0 count_color">250</h6>
+                  </div>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg">Ranav</span>
+                    <h6 class="mb-0 count_color">120</h6>
+                  </div>
+
+                  <div class="d-flex justify-content-between pt-3">
+                    <span class="text-lg">Reviva by SSI</span>
+                    <h6 class="mb-0 count_color">20</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div *ngIf=filterLoader class="main-lds-ring-div">
+    <!-- <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div> -->
+    <img src="../../../assets/images/infinity_loader.gif">
+  </div>
+</body>
+
+
+<div class="modal fade" id="source_history" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog history_modal ">
+    <div class="modal-content history_modal_body" id="history_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0" style="color: #0186C9;font-size: 22px !important;font-weight: 400 !important;">
+          {{selectedSourceHist?.name}}'s History</h4>
+        <button type="button" class="close style_close_btn" data-dismiss="modal" (click)="sourceHistoryModalClose()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="col-12 p-0" *ngIf="sourceHistory">
+          <div class="col-12 p-0" *ngIf="sourceHistory?.length" style="height: 500px;overflow: scroll;">
+            <div class="history-tl-container">
+
+              <ng-container *ngFor="let leadhistory of sourceHistory; let i = index">
+
+                <!-- Date Header -->
+                <div class="date_row" *ngIf="leadhistory.item_type == 'message_date'">
+                  {{ leadhistory.added_date }}
+                </div>
+
+                <!-- Timeline Item -->
+                <div class="timeline-item" *ngIf="leadhistory.item_type != 'message_date'">
+                  <div class="timeline-left">
+                    <span class="dot"></span>
+                    <span class="line"
+                      *ngIf="i < sourceHistory.length - 1 && sourceHistory[i + 1].item_type !== 'message_date'"></span>
+                  </div>
+
+                  <div class="timeline-content d-flex">
+                    <div class="time">
+                      {{ leadhistory.added_date | date:'hh:mm a' }}
+                    </div>
+                    <div class="text">
+                      <div class="title">
+                        <strong>{{ leadhistory.execname }}</strong>
+                        {{ leadhistory.autoremarks }}
+                      </div>
+                      <div class="remarks">
+                        {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </ng-container>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-12 d-flex justify-content-center py-5" *ngIf="sourceHistory?.length == 0">
+          <span style="font-size: 20px;font-weight: bolder;font-style: italic;">No History Found</span>
+        </div>
+
+      </div>
+      <div class="modal-footer ">
+        <button type="button" class="btn btn-secondary footer_close_btn m-0" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

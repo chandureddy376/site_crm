@@ -1,0 +1,223 @@
+.body-cntnts {
+  width: 99% !important;
+  margin: 10px 0px 10px 12px !important;
+}
+
+.main_count_header {
+  background: #0B7AB229;
+  color: #000000;
+  padding-top: 2rem;
+  padding-inline: 0.5rem;
+}
+
+.enquiry_content_main {
+  background: #ffffff;
+  float: left;
+  height: 100%;
+  width: 100% !important;
+}
+
+.enquiry_content_main .button_section {
+  margin: 0;
+  margin-inline: 5px;
+  float: left;
+  display: flex;
+  justify-content: center;
+}
+
+.enquiry_content_main tbody tr td a.id_style {
+  text-decoration: underline;
+}
+
+.enquiry_content_main .button_section:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.enquiry_content_main .button_section .create_new_enquiry {
+  float: left;
+  margin: 10px 0 0 0;
+}
+
+.enquiry_content_main .button_section .download {
+  float: right;
+}
+
+.enquiry_content_main .button_section .download a {
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  color: #252525;
+  font-weight: 700;
+  padding: 6px 15px 0px 15px;
+}
+
+.table-container {
+  box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 25%), 0px 2px 6px 2px rgb(60 64 67 / 10%);
+  padding-block: 0.5rem;
+  border-radius: 12px;
+  background-color: white;
+}
+
+.CSassigned_table {
+  height: 680px;
+  overflow: auto;
+  width: 100%;
+}
+
+.crm-sub-container {
+  order: 2;
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.panel-1 {
+  order: 1;
+  flex-grow: 1;
+  min-width: 50%;
+  background: #ddd;
+}
+
+.padding-medium {
+  padding: 0 16px;
+}
+
+.panel-content {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0px 0px 3px 0px #dcdee0;
+}
+
+.content_table_main {
+  width: 100%;
+}
+
+.content_table_main tbody tr {
+
+  width: 100%;
+  border-bottom: 1px solid #dddddd;
+  padding: 8px 0px 2px 0px;
+}
+
+.content_table_main thead {
+  background: #05abe0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.content_table_main thead tr th {
+  padding: 10px 0px 10px 6px;
+  color: #FFF;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.content_table_main tbody tr td {
+  padding: 10px 4px 10px 4px;
+  color: #666666;
+  width: 150px;
+  position: relative;
+}
+
+.content_table_main .enquiry_table_body {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.content_table_main tbody tr td a.btn_reassgn {
+  border: 1px solid #999;
+  padding: 4px 6px 4px 6px;
+  cursor: pointer;
+}
+
+.filterspan {
+  color: #9f9b9b;
+  gap: 0.1rem;
+  width: 100%;
+  padding-bottom: 3px;
+}
+
+.chip {
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 25px;
+  background-color: #f1f1f1;
+  margin-bottom: 2px;
+}
+
+.closebtn {
+  padding-left: 10px;
+  color: #888;
+  font-weight: bold;
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.closebtn:hover {
+  color: #000;
+}
+
+.lead_norecord {
+  position: relative;
+  top: 220px;
+  font-weight: 700;
+}
+
+.listof_times{
+  background-color: #EEF6FA;
+  width: 12rem;
+}
+
+.listof_times a.active{
+  background: #0B7AB2 !important;
+  color: #ffffff !important;
+}
+
+.border-bot{
+  border-bottom: 1px solid #84C5E5;
+}
+
+.btn-group-sm>.btn, .btn-sm {
+  padding: .3rem 1rem !important;
+}
+
+.btn-danger.btn-simple {
+  background: #F5F7F9 !important;
+  color: #8D8E8E !important;
+  border:1px solid #8D8E8E !important;
+  border-radius: 2px !important;
+}
+
+.btn-danger.btn-simple.active {
+  background-color: #0B7AB2 !important;
+  border: 1px solid #0B7AB2 !important;
+  color: #ffffff !important;
+  background-image: none !important;
+}
+
+.btn-danger,.btn.bg-gradient-danger {
+  box-shadow: none !important;
+}
+
+.buttonwithicon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.blurred {
+  filter: blur(1);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
