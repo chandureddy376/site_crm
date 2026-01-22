@@ -72,9 +72,6 @@ export class MandatePlansComponent implements OnInit {
   sourceList: any;
   mandateexecutives: any;
   dateRange: any;
-  usvParam: any;
-  rsvParam: any;
-  fnParam: any;
   usvCounts: number = 0;
   rsvCounts: number = 0;
   fnCounts: number = 0;
@@ -111,7 +108,7 @@ export class MandatePlansComponent implements OnInit {
   selectedRecordExec: any;
   audioList: any;
   onRecordExecList: any;
-
+  isRestoredFromSession = false;
   // *****************************Assignedleads section list*****************************
 
   ngOnInit() {
@@ -120,9 +117,6 @@ export class MandatePlansComponent implements OnInit {
     this.role_type = localStorage.getItem('role_type');
     this.mandateProperty_ID = localStorage.getItem('property_ID');
     // *********************load the required template files*********************
-    this.getleadsdata();
-    this.mandateprojectsfetch();
-    this.getExecutivesForFilter();
 
     this.hoverSubscription = this._sharedservice.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
@@ -163,17 +157,93 @@ export class MandatePlansComponent implements OnInit {
     const el = document.createElement('div');
     el.classList.add('modalclick');
     document.body.appendChild(el);
-    MandatePlansComponent.count = 0;
-    MandatePlansComponent.closedcount = 0;
+    // MandatePlansComponent.count = 0;
+    // MandatePlansComponent.closedcount = 0;
     if (this.roleid == 1 || this.roleid == '2' || this.roleid == '50013' || this.roleid == '50014') {
       this.getsourcelist();
     }
+    this.mandateprojectsfetch();
+    this.getExecutivesForFilter();
+    const savedState = sessionStorage.getItem('plans_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+
+      $(".plan_section").removeClass("active");
+      if (state.tabs == 'weekend') {
+        this.weekplans = 2;
+        this.selectedplanType = 'weekend';
+        $(".weekends_section").addClass("active");
+        this.nextActionDateRange = [new Date(this.fromdate), new Date(this.todate)];
+      } else if (state.tabs == 'weekdays') {
+        this.weekplans = 1;
+        this.selectedplanType = 'weekdays';
+        $(".weekdays_section").addClass("active");
+      }
+
+      $(".other_section").removeClass("active");
+      if (state.stageplan == 'usv') {
+        $(".usv_section").addClass("active");
+      } else if (state.stageplan == 'rsv') {
+        $(".rsv_section").addClass("active");
+      } else if (state.stageplan == 'fn') {
+        $(".fn_section").addClass("active");
+      }
+
+      MandatePlansComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined) || (this.todate == '' || this.todate == undefined)) {
+        this.fromdate = '';
+        this.todate = '';
+        this.datefilterview = false;
+      } else {
+        this.datefilterview = true;
+      }
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+    this.getleadsdata();
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -212,16 +282,23 @@ export class MandatePlansComponent implements OnInit {
   getleadsdata() {
     // }
     this.filterLoader = true;
-    MandatePlansComponent.count = 0;
+    // MandatePlansComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
 
       this.weekplanparam = paramss['plan'];
       // this.weekdaysleadsparam = paramss['weekdays'];
       // this.ytcleadsparam = paramss['ytc'];
-      this.usvParam = paramss['usv'];
-      this.rsvParam = paramss['rsv'];
-      this.fnParam = paramss['fn'];
       this.stageplan = paramss['type']
       // *****************************Assignedleads section list*****************************
       this.propertyid = paramss['property'];
@@ -259,27 +336,28 @@ export class MandatePlansComponent implements OnInit {
           // this.getExecutivesForFilter();
         }
       }
+
       if (this.execid) {
         this.executivefilterview = true;
         if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
           this.rmid = this.execid;
-        // } else {
-        //   if (this.role_type == '1') {
-        //     if (this.execid == '' || this.execid == undefined || this.execid == null) {
-        //       this.rmid = '';
-        //     } else {
-        //       this.rmid = this.execid;
-        //     }
-          } else {
-            this.rmid = localStorage.getItem('UserId');
-          }
+          // } else {
+          //   if (this.role_type == '1') {
+          //     if (this.execid == '' || this.execid == undefined || this.execid == null) {
+          //       this.rmid = '';
+          //     } else {
+          //       this.rmid = this.execid;
+          //     }
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
         // }
       } else {
         this.executivefilterview = false;
         if (this.roleid == '1' || this.roleid == '2' || this.role_type == '1') {
           this.rmid = "";
           this.execid = ''
-        } 
+        }
         // else if (this.role_type == '1') {
         //     if (this.execid == '' || this.execid == undefined || this.execid == null) {
         //       this.rmid = '';
@@ -319,13 +397,6 @@ export class MandatePlansComponent implements OnInit {
       //   if(this.stagestatusval == 1 || this.stagestatusval == 2){
       //     this.stagestatusval = '';
       //   }
-
-      //   if((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1 || this.additionalParam == 'AllVisits') && (this.fromdate != '' && this.fromdate != undefined && this.fromdate != null && this.todate != '' && this.todate != undefined && this.todate != null )){
-      //     this.fromdate = '';
-      //     this.todate = '';
-      //     this.datefilterview = false;
-      //   }
-      // }
 
       if (this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null) {
         this.stagefilterview = false;
@@ -848,13 +919,13 @@ export class MandatePlansComponent implements OnInit {
   }
 
   getExecutives() {
-        let teamlead;
-    if(this.role_type == 1){
+    let teamlead;
+    if (this.role_type == 1) {
       teamlead = this.userid
-    }else{
+    } else {
       teamlead = '';
     }
-    this._mandateService.fetchmandateexecutuves(this.propertyid, '', '',teamlead).subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves(this.propertyid, '', '', teamlead).subscribe(executives => {
       if (executives['status'] == 'True') {
         this.mandateexecutives = executives['mandateexecutives'];
       }
@@ -1170,7 +1241,7 @@ export class MandatePlansComponent implements OnInit {
   //this load  is for assigned lead page.
   loadMoreassignedleads() {
     const limit = MandatePlansComponent.count += 30;
-    if (this.usvParam == 1) {
+    if (this.stageplan == 'usv') {
       var usvpar = {
         limit: limit,
         limitrows: 30,
@@ -1219,7 +1290,7 @@ export class MandatePlansComponent implements OnInit {
           }
         });
       }
-    } else if (this.rsvParam == 1) {
+    } else if (this.stageplan == 'rsv') {
       var rsvpar = {
         limit: limit,
         limitrows: 30,
@@ -1268,7 +1339,7 @@ export class MandatePlansComponent implements OnInit {
           }
         });
       }
-    } else if (this.fnParam == 1) {
+    } else if (this.stageplan == 'fn') {
       var fnpar = {
         limit: limit,
         limitrows: 30,
@@ -1637,14 +1708,14 @@ export class MandatePlansComponent implements OnInit {
   //get list of mandate executives for mandate for filter purpose
   getExecutivesForFilter() {
     if (this.role_type != 1) {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '','').subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '', '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
         }
       });
     } else {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '',this.userid).subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '', this.userid).subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
@@ -1941,7 +2012,7 @@ export class MandatePlansComponent implements OnInit {
   nextActionEnd: moment.Moment | null = null;
   initializeNextActionDateRangePicker() {
     const cb = (start: moment.Moment, end: moment.Moment) => {
-        const pickerElement = $('#confirmedOnDates');
+      const pickerElement = $('#confirmedOnDates');
       if (start && end) {
         pickerElement.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
       } else {
@@ -2010,6 +2081,26 @@ export class MandatePlansComponent implements OnInit {
 
   isModalOpen: boolean = false;
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -2178,5 +2269,41 @@ export class MandatePlansComponent implements OnInit {
 
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'plans');
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = MandatePlansComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      execid: this.execid,
+      execname: this.execname,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      page: MandatePlansComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: this.weekplanparam,
+      stageplan: this.stageplan
+    };
+
+    sessionStorage.setItem('plans_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 }

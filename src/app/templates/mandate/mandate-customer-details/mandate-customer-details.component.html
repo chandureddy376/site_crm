@@ -151,7 +151,7 @@
                       *ngIf="show_cnt.customer_mail">/</span>{{show_cnt.enquiry_altmail}}</span>
                 </p>
                 <p class="mail_num">
-                  <span *ngIf="roleid != 50001 && roleid != 50002">{{show_cnt.customer_number}} <span
+                  <span *ngIf="roleid == 1 || roleid == 2">{{show_cnt.customer_number}} <span
                       *ngIf="show_cnt.enquiry_altnumber"><span
                         *ngIf="show_cnt.customer_number">/</span>{{show_cnt.enquiry_altnumber}}</span></span>
                   <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#mergeModal"
@@ -197,8 +197,8 @@
                       *ngIf="show_cnt.enquiry_altmail">/{{show_cnt.enquiry_altmail}}</span>
                   </p>
                   <p class="mail_num">
-                    {{show_cnt.customer_number}} <span
-                      *ngIf="show_cnt.enquiry_altnumber">/{{show_cnt.enquiry_altnumber}}</span>
+                    <span *ngIf="roleid == 1 || roleid == 2">{{show_cnt.customer_number}} <span
+                      *ngIf="show_cnt.enquiry_altnumber">/{{show_cnt.enquiry_altnumber}}</span></span>
                     <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#mergeModal"
                       style="padding: 0px 10px !important;border-radius: 15px !important;"><span
                         class="d-flex justify-content-center align-items-center gap-05"><span
@@ -263,8 +263,8 @@
                       *ngIf="show_cnt.enquiry_altmail">/{{show_cnt.enquiry_altmail}}</span>
                   </p>
                   <p class="mail_num">
-                    {{show_cnt.customer_number}} <span
-                      *ngIf="show_cnt.enquiry_altnumber">/{{show_cnt.enquiry_altnumber}}</span>
+                   <span *ngIf="roleid == 1 || roleid == 2">{{show_cnt.customer_number}} <span
+                      *ngIf="show_cnt.enquiry_altnumber">/{{show_cnt.enquiry_altnumber}}</span></span>
                     <button class="btn btn-outline-warning" type="button" data-toggle="modal" data-target="#mergeModal"
                       style="padding: 0px 10px !important;border-radius: 15px !important;"><span
                         class="d-flex justify-content-center align-items-center gap-05"><span
@@ -476,7 +476,7 @@
             </div>
 
             <div class="source_web" *ngIf="execview">
-              <div class="row">
+              <div class="row m-0">
                 <div class="execnav-scrollable" style="padding-block: 0.5rem;">
                   <ul class="execnav execnav-tabs col-12">
                     <li class="exec-item" *ngFor=" let exec of leadsDetailsInfo;let i = index;">
@@ -2247,7 +2247,7 @@
             </div> -->
 
             <div class="source_web" *ngIf="adminview">
-              <div class="row" style="margin-right:-10px;">
+              <div class="row m-0" style="margin-right:-10px;">
                 <div class="execnav-scrollable" style="padding-block: 0.5rem;">
                   <ul class="execnav execnav-tabs col-12">
                     <li class="exec-item" *ngFor=" let exec of leadsDetailsInfo;let i = index;">
@@ -2256,16 +2256,31 @@
                         <img src="../../../../assets/images/indicatorfordealclosereq.png"
                           *ngIf="exec?.suggestedprop && exec.suggestedprop[0]?.currentstage == '5'"
                           style="position: relative;bottom: 2px;">
+                        <span class="pl-1" *ngIf="exec.reassign_visibility == 0 || exec.reassign_visibility == 1"> <i class="fas fa-check" style="color: green;"></i></span>
+                        <span class="pl-1" *ngIf="exec.reassign_visibility == 3 || exec.reassign_visibility == 4 || exec.reassign_visibility == 2"> <i class="fas fa-times" style="color: red;"></i> </span>
                         <span class="pl-1" *ngIf="exec.rnrcount >= 5" (click)="revertToActive(exec)"><i
                             class="fas fa-exclamation-circle" style="color: #f01616;font-size: 18px;"></i></span>
                       </a>
                     </li>
                   </ul>
                 </div>
-                <div class="col-12 relative" *ngFor="let rm of assignedrm">
-                  <span *ngIf="rm.rnrcount >= 5" style="position: absolute;top: 50%;right: 50%;z-index: 999;"><button
-                      type="button" class="btn btn-warning" (click)="revertToActive(rm)">Active Now</button></span>
-                  <div *ngFor="let suggested of rm.suggestedprop;" [ngClass]="rm.rnrcount >= 5 ? 'blurred' : ''">
+                <div class="col-12 relative" style="padding-left:10px !important" *ngFor="let rm of assignedrm">
+                  <span *ngIf="rm.rnrcount >= 5" style="position: absolute;top: 50%;right: 50%;z-index: 999;">
+                    <button type="button" class="btn btn-warning" (click)="revertToActive(rm)">Active Now</button>
+                  </span>
+                  <span *ngIf="rm.reassign_visibility == 2" class="text_visiblity">
+                    Access removed <br>
+                    because the lead was re-assigned.
+                  </span>
+                  <span *ngIf="rm.reassign_visibility == 3" class="text_visiblity">
+                    Access removed <br>
+                    because the lead was in overdue
+                  </span>
+                  <span *ngIf="rm.reassign_visibility == 4" class="text_visiblity">
+                    Access removed <br>
+                    because the Visit was attended by {{rm.visitaccompaniedby}}
+                  </span>
+                  <div *ngFor="let suggested of rm.suggestedprop;" [ngClass]="rm.rnrcount >= 5 || rm.reassign_visibility == 3 || rm.reassign_visibility == 4 || rm.reassign_visibility == 2 ? 'blurred' : ''">
                     <!-- 1 -->
                     <div class="row col-12 mt-4 pr-0" style="margin-left: -8px !important; background-color:#FFF4E2;"
                       *ngIf="suggested.actions == '0' && suggested.selection == '0' && suggested.currentstage == '0' || suggested.leadstage == 'Fresh'">
@@ -3603,7 +3618,7 @@
                     </div>
                     <!-- lead junk  -->
                     <div class="row col-12 mt-4 pr-0" style="margin-left: -8px !important; background-color: #e07979;"
-                      *ngIf="suggested.actions == '3' && suggested.selection == '0' && suggested.currentstage == '0'">
+                      *ngIf="suggested.actions == '3' && suggested.selection == '0' && (suggested.currentstage == '0' || suggested.currentstage == null)">
                       <div class="col-12 p-0 register_now">
                         <span class="reg_common">
                           <span *ngIf="suggested.registered?.length">
@@ -3671,7 +3686,7 @@
     </div>
   </div>
 
-  <div class="col-6 scroll-height">
+  <div class="col-6 scroll-height" *ngIf="(adminview && assignedrm && assignedrm[0]?.reassign_visibility != 3 && assignedrm[0]?.reassign_visibility != 2  && assignedrm[0]?.reassign_visibility != 4) || execview">
     <!-- Nav tabs -->
     <ul *ngIf="execview ||  adminview" class="nav nav-tabs " role="tablist" style="justify-content: space-evenly;">
       <li class="nav-item"
@@ -3742,7 +3757,7 @@
         </div>
         <div class="tab-pane active" id="home" role="tabpanel"
           [ngClass]="{'blurred' : (callStatus != undefined && callStatus != 'Answered' && callStatus != 'Customer Answered' && callStatus != 'Answered by customer' && callStatus != 'Call Disconnected' && callDirection != 'inbound')}"
-          *ngIf="( USV != 'false' || RSV != 'false' || Negotiation != 'false' || leadclose != 'false' || followup != 'false' || junkmove != 'false') && ((activestagestatus?.length && activestagestatus[0]?.stage != 'Junk' && feedbackId == '0') || feedbackId == '1')">
+          *ngIf="(USV != 'false' || RSV != 'false' || Negotiation != 'false' || leadclose != 'false' || followup != 'false' || junkmove != 'false') && ((activestagestatus?.length && activestagestatus[0]?.stage != 'Junk' && feedbackId == '0') || feedbackId == '1')">
           <!-- Confirmed-Action -->
           <div>
             <div class="pt-3" *ngIf="!isSuggestedPropBoolean && showRejectionForm == false  ">
@@ -4389,7 +4404,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks}}
                           </div>
                         </div>
                       </div>
@@ -4476,7 +4491,7 @@
                           {{ leadhistory.autoremarks }}
                         </div>
                         <div class="remarks">
-                          {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          {{ leadhistory.Remarks}}
                         </div>
                       </div>
                     </div>
@@ -4705,7 +4720,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks }}
                           </div>
                         </div>
                       </div>
@@ -4794,7 +4809,7 @@
                           {{ leadhistory.autoremarks }}
                         </div>
                         <div class="remarks">
-                          {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                          {{ leadhistory.Remarks }}
                         </div>
                       </div>
                     </div>
@@ -4815,6 +4830,16 @@
       </div>
     </div>
   </div>
+
+  <div class="col-6 acess_restricted_class"
+    *ngIf="assignedrm && (assignedrm[0]?.reassign_visibility == 4 || assignedrm[0]?.reassign_visibility == 2 || assignedrm[0]?.reassign_visibility == 3) && (roleid == 1 || roleid == 2)">
+    <img src="../../../../assets/images/access_removed_details_icon.png">
+    <div class="access_restricted_text pt-2">Access Restricted</div>
+    <div class="pt-1" style="font-size: 12px;font-weight: 300;">This executive currently does not have access to this lead.</div>
+    <div class="" style="font-size: 12px;font-weight: 300;">Once enabled, the executive will regain full access for the lead</div>
+    <div class="mt-3 btn_access" (click)="enableAccess()">Enable Access</div>
+  </div>
+
   <!-- </div> -->
 </div>
 
@@ -4879,7 +4904,7 @@
                 <div>{{show_cnt?.customer_timeline}}</div>
               </div>
 
-              <div class="col-3 pt-2 pl-0" *ngIf="show_cnt?.customer_size">
+              <div class="col-3 pt-2 pl-0" *ngIf="show_cnt?.customer_size" style="max-width: 20% !important;">
                 <label class="mb-1">Size</label>
                 <div>{{show_cnt?.customer_size}}</div>
               </div>
@@ -5653,12 +5678,12 @@
 
       <div class="modal-body">
         <div class="new_enquiry_form ">
-          <div style="display: flex; gap:3rem">
+          <div class="col-12 p-0 row m-0" style="display: flex;">
 
-            <div class="form-group col-3 input_cmn_div">
-              <label class="font-bold">Select Property</label>
+            <div class="form-group col-4 input_cmn_div">
+              <label class="font-bold mb-0">Select Property</label>
               <select id="property_dropdown" class="form-control dropdown dashboard_dropdown mr-3"
-                style="width: 215px;padding: 0.5em 0.75em !important;height: 2.7em;color: #000;"
+                style="width: 100%;padding: 0.5em 0.75em !important;height: 2.7em;color: #000;"
                 (change)="getselectedprop($event)">
                 <option value="" selected>Select Project</option>
                 <option *ngFor="let projects of mandateproperties" value="{{projects.property_idfk}}"
@@ -5667,15 +5692,15 @@
               </select>
             </div>
 
-            <div class="form-group col-3 input_cmn_div d-flex flex-column">
-              <label class="font-bold">Select Team</label>
+            <div class="form-group col-4 input_cmn_div d-flex flex-column">
+              <label class="font-bold mb-0">Select Team</label>
               <p-dropdown id="exec_designation" [options]="retailExecutiveTeam" [(ngModel)]="selectedTeam"
                 optionLabel="team" name="selectedTeam" defaultLabel="Select Team" placeholder="Select Team"
                 (onChange)="getselectedteam($event)"></p-dropdown>
             </div>
 
-            <div class="form-group col-3 input_cmn_div">
-              <label class="font-bold">Select Executives</label>
+            <div class="form-group col-4 input_cmn_div multi_exec">
+              <label class="font-bold mb-0">Select Executives</label>
               <p-multiSelect id="rm_dropdown" [options]="mandateExecutives" [(ngModel)]="selectedEXEC" [filter]="true"
                 *ngIf="(roleid == '1' || roleid == '2') && assigntype != 'visit'" optionLabel="name"
                 #customersupport="ngModel" name="customersupport" defaultLabel="Select Executives"
@@ -5725,13 +5750,11 @@
 
             <div class="form-group col-3 input_cmn_div">
               <label class="font-bold">Select Executives</label>
-
               <p-dropdown id="rm_dropdown" [options]="mandateExecutives" optionLabel="name" name="selectedLeads"
                 defaultLabel="Select Team" placeholder="Select Executive" (onChange)="visitExecutiveSelect($event)">
               </p-dropdown>
             </div>
           </div>
-
 
           <div class="form-group col-3s input_cmn_div justify-content-end ml-3">
             <button class="approve btn btn-warning" (click)="VisitReassignLeadNow()" type="submit">Assign Now</button>
@@ -6162,6 +6185,89 @@
   </div>
 </div>
 <!-- Suggestproperties Modal -->
+
+
+<button type="button" data-toggle="modal" data-target="#reassigned_leads_modal" id="reassign_leads_detail"
+  style="display: none;">Show
+  Details</button>
+<div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
+  aria-hidden="true">
+  <div class="modal-dialog history_modal ">
+    <div class="modal-content history_modal_body" id="history_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2 align-items-center"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0 col-11 p-0 text-center"
+          style="color: #30383C;font-size: 24px !important;font-weight: 500 !important;">Re-Assigned Leads Details</h4>
+        <button type="button" class="close style_close_btn" data-dismiss="modal" (click)="closeDetailModal()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;margin: 0;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0" style="overflow: scroll;height: 400px;">
+        <div class="col-12 py-3">
+          <div class="col-12 py-3" *ngFor="let reassign of reassignedResponseInfo; let i = index">
+            <div class="">
+              <span class="executive_style">{{reassign.execname}}</span>
+            </div>
+            <div class="col-12 row p-0 m-0" *ngIf="selectedAssignType != 'feedback'">
+              <div class="col-3 p-0 text-center assigned_col">Assigned</div>
+              <div class="col-6 p-0 text-center not_assigned_col">Not Assigned</div>
+              <div class="col-3 p-0 text-center untouched_col">Untouched</div>
+            </div>
+            <div class="col-12 row p-0 m-0" *ngIf="selectedAssignType != 'feedback'">
+              <div class="col-3 p-0">
+                <div class="assigned_inner_row">Total
+                  <span>{{reassign.fresh + reassign.reassignedLeads + reassign.reassignedVisits}}</span>
+                </div>
+                <div class="assigned_inner_row">Leads
+                  <span>{{reassign.fresh + reassign.reassignedLeads}}</span>
+                </div>
+                <div class="assigned_inner_row">Overdued Visits
+                  <span>{{reassign.reassignedVisits}}</span>
+                </div>
+              </div>
+              <div class="col-6 p-0" *ngIf="selectedAssignType != 'feedback'">
+                <div class="col-12 p-0 d-flex">
+                  <div class="col-6 p-0">
+                    <div class="not_assigned_inner_row">Already in Fresh
+                      <span>{{reassign.alreadyinfresh}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Already in Active
+                      <span>{{reassign.alreadyinactive}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Overload Limit
+                      <span>{{reassign.leads_skipped_executive_capacity}}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0">
+                    <div class="not_assigned_inner_row" style="height: 51px !important;">GR Swara Leads
+                      <span>{{reassign.gr_swara_leads_skipped}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row" style="height: 51px !important;">Active Visits
+                      <span>{{reassign.reassignedVisitExist}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 p-0" *ngIf="selectedAssignType != 'feedback'">
+                <div class="untouched_inner_row">Leads
+                  <span>{{reassign.untouched_leads}}</span>
+                </div>
+                <div class="untouched_inner_row">Visits
+                  <span>{{reassign.untouched_visits}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 row p-0 m-0" *ngIf="selectedAssignType == 'feedback'">
+              <div class="col-6 p-0 text-center assigned_col">Assigned - {{reassign.fresh}}</div>
+              <div class="col-6 p-0 text-center not_assigned_col">Not Assigned - {{reassign.reassigned}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
 <div *ngIf=filterLoader class="main-lds-ring-div">

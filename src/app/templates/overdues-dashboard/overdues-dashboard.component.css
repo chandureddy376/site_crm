@@ -1115,11 +1115,121 @@ audio::-webkit-media-controls-volume-slider {
   border-bottom: 1px solid lightgray;
 }
 
-a ,a:hover{
+a,
+a:hover {
   color: #4183C4;
   text-decoration: none;
 }
 
-.assign_table1 .table thead tr th{
+.assign_table1 .table thead tr th {
   color: white !important;
+}
+
+.history_modal_body .modal-header .close {
+  margin: 0rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.style_close_btn {
+  background: #FFFFFF !important;
+  border: 0.5px solid #D9D9D9 !important;
+  color: #656565 !important;
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
+  border-radius: 4px !important;
+}
+
+.history_modal {
+  max-width: 650px !important;
+}
+
+.executive_style {
+  background: #D4ECFF;
+  color: #004B71;
+  font-size: 20px;
+  font-weight: 500;
+  padding-inline: 15px;
+  height: 32px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.assigned_col {
+  font-size: 16px;
+  font-weight: 400;
+  color: #FFFFFF;
+  background: #558FA8;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not_assigned_col {
+  font-size: 16px;
+  font-weight: 400;
+  color: #9D2728;
+  background: #FFD7C7;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.untouched_col {
+  font-size: 16px;
+  font-weight: 400;
+  color: #624A00;
+  background: #FFF1C8;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.assigned_inner_row {
+  height: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.6px solid #8DCBE6;
+  border-left: 0.6px solid #8DCBE6;
+  background: #FBFDFF;
+  color: #005579;
+  font-size: 12px;
+  font-weight: 400;
+  padding-inline: 10px;
+}
+
+.not_assigned_inner_row {
+  height: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.6px solid #FFD8C9;
+  border-left: 0.6px solid #FFD8C9;
+  background: #FFF8F6;
+  color: #9D2728;
+  font-size: 12px;
+  font-weight: 400;
+  padding-inline: 10px;
+}
+
+.untouched_inner_row {
+  height: 51px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.6px solid #FFF1C8;
+  border-inline: 0.6px solid #FFF1C8;
+  background: #FFFCF2;
+  color: #624A00;
+  font-size: 12px;
+  font-weight: 400;
+  padding-inline: 10px;
 }

@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import { debounceTime } from 'rxjs/operators';
 import { Renderer2 } from '@angular/core';
+import { timer } from 'rxjs/observable/timer';
 
 declare var $: any;
 declare var swal: any;
@@ -134,6 +135,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
   propertyLength: any;
   assignedResponseInfo: any;
   previousUrl: string | null = null;
+  reassignedResponseInfo: any;
 
   constructor(
     private router: Router,
@@ -150,8 +152,6 @@ export class MandateCustomerDetailsComponent implements OnInit {
     private renderer: Renderer2
   ) {
     this.route.params.subscribe(params => {
-      console.log(params,this.id)
-      
       if (params.id != this.id) {
         setTimeout(() => {
           let currentUrl = this.router.url;
@@ -290,7 +290,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     this.role_type = localStorage.getItem('role_type');
     this.propertyLength = localStorage.getItem('prop_suggest');
     this.url = localStorage.getItem('locationURL');
- 
+
     this.hoverSubscription = this._sharedservice.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
     });
@@ -1423,7 +1423,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
                 this.leadclose = false;
                 this.junkmove = true;
               }
-            } else if (this.activestagestatus[0].stage == "Deal Closing Requested" && (this.activestagestatus[0].followupstatus == "0 " || this.activestagestatus[0].followupstatus == null || this.activestagestatus[0].followupstatus == "4")) {
+            } else if (this.activestagestatus[0].stage == "Deal Closing Requested") {
               this.RSV = false;
               this.Negotiation = false;
               this.USV = false;
@@ -1445,7 +1445,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
                   this.junkmove = true;
                 }
               }
-            } else if (this.activestagestatus[0].stage == "Closing Request Rejected" && (this.activestagestatus[0].followupstatus == "0 " || this.activestagestatus[0].followupstatus == null || this.activestagestatus[0].followupstatus == "4")) {
+            } else if (this.activestagestatus[0].stage == "Closing Request Rejected") {
               this.RSV = false;
               this.Negotiation = false;
               this.USV = false;
@@ -1614,6 +1614,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
             if (this.activestagestatus[0].stage == 'Fresh') {
               this.usvform = false;
             }
+
           } else if (stagestatus.status == "False") {
             this.currentstage = "Fresh";
             this.SV = false;
@@ -1693,7 +1694,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     }
 
     var primaryname = $('#customer_name').val();
-    var primarynumber = $('#customer_number').val();
+    // var primarynumber = $('#customer_number').val();
     var primarymail = $('#customer_mail').val();
     var alternatename = $('#enquiry_name').val();
     var alternatenumber = $('#enquiry_number').val();
@@ -1709,7 +1710,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
 
     var param = {
       primaryname: primaryname,
-      primarynumber: primarynumber,
+      // primarynumber: primarynumber,
       primarymail: primarymail,
       name: alternatename,
       number: alternatenumber,
@@ -2186,7 +2187,9 @@ export class MandateCustomerDetailsComponent implements OnInit {
   }
 
   triggerhistory() {
-    this.showRejectionForm = false;
+    if (this.selectedSuggestedProp && this.selectedSuggestedProp.actions != '7' && this.selectedSuggestedProp.actions != '8' && this.selectedSuggestedProp.actions != '6' && this.selectedSuggestedProp.currentstage != '5') {
+      this.showRejectionForm = false;
+    }
     // this.isAccompanyBy = false;
     let execId;
     if (this.logsType == 'executive') {
@@ -2205,16 +2208,16 @@ export class MandateCustomerDetailsComponent implements OnInit {
     this._mandateService
       .gethistory(param2)
       .subscribe(history => {
-        if(history.status == 'True'){
-        const uniquehistory = history['Leadhistory'].filter((val, i, self) => {
-          return i == self.findIndex((t) => {
-            return (t.autoremarks == val.autoremarks && t.Saveddate == val.Saveddate);
+        if (history.status == 'True') {
+          const uniquehistory = history['Leadhistory'].filter((val, i, self) => {
+            return i == self.findIndex((t) => {
+              return (t.autoremarks == val.autoremarks && t.Saveddate == val.Saveddate);
+            })
           })
-        })
-        this.leadtrack = uniquehistory;
-      } else {
-        this.leadtrack = [];
-      }
+          this.leadtrack = uniquehistory;
+        } else {
+          this.leadtrack = [];
+        }
       })
   }
 
@@ -2397,7 +2400,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     if (comma_separated_data == '' || comma_separated_data == null) {
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         timer: 2000,
         showConfirmButton: false
@@ -2451,7 +2454,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             timer: 2000,
             showConfirmButton: false
@@ -2493,7 +2496,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             timer: 2000,
             showConfirmButton: false
@@ -2514,7 +2517,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     //   if (comma_separated_data == '' || comma_separated_data == null) {
     //     swal({
     //       title: 'Please Select One Executive.',
-    //       text: 'Please try agin',
+    //       text: 'Please try again',
     //       type: 'error',
     //       timer: 2000,
     //       showConfirmButton: false
@@ -2557,7 +2560,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     //     } else {
     //       swal({
     //         title: 'Authentication Failed!',
-    //         text: 'Please try agin',
+    //         text: 'Please try again',
     //         type: 'error',
     //         timer: 2000,
     //         showConfirmButton: false
@@ -2574,7 +2577,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
     if (this.selectedVisitExec == '' || this.selectedVisitExec == null) {
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         timer: 2000,
         showConfirmButton: false
@@ -2642,7 +2645,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
       else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false
@@ -2769,7 +2772,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             timer: 2000,
             showConfirmButton: false
@@ -2834,7 +2837,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false
@@ -3851,7 +3854,27 @@ export class MandateCustomerDetailsComponent implements OnInit {
   }
 
   triggerCall(lead) {
-    if (this.assignedrm[0].leadstage == 'Junk') {
+
+    let number = lead.customer_number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.customer_number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
+    if (this.assignedrm && this.assignedrm != undefined && this.assignedrm != null && this.assignedrm.length > 0 && this.assignedrm[0].leadstage == 'Junk') {
       swal({
         title: 'Junk Lead',
         html: `Please revert the lead from "Junk" status to make a call.`,
@@ -4235,7 +4258,7 @@ export class MandateCustomerDetailsComponent implements OnInit {
           } else {
             swal({
               title: 'Call Disconnect Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -4450,13 +4473,13 @@ export class MandateCustomerDetailsComponent implements OnInit {
             allowOutsideClick: false
           }).then((val) => {
             // if (val.value == true) {
-              $('.modal-backdrop').closest('div').remove();
-              let currentUrl = this.router.url;
-              let pathWithoutQueryParams = currentUrl.split('?')[0];
-              let currentQueryparams = this.route.snapshot.queryParams;
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigate([pathWithoutQueryParams], { queryParams: currentQueryparams });
-              });
+            $('.modal-backdrop').closest('div').remove();
+            let currentUrl = this.router.url;
+            let pathWithoutQueryParams = currentUrl.split('?')[0];
+            let currentQueryparams = this.route.snapshot.queryParams;
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate([pathWithoutQueryParams], { queryParams: currentQueryparams });
+            });
             // }
           }), (err) => {
             console.log("Failed to Update");
@@ -4532,6 +4555,52 @@ export class MandateCustomerDetailsComponent implements OnInit {
     }
   }
 
+  enableAccess() {
+    let param = {
+      assignedleads: this.assignedrm[0].customer_IDPK,
+      customersupport: this.assignedrm[0].RMID,
+      propId: this.assignedrm[0].propid,
+      loginid: this.userid,
+      executiveIds: this.assignedrm[0].RMID
+    }
+    this.filterLoader = true;
+    this._mandateService.leadreassign(param).subscribe((success) => {
+      this.filterLoader = false;
+      this.status = success.status;
+      if (this.status == "True") {
+        swal({
+          title: 'Access Enabled Successfully',
+          type: 'success',
+          confirmButtonText: 'Show Details'
+        }).then(() => {
+          this.reassignedResponseInfo = success['assignedleads'];
+          $('#reassign_leads_detail').click();
+        })
+      } else {
+        swal({
+          title: 'Authentication Failed!',
+          text: 'Please try again',
+          type: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    }, (err) => {
+       this.filterLoader = false;
+      console.log("Connection Failed")
+    });
+  }
+
+  closeDetailModal() {
+    setTimeout(() => {
+      let currentUrl = this.router.url;
+      let pathWithoutQueryParams = currentUrl.split('?')[0];
+      let currentQueryparams = this.route.snapshot.queryParams;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([pathWithoutQueryParams], { queryParams: currentQueryparams });
+      });
+      $('.modal-backdrop').closest('div').remove();
+    }, 0)
+  }
 
 }
 

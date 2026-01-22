@@ -512,13 +512,12 @@ export class RegistrationdataComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
       return false;
-    }
-    else {
+    } else {
       $('#selectedleads').removeAttr("style");
       this.filterLoader = true;
     }
@@ -527,13 +526,12 @@ export class RegistrationdataComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
       return false;
-    }
-    else {
+    } else {
       $('#property_dropdown').removeAttr("style");
       this.filterLoader = true;
     }
@@ -544,13 +542,12 @@ export class RegistrationdataComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
       return false;
-    }
-    else {
+    } else {
       $('#mandateExec_dropdown').removeAttr("style");
       $('#retailExec_dropdown').removeAttr("style");
       this.filterLoader = true;
@@ -565,6 +562,7 @@ export class RegistrationdataComponent implements OnInit {
       loginid: this.userid
     }
     // if (this.selectedTeamType == 'mandate') {
+    this.filterLoader = true;
       this._mandateService.leadreassign(param).subscribe((success) => {
         this.filterLoader = false;
         if (success.status == "True") {
@@ -598,7 +596,7 @@ export class RegistrationdataComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -640,7 +638,7 @@ export class RegistrationdataComponent implements OnInit {
     //     } else {
     //       swal({
     //         title: 'Authentication Failed!',
-    //         text: 'Please try agin',
+    //         text: 'Please try again',
     //         type: 'error',
     //         confirmButtonText: 'OK'
     //       })

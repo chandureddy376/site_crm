@@ -8,6 +8,7 @@ import { of } from 'rxjs/observable/of';
 import { CdTimerComponent } from 'angular-cd-timer';
 import { EchoService } from '../../echo.service';
 import 'rxjs/add/operator/shareReplay';
+import { mandateservice } from '../../mandate.service';
 
 declare var $: any;
 declare var swal: any;
@@ -135,18 +136,24 @@ export class HeaderComponent implements OnInit {
   dashboardUrl: any;
   selectedCustomOption: string = 'Custom';
   selectedDateRange: any;
-  selectedAssignSec: any;
+  selectedAssignSec: any[] = [];
   executiveListData: any;
   copyOfExecutiveListData: any;
   switch_account_name: string = '';
   confirmationSwitch: boolean = false;
   selectedSwitchAccount: any;
   mainAccountData: any;
+  isFollowup: boolean = false;
+  isInactive: boolean = false;
+  isNC: boolean = false;
+  isJunk: boolean = false;
+  durationTime: any = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private _sharedservice: sharedservice,
+    private _mandateService: mandateservice,
     private renderer: Renderer2,
     private echoService: EchoService,
   ) {
@@ -209,6 +216,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onClickSidebarMenu() {
+    sessionStorage.clear();
     // if(this.echoServiceSub){
     //   this.echoServiceSub.unsubscribe();
     // }
@@ -239,6 +247,7 @@ export class HeaderComponent implements OnInit {
     this._sharedservice.logout(param).subscribe((resp) => {
       if (resp.status == 'True') {
         localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => this.backToWelcome(), 100);
         this.echoService.disconnectSocket();
       }
@@ -898,7 +907,7 @@ export class HeaderComponent implements OnInit {
           } else {
             swal({
               title: 'Call Disconnect Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -991,7 +1000,6 @@ export class HeaderComponent implements OnInit {
         this.closeButtonTimeoutSet = true;
         setTimeout(() => {
           this.showCloseConnectingButton = true;
-          console.log('Close button shown via timeout.');
         }, remaining);
       }
     }
@@ -1274,7 +1282,7 @@ export class HeaderComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -2940,6 +2948,40 @@ export class HeaderComponent implements OnInit {
   //   //     this.timerstarted = false;
   //   //   }
   // }
+  autoAssignData: any;
+  getAutoAssignSelection() {
+    this._sharedservice.getAutoAssign().subscribe((resp) => {
+      if (resp.success == true) {
+        this.autoAssignData = resp.config;
+        this.isFollowup = !!resp.config.general_followups;
+        this.isInactive = !!resp.config.inactive_leads;
+        this.isNC = !!resp.config.normal_call;
+        this.isJunk = !!resp.config.junk_leads;
+
+        if (this.isFollowup) this.selectedAssignSec.push('followups');
+        if (this.isInactive) this.selectedAssignSec.push('inactive');
+        if (this.isNC) this.selectedAssignSec.push('nc');
+        if (this.isJunk) this.selectedAssignSec.push('junk');
+
+        if (resp.config.duration_days == 30) {
+          this.selectedDateRange = '30';
+        } else if (resp.config.duration_days == 60) {
+          this.selectedDateRange = '60';
+        } else if (resp.config.duration_days == 90) {
+          this.selectedDateRange = '90';
+        } else {
+          this.selectedDateRange = 'custom';
+          if (resp.config.duration_days == 1) {
+            this.selectedCustomOption = 'Today';
+          } else if (resp.config.duration_days == 7) {
+            this.selectedCustomOption = 'Last 7 days'
+          } else if (resp.config.duration_days == 15) {
+            this.selectedCustomOption = 'Last 15 days'
+          }
+        }
+      }
+    })
+  }
 
   getDurationTime(time) {
     let currentDate = new Date();
@@ -2981,17 +3023,30 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  sourceHistoryModalClose() {
-    this.selectedCustomOption = '';
+  autoAssignModalClose() {
+    this.selectedDateRange = '';
+    this.selectedCustomOption = 'Custom';
+    this.isFollowup = false;
+    this.isNC = false;
+    this.isJunk = false;
+    this.isInactive = false;
     $("input[name='programming']").prop("checked", false);
     $("input[name='programmingdays']").prop("checked", false);
   }
 
   finalSubmit() {
-
     if (this.selectedAssignSec == null || this.selectedAssignSec == undefined || this.selectedAssignSec.length == 0) {
       swal({
-        title: 'Please Select the Lead Stages fro Auto-assign',
+        title: 'Please Select the Lead Stages for Auto-assign',
+        type: 'error',
+        confirmButtonText: 'Yes',
+        allowOutsideClick: false
+      })
+    }
+
+    if (this.selectedDateRange == null || this.selectedDateRange == undefined || this.selectedDateRange == '') {
+      swal({
+        title: 'Please Select the duration for Auto-assign',
         type: 'error',
         confirmButtonText: 'Yes',
         allowOutsideClick: false
@@ -3006,18 +3061,79 @@ export class HeaderComponent implements OnInit {
         allowOutsideClick: false
       })
     }
+
+    let followup = '', inactive = '', nc = '', junk = '';
+    this.selectedAssignSec.forEach((data) => {
+      switch (data) {
+        case 'followups':
+          followup = '1';
+          break;
+        case 'nc':
+          nc = '1';
+          break;
+        case 'inactive':
+          inactive = '1';
+          break;
+        case 'junk':
+          junk = '1';
+          break;
+      }
+    })
+
+    let date;
+    if (this.selectedDateRange == '30days') {
+      date = 30;
+    } else if (this.selectedDateRange == '60days') {
+      date = 60;
+    } else if (this.selectedDateRange == '90days') {
+      date = 90;
+    } else if (this.selectedCustomOption == 'Today') {
+      date = 1;
+    } else if (this.selectedCustomOption == 'Last 7 days') {
+      date = 7;
+    } else if (this.selectedCustomOption == 'Last 15 days') {
+      date = 15;
+    }
+
+    let param = {
+      duration_days: date,
+      general_followups: followup,
+      normal_call: nc,
+      inactive_leads: inactive,
+      junk_leads: junk
+    }
+
+    this._sharedservice.updateAutoAssign(param).subscribe((resp) => {
+      if (resp.success == true) {
+        swal({
+          title: 'Successfully enabled Auto Assign',
+          type: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+          allowOutsideClick: false
+        }).then(() => {
+          $('#auto_assign_close').click();
+          this.autoAssignModalClose();
+        })
+      } else {
+        swal({
+          title: 'Something went wrong',
+          text: 'Please try again',
+          type: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    })
   }
 
   getAllLoginData() {
     this._sharedservice.getAllLoginData().subscribe((resp) => {
-      console.log(resp);
       this.executiveListData = resp.Executives;
       this.copyOfExecutiveListData = resp.Executives;
     })
   }
 
   searchSwitchAccount() {
-    console.log(this.switch_account_name)
     if (this.switch_account_name) {
       this.executiveListData = this.copyOfExecutiveListData.filter((exec) => exec.name.toLowerCase().includes(this.switch_account_name.toLowerCase()))
     } else {
@@ -3031,7 +3147,6 @@ export class HeaderComponent implements OnInit {
   }
 
   switchToAcc() {
-
     let adminData = this.executiveListData.filter((exec) => exec.role_IDFK == '1');
     localStorage.setItem('Name', this.selectedSwitchAccount.name);
     localStorage.setItem('Number', this.selectedSwitchAccount.number);
@@ -3096,6 +3211,70 @@ export class HeaderComponent implements OnInit {
   closeSwitchModal() {
     this.confirmationSwitch = false;
     this.selectedSwitchAccount = '';
+  }
+
+  checkCountAndRedirect() {
+    var untouchedpar = {
+      datefrom: '',
+      dateto: '',
+      statuss: '',
+      stage: '',
+      loginuser: localStorage.getItem('UserId'),
+      visits: '',
+      ...(this.role_type == 1 ? { teamlead: localStorage.getItem('UserId') } : {}),
+      untouch: 1
+    }
+    this._mandateService.assignedLeadsCount(untouchedpar).subscribe(compleads => {
+      console.log(compleads)
+      if (compleads['status'] == 'True') {
+        if (compleads.AssignedLeads[0].Uniquee_counts > 0) {
+          setTimeout(() => {
+            this.router.navigate(['/mandate-lead-stages'],
+              {
+                queryParams: {
+                  untouched: 1,
+                  stagestatus: '3',
+                  type: 'visits',
+                  visitedfrom: '',
+                  visitedto: '',
+                  htype: 'mandate',
+                  id: '3'
+                }
+              })
+          }, 0)
+        } else {
+          setTimeout(() => {
+            this.router.navigate(['/mandate-lead-stages'],
+              {
+                queryParams: {
+                  usv: 1,
+                  stagestatus: '3',
+                  type: 'visits',
+                  visitedfrom: '',
+                  visitedto: '',
+                  htype: 'mandate',
+                  id: '3'
+                }
+              })
+          }, 0)
+        }
+        //  [routerLink]="'/mandate-lead-stages'"
+        //  [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'mandate',id:'3'}"
+      } else {
+        this.router.navigate(['/mandate-lead-stages'],
+          {
+            queryParams: {
+              usv: 1,
+              stagestatus: '3',
+              type: 'visits',
+              visitedfrom: '',
+              visitedto: '',
+              htype: 'mandate',
+              id: '3'
+            }
+          })
+      }
+    });
   }
 
 }

@@ -485,7 +485,7 @@ export class AllCallsListingComponent implements OnInit {
     }
 
     this.filterLoader = true;
-    console.log(livecount,count)
+    console.log(livecount, count)
     if (livecount <= count) {
       this._sharedservice.getAllCalls(param).subscribe({
         next: (resp: any) => {
@@ -738,6 +738,26 @@ export class AllCallsListingComponent implements OnInit {
   }
 
   triggerCall(lead, type) {
+
+    let number = lead.callto.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.callto}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     let currentDate = new Date();
     //date
     let year = currentDate.getFullYear();

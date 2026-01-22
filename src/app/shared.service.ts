@@ -26,7 +26,7 @@ export class sharedservice implements OnInit {
         this.sharedcontroller = 'https://superadmin-azure.right2shout.in/admincrm_test';
         this.clientAPI = 'https://superadmin.homes247.in/cpclientreg';
         this.chatProcessAPI = 'https://test-chat.right2shout.in';
-        this.laravelAPI = 'https://lead247-laravel-api.right2shout.in';
+        this.laravelAPI = 'https://lead247-laravel-api.right2shout.in/test';
 
         this.unReadTrigger$.pipe(debounceTime(500)).subscribe(() => {
             return this.fetchUnreadChatCount()
@@ -37,10 +37,12 @@ export class sharedservice implements OnInit {
         })
     }
 
-    ngOnInit() {
-
-    }
-
+    leads: any[] = [];
+    page :any;
+    scrollTop = 0;
+    hasState = false;
+    
+    ngOnInit() {}
 
     //here the given method is for triggered whether the call is getting initiated or no
     private initiatedcallSubject = new BehaviorSubject<string>('');
@@ -1871,9 +1873,29 @@ export class sharedservice implements OnInit {
 
     uploadCSV(file: File) {
         let formdate = new FormData();
-        formdate.append('cs_file', file);
+        formdate.append('csv_file', file);
 
-        return this._http.post(this.sharedcontroller + '/upload-csv', formdate)
+        return this._http.post(this.laravelAPI + '/upload_csv', formdate)
+            .pipe(map(resp => resp.json()));
+    }
+
+    updateAutoAssign(param){
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('duration_days',param.duration_days);
+        urlSearchParams.append('general_followups',param.general_followups);
+        urlSearchParams.append('normal_call',param.normal_call);
+        urlSearchParams.append('inactive_leads',param.inactive_leads);
+        urlSearchParams.append('junk_leads',param.junk_leads);
+
+        var body = urlSearchParams.toString();
+        var headers = new Headers();
+        headers.append('Content-Type','application/x-www-form-urlencoded');
+        return this._http.post(this.laravelAPI+'/auto-assign/save-config',body,{headers:headers})
+            .pipe(map(resp => resp.json()));
+    }
+
+    getAutoAssign() {
+        return this._http.get(this.laravelAPI + '/auto-assign/config')
             .pipe(map(resp => resp.json()));
     }
 

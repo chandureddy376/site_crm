@@ -1,119 +1,19 @@
 <body class="g-sidenav-show  bg-gray-200">
   <!-- HEADER -->
-  <!-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
-    id="sidenav-main"> -->
   <app-header></app-header>
-  <!-- </aside> -->
   <!-- HEADER -->
   <main class="main-content position-relative border-radius-lg max-height-vh-100"
     [ngStyle]="{'margin-left': isSidebarHovered ? '14rem' : '3.5rem'}" [ngClass]="{'margin-0' : departId == '10005'}">
-    <!-- Navbar -->
-    <!-- <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
-      navbar-scroll="true">
-      <div class="container-fluid py-1 px-3">
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group input-group-outline">
-            </div>
-          </div>
-          <ul class="navbar-nav  justify-content-end  align-items-baseline">
-            <li class="pr-3" *ngIf="roleid != 1 && roleid != '2'">
-              <button class="btn btn-primary d-flex align-items-center justify-content-center" type="button"
-                data-toggle="modal" data-target="#start_break">Start Break <img src="../../../assets/images/break.png"
-                  style="width: 1.3rem;" class="pl-1"></button>
-            </li>
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">{{username}}</span>
-              </a>
-            </li>
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item dropdown px-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="settings" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-cog fixed-plugin-button-nav hoverclass"></i>
-              </a>
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="settings">
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="d-flex flex-column justify-content-center" (click)="logout()">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">Logout</span>
-                        </h6>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-bell hoverclass"></i>
-              </a>
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New feature</span> Coming Soon
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          xx xxxxxx xxx
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="./assets/img/small-logos/logo-spotify.svg"
-                          class="avatar avatar-sm bg-gradient-dark  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">xx xxxx</span> xx xxxxx xxxx
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          xx xxx
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav> -->
-    <!-- End Navbar -->
     <div class="container-fluid pb-2 pl-0" style="padding-inline: 1rem !important;padding-top: 1.8rem !important;">
       <div class="row" [ngStyle]="{'padding-top': departId == '10005' ? '1.5rem' : '0rem'}">
-        <div class="col-12 mb-2">
-          <!-- <div class=" btn-group btn-group-toggle float-left">
-            <div *ngIf="viewallBoolean"><button class="btn btn-warning buttonwithicon p-2" type="button"
-                (click)="sourceDashreturn()"><i class="fas fa-chevron-left"></i>back</button></div>
+        <div class="col-12 mb-2 d-flex justify-content-end align-items-start">
+          <!-- <div class="source_dpdown" *ngIf="departId == '10005'">
+            <select id="source_dropdown" class="form-control ui dropdown" (change)="sourcechange($event)">
+              <option value="" selected>Select Source</option>
+              <option *ngFor="let source of dashboardSourceList" value="{{source.source}}">{{source.source}}
+              </option>
+            </select>
           </div> -->
-          <!-- <div class=" btn-group btn-group-toggle float-right col-md-12 col-sm-12"> -->
           <div class=" btn-group btn-group-toggle d-flex justify-content-end">
             <span class="p-0">
               <label class=" btn btn-sm btn-danger btn-simple ml-1 mb-0" routerLink="/source-dashboard"
@@ -641,8 +541,12 @@
                             </div>
                           </div> -->
 
-                          <div class="ml-2 call_count_data d-inline-flex align-items-center" *ngIf="leads.totalcall > 0">
-                            <span class="d-flex align-items-center"><span style="color: #3E7200;">{{leads.activecall}}</span> /{{leads?.totalcall}} <img class="ml-1" width="12px" src="../../../assets/images/call_icon_source_dash.png" alt=""></span>
+                          <div class="ml-2 call_count_data d-inline-flex align-items-center"
+                            *ngIf="leads.totalcall > 0">
+                            <span class="d-flex align-items-center"><span
+                                style="color: #3E7200;">{{leads.activecall}}</span> /{{leads?.totalcall}} <img
+                                class="ml-1" width="12px" src="../../../assets/images/call_icon_source_dash.png"
+                                alt=""></span>
                           </div>
                           <div *ngIf="departId != '10005'">{{leads?.number}}</div>
                         </td>
@@ -652,13 +556,15 @@
                           <!-- <div></div> -->
                         </td>
                         <td *ngIf="selectedUniqueDuplicateTab != 'duplicate'">
-                          <span *ngIf="leads?.leadstage && departId == '10005' && sourceCategory != 'Inactive' && sourceCategory != 'Active Leads' && sourceCategory != 'Junk Leads'">{{leads?.leadstage}}</span>
+                          <span
+                            *ngIf="leads?.leadstage && departId == '10005' && sourceCategory != 'Inactive' && sourceCategory != 'Active Leads' && sourceCategory != 'Junk Leads'">{{leads?.leadstage}}</span>
                           <span *ngIf="leads?.leadstage && departId != '10005'">{{leads?.leadstage}}</span>
                           <span *ngIf="!leads?.leadstage && departId != '10005'"
-                            style="font-size: 14px;font-style: italic;font-weight: 900;text-align: center;">Not Assign</span>
+                            style="font-size: 14px;font-style: italic;font-weight: 900;text-align: center;">Not
+                            Assign</span>
                           <span *ngIf="departId == '10005' && sourceCategory == 'Inactive'">Inactive</span>
                           <span *ngIf="departId == '10005' && sourceCategory == 'Active Leads'">Active</span>
-                           <span *ngIf="departId == '10005' && sourceCategory == 'Junk Leads'">Junk</span>
+                          <span *ngIf="departId == '10005' && sourceCategory == 'Junk Leads'">Junk</span>
                         </td>
                         <td class="text-center cursor-pointer" *ngIf="selectedUniqueDuplicateTab != 'duplicate'">
                           <span class="" data-toggle="modal" data-target="#source_history"
@@ -1310,7 +1216,7 @@
                         {{ leadhistory.autoremarks }}
                       </div>
                       <div class="remarks">
-                        {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                        {{ leadhistory.Remarks }}
                       </div>
                     </div>
                   </div>

@@ -181,7 +181,7 @@
                   <th *ngIf="role_type == '1'">
                     <div class="d-flex justify-content-between">
                       <span>Assigned To</span>
-                      <div *ngIf="(pendingleadsparam || followupleadsparam || normalcallparam) != '1'">
+                      <div>
                         <button class="btn btn-warning" type="button" id="executiveDropdown" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false" style="padding: 0px 5px !important;">
                           <i class="fas fa-filter" style="color: white;"></i>
@@ -299,9 +299,9 @@
                         </a>
                       </span>
                        <div
-                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '75%' :''}">
                         <div class="d-flex gap-3"
-                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
+                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '' :''}">
                           <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
                             data-placement="right"
                             [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
@@ -614,10 +614,10 @@
 
                   <!-- ----------------------------Customer name and number---------------------------- -->
                   <td
-                    [ngStyle]="{'width': pendingleadsparam == '1' ?'280px' : '','color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : ' ' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
-                    <a class="btn_style cursor-pointer" style="font-size: 14px;" (click)="detailsPageRedirection()">
-                      <div routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}"
-                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                    [ngStyle]="{'width': pendingleadsparam == '1' ?'280px' : '','color': (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : ' ' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '75%' :''}">
+                    <a class="btn_style cursor-pointer" style="font-size: 14px;" (click)="detailsPageRedirection();">
+                      <div (click)="redirectTo(leads)"
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '75%' :''}">
                         {{leads.CustomerName}}
                         <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
                             style="width: 20px;"></span>
@@ -625,9 +625,9 @@
                             src="../../../../assets/images/not_qualified.svg" style="width: 20px;"></span>
                       </div>
                       <div
-                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '75%' :''}">
+                        [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '75%' :''}">
                         <div class="d-flex gap-3"
-                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
+                          [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (stageplan == 'usv' || stageplan == 'rsv' || stageplan == 'fn')) ? '' :''}">
                           <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
                             data-placement="right"
                             [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img

@@ -1466,3 +1466,8 @@ input[type="radio"].loopcheckbox {
   font-weight: bolder;
   font-style: italic;
 }
+
+ [data-tooltip]:not([data-position])::after{
+  display: inline-flex !important;
+  align-items: center !important;
+ }

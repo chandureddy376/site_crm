@@ -129,6 +129,7 @@ export class JunkDashboardComponent implements OnInit {
   leadstatusVisits: any;
   selectedLeadStatus: string;
   reassignleadsCount: number = 0;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.roleid = localStorage.getItem('Role');
@@ -197,6 +198,111 @@ export class JunkDashboardComponent implements OnInit {
       this.getsourcelist();
       this.getmandateExecutives()
     }
+
+    const savedState = sessionStorage.getItem('junk_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.selectedCategory = state.category;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+      this.source = state.source;
+      this.leadstatusVisits = state.visits
+      $('.other_section').removeClass('active');
+      if (state.tabs == 'leads') {
+        this.junkLeadsParam = 1;
+        $('.junk_leads').addClass('active');
+      } else if (state.tabs == 'visits') {
+        this.junkVisitsParam = 1;
+        $('.junk_visits').addClass('active');
+      }
+
+      JunkDashboardComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      switch (state.dateFilterType) {
+        case 'today':
+          this.clicked1 = true;
+          break;
+        case 'yesterday':
+          this.clicked2 = true;
+          break;
+        case 'last7':
+          this.clicked3 = true;
+          break;
+        default:
+          this.clicked = true;
+      }
+
+      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '' && this.junkLeadsParam == 1) {
+        this.selectedCategory = 'Fresh';
+      } else if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '' && this.junkVisitsParam == 1) {
+        this.selectedCategory = 'USV Done';
+      }
+
+      if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == '' || this.receivedToDate == undefined || this.receivedToDate == null)) {
+        this.receivedDatefilterview = false;
+        this.receivedFromDate = '';
+        this.receivedToDate = '';
+      } else {
+        this.receivedDatefilterview = true;
+      }
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.source == '' || this.source == null || this.source == undefined) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined) || (this.todate == '' || this.todate == undefined)) {
+        this.fromdate = '';
+        this.todate = '';
+      }
+
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+
     this.getleadsdata();
 
   }
@@ -205,7 +311,7 @@ export class JunkDashboardComponent implements OnInit {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
       this.initializeLeadReceivedDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0)
   }
 
@@ -286,8 +392,18 @@ export class JunkDashboardComponent implements OnInit {
       this.rmid = localStorage.getItem('UserId');
     }
     this.filterLoader = true;
-    JunkDashboardComponent.count = 0;
+    // JunkDashboardComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       // this.todaysvisitedparam = paramss['todayvisited'];
       // this.yesterdaysvisitedparam = paramss['yesterdayvisited'];
@@ -765,10 +881,10 @@ export class JunkDashboardComponent implements OnInit {
       receivedfrom: this.receivedFromDate,
       receivedto: this.receivedToDate,
       ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix'? { assignedfrom: this.fromdate } : {}),
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix' ? { assignedto: this.todate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix' ? { visitedfrom: this.fromdate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix'? { visitedto: this.todate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedfrom: this.fromdate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedto: this.todate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedfrom: this.fromdate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedto: this.todate } : {}),
       ...(this.junkVisitsParam == '1' ? { visits: this.leadstatusVisits } : {})
 
     }
@@ -1115,10 +1231,10 @@ export class JunkDashboardComponent implements OnInit {
       receivedfrom: this.receivedFromDate,
       receivedto: this.receivedToDate,
       ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix' ? { assignedfrom: this.fromdate } : {}),
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix'? { assignedto: this.todate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix'? { visitedfrom: this.fromdate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix'? { visitedto: this.todate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedfrom: this.fromdate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedto: this.todate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedfrom: this.fromdate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedto: this.todate } : {}),
       ...(this.junkVisitsParam == '1' ? { visits: this.leadstatusVisits } : {})
     }
     console.log(countLoad, this.callerleads.length)
@@ -1318,7 +1434,7 @@ export class JunkDashboardComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1331,7 +1447,7 @@ export class JunkDashboardComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1346,7 +1462,7 @@ export class JunkDashboardComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1393,7 +1509,7 @@ export class JunkDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1428,7 +1544,7 @@ export class JunkDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1462,7 +1578,7 @@ export class JunkDashboardComponent implements OnInit {
       //     } else {
       //       swal({
       //         title: 'Authentication Failed!',
-      //         text: 'Please try agin',
+      //         text: 'Please try again',
       //         type: 'error',
       //         confirmButtonText: 'OK'
       //       })
@@ -1543,10 +1659,10 @@ export class JunkDashboardComponent implements OnInit {
       source: this.source,
       receivedfrom: this.receivedFromDate,
       receivedto: this.receivedToDate,
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix'? { assignedfrom: this.fromdate } : {}),
-      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' ||  this.selectedCategory == 'RSV Fix'? { assignedto: this.todate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix'? { visitedfrom: this.fromdate } : {}),
-      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' &&  this.selectedCategory != 'RSV Fix'? { visitedto: this.todate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedfrom: this.fromdate } : {}),
+      ...(this.junkLeadsParam == '1' || this.selectedCategory == 'USV Fix' || this.selectedCategory == 'RSV Fix' ? { assignedto: this.todate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedfrom: this.fromdate } : {}),
+      ...(this.junkVisitsParam == '1' && this.selectedCategory != 'USV Fix' && this.selectedCategory != 'RSV Fix' ? { visitedto: this.todate } : {}),
       ...(this.junkVisitsParam == '1' ? { visits: this.leadstatusVisits } : {})
     }
 
@@ -1610,7 +1726,97 @@ export class JunkDashboardComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
+  }
+
+  triggerCall(lead) {
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
+    this.calledLead = lead;
+    localStorage.setItem('calledLead', JSON.stringify(lead));
+    localStorage.setItem('callerTriggeredPlace', 'mandate');
+    let currentDate = new Date();
+    //date
+    let year = currentDate.getFullYear();
+    let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    let day = String(currentDate.getDate()).padStart(2, '0');
+    //time
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    let seconds = currentDate.getSeconds();
+
+    let formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    if (this.roleid != 50001 && this.roleid != 50002) {
+      this.copyToClipboard(lead.number);
+    }
+    swal({
+      title: 'Initiate Outbound Call',
+      html: `Do you want to place a call to <br><stronsg>${lead.CustomerName}</strong> (${((lead.Leadphase != 'Fresh' || (lead.Leadphase == 'Fresh' && lead.followupreason == 8) || this.roleid == 1 || this.roleid == 2) ? lead.number : 'xxxxxxxxxx')})`,
+      type: 'warning',
+      confirmButtonText: "Call",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false
+    }).then((val) => {
+      this.filterLoader = true;
+      if (val.value == true) {
+        const cleanedNumber = lead.number.startsWith('91') && lead.number.length > 10 ? lead.number.slice(2) : lead.number;
+        let param = {
+          execid: this.userid,
+          number: cleanedNumber,
+          leadid: lead.LeadID,
+          starttime: formattedDateTime,
+          modeofcall: 'Desktop-mandate',
+          rmid: lead.ExecId
+        }
+        this._sharedservice.postTriggerCall(param).subscribe((resp) => {
+          this.filterLoader = false;
+          if (resp.status == 'success') {
+            this._sharedservice.setOnCallSelection('oncall')
+          } else {
+            swal({
+              title: 'Call Not Connected',
+              html: `The call could not be completed to <br><stronsg>${lead.CustomerName}</strong> (${lead.number}) Please try again later.`,
+              type: 'error',
+              timer: 3000,
+              showConfirmButton: false,
+              showCancelButton: false
+            });
+          }
+        });
+      } else {
+        this.filterLoader = false;
+      }
+    })
+  }
+
+  copyToClipboard(text) {
+    if ((navigator as any).clipboard) {
+      (navigator as any).clipboard.writeText(text).then(() => {
+        console.log('Number copied to clipboard!');
+      }).catch(() => {
+        console.log('Failed to copy number.');
+      });
+    }
   }
 
   receivedDateclose() {
@@ -1797,5 +2003,56 @@ export class JunkDashboardComponent implements OnInit {
       autoApply: true,
     }, cb);
     cb(this.leadRecStart, this.leadRecEnd);
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    let dateFilterType = 'custom';
+
+    if (this.clicked1) dateFilterType = 'today';
+    else if (this.clicked2) dateFilterType = 'yesterday';
+    else if (this.clicked3) dateFilterType = 'last7';
+
+    localStorage.setItem('backLocation', '');
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = JunkDashboardComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    let tab;
+    if (this.junkLeadsParam == 1) {
+      tab = 'leads';
+    } else if (this.junkVisitsParam == 1) {
+      tab = 'visits';
+    }
+
+    const state = {
+      category: this.selectedCategory,
+      fromdate: this.fromdate,
+      todate: this.todate,
+      execid: this.execid,
+      execname: this.execname,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      source: this.source,
+      page: JunkDashboardComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      visits: this.leadstatusVisits,
+      tabs: tab,
+      dateFilterType
+    };
+
+    sessionStorage.setItem('junk_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 }

@@ -1227,6 +1227,7 @@ export class mandateservice implements OnInit {
         urlSearchParams.set('teamlead', param.teamlead);
         urlSearchParams.append('teammateid', param.teammateid);
         urlSearchParams.append('rnrleads', param.rnrleads);
+        urlSearchParams.append('visitsuntouched', param.untouch);
         let body = urlSearchParams.toString()
 
         var headers = new Headers();
@@ -1268,6 +1269,7 @@ export class mandateservice implements OnInit {
         urlSearchParams.set('teamlead', param.teamlead);
         urlSearchParams.append('teammateid', param.teammateid);
         urlSearchParams.append('rnrleads', param.rnrleads);
+        urlSearchParams.append('visitsuntouched', param.untouch);
         let body = urlSearchParams.toString()
 
         var headers = new Headers();
@@ -1841,6 +1843,22 @@ export class mandateservice implements OnInit {
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         return this._http.post(this.mandateUrl + '/updatehotwarmcold', body, { headers: headers })
             .pipe(map(response => response.json()));
+    }
+
+    postEnableAccess(param){
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('leadid',param.leadid);
+        urlSearchParams.append('execid',param.execid);
+        urlSearchParams.append('propid',param.propid);
+
+        var headers = new Headers();
+        headers.append('Content-Type','application/x-www-form-urlencoded');
+
+        let body = urlSearchParams.toString();              
+
+        return this._http.post(this.mandateUrl + '/givevisitaccess' , body,{headers:headers})
+            .pipe(map(response => response.json()))
+
     }
 
 }

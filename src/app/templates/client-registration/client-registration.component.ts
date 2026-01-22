@@ -177,7 +177,7 @@ export class ClientRegistrationComponent implements OnInit {
     if (this.selectedbuilder == "" || this.selectedbuilder == undefined) {
       swal({
         title: 'Please Select Some Builder!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -189,7 +189,7 @@ export class ClientRegistrationComponent implements OnInit {
     if (this.selectedProperty == "" || this.selectedProperty == undefined) {
       swal({
         title: 'Please Select Some Properties!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })

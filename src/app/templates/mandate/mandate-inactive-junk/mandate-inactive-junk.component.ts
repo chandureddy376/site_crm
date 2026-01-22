@@ -109,6 +109,7 @@ export class MandateInactiveJunkComponent implements OnInit {
   isSidebarHovered: boolean = false;
   private hoverSubscription: Subscription;
   roleTeam:any;
+  isRestoredFromSession = false;
 
   constructor(private readonly _sharedService: sharedservice, private readonly _mandateService: mandateservice, private readonly _retailservice: retailservice, private router: Router, private route: ActivatedRoute, private _mandateClassService:MandateClassService,) {
     if (localStorage.getItem('Role') == '50009' || localStorage.getItem('Role') == '50010') {
@@ -126,10 +127,108 @@ export class MandateInactiveJunkComponent implements OnInit {
       this.isSidebarHovered = isHovered;
     });
 
-    this.getleadsdata();
     this.mandateprojectsfetch();
     this.getsourcelist();
     this.getExecutivesForFilter();
+
+    const savedState = sessionStorage.getItem('inactive_junk_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.source = state.source
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname;
+      this.leadtype = state.type;
+
+      $(".traffic_section").removeClass("active");
+      if (state.type == 'inactive') {
+        $(".inactive_section").addClass("active");
+      } else if (state.type == 'junkleads') {
+        $(".junkleads_section").addClass("active");
+      } else if (state.type == 'junkvisits') {
+        $(".junkvisits_section").addClass("active");
+      }
+
+      $(".other_section").removeClass("active");
+      if (state.tabs == 'inactive1') {
+        $(".inactive1_section").addClass("active");
+        this.inactive1Param = 1;
+      } else if (state.tabs == 'inactive2') {
+        $(".inactive2_section").addClass("active");
+        this.inactive2Param = 1;
+      } else if (state.tabs == 'inactive3') {
+        $(".inactive3_section").addClass("active");
+        this.inactive3Param = 1;
+      } else if (state.tabs == 'inactive4') {
+        $(".inactive4_section").addClass("active");
+        this.inactive4Param = 1;
+      } else if (state.tabs == 'inactive5') {
+        $(".inactivefinal_section").addClass("active");
+        this.inactiveFinalParam = 1;
+      } else if (state.tabs == 'junk1') {
+        $(".junk1_section").addClass("active");
+        this.junk1Param = 1;
+      } else if (state.tabs == 'junk2') {
+        $(".junk2_section").addClass("active");
+        this.junk2Param = 1;
+      } else if (state.tabs == 'junk3') {
+        $(".junk3_section").addClass("active");
+        this.junk3Param = 1;
+      } else if (state.tabs == 'junk4') {
+        $(".junk4_section").addClass("active");
+        this.junk4Param = 1;
+      } else if (state.tabs == 'junk5') {
+        $(".junkfinal_section").addClass("active");
+        this.junkFinalParam = 1;
+      }
+
+      MandateInactiveJunkComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.propertyid == null || this.propertyid == '' || this.propertyid == undefined) {
+        this.propertyfilterview = false;
+      } else {
+        this.propertyfilterview = true;
+      }
+
+      if (this.execid == '' || this.execid == undefined || this.execid == null) {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if (this.source == '' || this.source == undefined || this.source == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      if (state.type == 'junkvisits' || state.type == 'junkleads') {
+        this.junkbatchtrigger();
+      } else if (state.type == 'inactive') {
+        this.inactivebatch1trigger();
+      }
+    }
+
+    this.getleadsdata();
     const elements = document.getElementsByClassName("modalclick");
     while (elements.length > 0) elements[0].remove();
     const el = document.createElement('div');
@@ -139,7 +238,7 @@ export class MandateInactiveJunkComponent implements OnInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -155,6 +254,16 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this.filterLoader = false;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       this.leadtype = paramss['type'];
       this.inactive1Param = paramss['inactive1'];
@@ -428,7 +537,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this._mandateService.assignedLeadsCount(inactive1).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.inactive1Count = compleads.AssignedLeads[0].counts;
+        this.inactive1Count = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.inactive1Count = 0;
       }
@@ -449,7 +558,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this._mandateService.assignedLeadsCount(inactive2).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.inactive2Count = compleads.AssignedLeads[0].counts;
+        this.inactive2Count = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.inactive2Count = 0;
       }
@@ -470,7 +579,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this._mandateService.assignedLeadsCount(inactive3).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.inactive3Count = compleads.AssignedLeads[0].counts;
+        this.inactive3Count = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.inactive3Count = 0;
       }
@@ -491,7 +600,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this._mandateService.assignedLeadsCount(inactive4).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.inactive4Count = compleads.AssignedLeads[0].counts;
+        this.inactive4Count = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.inactive4Count = 0;
       }
@@ -512,7 +621,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     }
     this._mandateService.assignedLeadsCount(finalinactive).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.inactiveFinalCount = compleads.AssignedLeads[0].counts;
+        this.inactiveFinalCount = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.inactiveFinalCount = 0;
       }
@@ -1614,7 +1723,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1629,7 +1738,7 @@ export class MandateInactiveJunkComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1646,7 +1755,7 @@ export class MandateInactiveJunkComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1679,7 +1788,7 @@ export class MandateInactiveJunkComponent implements OnInit {
 
     // if (this.selectedTeamType == 'mandate') {
       if (this.filteredproject && this.filteredproject.crm == '2') {
-        this._mandateService.ranavinactiveJunkLeadreassign(param).subscribe((success) => {
+        this._mandateService.ranavleadreassign(param).subscribe((success) => {
           this.filterLoader = false;
           this.status = success.status;
           if (this.status == "True") {
@@ -1715,7 +1824,7 @@ export class MandateInactiveJunkComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -1724,7 +1833,7 @@ export class MandateInactiveJunkComponent implements OnInit {
           console.log("Connection Failed")
         });
       } else {
-        this._mandateService.inactiveJunkLeadreassign(param).subscribe((success) => {
+        this._mandateService.leadreassign(param).subscribe((success) => {
           this.filterLoader = false;
           this.status = success.status;
           if (this.status == "True") {
@@ -1760,7 +1869,7 @@ export class MandateInactiveJunkComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -1806,7 +1915,7 @@ export class MandateInactiveJunkComponent implements OnInit {
     //     } else {
     //       swal({
     //         title: 'Authentication Failed!',
-    //         text: 'Please try agin',
+    //         text: 'Please try again',
     //         type: 'error',
     //         confirmButtonText: 'OK'
     //       })
@@ -1994,6 +2103,64 @@ export class MandateInactiveJunkComponent implements OnInit {
 
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'inactive-junk');
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    // save data
+    this._sharedService.leads = this.callerleads;
+    this._sharedService.page = MandateInactiveJunkComponent.count;
+    this._sharedService.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedService.hasState = true;
+
+     localStorage.setItem('backLocation', '');
+
+    let tab;
+    if (this.inactive1Param == 1) {
+      tab = 'inactive1'
+    } else if (this.inactive2Param == 1) {
+      tab = 'inactive2'
+    } else if (this.inactive3Param == 1) {
+      tab = 'inactive3';
+    } else if (this.inactive4Param == 1) {
+      tab = 'inactive4';
+    } else if (this.inactiveFinalParam == 1) {
+      tab = 'inactive5';
+    } else if (this.junk1Param == 1) {
+      tab = 'junk1';
+    } else if (this.junk2Param == 1) {
+      tab = 'junk2';
+    } else if (this.junk3Param == 1) {
+      tab = 'junk3';
+    } else if (this.junk4Param == 1) {
+      tab = 'junk4';
+    } else if (this.junkFinalParam == 1) {
+      tab = 'junk5';
+    }
+
+    const state = {
+      source: this.source,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      execid: this.execid,
+      execname: this.execname,
+      page: MandateInactiveJunkComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: tab,
+      type:this.leadtype
+    };
+
+    sessionStorage.setItem('inactive_junk_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 
   //   filterhere() {

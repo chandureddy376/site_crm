@@ -100,7 +100,6 @@ export class MandateLeadStagesComponent implements OnInit {
   filterLeads = '';
   randomCheckVal: any = '';
   unquieleadcounts: number = 0;
-
   //reassign variables
   reassignleadsCount: number = 0;
   selectedEXEC: any;
@@ -120,6 +119,7 @@ export class MandateLeadStagesComponent implements OnInit {
   dateRange: any;
   reassignfromdate: any;
   reassigntodate: any;
+  untouchedParam: any;
   usvParam: any;
   rsvParam: any;
   fnParam: any;
@@ -140,12 +140,14 @@ export class MandateLeadStagesComponent implements OnInit {
   junkvisits3Count: number = 0;
   junkvisits4Count: number = 0;
   junkvisitsFinalCount: number = 0;
+  untouchedCounts: number = 0;
   usvCounts: number = 0;
   rsvCounts: number = 0;
   fnCounts: number = 0;
   bookingRequestCounts: number = 0;
   bookingPendingCounts: number = 0;
   bookedCounts: number = 0;
+  untouchedStage: any;
   leadstatusVisits: any;
   arr: Array<any>;
   leadReceivedDateRange: Date[];
@@ -238,19 +240,318 @@ export class MandateLeadStagesComponent implements OnInit {
   junkVisitsTotal: any;
   junkLeadsTotal: any;
   rnrCount: any;
-  untouchedVisit: any;
+  overduesSelection: boolean = false;
+  overduesStage: any;
+  todaysDate: Date;
+  overduedReassignExecutives: any;
+  selectedOverduesLead: any;
+  selectedOverduedExecs: any;
+  isRestoredFromSession = false;
   // *****************************Assignedleads section list*****************************
 
   ngOnInit() {
+
     this.roleid = localStorage.getItem('Role');
     this.userid = localStorage.getItem('UserId');
     this.role_type = localStorage.getItem('role_type');
     this.mandateProperty_ID = localStorage.getItem('property_ID');
+    this.todaysDate = this.getTodayDate();
     // *********************load the required template files*********************
-    this.getleadsdata();
     this.mandateprojectsfetch();
     this.getExecutivesForFilter();
 
+    const savedState = sessionStorage.getItem('lead_satges_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname;
+      this.leadstatusVisits = state.visits;
+      this.categoryStage = state.followupcategory;
+      this.categoryStageName = state.followupcategoryName;
+      this.stagevalue = state.stage;
+      this.stagestatusval = state.stagestatus;
+      this.source = state.source;
+      this.reassignfromdate = state.receivedfrom;
+      this.reassigntodate = state.receivedto;
+      this.rnrCount = state.rnrCount;
+      this.priorityName = state.priority;
+      this.visitAssignExecid = state.visitExecid;
+      this.visitAssignExecname = state.visitExecname;
+      this.assignedFrom = state.assignedfrom;
+      this.assignedTo = state.assignedto;
+      this.visitType = state.id;
+      this.visitedFrom = state.visitedfrom;
+      this.visitedTo = state.visitedto
+      this.overduesSelection = state.overdues
+      this.type = state.type;
+      MandateLeadStagesComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.overduesSelection) {
+        this.overduesStage = 'overdues';
+      } else {
+        this.overduesStage = '';
+      }
+
+      if ((this.inactiveTotal == null || this.inactiveTotal == undefined || this.inactiveTotal == '') && this.inactiveparam == 1) {
+        this.inactiveTotal = '1';
+      }
+
+      if ((this.junkLeadsTotal == null || this.junkLeadsTotal == undefined || this.junkLeadsTotal == '') && this.junkleadsParam == 1) {
+        this.junkLeadsTotal = '1';
+      }
+
+      if ((this.junkVisitsTotal == null || this.junkVisitsTotal == undefined || this.junkVisitsTotal == '') && this.junkvisitsParam == 1) {
+        this.junkVisitsTotal = '1';
+      }
+
+      if (this.followupleadsparam == '1' || this.normalcallparam == '1') {
+        this.serachRemarks = state.remarks;
+        if (this.serachRemarks && this.serachRemarks.length > 0) {
+          this.latestRemarkFilter = true;
+        } else {
+          this.latestRemarkFilter = false;
+        }
+      } else {
+        this.serachRemarks = '';
+        this.latestRemarkFilter = false;
+      }
+
+      if (this.visitType != 1) {
+        this.visitAssignExecid = '';
+        this.visitAssignExecname = '';
+      }
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.role_type == '1' && this.visitType == '1') {
+        this.getExecutivesForFilter();
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if (this.visitAssignExecid) {
+        this.visitAssignExecutivefilterview = true;
+      } else {
+        this.visitAssignExecutivefilterview = false;
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+        this.fromdate = '';
+        this.todate = '';
+        this.fromTime = '';
+        this.toTime = '';
+      } else {
+        this.datefilterview = true;
+        $("#fromdate").val(this.fromdate);
+        $("#selectedtodate").val(this.todate);
+      }
+
+      if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == '' || this.receivedToDate == undefined || this.receivedToDate == null)) {
+        this.receivedDatefilterview = false;
+        this.receivedFromDate = '';
+        this.receivedToDate = '';
+      } else {
+        this.receivedDatefilterview = true;
+      }
+
+      if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
+        this.visitedDatefilterview = false;
+        this.visitedFrom = '';
+        this.visitedTo = '';
+      } else {
+        this.visitedDatefilterview = true;
+        if (this.stagestatusval == 1 || this.stagestatusval == 2) {
+          this.stagestatusval = '';
+        }
+
+        if ((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1 || this.additionalParam == 'AllVisits') && (this.fromdate != '' && this.fromdate != undefined && this.fromdate != null && this.todate != '' && this.todate != undefined && this.todate != null)) {
+          this.fromdate = '';
+          this.todate = '';
+          this.datefilterview = false;
+        }
+      }
+
+      if ((this.assignedFrom == '' || this.assignedFrom == undefined || this.assignedFrom == null) || (this.assignedTo == null || this.assignedTo == '' || this.assignedTo == undefined)) {
+        this.assignedOnDatefilterview = false;
+        this.assignedFrom = '';
+        this.assignedTo = '';
+      } else {
+        this.assignedOnDatefilterview = true;
+      }
+
+      if (this.stagevalue) {
+        this.stagefilterview = true;
+        if (this.stagevalue == "USV") {
+          this.stagestatus = true;
+        } else {
+          this.stagestatus = true;
+        }
+      } else {
+        this.stagefilterview = false;
+      }
+
+      if (this.stagevalue == '' || this.stagevalue == undefined || this.stagevalue == null) {
+        this.stagefilterview = false;
+        if (this.junkvisitsParam == 1 && this.stagestatusval == 3) {
+          this.stagestatusval = '';
+        }
+      } else {
+        this.stagestatus = true;
+        this.stagefilterview = true;
+      }
+
+      if ((this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null)) {
+        this.stagestatusfilterview = false;
+        if (this.overduejunk != '4' && this.overduejunk != '5') {
+          this.stagestatusval = '3';
+        }
+      } else {
+        this.stagestatusfilterview = true;
+        if (this.stagestatusval == '1') {
+          this.stagestatusvaltext = "Fixed";
+        } else if (this.stagestatusval == '2') {
+          this.stagestatusvaltext = "Refixed";
+        } else if (this.stagestatusval == '3') {
+          this.stagestatusvaltext = "Done";
+          if (this.junkvisitsParam != 1) {
+            this.stagefilterview = false;
+            this.stagestatusfilterview = false;
+          }
+        }
+      }
+
+      if (this.stagestatusval && this.stagestatusval != '3') {
+        this.stagefilterview = true;
+      }
+
+      if ((this.categoryStage == '' || this.categoryStage == undefined) || (this.categoryStageName == '' || this.categoryStageName == undefined)) {
+        this.categoryStage = '';
+        this.categoryStageName = '';
+        this.categeoryfilterview = false;
+      } else {
+        this.categeoryfilterview = true;
+      }
+
+      if (this.source) {
+        this.sourceFilter = true;
+      } else {
+        this.sourceFilter = false;
+      }
+
+      if (this.priorityName) {
+        if (this.priorityName == 1) {
+          this.priorityType = 'Hot';
+        } else if (this.priorityName == 2) {
+          this.priorityType = 'Warm';
+        } else if (this.priorityName == 3) {
+          this.priorityType = 'Cold';
+        }
+        this.priorityFilter = true;
+      } else {
+        this.priorityFilter = false;
+      }
+
+      if (this.visitType == '' || this.visitType == undefined || this.visitType == null) {
+        this.visitType = '3';
+      }
+
+      $(".other_section").removeClass("active");
+      setTimeout(() => {
+        if (state.tabs == 'pendingleadsparam') {
+          this.pendingleadsparam = 1;
+          $(".pending_section").addClass("active");
+        } else if (state.tabs == 'followupleadsparam') {
+          this.followupleadsparam = 1;
+          $(".followups_section").addClass("active");
+          this.getFollowupsStatus();
+        } else if (state.tabs == 'normalcallparam') {
+          this.normalcallparam = 1;
+          $(".nc_section").addClass("active");
+        } else if (state.tabs == 'inactiveparam') {
+          this.inactiveparam = 1;
+          $(".inactive_section").addClass("active");
+          this.getFollowupsStatus();
+        } else if (state.tabs == 'junkleadsParam') {
+          this.junkleadsParam = 1;
+          $(".junkleads_section").addClass("active");
+        } else if (state.tabs == 'untouchedParam') {
+          this.untouchedParam = 1;
+          $(".untouched_section").addClass("active");
+        } else if (state.tabs == 'usvParam') {
+          this.usvParam = 1;
+          $(".usv_section").addClass("active");
+        } else if (state.tabs == 'rsvParam') {
+          this.rsvParam = 1;
+          $(".rsv_section").addClass("active");
+        } else if (state.tabs == 'fnParam') {
+          this.fnParam = 1;
+          $(".fn_section").addClass("active");
+        } else if (state.tabs == 'junkvisitsParam') {
+          this.junkvisitsParam = 1;
+          $(".junkvisits_section").addClass("active");
+        } else if (state.tabs == 'bookingPendingParam') {
+          this.bookingPendingParam = 1;
+          $(".bookingPen_section").addClass("active");
+        } else if (state.tabs == 'bookingRequestParam') {
+          this.bookingRequestParam = 1;
+          $(".booking_section").addClass("active");
+        } else if (state.tabs == 'bookingRejectedParam') {
+          this.bookingRejectedParam = 1;
+          $(".bookingRej_section").addClass("active");
+        } else if (state.tabs == 'bookedParam') {
+          this.bookedParam = 1;
+          $(".booked_section").addClass("active");
+        }
+
+        this.inactiveTotal = state.inactivecount;
+        this.junkLeadsTotal = state.junkleadcount;
+        this.junkVisitsTotal = state.junkvisitcount;
+
+        this.batch1trigger();
+      })
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+    }
+
+    this.getleadsdata();
     // if (this.roleid != 1 && this.roleid != 2 && this.roleid != 50013 && this.roleid != 50014) {
     //   this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '50014').subscribe(executives => {
     //     if (executives['status'] == 'True') {
@@ -327,11 +628,21 @@ export class MandateLeadStagesComponent implements OnInit {
     const el = document.createElement('div');
     el.classList.add('modalclick');
     document.body.appendChild(el);
-    MandateLeadStagesComponent.count = 0;
-    MandateLeadStagesComponent.closedcount = 0;
+    // MandateLeadStagesComponent.count = 0;
+    // MandateLeadStagesComponent.closedcount = 0;
     if (this.roleid == 1 || this.roleid == '2' || this.roleid == '50013' || this.roleid == '50014') {
       this.getsourcelist();
     }
+    // window.addEventListener('scroll', this.scrollEvent, true);
+    // $('html').on('click', function (e) {
+    //   setTimeout(() => {
+    //     $('[data-toggle="popover"]').each(function () {
+    //       if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+    //         $(this).popover('hide');
+    //       }
+    //     });
+    //   }, 10)
+    // });
   }
 
   getCSExecutives() {
@@ -349,7 +660,7 @@ export class MandateLeadStagesComponent implements OnInit {
       this.initializeLeadReceivedDateRangePicker();
       this.initializeAssignedOnDateRangePicker();
       this.initializeVisitedOnDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -386,15 +697,25 @@ export class MandateLeadStagesComponent implements OnInit {
   }
 
   getleadsdata() {
-    MandateLeadStagesComponent.count = 0;
+    // MandateLeadStagesComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
-      // Updated Using Strategy
       this.filterLoader = true;
+      // Updated Using Strategy
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
 
       // *****************************Assignedleads section list*****************************
       this.pendingleadsparam = paramss['pending'];
       this.followupleadsparam = paramss['followups']
       this.inactiveparam = paramss['inactive'];
+      this.untouchedParam = paramss['untouched'];
       this.usvParam = paramss['usv'];
       this.rsvParam = paramss['rsv'];
       this.fnParam = paramss['fn'];
@@ -439,7 +760,14 @@ export class MandateLeadStagesComponent implements OnInit {
       this.junkLeadsTotal = paramss['junkleadcount'];
       this.junkVisitsTotal = paramss['junkvisitcount'];
       this.rnrCount = paramss['rnrCount'];
-      this.untouchedVisit = paramss['untouch'];
+      this.untouchedStage = paramss['untouchedstage'];
+      this.overduesSelection = paramss['overdues'] === 'true';
+
+      if (this.overduesSelection) {
+        this.overduesStage = 'overdues';
+      } else {
+        this.overduesStage = '';
+      }
 
       if ((this.inactiveTotal == null || this.inactiveTotal == undefined || this.inactiveTotal == '') && this.inactiveparam == 1) {
         this.inactiveTotal = '1';
@@ -489,17 +817,12 @@ export class MandateLeadStagesComponent implements OnInit {
 
       if (this.propertyid) {
         this.propertyfilterview = true;
-        // if (this.roleid == '1' || this.roleid == '2' || this.role_type == '1' || this.roleid == '50003' || this.roleid == '50004') {
-        //   // this.getExecutivesForFilter();
-        //
       } else {
         this.propertyfilterview = false;
         // if (this.role_type == '1' && this.visitType == '1') {
         //   this.getExecutivesForFilter();
         // }
       }
-
-      console.log(this.mandateExecutivesFilter)
 
       if (this.role_type == '1' && this.visitType == '1') {
         this.getExecutivesForFilter();
@@ -649,7 +972,8 @@ export class MandateLeadStagesComponent implements OnInit {
           this.directteamfound = true;
         }
       }
-      if(this.priorityName){
+
+      if (this.priorityName) {
         if (this.priorityName == 1) {
           this.priorityType = 'Hot';
         } else if (this.priorityName == 2) {
@@ -707,6 +1031,11 @@ export class MandateLeadStagesComponent implements OnInit {
         this.batch1trigger();
         this.inactivedatas();
         this.getFollowupsStatus();
+      } else if (this.untouchedParam == '1') {
+        this.visitStageType = '';
+        this.untouchedStage = '';
+        this.batch1trigger();
+        this.untoucheddatas();
       } else if (this.usvParam == '1') {
         this.visitStageType = 'USV';
         this.batch1trigger();
@@ -1365,12 +1694,48 @@ export class MandateLeadStagesComponent implements OnInit {
       }
 
     } else if (this.type == 'visits') {
-      //usv counts  fetch
 
-      var usvpar = {
+      //untouched counts fetch
+      var untouchedpar = {
         datefrom: this.fromdate,
         dateto: this.todate,
         statuss: '',
+        stage: this.untouchedStage,
+        stagestatus: this.stagestatusval,
+        propid: this.propertyid,
+        executid: this.rmid,
+        loginuser: this.userid,
+        priority: this.priorityName,
+        team: this.team,
+        source: this.source,
+        visits: this.leadstatusVisits,
+        receivedfrom: this.receivedFromDate,
+        receivedto: this.receivedToDate,
+        visitedfrom: this.visitedFrom,
+        visitedto: this.visitedTo,
+        assignedfrom: this.assignedFrom,
+        assignedto: this.assignedTo,
+        fromtime: this.fromTime,
+        totime: this.toTime,
+        visittype: this.visitType,
+        visitassignedTo: this.visitAssignExecid,
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+        untouch: 1
+      }
+      this._mandateService.assignedLeadsCount(untouchedpar).subscribe(compleads => {
+        if (compleads['status'] == 'True') {
+          this.untouchedCounts = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+        } else {
+          this.untouchedCounts = 0;
+        }
+      });
+      //untouched counts fetch
+
+      //usv counts  fetch
+      var usvpar = {
+        datefrom: this.fromdate,
+        dateto: this.todate,
+        statuss: this.overduesStage,
         stage: 'USV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -1394,12 +1759,7 @@ export class MandateLeadStagesComponent implements OnInit {
       }
       this._mandateService.assignedLeadsCount(usvpar).subscribe(compleads => {
         if (compleads['status'] == 'True') {
-          // this.usvCounts = compleads.AssignedLeads[0].counts;
-          // if (usvpar.stage == 'USV' && usvpar.stagestatus == '') {
           this.usvCounts = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
-          // } else {
-          //   this.usvCounts = compleads.AssignedLeads[0].counts;
-          // }
         } else {
           this.usvCounts = 0;
         }
@@ -1411,7 +1771,7 @@ export class MandateLeadStagesComponent implements OnInit {
       var rsvpar = {
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'RSV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -1453,7 +1813,7 @@ export class MandateLeadStagesComponent implements OnInit {
       var fnpar = {
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'Final Negotiation',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -1715,87 +2075,87 @@ export class MandateLeadStagesComponent implements OnInit {
           stagestatus = '3'
         }
 
-        var usvparam = {
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'USV',
-          stagestatus: stagestatus,
-          propid: this.propertyid,
-          executid: this.rmid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visittype: this.visitType,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeadsCount(usvparam).subscribe(compleads => {
-          if (compleads['status'] == 'True') {
-            this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
-          } else {
-            this.overdueCount = 0;
-          }
-        });
+        // var usvparam = {
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'USV',
+        //   stagestatus: stagestatus,
+        //   propid: this.propertyid,
+        //   executid: this.rmid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visittype: this.visitType,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeadsCount(usvparam).subscribe(compleads => {
+        //   if (compleads['status'] == 'True') {
+        //     this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+        //   } else {
+        //     this.overdueCount = 0;
+        //   }
+        // });
       } else if (this.rsvParam == 1) {
         let stagestatus;
         if (this.overduejunk == '4' || this.overduejunk == '5') {
           stagestatus = '3'
         }
 
-        var rsvparam = {
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'RSV',
-          stagestatus: stagestatus,
-          propid: this.propertyid,
-          executid: this.rmid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visittype: this.visitType,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeadsCount(rsvparam).subscribe(compleads => {
-          if (compleads['status'] == 'True') {
-            this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
-          } else {
-            this.overdueCount = 0;
-          }
-        });
+        // var rsvparam = {
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'RSV',
+        //   stagestatus: stagestatus,
+        //   propid: this.propertyid,
+        //   executid: this.rmid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visittype: this.visitType,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeadsCount(rsvparam).subscribe(compleads => {
+        //   if (compleads['status'] == 'True') {
+        //     this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+        //   } else {
+        //     this.overdueCount = 0;
+        //   }
+        // });
       } else if (this.fnParam == 1) {
         let stagestatus;
         if (this.overduejunk == '4' || this.overduejunk == '5') {
           stagestatus = '3'
         }
 
-        var fnparam = {
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'Final Negotiation',
-          stagestatus: stagestatus,
-          propid: this.propertyid,
-          executid: this.rmid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visittype: this.visitType,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeadsCount(fnparam).subscribe(compleads => {
-          if (compleads['status'] == 'True') {
-            this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
-          } else {
-            this.overdueCount = 0;
-          }
-        });
+        // var fnparam = {
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'Final Negotiation',
+        //   stagestatus: stagestatus,
+        //   propid: this.propertyid,
+        //   executid: this.rmid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visittype: this.visitType,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeadsCount(fnparam).subscribe(compleads => {
+        //   if (compleads['status'] == 'True') {
+        //     this.overdueCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+        //   } else {
+        //     this.overdueCount = 0;
+        //   }
+        // });
       }
 
       if (this.usvParam == 1) {
@@ -2235,6 +2595,48 @@ export class MandateLeadStagesComponent implements OnInit {
     });
   }
 
+  untoucheddatas() {
+    MandateLeadStagesComponent.closedcount = 0;
+    MandateLeadStagesComponent.count = 0;
+    this.filterLoader = true;
+    setTimeout(() => {
+      $(".other_section").removeClass("active");
+      $(".untouched_section").addClass("active");
+    }, 0)
+    var param = {
+      limit: 0,
+      limitrows: 30,
+      datefrom: this.fromdate,
+      dateto: this.todate,
+      statuss: '',
+      stage: this.untouchedStage,
+      stagestatus: this.stagestatusval,
+      propid: this.propertyid,
+      executid: this.rmid,
+      loginuser: this.userid,
+      priority: this.priorityName,
+      team: this.team,
+      source: this.source,
+      visits: this.leadstatusVisits,
+      receivedfrom: this.receivedFromDate,
+      receivedto: this.receivedToDate,
+      visitedfrom: this.visitedFrom,
+      visitedto: this.visitedTo,
+      assignedfrom: this.assignedFrom,
+      assignedto: this.assignedTo,
+      fromtime: this.fromTime,
+      totime: this.toTime,
+      visittype: this.visitType,
+      visitassignedTo: this.visitAssignExecid,
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+      untouch: 1
+    }
+    this._mandateService.assignedLeads(param).subscribe(compleads => {
+      this.filterLoader = false;
+      this.callerleads = compleads['AssignedLeads'];
+    });
+  }
+
   usvdatas() {
     MandateLeadStagesComponent.closedcount = 0;
     MandateLeadStagesComponent.count = 0;
@@ -2254,7 +2656,7 @@ export class MandateLeadStagesComponent implements OnInit {
       limitrows: 30,
       datefrom: this.fromdate,
       dateto: this.todate,
-      statuss: '',
+      statuss: this.overduesStage,
       stage: 'USV',
       stagestatus: this.stagestatusval,
       propid: this.propertyid,
@@ -2301,7 +2703,7 @@ export class MandateLeadStagesComponent implements OnInit {
       limitrows: 30,
       datefrom: this.fromdate,
       dateto: this.todate,
-      statuss: '',
+      statuss: this.overduesStage,
       stage: 'RSV',
       stagestatus: this.stagestatusval,
       propid: this.propertyid,
@@ -2348,7 +2750,7 @@ export class MandateLeadStagesComponent implements OnInit {
       limitrows: 30,
       datefrom: this.fromdate,
       dateto: this.todate,
-      statuss: '',
+      statuss: this.overduesStage,
       stage: 'Final Negotiation',
       stagestatus: this.stagestatusval,
       propid: this.propertyid,
@@ -2824,11 +3226,37 @@ export class MandateLeadStagesComponent implements OnInit {
         rnrleads: this.rnrCount,
         ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       }
-    } else if (this.usvParam == 1) {
+    } else if (this.untouchedParam == 1) {
       param = {
         datefrom: this.fromdate,
         dateto: this.todate,
         statuss: '',
+        stage: this.untouchedStage,
+        stagestatus: this.stagestatusval,
+        propid: this.propertyid,
+        executid: this.rmid,
+        loginuser: this.userid,
+        priority: this.priorityName,
+        team: this.team,
+        source: this.source,
+        visits: this.leadstatusVisits,
+        receivedfrom: this.receivedFromDate,
+        receivedto: this.receivedToDate,
+        visitedfrom: this.visitedFrom,
+        visitedto: this.visitedTo,
+        assignedfrom: this.assignedFrom,
+        assignedto: this.assignedTo,
+        fromtime: this.fromTime,
+        totime: this.toTime,
+        visittype: this.visitType,
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+        untouch: 1
+      }
+    } else if (this.usvParam == 1) {
+      param = {
+        datefrom: this.fromdate,
+        dateto: this.todate,
+        statuss: this.overduesStage,
         stage: 'USV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -2853,7 +3281,7 @@ export class MandateLeadStagesComponent implements OnInit {
       param = {
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'RSV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -2878,7 +3306,7 @@ export class MandateLeadStagesComponent implements OnInit {
       param = {
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'Final Negotiation',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -3675,27 +4103,27 @@ export class MandateLeadStagesComponent implements OnInit {
         }
         $(".add_class").removeClass("active");
 
-        var param = {
-          limit: 0,
-          limitrows: 30,
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'USV',
-          stagestatus: stagestatus,
-          executid: this.rmid,
-          propid: this.propertyid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeads(param).subscribe(compleads => {
-          this.filterLoader = false;
-          this.callerleads = compleads['AssignedLeads'];
-        });
+        // var param = {
+        //   limit: 0,
+        //   limitrows: 30,
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'USV',
+        //   stagestatus: stagestatus,
+        //   executid: this.rmid,
+        //   propid: this.propertyid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeads(param).subscribe(compleads => {
+        //   this.filterLoader = false;
+        //   this.callerleads = compleads['AssignedLeads'];
+        // });
 
       } else if (this.rsvParam == 1) {
         setTimeout(() => {
@@ -3708,27 +4136,27 @@ export class MandateLeadStagesComponent implements OnInit {
         }
         $(".add_class").removeClass("active");
 
-        let param = {
-          limit: 0,
-          limitrows: 30,
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'RSV',
-          stagestatus: stagestatus,
-          executid: this.rmid,
-          propid: this.propertyid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeads(param).subscribe(compleads => {
-          this.filterLoader = false;
-          this.callerleads = compleads['AssignedLeads'];
-        });
+        // let param = {
+        //   limit: 0,
+        //   limitrows: 30,
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'RSV',
+        //   stagestatus: stagestatus,
+        //   executid: this.rmid,
+        //   propid: this.propertyid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeads(param).subscribe(compleads => {
+        //   this.filterLoader = false;
+        //   this.callerleads = compleads['AssignedLeads'];
+        // });
 
       } else if (this.fnParam == 1) {
         setTimeout(() => {
@@ -3742,27 +4170,27 @@ export class MandateLeadStagesComponent implements OnInit {
 
         $(".add_class").removeClass("active");
 
-        let param = {
-          limit: 0,
-          limitrows: 30,
-          datefrom: this.fromdate,
-          dateto: this.todate,
-          statuss: 'overdues',
-          stage: 'Final Negotiation',
-          stagestatus: stagestatus,
-          executid: this.rmid,
-          propid: this.propertyid,
-          loginuser: this.userid,
-          source: this.source,
-          fromtime: this.fromTime,
-          totime: this.toTime,
-          visitassignedTo: this.visitAssignExecid,
-          ...(this.role_type == 1 ? { teamlead: this.userid } : {})
-        }
-        this._mandateService.assignedLeads(param).subscribe(compleads => {
-          this.filterLoader = false;
-          this.callerleads = compleads['AssignedLeads'];
-        });
+        // let param = {
+        //   limit: 0,
+        //   limitrows: 30,
+        //   datefrom: this.fromdate,
+        //   dateto: this.todate,
+        //   statuss: 'overdues',
+        //   stage: 'Final Negotiation',
+        //   stagestatus: stagestatus,
+        //   executid: this.rmid,
+        //   propid: this.propertyid,
+        //   loginuser: this.userid,
+        //   source: this.source,
+        //   fromtime: this.fromTime,
+        //   totime: this.toTime,
+        //   visitassignedTo: this.visitAssignExecid,
+        //   ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        // }
+        // this._mandateService.assignedLeads(param).subscribe(compleads => {
+        //   this.filterLoader = false;
+        //   this.callerleads = compleads['AssignedLeads'];
+        // });
 
       }
     }
@@ -4375,7 +4803,6 @@ export class MandateLeadStagesComponent implements OnInit {
     this.router.navigate([], {
       queryParams: {
         stagestatus: vals,
-        untouch: ''
       },
       queryParamsHandling: 'merge',
     });
@@ -4395,13 +4822,13 @@ export class MandateLeadStagesComponent implements OnInit {
     }
   }
 
-  untouchedChange(num) {
-    this.router.navigate([], {
-      queryParams: {
-        untouch: 1
-      }, queryParamsHandling: 'merge'
-    })
-  }
+  // untouchedChange(num) {
+  //   this.router.navigate([], {
+  //     queryParams: {
+  //       untouch: 1
+  //     }, queryParamsHandling: 'merge'
+  //   })
+  // }
 
   stageSelected(count) {
     if (count == '1') {
@@ -4484,6 +4911,15 @@ export class MandateLeadStagesComponent implements OnInit {
       // $("#option-6").prop("checked", false);
       // $("#option-7").prop("checked", false);
     }
+  }
+
+  untouchedstatuschange(stage) {
+    this.router.navigate([], {
+      queryParams: {
+        untouchedstage: stage
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   junkStageStatusChange(stage, vals) {
@@ -4842,37 +5278,48 @@ export class MandateLeadStagesComponent implements OnInit {
           this.callerleads = this.callerleads.concat(compleads['AssignedLeads']);
         });
       }
-    } else if (this.usvParam == 1) {
-      // let usvstagestatus;
-      // let statusValueData;
-      // if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
-      //   statusValueData = 'active';
-      //   if(this.stagestatusval == 4 || this.stagestatusval == 5 ||  this.stagestatusval == 3){
-      //     usvstagestatus = this.stagestatusval;
-      //     statusValueData = '';
-      //   }else{
-      //     usvstagestatus = '';
-      //     statusValueData = 'active';
-      //   }
-      // } else {
-      //   statusValueData = '';
-      //   if(this.stagestatusval == 4 || this.stagestatusval == 5 ){
-      //     usvstagestatus = this.stagestatusval;
-      //   }else{
-      //     usvstagestatus = '3';
-      //   }
-      // }
-      // if(this.stagestatusval == 4 || this.stagestatusval == 5){
-      //   usvstagestatus = this.stagestatusval;
-      // }else{
-      //   usvstagestatus = '3';
-      // }
-      var usvpar = {
+    } else if (this.untouchedParam == 1) {
+      var untouchedpar = {
         limit: limit,
         limitrows: 30,
         datefrom: this.fromdate,
         dateto: this.todate,
         statuss: '',
+        stage: this.untouchedStage,
+        stagestatus: this.stagestatusval,
+        source: this.source,
+        propid: this.propertyid,
+        executid: this.rmid,
+        loginuser: this.userid,
+        priority: this.priorityName,
+        visits: this.leadstatusVisits,
+        receivedfrom: this.receivedFromDate,
+        receivedto: this.receivedToDate,
+        visitedfrom: this.visitedFrom,
+        visitedto: this.visitedTo,
+        assignedfrom: this.assignedFrom,
+        assignedto: this.assignedTo,
+        fromtime: this.fromTime,
+        totime: this.toTime,
+        visittype: this.visitType,
+        visitassignedTo: this.visitAssignExecid,
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+        untouch: 1
+      }
+      let livecount = this.callerleads.length;
+      if (livecount < this.untouchedCounts) {
+        this._mandateService.assignedLeads(untouchedpar).subscribe(compleads => {
+          this.filterLoader = false;
+          this.callerleads = this.callerleads.concat(compleads['AssignedLeads']);
+        });
+      }
+    } else if (this.usvParam == 1) {
+      var usvpar = {
+        limit: limit,
+        limitrows: 30,
+        datefrom: this.fromdate,
+        dateto: this.todate,
+        statuss: this.overduesStage,
         stage: 'USV',
         stagestatus: this.stagestatusval,
         source: this.source,
@@ -4925,7 +5372,7 @@ export class MandateLeadStagesComponent implements OnInit {
         limitrows: 30,
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'RSV',
         stagestatus: this.stagestatusval,
         source: this.source,
@@ -4978,7 +5425,7 @@ export class MandateLeadStagesComponent implements OnInit {
         limitrows: 30,
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'Final Negotiation',
         stagestatus: this.stagestatusval,
         source: this.source,
@@ -5544,6 +5991,9 @@ export class MandateLeadStagesComponent implements OnInit {
     this.latestRemarkFilter = false;
     this.rnrCount = '';
     this.selectedFilteredEXECUTIVES = ''
+    this.overduesStage = '';
+    this.overduesSelection = false;
+    $("input[name='programmingOverdues']").prop("checked", false);
 
     this.propertyclose();
     this.stageclose();
@@ -5568,76 +6018,77 @@ export class MandateLeadStagesComponent implements OnInit {
     } else {
       this.rmid = "";
     }
-
-    if (this.isAdditonalParamPresent == false) {
+    // if (this.isAdditonalParamPresent == true) {
+    //   console.log('if')
+    //   this.router.navigate([], {
+    //     queryParams: {
+    //       from: '',
+    //       to: '',
+    //       property: '',
+    //       propname: '',
+    //       execid: null,
+    //       execname: null,
+    //       stage: '',
+    //       stagestatus: '',
+    //       team: null,
+    //       priority: null,
+    //       source: null,
+    //       filterData: '',
+    //       bookingLeadRequest: '',
+    //       visits: '',
+    //       followupcategory: '',
+    //       followupcategoryName: '',
+    //       receivedFrom: '',
+    //       receivedTo: '',
+    //       visitedfrom: '',
+    //       visitedto: '',
+    //       assignedfrom: "",
+    //       assignedto: "",
+    //       visitExecid: "",
+    //       visitExecname: "",
+    //       remarks: '',
+    //       rnrCount: ''
+    //     },
+    //     queryParamsHandling: 'merge',
+    //   });
+    // } else {
+    if (this.type == 'leads') {
       this.router.navigate([], {
         queryParams: {
+          pending: '1',
+          type: 'leads',
+          htype: 'mandate',
           from: '',
           to: '',
-          property: '',
-          propname: '',
-          execid: null,
-          execname: null,
-          stage: '',
-          stagestatus: '',
-          team: null,
-          priority: null,
-          source: null,
           filterData: '',
-          bookingLeadRequest: '',
-          visits: '',
-          followupcategory: '',
-          followupcategoryName: '',
-          receivedFrom: '',
-          receivedTo: '',
-          visitedfrom: '',
-          visitedto: '',
-          assignedfrom: "",
-          assignedto: "",
-          visitExecid: "",
-          visitExecname: "",
-          remarks: '',
-          rnrCount: ''
         },
-        queryParamsHandling: 'merge',
       });
-    } else {
-      if (this.type == 'leads') {
-        this.router.navigate([], {
-          queryParams: {
-            pending: '1',
-            type: 'leads',
-            htype: 'mandate',
-            from: '',
-            to: '',
-            filterData: '',
-          },
-        });
-      } else if (this.type == 'visits') {
-        this.router.navigate([], {
-          queryParams: {
-            usv: '1',
-            type: 'visits',
-            htype: 'mandate',
-            from: '',
-            to: '',
-            filterData: ''
-          },
-        });
-      } else if (this.type == 'bookings') {
-        this.router.navigate([], {
-          queryParams: {
-            brs: '1',
-            type: 'bookings',
-            htype: 'mandate',
-            from: '',
-            to: '',
-            filterData: ''
-          },
-        });
-      }
-      this.isAdditonalParamPresent = false;
+    } else if (this.type == 'visits') {
+      this.router.navigate([], {
+        queryParams: {
+          usv: '1',
+          type: 'visits',
+          htype: 'mandate',
+          from: '',
+          to: '',
+          filterData: '',
+          id: 3
+        },
+      });
+    } else if (this.type == 'bookings') {
+      this.router.navigate([], {
+        queryParams: {
+          brs: '1',
+          type: 'bookings',
+          htype: 'mandate',
+          from: '',
+          to: '',
+          filterData: ''
+        },
+      });
     }
+    this.isAdditonalParamPresent = false;
+    // }
     $("input[name='propFilter']").prop("checked", false);
     $("input[name='executiveFilter']").prop("checked", false);
     $("input[name='sourceFilter']").prop("checked", false);
@@ -5710,6 +6161,11 @@ export class MandateLeadStagesComponent implements OnInit {
       this.todate = "";
       this.batch1trigger();
       this.ncdatas();
+    } else if (this.untouchedParam == '1') {
+      this.fromdate = "";
+      this.todate = "";
+      this.batch1trigger();
+      this.untoucheddatas();
     } else if (this.usvParam == '1') {
       this.fromdate = "";
       this.todate = "";
@@ -5799,6 +6255,8 @@ export class MandateLeadStagesComponent implements OnInit {
       this.reassignleadsCount = this.followupleadcounts;
     } else if (this.inactiveparam == '1') {
       this.reassignleadsCount = this.inactivecounts;
+    } else if (this.untouchedParam == '1') {
+      this.reassignleadsCount = this.untouchedCounts;
     } else if (this.usvParam == '1') {
       this.reassignleadsCount = this.usvCounts;
     } else if (this.rsvParam == '1') {
@@ -6049,7 +6507,7 @@ export class MandateLeadStagesComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6063,7 +6521,7 @@ export class MandateLeadStagesComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6079,7 +6537,7 @@ export class MandateLeadStagesComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6138,7 +6596,7 @@ export class MandateLeadStagesComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -6183,7 +6641,7 @@ export class MandateLeadStagesComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -6199,7 +6657,7 @@ export class MandateLeadStagesComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6212,7 +6670,7 @@ export class MandateLeadStagesComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6227,7 +6685,7 @@ export class MandateLeadStagesComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6284,7 +6742,7 @@ export class MandateLeadStagesComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -6323,7 +6781,7 @@ export class MandateLeadStagesComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -6344,7 +6802,7 @@ export class MandateLeadStagesComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6359,7 +6817,7 @@ export class MandateLeadStagesComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -6389,7 +6847,7 @@ export class MandateLeadStagesComponent implements OnInit {
           confirmButtonText: 'Show Details'
         }).then(() => {
           this.reassignedResponseInfo = success['assignedleads'];
-          $('#reassign_leads_detail').click();
+          $('#feedback_assign_lead').click();
         })
         $('#exec_dropdown').dropdown('clear');
         $('#leadcount_dropdown').dropdown('clear');
@@ -6405,7 +6863,7 @@ export class MandateLeadStagesComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -6571,7 +7029,6 @@ export class MandateLeadStagesComponent implements OnInit {
   }
 
   filterExecutiveSelect(event) {
-    console.log(event.value);
     let execids = event.value.map((id) => id.id);
     let execnames = event.value.map((name) => name.name);
     if (execids != '' || execids != undefined) {
@@ -6708,7 +7165,6 @@ export class MandateLeadStagesComponent implements OnInit {
     if (this.role_type != 1) {
       this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '', '').subscribe(executives => {
         if (executives['status'] == 'True') {
-          console.log(this.execid)
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
           this.rmMandateExecutivesFilter = executives['mandateexecutives'].filter((team) => team.roleid == '50002' || team.roleid == '50001');
@@ -6716,7 +7172,6 @@ export class MandateLeadStagesComponent implements OnInit {
           this.selectedFilteredEXECUTIVES = this.mandateExecutivesFilter.filter(da =>
             this.execid.includes(da.id)
           )
-          console.log(this.selectedFilteredEXECUTIVES)
         }
       });
     } else {
@@ -6729,7 +7184,6 @@ export class MandateLeadStagesComponent implements OnInit {
           this.selectedFilteredEXECUTIVES = this.mandateExecutivesFilter.filter(da =>
             this.execid.includes(da.id)
           )
-          console.log(this.selectedFilteredEXECUTIVES)
         }
       });
     }
@@ -7060,6 +7514,10 @@ export class MandateLeadStagesComponent implements OnInit {
       });
       $('.modal-backdrop').closest('div').remove();
     }, 0)
+  }
+
+  getPriorityType(lead){
+    this.selectedUpdatePriority = lead.lead_priority;
   }
 
   initializeNextActionDateRangePicker() {
@@ -7460,13 +7918,41 @@ export class MandateLeadStagesComponent implements OnInit {
         // visitedfrom: this.visitedFrom,
         // visitedto: this.visitedTo
       }
-    } else if (this.usvParam == 1) {
+    } else if (this.untouchedParam == 1) {
       param = {
         limit: 0,
         limitrows: limitR,
         datefrom: this.fromdate,
         dateto: this.todate,
         statuss: '',
+        stage: this.untouchedStage,
+        stagestatus: this.stagestatusval,
+        propid: this.propertyid,
+        executid: this.rmid,
+        loginuser: this.userid,
+        priority: this.priorityName,
+        team: this.team,
+        source: this.source,
+        visits: this.leadstatusVisits,
+        receivedfrom: this.receivedFromDate,
+        receivedto: this.receivedToDate,
+        visitedfrom: this.visitedFrom,
+        visitedto: this.visitedTo,
+        assignedfrom: this.assignedFrom,
+        assignedto: this.assignedTo,
+        fromtime: this.fromTime,
+        totime: this.toTime,
+        visittype: this.visitType,
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+        untouch: 1
+      }
+    } else if (this.usvParam == 1) {
+      param = {
+        limit: 0,
+        limitrows: limitR,
+        datefrom: this.fromdate,
+        dateto: this.todate,
+        statuss: this.overduesStage,
         stage: 'USV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -7493,7 +7979,7 @@ export class MandateLeadStagesComponent implements OnInit {
         limitrows: limitR,
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'RSV',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -7520,7 +8006,7 @@ export class MandateLeadStagesComponent implements OnInit {
         limitrows: limitR,
         datefrom: this.fromdate,
         dateto: this.todate,
-        statuss: '',
+        statuss: this.overduesStage,
         stage: 'Final Negotiation',
         stagestatus: this.stagestatusval,
         propid: this.propertyid,
@@ -7539,7 +8025,7 @@ export class MandateLeadStagesComponent implements OnInit {
         fromtime: this.fromTime,
         totime: this.toTime,
         visittype: this.visitType,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
       }
     } else if (this.inactiveparam == 1) {
       let inactiveCount;
@@ -7898,6 +8384,25 @@ export class MandateLeadStagesComponent implements OnInit {
   }
 
   triggerCall(lead) {
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -8210,7 +8715,6 @@ export class MandateLeadStagesComponent implements OnInit {
 
   getAllInactiveLeads() {
     const checked = (event.target as HTMLInputElement).checked;
-    console.log('checked', checked);
     if (checked == true) {
       this.router.navigate([], {
         queryParams: {
@@ -8225,6 +8729,25 @@ export class MandateLeadStagesComponent implements OnInit {
       })
     }
   }
+
+  getAlloverdues() {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked == true) {
+      this.router.navigate([], {
+        queryParams: {
+          overdues: checked
+        }, queryParamsHandling: 'merge'
+      })
+    } else {
+      this.overduesSelection = false;
+      this.router.navigate([], {
+        queryParams: {
+          overdues: checked
+        }, queryParamsHandling: 'merge'
+      })
+    }
+  }
+
 
   convertToActive() {
     this.filterLoader = true;
@@ -8278,7 +8801,6 @@ export class MandateLeadStagesComponent implements OnInit {
     }
 
     this._mandateService.updatePriority(param).subscribe((resp) => {
-      console.log(resp);
       if (resp.status == 'True') {
         swal({
           title: 'Updated Successfully',
@@ -8304,6 +8826,255 @@ export class MandateLeadStagesComponent implements OnInit {
         })
       }
     })
+  }
+
+  getTodayDate(): Date {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+  }
+
+  // Convert API date string to Date object
+  toDate(dateStr: string): Date {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    d.setHours(0, 0, 0, 0); // remove time part
+    return d;
+  }
+
+  calculateDiff(dateStr: string): number {
+    if (!dateStr) return 0;
+
+    const nextDate = this.toDate(dateStr);
+    const diffTime = nextDate.getTime() - this.todaysDate.getTime();
+    return Math.ceil(Math.abs(diffTime / (1000 * 60 * 60 * 24)));
+  }
+
+  // scrollEvent = (e: any): void => {
+  //   setTimeout(() => {
+  //     $('[data-toggle="popover"]').each(function () {
+  //       if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+  //         $(this).popover('hide');
+  //       }
+  //     });
+  //   }, 10)
+  // }
+
+  // showall(i: number): void {
+  //   $(`.popper${i}`).popover({
+  //     html: true,
+  //     template: `
+  //   <div class="popover access_popover" role="tooltip">
+  //     <div class="arrow"></div>
+  //     <div class="popover-body"></div>
+  //   </div>
+  // `,
+  //     content: function () {
+  //       return $(`.popover_content_wrapper${i}`).html();
+  //     },
+  //   });
+  //   $(`.popper${i}`).popover('show');
+  // }
+
+  enableAccess(lead) {
+    let param = {
+      leadid: lead.LeadID,
+      execid: lead.ExecId,
+      propid: lead.propertyid
+    }
+
+    this._mandateService.postEnableAccess(param).subscribe((resp) => {
+      if (resp.status == 'True') {
+        swal({
+          title: 'Enabled Successfully',
+          text: 'Lead Access reverted Successfully',
+          type: "success",
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          $('.modal-backdrop').closest('div').remove();
+          let currentUrl = this.router.url;
+          let pathWithoutQueryParams = currentUrl.split('?')[0];
+          let currentQueryparams = this.route.snapshot.queryParams;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate([pathWithoutQueryParams], { queryParams: currentQueryparams });
+          });
+        })
+      } else {
+        swal({
+          title: 'Some Error Occured',
+          type: "error",
+          timer: 2000,
+          showConfirmButton: false
+        })
+      }
+    })
+  }
+
+  overdueReassign(lead) {
+    this.selectedOverduesLead = lead;
+    $('#trigger_overdue_reassign').click();
+
+    this._mandateService.fetchmandateexecutuvesforreassign(lead.propertyid, '', '', '', '').subscribe(executives => {
+      if (executives['status'] == 'True') {
+        this.overduedReassignExecutives = executives['mandateexecutives'];
+      }
+    });
+  }
+
+  overdueReassignexecutiveSelect(event) {
+    let selectedExecs = event.value.map(exec => exec.id)
+    this.selectedOverduedExecs = selectedExecs.join(',');
+  }
+
+  assignOverduedLead() {
+    if (this.selectedOverduedExecs == undefined || this.selectedOverduedExecs == null || this.selectedOverduedExecs == '') {
+      $('#mandateExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
+      swal({
+        title: 'Please Select The Executive!',
+        text: 'Please try again',
+        type: 'error',
+        confirmButtonText: 'OK'
+      })
+      return false;
+    } else {
+      $('#mandateExec_dropdown').removeAttr("style");
+    }
+
+    let param = {
+      assignedleads: this.selectedOverduesLead.LeadID,
+      customersupport: this.selectedOverduedExecs,
+      propId: this.selectedOverduesLead.propertyid,
+      loginid: this.userid,
+      executiveIds: this.selectedOverduesLead.ExecId
+    }
+
+    this._mandateService.leadreassign(param).subscribe((success) => {
+      this.filterLoader = false;
+      this.status = success.status;
+      if (this.status == "True") {
+        $('#closeoverduesreassignmodal').click();
+        swal({
+          title: 'Assigned Successfully',
+          type: 'success',
+          confirmButtonText: 'Show Details'
+        }).then(() => {
+          this.reassignedResponseInfo = success['assignedleads'];
+          $('#reassign_leads_detail').click();
+        })
+        $('#statuslist_dropdown').dropdown('clear');
+        $('#followup_dropdown').dropdown('clear');
+        $('#exec_designation').dropdown('clear');
+        $('#exec_dropdown').dropdown('clear');
+        $('#leadcount_dropdown').dropdown('clear');
+        $('#team_dropdown').dropdown('clear');
+        $('#property_dropdown').dropdown('clear');
+        $('#mandate_dropdown').dropdown('clear');
+        $('#retail_dropdown').dropdown('clear');
+        $('#mandateExec_dropdown').dropdown('clear');
+        $('#retailExec_dropdown').dropdown('clear');
+        this.selectedOverduedExecs = [];
+        this.selectedOverduesLead = [];
+      } else {
+        swal({
+          title: 'Authentication Failed!',
+          text: 'Please try again',
+          type: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    }, (err) => {
+      console.log("Connection Failed")
+    });
+  }
+
+  redirectTo(lead) {
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = MandateLeadStagesComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    let tab;
+    if (this.pendingleadsparam == 1) {
+      tab = 'pendingleadsparam'
+    } else if (this.followupleadsparam == 1) {
+      tab = 'followupleadsparam'
+    } else if (this.normalcallparam == 1) {
+      tab = 'normalcallparam'
+    } else if (this.inactiveparam == 1) {
+      tab = 'inactiveparam';
+    } else if (this.junkleadsParam == 1) {
+      tab = 'junkleadsParam';
+    } else if (this.untouchedParam == 1) {
+      tab = 'untouchedParam';
+    } else if (this.usvParam == 1) {
+      tab = 'usvParam';
+    } else if (this.rsvParam == 1) {
+      tab = 'rsvParam';
+    } else if (this.fnParam == 1) {
+      tab = 'fnParam';
+    } else if (this.junkvisitsParam == 1) {
+      tab = 'junkvisitsParam';
+    } else if (this.bookingPendingParam == 1) {
+      tab = 'bookingPendingParam';
+    } else if (this.bookingRequestParam == 1) {
+      tab = 'bookingRequestParam';
+    } else if (this.bookingRejectedParam == 1) {
+      tab = 'bookingRejectedParam';
+    } else if (this.bookedParam == 1) {
+      tab = 'bookedParam';
+    }
+
+    const state = {
+      receivedfrom: this.receivedFromDate,
+      receivedto: this.receivedToDate,
+      rnrCount: this.rnrCount,
+      priority: this.priorityName,
+      visits: this.leadstatusVisits,
+      source: this.source,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      followupcategory: this.categoryStage,
+      followupcategoryName: this.categoryStageName,
+      stage: this.stagevalue,
+      stagestatus: this.stagestatusval,
+      execid: this.execid,
+      execname: this.execname,
+      visitExecid: this.visitAssignExecid,
+      visitExecname: this.visitAssignExecname,
+      assignedfrom: this.assignedFrom,
+      assignedto: this.assignedTo,
+      fromdate: this.fromdate,
+      todate: this.todate,
+      visitedfrom: this.visitedFrom,
+      visitedto: this.visitedTo,
+      overdues: this.overduesSelection,
+      page: MandateLeadStagesComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: tab,
+      bookingLeadRequest: this.leadBookingstatus,
+      id: this.visitType,
+      remarks: this.serachRemarks,
+      type: this.type,
+      inactivecount: this.inactiveTotal,
+      junkleadcount: this.junkLeadsTotal,
+      junkvisitcount: this.junkVisitsTotal
+    };
+
+    sessionStorage.setItem('lead_satges_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 
 }

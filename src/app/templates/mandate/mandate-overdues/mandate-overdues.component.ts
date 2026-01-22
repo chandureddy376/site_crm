@@ -146,7 +146,7 @@ export class MandateOverduesComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
-    },0);
+    }, 0);
   }
 
   getleadsdata() {
@@ -203,16 +203,16 @@ export class MandateOverduesComponent implements OnInit {
         this.executivefilterview = true;
         if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
           this.rmid = this.execid;
-        // } else {
-        //   if (this.role_type == '1') {
-        //     if (this.execid == '' || this.execid == undefined || this.execid == null) {
-        //       this.rmid = localStorage.getItem('UserId');
-        //     } else {
-        //       this.rmid = this.execid;
-        //     }
-          } else {
-            this.rmid = localStorage.getItem('UserId');
-          }
+          // } else {
+          //   if (this.role_type == '1') {
+          //     if (this.execid == '' || this.execid == undefined || this.execid == null) {
+          //       this.rmid = localStorage.getItem('UserId');
+          //     } else {
+          //       this.rmid = this.execid;
+          //     }
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
         // }
       } else {
         this.executivefilterview = false;
@@ -293,14 +293,14 @@ export class MandateOverduesComponent implements OnInit {
   //get list of mandate executives for mandate for filter purpose
   getExecutivesForFilter() {
     if (this.role_type != 1) {
-      this._mandateservice.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '','').subscribe(executives => {
+      this._mandateservice.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '', '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
         }
       });
     } else {
-      this._mandateservice.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '',this.userid).subscribe(executives => {
+      this._mandateservice.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '', this.userid).subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
@@ -473,7 +473,7 @@ export class MandateOverduesComponent implements OnInit {
       loginuser: this.userid,
       source: this.source,
       followup: this.categoryStage,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateservice.assignedLeadsCount(generalfollowupparam).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -495,7 +495,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -525,7 +525,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -549,7 +549,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -573,7 +573,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -597,7 +597,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateservice.assignedLeadsCount(fnparam).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -619,7 +619,7 @@ export class MandateOverduesComponent implements OnInit {
       executid: this.rmid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateservice.assignedLeadsCount(fnparam).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -661,7 +661,7 @@ export class MandateOverduesComponent implements OnInit {
       loginuser: this.userid,
       source: this.source,
       followup: this.categoryStage,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -695,7 +695,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -735,7 +735,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -769,7 +769,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -803,7 +803,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
       // team: this.team,
       // priority: this.priorityName
     }
@@ -830,7 +830,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateservice.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -855,7 +855,7 @@ export class MandateOverduesComponent implements OnInit {
       propid: this.propertyid,
       loginuser: this.userid,
       source: this.source,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateservice.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1472,7 +1472,7 @@ export class MandateOverduesComponent implements OnInit {
 
     this.mandateprojectsfetch();
     this.selectedMandateProp = '16793';
-    this._mandateservice.fetchmandateexecutuves(16793, '', this.roleTeam,'').subscribe(executives => {
+    this._mandateservice.fetchmandateexecutuves(16793, '', this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.reassignListExecutives = executives['mandateexecutives'];
       }
@@ -1577,7 +1577,7 @@ export class MandateOverduesComponent implements OnInit {
       }
     }
     if (this.selectedTeamType == 'mandate') {
-      this._mandateservice.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam,'').subscribe(executives => {
+      this._mandateservice.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam, '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.reassignListExecutives = executives['mandateexecutives'];
         }
@@ -1591,7 +1591,7 @@ export class MandateOverduesComponent implements OnInit {
   //heree we get the selected assign executive team type
   reassignExecTeam(event) {
     this.roleTeam = event.target.options[event.target.options.selectedIndex].value;
-    this._mandateservice.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam,'').subscribe(executives => {
+    this._mandateservice.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.reassignListExecutives = executives['mandateexecutives'];
       }
@@ -1639,7 +1639,7 @@ export class MandateOverduesComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1653,7 +1653,7 @@ export class MandateOverduesComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1669,7 +1669,7 @@ export class MandateOverduesComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1725,7 +1725,7 @@ export class MandateOverduesComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1768,7 +1768,7 @@ export class MandateOverduesComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -1810,7 +1810,7 @@ export class MandateOverduesComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK'
             })
@@ -1981,7 +1981,7 @@ export class MandateOverduesComponent implements OnInit {
   //this is triggered when custom is clicked to select the dates.
   initializeNextActionDateRangePicker() {
     const cb = (start: moment.Moment, end: moment.Moment) => {
-        const pickerElement = $('#nextActionDates');
+      const pickerElement = $('#nextActionDates');
       if (start && end) {
         pickerElement.find('span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         if (end.hours() === 0 && end.minutes() === 0 && end.seconds() === 0) {
@@ -2039,6 +2039,26 @@ export class MandateOverduesComponent implements OnInit {
 
   isModalOpen: boolean = false;
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -2205,8 +2225,8 @@ export class MandateOverduesComponent implements OnInit {
     });
   }
 
-  detailsPageRedirection(){
-    localStorage.setItem('backLocation','overdues');
+  detailsPageRedirection() {
+    localStorage.setItem('backLocation', 'overdues');
   }
 
 }

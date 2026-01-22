@@ -125,6 +125,7 @@ export class OverduesDashboardComponent implements OnInit {
   audioList: any;
   onRecordExecList: any;
   reassignleadsCount: number = 0;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.roleid = localStorage.getItem('Role');
@@ -193,14 +194,109 @@ export class OverduesDashboardComponent implements OnInit {
       this.getsourcelist();
       this.getmandateExecutives()
     }
+    // if (this._sharedservice.hasState) {
+    //   // RESTORE
+    //   this.callerleads = this._sharedservice.leads;
+    //   OverduesDashboardComponent.count = this._sharedservice.page;
+
+    //   setTimeout(() => {
+    //     this.scrollContainer.nativeElement.scrollTop =
+    //       this._sharedservice.scrollTop;
+    //   }, 0);
+    //   this.filterLoader = false;
+
+    //   // setTimeout(()=>{
+    //   //   this._sharedservice.hasState = false;
+    //   // },5000)
+
+    // } else {
+
+    const savedState = sessionStorage.getItem('overdues_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.selectedCategory = state.category;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+      this.source = state.source;
+
+      OverduesDashboardComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      switch (state.dateFilterType) {
+        case 'today':
+          this.clicked1 = true;
+          break;
+        case 'yesterday':
+          this.clicked2 = true;
+          break;
+        case 'last7':
+          this.clicked3 = true;
+          break;
+        default:
+          this.clicked = true;
+      }
+
+      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '') {
+        this.selectedCategory = 'Followups';
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined) || (this.todate == '' || this.todate == undefined)) {
+        this.fromdate = '';
+        this.todate = '';
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.source == '' || this.source == null || this.source == undefined) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+
     this.getleadsdata();
+    // }
 
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0)
   }
 
@@ -281,8 +377,18 @@ export class OverduesDashboardComponent implements OnInit {
       this.rmid = localStorage.getItem('UserId');
     }
     this.filterLoader = true;
-    OverduesDashboardComponent.count = 0;
+    // OverduesDashboardComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       this.todaysvisitedparam = paramss['todayvisited'];
       this.yesterdaysvisitedparam = paramss['yesterdayvisited'];
@@ -1168,7 +1274,7 @@ export class OverduesDashboardComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1181,7 +1287,7 @@ export class OverduesDashboardComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1196,7 +1302,7 @@ export class OverduesDashboardComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1218,6 +1324,7 @@ export class OverduesDashboardComponent implements OnInit {
     }
 
     if (this.filteredproject && this.filteredproject.crm == '2') {
+      this.filterLoader = true;
       this._mandateservice.ranavleadreassign(param).subscribe((success) => {
         this.filterLoader = false;
         if (success.status == "True") {
@@ -1243,7 +1350,7 @@ export class OverduesDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1252,6 +1359,7 @@ export class OverduesDashboardComponent implements OnInit {
         console.log("Connection Failed")
       });
     } else {
+      this.filterLoader = true;
       // if (this.followupsoverduesParam == 1 || this.ncOverduesParam == 1 || (this.usvOverduesParam == 1 && this.stagestatusval == 1)) {
       this._mandateservice.leadreassign(param).subscribe((success) => {
         this.filterLoader = false;
@@ -1278,7 +1386,7 @@ export class OverduesDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1312,7 +1420,7 @@ export class OverduesDashboardComponent implements OnInit {
       //     } else {
       //       swal({
       //         title: 'Authentication Failed!',
-      //         text: 'Please try agin',
+      //         text: 'Please try again',
       //         type: 'error',
       //         confirmButtonText: 'OK'
       //       })
@@ -1421,8 +1529,97 @@ export class OverduesDashboardComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
+  }
 
+  triggerCall(lead) {
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
+    this.calledLead = lead;
+    localStorage.setItem('calledLead', JSON.stringify(lead));
+    localStorage.setItem('callerTriggeredPlace', 'mandate');
+    let currentDate = new Date();
+    //date
+    let year = currentDate.getFullYear();
+    let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    let day = String(currentDate.getDate()).padStart(2, '0');
+    //time
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    let seconds = currentDate.getSeconds();
+
+    let formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    if (this.roleid != 50001 && this.roleid != 50002) {
+      this.copyToClipboard(lead.number);
+    }
+    swal({
+      title: 'Initiate Outbound Call',
+      html: `Do you want to place a call to <br><stronsg>${lead.CustomerName}</strong> (${((lead.Leadphase != 'Fresh' || (lead.Leadphase == 'Fresh' && lead.followupreason == 8) || this.roleid == 1 || this.roleid == 2) ? lead.number : 'xxxxxxxxxx')})`,
+      type: 'warning',
+      confirmButtonText: "Call",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false
+    }).then((val) => {
+      this.filterLoader = true;
+      if (val.value == true) {
+        const cleanedNumber = lead.number.startsWith('91') && lead.number.length > 10 ? lead.number.slice(2) : lead.number;
+        let param = {
+          execid: this.userid,
+          number: cleanedNumber,
+          leadid: lead.LeadID,
+          starttime: formattedDateTime,
+          modeofcall: 'Desktop-mandate',
+          rmid: lead.ExecId
+        }
+        this._sharedservice.postTriggerCall(param).subscribe((resp) => {
+          this.filterLoader = false;
+          if (resp.status == 'success') {
+            this._sharedservice.setOnCallSelection('oncall')
+          } else {
+            swal({
+              title: 'Call Not Connected',
+              html: `The call could not be completed to <br><stronsg>${lead.CustomerName}</strong> (${lead.number}) Please try again later.`,
+              type: 'error',
+              timer: 3000,
+              showConfirmButton: false,
+              showCancelButton: false
+            });
+          }
+        });
+      } else {
+        this.filterLoader = false;
+      }
+    })
+  }
+
+  copyToClipboard(text) {
+    if ((navigator as any).clipboard) {
+      (navigator as any).clipboard.writeText(text).then(() => {
+        console.log('Number copied to clipboard!');
+      }).catch(() => {
+        console.log('Failed to copy number.');
+      });
+    }
   }
 
   refresh() {
@@ -1532,6 +1729,48 @@ export class OverduesDashboardComponent implements OnInit {
 
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'overdues');
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    let dateFilterType = 'custom';
+
+    if (this.clicked1) dateFilterType = 'today';
+    else if (this.clicked2) dateFilterType = 'yesterday';
+    else if (this.clicked3) dateFilterType = 'last7';
+
+    localStorage.setItem('backLocation', '');
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = OverduesDashboardComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    const state = {
+      category: this.selectedCategory,
+      fromdate: this.fromdate,
+      todate: this.todate,
+      execid: this.execid,
+      propertyid: this.propertyid,
+      source: this.source,
+      page: OverduesDashboardComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      execname: this.execname,
+      propertyname: this.propertyname,
+      dateFilterType
+    };
+
+    sessionStorage.setItem('overdues_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 
 }

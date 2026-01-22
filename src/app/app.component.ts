@@ -139,6 +139,7 @@ export class AppComponent implements OnInit {
       this._sharedService.logout(param).subscribe((resp) => {
         if (resp.status == 'True') {
           localStorage.clear();
+          sessionStorage.clear();
           $('.modal-backdrop').closest('div').remove();
           setTimeout(() =>
             this.router.navigate(['/login'])

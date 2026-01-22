@@ -328,7 +328,7 @@ export class LoginComponent implements OnInit {
         this.filterLoader = false;
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -779,7 +779,7 @@ export class LoginComponent implements OnInit {
           else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               confirmButtonText: 'OK',
             })

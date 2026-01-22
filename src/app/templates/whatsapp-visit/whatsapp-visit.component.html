@@ -146,7 +146,7 @@
                   </td>
 
                   <td>
-                    <a routerLink="/mandate-customers/{{enquiry.Lead_IDFK}}/{{userid}}/{{'0'}}/{{'mandate'}}">{{enquiry.name}}
+                    <a style="cursor: pointer;color: #4183C4 !important;" (click)="redirectTo(enquiry)">{{enquiry.name}}
                     </a>
                     <span *ngIf="enquiry?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
                         style="width: 20px;"></span>

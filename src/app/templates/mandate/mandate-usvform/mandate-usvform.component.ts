@@ -1397,7 +1397,7 @@ export class MandateUsvformComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false

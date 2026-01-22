@@ -87,12 +87,13 @@ export class LeadsComponent implements OnInit {
   assignedTypeFilter: boolean = false;
   roleid: any;
   roleTeam: any;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.userid = localStorage.getItem('UserId');
     this.roleid = localStorage.getItem('Role');
-    localStorage.setItem('locationURL','')
-    LeadsComponent.count = 0;
+    localStorage.setItem('locationURL', '')
+    // LeadsComponent.count = 0;
     var curmonth = this.currentdateforcompare.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
     // Todays Date
@@ -114,9 +115,86 @@ export class LeadsComponent implements OnInit {
     this.hoverSubscription = this._sharedService.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
     });
-    this.getleads();
     this.getcitylist();
     this.getsourcelist();
+
+    const savedState = sessionStorage.getItem('complete_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.propertyname = state.property;
+      this.leadsource = state.source;
+      LeadsComponent.count = state.page;
+      this.enquiries = state.leads;
+      this.assignedType = state.assignid;
+
+      if ((this.fromdate != '' || this.fromdate != undefined || this.fromdate != null) && (this.todate != '' || this.todate != undefined || this.todate != null)) {
+        this.datefilterview = true;
+        this.dateRange = [new Date(this.fromdate), new Date(this.todate)];
+      } else {
+        this.datefilterview = false;
+      }
+
+      if (this.leadsource == '' || this.leadsource == undefined || this.leadsource == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.roleid == 1) {
+        this.selectedCity = '1';
+        this.selectedCityName = 'Bangalore';
+      }
+
+      if (this.roleid == 2) {
+        if (this.selectedCity == '' || this.selectedCity == undefined || this.selectedCity == null) {
+          this.cityFilter = false;
+        } else {
+          this.cityFilter = true;
+          this.selectedCity = this.selectedCity;
+          this.selectedCityName = this.selectedCityName;
+        }
+      }
+
+      if (this.propertyname == '' || this.propertyname == undefined || this.propertyname == null) {
+        this.propertyFilter = false;
+      } else {
+        this.propertyFilter = true;
+      }
+
+      if (this.assignedType != '' && this.assignedType != null && this.assignedType != undefined) {
+        this.assignedTypeFilter = true;
+        if (this.assignedType == '1') {
+          this.assignedTypeName = 'Assigned';
+        } else if (this.assignedType == '2') {
+          this.assignedTypeName = 'Not Assigned';
+        }
+      }
+
+      $(".uniqueLeads_section").removeClass("active");
+      $(".duplicatesLeads_section").removeClass("active");
+      setTimeout(() => {
+        if (state.tabs == 'uniqueParam') {
+          $(".uniqueLeads_section").addClass("active");
+          this.uniqueParam = 1;
+        } else if (state.tabs == 'duplicateParam') {
+          $(".duplicatesLeads_section").addClass("active");
+          this.duplicateParam = 1;
+        }
+      }, 100)
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      this.getCounts();
+      // 🔴 IMPORTANT
+    }
+
+    this.getleads();
   }
 
   resetScroll() {
@@ -141,6 +219,16 @@ export class LeadsComponent implements OnInit {
   //here we have written the conditions based on router params
   getleads() {
     this.route.queryParams.subscribe((params) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 5000)
+        return;
+      }
+
       this.uniqueParam = params['unique'];
       this.duplicateParam = params['duplicates'];
       this.propertyname = params['propName'];
@@ -155,6 +243,7 @@ export class LeadsComponent implements OnInit {
         this.initializeNextActionDateRangePicker();
       }), 0
       this.detailsPageRedirection();
+
       if ((this.fromdate != '' || this.fromdate != undefined || this.fromdate != null) && (this.todate != '' || this.todate != undefined || this.todate != null)) {
         this.datefilterview = true;
         this.dateRange = [new Date(this.fromdate), new Date(this.todate)];
@@ -213,6 +302,14 @@ export class LeadsComponent implements OnInit {
         }
       }
 
+      // if (this._sharedService.hasState) {
+      //   this.filterLoader = false;
+      //   this.enquiries = this._sharedService.enquiries;
+      //   this.page = this._sharedService.page;
+      //   setTimeout(() => {
+      //     this.scrollContainer.nativeElement.scrollTop = this._sharedService.scrollTop;
+      //   }, 0);
+      // } else {
       if (params.unique == 1) {
         this.getUniquedata();
       } else if (params.duplicates == 1) {
@@ -220,12 +317,13 @@ export class LeadsComponent implements OnInit {
       }
       this.getCounts();
       this.getpropertyList();
+      // }
     })
   }
 
   //here we get the counts
   getCounts() {
-    LeadsComponent.count = 0;
+    // LeadsComponent.count = 0;
     this._sharedService.getleadcounts(this.fromdate, this.todate, this.leadsource, this.propertyname, this.selectedCity, this.assignedType).subscribe(enquiryscount => {
       this.leadcounts = enquiryscount[0].leadcounts;
       this.uniqueCounts = enquiryscount[0].uniqueecounts;
@@ -237,9 +335,11 @@ export class LeadsComponent implements OnInit {
   getUniquedata() {
     var limitparam = 0;
     var limitrows = 30;
+    LeadsComponent.count = 0;
     $(".duplicatesLeads_section").removeClass("active");
     $(".uniqueLeads_section").addClass("active");
     this.filterLoader = true;
+    // this.page = 1;
     this._sharedService.getleads(limitparam, limitrows, this.fromdate, this.todate, this.leadsource, this.propertyname, '', this.selectedCity, this.assignedType).subscribe(enquirys => {
       this.filterLoader = false;
       this.enquiries = enquirys;
@@ -248,11 +348,13 @@ export class LeadsComponent implements OnInit {
 
   //here we get the duplicates data
   getduplicatedata() {
+    LeadsComponent.count = 0;
     var limitparam = 0;
     var limitrows = 30;
     $(".uniqueLeads_section").removeClass("active");
     $(".duplicatesLeads_section").addClass("active");
     this.filterLoader = true;
+    // this.page = 1;
     this._sharedService.getleads(limitparam, limitrows, this.fromdate, this.todate, this.leadsource, this.propertyname, '1', this.selectedCity, this.assignedType).subscribe(enquirys => {
       this.filterLoader = false;
       this.enquiries = enquirys;
@@ -382,6 +484,7 @@ export class LeadsComponent implements OnInit {
     }
     if (livecount < counts) {
       this.filterLoader = true;
+      // this.page++;
       return this._sharedService.getleads(limit, limitrows, this.fromdate, this.todate, this.leadsource, this.propertyname, duplicates, this.selectedCity, this.assignedType).subscribe(enquirys => {
         this.enquiries = this.enquiries.concat(enquirys);
         this.filterLoader = false;
@@ -936,7 +1039,7 @@ export class LeadsComponent implements OnInit {
       this.filterLoader = false;
       swal({
         title: 'Please Select One Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -950,7 +1053,7 @@ export class LeadsComponent implements OnInit {
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1002,7 +1105,7 @@ export class LeadsComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -1018,7 +1121,7 @@ export class LeadsComponent implements OnInit {
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1032,7 +1135,7 @@ export class LeadsComponent implements OnInit {
     if (this.selectedExecIds.length == 0) {
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1084,7 +1187,7 @@ export class LeadsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1123,7 +1226,7 @@ export class LeadsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1321,7 +1424,36 @@ export class LeadsComponent implements OnInit {
     localStorage.setItem('locationURL', this.router.url)
   }
 
+  // page = 1;
+  // pageSize = 30;
+
   redirectTO(enquiry) {
+    this._sharedService.leads = this.enquiries;
+    this._sharedService.page = LeadsComponent.count;
+    this._sharedService.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedService.hasState = true;
+
+    let tab;
+    if (this.uniqueParam == 1) {
+      tab = 'uniqueParam';
+    } else if (this.duplicateParam == 1) {
+      tab = 'duplicateParam'
+    }
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      property: this.propertyname,
+      source: this.leadsource,
+      assignid: this.assignedType,
+      page: LeadsComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      tabs: tab,
+      leads: this.enquiries
+    };
+
+    sessionStorage.setItem('complete_state', JSON.stringify(state));
+
     this.router.navigate([
       '/mandate-customers',
       enquiry.customer_IDPK,
@@ -1366,5 +1498,3 @@ export class LeadsComponent implements OnInit {
 //     }
 //   })
 // }
-
-

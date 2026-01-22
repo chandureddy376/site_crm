@@ -126,6 +126,7 @@ export class WhatsappVisitComponent implements OnInit {
   visitedOnStart: moment.Moment | null = null;
   visitedOnEnd: moment.Moment | null = null;
   selectedLeadAssign: any;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.userid = localStorage.getItem('UserId');
@@ -151,9 +152,84 @@ export class WhatsappVisitComponent implements OnInit {
     var prevMonth = (previousMonthDate.getMonth() + 1).toString().padStart(2, '0');
     var prevDay = previousMonthDate.getDate().toString().padStart(2, '0');
     this.previousMonthDateForCompare = previousMonthDate.getFullYear() + '-' + prevMonth + '-' + prevDay;
-    this.getleadsData();
     this.getsourcelist();
     this.getcitylist();
+
+    const savedState = sessionStorage.getItem('whatapp_visit_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.propertyid = state.property;
+      this.source = state.source;
+      this.visitedFrom = state.visitfrom,
+        this.visitedTo = state.visitto,
+
+
+        WhatsappVisitComponent.count = state.page;
+      this.enquiries = state.leads;
+
+
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+      } else {
+        if (this.leads == 2) {
+          this.datefilterview = true;
+        } else {
+          this.datefilterview = false;
+          this.fromdate = '';
+          this.todate = '';
+        }
+      }
+
+      if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == '' || this.visitedTo == undefined || this.visitedTo == null)) {
+        this.visitedDatefilterview = false;
+      } else {
+        this.visitedDatefilterview = true;
+      }
+
+      if (this.source == '' || this.source == undefined || this.source == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.selectedCity == undefined || this.selectedCity == '' || this.selectedCity == null) {
+        this.cityFilter = false;
+      } else {
+        this.cityFilter = true;
+      }
+
+      if (this.propertyid == '' || this.propertyid == undefined || this.propertyid == null) {
+        this.propertyFilter = false;
+      } else {
+        this.propertyFilter = true;
+      }
+
+      $(".pendingLeads_section").removeClass("active");
+      $(".freshLeads_section").removeClass("active");
+      $(".allLeads_section").removeClass("active");
+      setTimeout(() => {
+        if (state.tabs == 1) {
+          $(".freshLeads_section").addClass("active");
+        } else if (state.tabs == 2) {
+          $(".pendingLeads_section").addClass("active");
+        } else if (state.tabs == 3) {
+          $(".allLeads_section").addClass("active");
+        }
+        this.getEnquiriesCount();
+      }, 0)
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+    }
+
+    this.getleadsData();
     if (localStorage.getItem('Role') == null) {
       this.router.navigateByUrl('/login');
     }
@@ -185,6 +261,16 @@ export class WhatsappVisitComponent implements OnInit {
 
   getleadsData() {
     this.route.queryParams.subscribe((response) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       this.filterLoader = true;
       this.propertyid = response['property'];
       this.source = response['source'];
@@ -241,7 +327,7 @@ export class WhatsappVisitComponent implements OnInit {
         this.getPendingEnquiries();
       } else if (this.leads == '1') {
         this.getenquiries();
-      } else if(this.leads == 3){
+      } else if (this.leads == 3) {
         this.getAllenquiries();
       }
 
@@ -347,7 +433,7 @@ export class WhatsappVisitComponent implements OnInit {
       propname: this.propertyid,
       visitFromDate: this.visitedFrom,
       visitToDate: this.visitedTo,
-      all:'1'
+      all: '1'
     }
     this._sharedservice.getenquirylistVisits(param).subscribe(enquirys => {
       this.filterLoader = false;
@@ -507,10 +593,10 @@ export class WhatsappVisitComponent implements OnInit {
     let restrictCount;
     if (this.leads == '2') {
       restrictCount = this.pendingLeads;
-    } else if(this.leads == '1') {
+    } else if (this.leads == '1') {
       restrictCount = this.enquiryCount;
     } else {
-       restrictCount = this.allLeads;
+      restrictCount = this.allLeads;
     }
     let param = {
       limitparam: WhatsappVisitComponent.count += 30,
@@ -524,7 +610,7 @@ export class WhatsappVisitComponent implements OnInit {
       propname: this.propertyid,
       visitFromDate: this.visitedFrom,
       visitToDate: this.visitedTo,
-      all:this.leads == 3 ? '1':''
+      all: this.leads == 3 ? '1' : ''
     }
     let livecount = this.enquiries.length;
     if (livecount < restrictCount) {
@@ -630,7 +716,7 @@ export class WhatsappVisitComponent implements OnInit {
           visitTo: ''
         }
       });
-    } else if(this.leads == '1') {
+    } else if (this.leads == '1') {
       this.router.navigate(['/whatsapp-visit'], {
         queryParams: {
           leads: '1',
@@ -952,7 +1038,7 @@ export class WhatsappVisitComponent implements OnInit {
     if (this.selectedRetEXECIds.length == 0) {
       swal({
         title: 'Please Select One Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -967,7 +1053,7 @@ export class WhatsappVisitComponent implements OnInit {
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1020,7 +1106,7 @@ export class WhatsappVisitComponent implements OnInit {
         this.filterLoader = false;
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -1036,7 +1122,7 @@ export class WhatsappVisitComponent implements OnInit {
   //   if (this.leadforwards.assignedleads == "") {
   //     swal({
   //       title: 'Please Select Some Leads!',
-  //       text: 'Please try agin',
+  //       text: 'Please try again',
   //       type: 'error',
   //       confirmButtonText: 'OK'
   //     })
@@ -1050,7 +1136,7 @@ export class WhatsappVisitComponent implements OnInit {
   //   if (this.selectedExecIds.length == 0) {
   //     swal({
   //       title: 'Please Select The Executive!',
-  //       text: 'Please try agin',
+  //       text: 'Please try again',
   //       type: 'error',
   //       confirmButtonText: 'OK'
   //     })
@@ -1127,7 +1213,7 @@ export class WhatsappVisitComponent implements OnInit {
   //     } else {
   //       swal({
   //         title: 'Authentication Failed!',
-  //         text: 'Please try agin',
+  //         text: 'Please try again',
   //         type: 'error',
   //         confirmButtonText: 'OK'
   //       })
@@ -1210,7 +1296,7 @@ export class WhatsappVisitComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -1568,5 +1654,40 @@ export class WhatsappVisitComponent implements OnInit {
   //   }, cb1);
   //   cb1(this.visitedOnStart, this.visitedOnEnd);
   // }
+
+  redirectTo(lead) {
+    console.log(lead);
+
+    this._sharedservice.leads = this.enquiries;
+    this._sharedservice.page = WhatsappVisitComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      property: this.propertyid,
+      source: this.source,
+      visitfrom: this.visitedFrom,
+      visitto: this.visitedTo,
+      page: WhatsappVisitComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.enquiries,
+      tabs: this.leads,
+    };
+
+    sessionStorage.setItem('whatapp_visit_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.Lead_IDFK,
+      this.userid,
+      0,
+      'mandate',
+      lead.propid
+    ]);
+  }
 
 }

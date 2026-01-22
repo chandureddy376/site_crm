@@ -498,9 +498,8 @@
                           <!-- ----------------------------Customer name and number---------------------------- -->
                           <td *ngIf="roleid == 1 || roleid == 2" class="name_style"
                             [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : ''}">
-                            <a class="btn_style cursor-pointer" (click)="detailsPageRedirection()">
-                              <div class="statuscard"
-                                routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}"
+                            <a class="btn_style cursor-pointer">
+                              <div class="statuscard" (click)="redirectTo(leads)"
                                 [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (usvParam == '1' || rsvParam == '1' || fnParam == '1')) ? 'red' : ''}">
                                 {{leads.CustomerName}}
                                 <span *ngIf="leads?.qualified_leads == '2'" class="d-flex"><img
@@ -544,8 +543,7 @@
                             <!-- ----------------------------Customer name and stage for all the stages execpt junk and inactive---------------------------- -->
                             <a *ngIf="selectedCategory != 'Junk' && selectedCategory != 'Fixed Junk' && selectedCategory != 'Refixed Junk' && selectedCategory != 'Done Junk'" class="btn_style cursor-pointer"
                               [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' }">
-                              <div class="statuscard"
-                                routerLink="/mandate-customers/{{leads?.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">
+                              <div class="statuscard" (click)="redirectTo(leads)">
                                 {{leads?.CustomerName}}
                                 <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"
                                     style="width: 20px;"></span>
@@ -968,7 +966,7 @@
   Details</button>
 <div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
   aria-hidden="true">
-  <div class="modal-dialog reassignlead_modal">
+  <!-- <div class="modal-dialog reassignlead_modal">
     <div class="modal-content enquiry_modal_body" id="reassign_leads">
       <div class="modal-header">
         <h4 class="col-10 m-0">Re-Assign Leads</h4>
@@ -1010,6 +1008,76 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+    <div class="modal-dialog history_modal ">
+    <div class="modal-content history_modal_body" id="history_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2 align-items-center"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0 col-11 p-0 text-center"
+          style="color: #30383C;font-size: 24px !important;font-weight: 500 !important;">Re-Assigned Leads Details</h4>
+        <button type="button" class="close style_close_btn" data-dismiss="modal" (click)="closeDetailModal()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;margin: 0;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0" style="overflow: scroll;height: 400px;">
+        <div class="col-12 py-3">
+          <div class="col-12 py-3" *ngFor="let reassign of reassignedResponseInfo; let i = index">
+            <div class="">
+              <span class="executive_style">{{reassign.execname}}</span>
+            </div>
+            <div class="col-12 row p-0 m-0">
+              <div class="col-3 p-0 text-center assigned_col">Assigned</div>
+              <div class="col-6 p-0 text-center not_assigned_col">Not Assigned</div>
+              <div class="col-3 p-0 text-center untouched_col">Untouched</div>
+            </div>
+            <div class="col-12 row p-0 m-0">
+              <div class="col-3 p-0">
+                <div class="assigned_inner_row">Total
+                  <span>{{reassign.fresh + reassign.reassignedLeads + reassign.reassignedVisits}}</span>
+                </div>
+                <div class="assigned_inner_row">Leads
+                  <span>{{reassign.fresh + reassign.reassignedLeads}}</span>
+                </div>
+                <div class="assigned_inner_row">Overdued Visits
+                  <span>{{reassign.reassignedVisits}}</span>
+                </div>
+              </div>
+              <div class="col-6 p-0">
+                <div class="col-12 p-0 d-flex">
+                  <div class="col-6 p-0">
+                    <div class="not_assigned_inner_row">Already in Fresh
+                      <span>{{reassign.alreadyinfresh}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Already in Active
+                      <span>{{reassign.alreadyinactive}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Overload Limit
+                      <span>{{reassign.leads_skipped_executive_capacity}}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0">
+                       <div class="not_assigned_inner_row" style="height: 51px !important;">GR Swara Leads
+                      <span>{{reassign.gr_swara_leads_skipped}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row" style="height: 51px !important;">Active Visits
+                      <span>{{reassign.reassignedVisitExist}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 p-0">
+                <div class="untouched_inner_row">Leads
+                  <span>{{reassign.untouched_leads}}</span>
+                </div>
+                <div class="untouched_inner_row">Visits
+                  <span>{{reassign.untouched_visits}}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

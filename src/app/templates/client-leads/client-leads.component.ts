@@ -838,7 +838,7 @@ export class ClientLeadsComponent implements OnInit {
       this.filterLoader = false;
       swal({
         title: 'Please Select One Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -852,7 +852,7 @@ export class ClientLeadsComponent implements OnInit {
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -904,7 +904,7 @@ export class ClientLeadsComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -920,7 +920,7 @@ export class ClientLeadsComponent implements OnInit {
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -934,7 +934,7 @@ export class ClientLeadsComponent implements OnInit {
     if (this.selectedExecIds.length == 0) {
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -986,7 +986,7 @@ export class ClientLeadsComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })

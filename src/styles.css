@@ -790,3 +790,33 @@ h2.resp-tab-active span.resp-arrow {
   font-style: italic !important;
   font-weight: 400 !important;
 }
+
+.action-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 10px;
+    border-radius: 2px;
+    height: 18px;
+    font-size: 10px;
+    font-weight: 400;
+    cursor: pointer;
+    color: #fff;
+    width: 86px;
+    user-select: none;
+}
+
+.enable_access_btn {
+    background: linear-gradient(180deg, #559D00 0%, #0C6D00 100%);
+}
+
+.re_assign_overdue_btn {
+    background: linear-gradient(180deg, #2196F3 0%, #0B7AB2 100%);
+}
+
+.access_popover .popover-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #EEF8FF;
+}

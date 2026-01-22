@@ -152,6 +152,7 @@ export class LeadassignComponent implements OnInit {
   selectedRecordExec: any;
   audioList: any;
   onRecordExecList: any;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.roleid = localStorage.getItem('Role');
@@ -174,16 +175,6 @@ export class LeadassignComponent implements OnInit {
       this.adminandexec = false;
     }
 
-    // this.echoService.listenToDatabaseChanges((message) => {
-    //   if (localStorage.getItem('UserId') == message.Executive && (message.Call_status == 'Call Disconnected' || message.Call_status == 'Call Connected')) {
-    //     console.log(message, 'eco')
-    //     this.callStatus = message.Call_status;
-    //     setTimeout(() => {
-    //       this.getLiveCallsData();
-    //     }, 1000)
-    //     return
-    //   }
-    // });
 
     this.hoverSubscription = this._sharedservice.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
@@ -215,8 +206,112 @@ export class LeadassignComponent implements OnInit {
     this.tomorrowsdateforcompare = this.currentdateforcompare.getFullYear() + "-" + curmonthwithzero + "-" + tomorrowwithzero;
     // Tomorrows Date
 
-    this.getleadsdata();
     this.getExecutivesForFilter();
+
+    const savedState = sessionStorage.getItem('followup_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+      this.source = state.source;
+      this.leadstatusVisits = state.visits,
+        this.stagevalue = state.stage
+
+      $('.other_section').removeClass('active');
+      this.isFollowups = true;
+      if (state.tabs == 'todayfollowupsparam') {
+        this.todayfollowupsparam = 1;
+        $('.today_followups').addClass('active');
+      } else if (state.tabs == 'upcomingfollowupparam') {
+        this.upcomingfollowupparam = 1;
+        $('.upcoming_followup').addClass('active');
+      }
+
+      LeadassignComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.source == '' || this.source == null || this.source == undefined) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = this.execid;
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if (this.stagevalue) {
+        this.stagefilterview = true;
+        this.stagestatus = true;
+      } else {
+        this.stagefilterview = false;
+      }
+
+      if (this.stagestatusval && this.stagevalue) {
+        this.stagefilterview = true;
+        this.stagestatusfilterview = true;
+        if (this.stagestatusval == '1') {
+          this.stagestatusvaltext = "Fixed";
+        } else if (this.stagestatusval == '2') {
+          this.stagestatusvaltext = "Refixed";
+        } else if (this.stagestatusval == '3') {
+          this.stagestatusvaltext = "Done";
+        }
+      } else {
+        this.stagestatusfilterview = false;
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+        this.fromdate = '';
+        this.todate = '';
+        this.fromTime = '';
+        this.toTime = '';
+      } else {
+        this.datefilterview = true;
+      }
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.myfollowupsCountsTrigger();
+    }
+
+    this.getleadsdata();
     if (localStorage.getItem('Role') == null) {
       this.router.navigateByUrl('/login');
     }
@@ -236,9 +331,9 @@ export class LeadassignComponent implements OnInit {
     const el = document.createElement('div');
     el.classList.add('modalclick');
     document.body.appendChild(el);
-    LeadassignComponent.count = 0;
-    LeadassignComponent.activecount = 0;
-    LeadassignComponent.closedcount = 0;
+    // LeadassignComponent.count = 0;
+    // LeadassignComponent.activecount = 0;
+    // LeadassignComponent.closedcount = 0;
   }
 
   checkDirectTeam() {
@@ -274,14 +369,14 @@ export class LeadassignComponent implements OnInit {
   //get list of mandate executives for mandate for filter purpose
   getExecutivesForFilter() {
     if (this.roleid == 1) {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '','').subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '', '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
         }
       });
     } else if (this.role_type == 1) {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, '2', '', '',this.userid).subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, '2', '', '', this.userid).subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
@@ -303,7 +398,7 @@ export class LeadassignComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -344,9 +439,19 @@ export class LeadassignComponent implements OnInit {
       this.rmid = localStorage.getItem('UserId');
     }
     this.filterLoader = true;
-    LeadassignComponent.count = 0;
+    // LeadassignComponent.count = 0;
     this.actionid = "";
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       // this.todaysscheduledparam = paramss['todayscheduled'];
       this.todayvisitsparam = paramss['todaysvisits'];
@@ -835,11 +940,11 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeadsCount(todayfollowupparam).subscribe(compleads => {
       if (compleads['status'] == 'True') {
-        this.todayfollowupscount = compleads.AssignedLeads[0].counts;
+        this.todayfollowupscount = compleads.AssignedLeads[0].Uniquee_counts;
       } else {
         this.todayfollowupscount = 0;
       }
@@ -862,7 +967,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeadsCount(upcomingfollowup).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -887,7 +992,7 @@ export class LeadassignComponent implements OnInit {
     //   priority: this.priorityName,
     //   source: this.source,
     //   visits: this.leadstatusVisits,,
-        // ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+    // ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     // }
     // this._mandateService.assignedLeadsCount(followupmissed).subscribe(compleads => {
     //   if (compleads['status'] == 'True') {
@@ -924,7 +1029,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeadsCount(todayscheduled).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -955,7 +1060,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeadsCount(todayparam).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -983,7 +1088,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeadsCount(upcomingvisit).subscribe(compleads => {
       if (compleads['status'] == 'True') {
@@ -1226,7 +1331,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1261,7 +1366,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1304,7 +1409,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1340,7 +1445,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1375,7 +1480,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -1408,7 +1513,7 @@ export class LeadassignComponent implements OnInit {
       visits: this.leadstatusVisits,
       fromtime: this.fromTime,
       totime: this.toTime,
-        ...(this.role_type == 1 ? { teamlead: this.userid } : {})
+      ...(this.role_type == 1 ? { teamlead: this.userid } : {})
     }
     this._mandateService.assignedLeads(param).subscribe(compleads => {
       this.filterLoader = false;
@@ -2938,6 +3043,26 @@ export class LeadassignComponent implements OnInit {
 
   isModalOpen: boolean = false;
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -3096,10 +3221,55 @@ export class LeadassignComponent implements OnInit {
   }
 
   detailsPageRedirection() {
-    if((this.todayvisitsparam || this.todaysvisitedparam || this.upcomingvisitparam) == 1){
-      localStorage.setItem('backLocation', 'scheduled'); 
-    } else if(this.todayfollowupsparam == 1 || this.todayfollowupsparam == 1){
-      localStorage.setItem('backLocation', 'followup'); 
+    if ((this.todayvisitsparam || this.todaysvisitedparam || this.upcomingvisitparam) == 1) {
+      localStorage.setItem('backLocation', 'scheduled');
+    } else if (this.todayfollowupsparam == 1 || this.todayfollowupsparam == 1) {
+      localStorage.setItem('backLocation', 'followup');
     }
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = LeadassignComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    let tab;
+    if (this.todayfollowupsparam == 1) {
+      tab = 'todayfollowupsparam';
+    } else if (this.upcomingfollowupparam == 1) {
+      tab = 'upcomingfollowupparam';
+    }
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      execid: this.execid,
+      execname: this.execname,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      source: this.source,
+      visits: this.leadstatusVisits,
+      stage: this.stagevalue,
+      page: LeadassignComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: tab,
+    };
+
+    sessionStorage.setItem('followup_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 }

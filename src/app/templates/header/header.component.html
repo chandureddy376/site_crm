@@ -312,9 +312,10 @@
         </div>
       </div>
       <div class="d-flex gap-05 px-2 cursor-pointer setting_auto_assign" *ngIf="roleid == 1 || roleid == 2">
-        <!-- <a class="cursor-pointer" data-toggle="modal" data-target="#auto_assign_settings">
+        <a class="cursor-pointer" data-toggle="modal" data-target="#auto_assign_settings"
+          (click)="getAutoAssignSelection()">
           <i class="fas fa-cog" style="font-size: 14px;"></i>
-        </a> -->
+        </a>
         <!-- <div class="dropdown dropleft" id="settings" data-toggle="dropdown">
           <a href="javascript:;" class="nav-link text-body p-0" id="settings-link" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -459,11 +460,13 @@
                       class="sidebar-text">Today's Activities</span></a>
                 </li>
 
-                <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
-                  <a routerLink="/stage-dashboard" [queryParams]="{usv:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
-                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span class="sidebar-text">Stage
+                <!-- <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                  <a routerLink="/stage-dashboard"
+                    [queryParams]="{usv:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
+                    (click)="onClickSidebarMenu()"><i class="fas fa-table" aria-hidden="true"></i><span
+                      class="sidebar-text">Stage
                       Dashboard</span></a>
-                </li>
+                </li> -->
 
                 <li *ngIf="adminview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
                   <a routerLink="/overdues-dashboard"
@@ -587,8 +590,7 @@
               <ul>
 
                 <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
-                 [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
-                    routerLink="/mandate-dashboard"
+                  [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a routerLink="/mandate-dashboard"
                     [queryParams]="{todayvisited: 1,from:'', to:'',dashtype:'dashboard',htype:'mandate',type:'leads'}"
                     (click)="onClickSidebarMenu()"><i class="fa fa-warehouse" aria-hidden="true"></i><span
                       class="sidebar-text">Dashboard</span></a>
@@ -603,11 +605,11 @@
                       Activities</span></a>
                 </li>
 
-                <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
+                <!-- <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
                   <a routerLink="/stage-dashboard" [queryParams]="{usv:1,from:'', to:'',dashtype:'dashboard',datetype:'today'}"
-                    (click)="onClickSidebarMenu()"><i class="fa fa-shapes" aria-hidden="true"></i><span class="sidebar-text">Stage
+                    (click)="onClickSidebarMenu()"><i class="fas fa-table" aria-hidden="true"></i><span class="sidebar-text">Stage
                       Dashboard</span></a>
-                </li>
+                </li> -->
 
                 <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
                   [routerLinkActive]="'active'" (click)="onClickSidebarMenu()">
@@ -690,9 +692,8 @@
 
           <li *ngIf="MandateRMTLview || MandateRMExecutiveview || MandateCSExecutiveview || MandateCSTLview"
             class="notdrop" [routerLinkActive]="'active'" (click)="onClickSidebarMenu()"><a
-              routerLink="/mandate-lead-stages"
-              [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'mandate',id:'3'}"
-              (click)="onClickSidebarMenu()"><i class="fa fa-code-branch" aria-hidden="true"></i>
+              (click)="checkCountAndRedirect();onClickSidebarMenu()"><i class="fa fa-code-branch"
+                aria-hidden="true"></i>
               <!-- <span class="sidebar-text">My Visits</span> -->
               <span class="sidebar-text" *ngIf="role_type != '1'">My Visits</span>
               <span class="sidebar-text" *ngIf="role_type == '1'">All Visits</span>
@@ -954,22 +955,18 @@
           </li>
 
           <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
-            <a
-              [routerLink]="'/mandate-lead-stages'" [queryParams]="{pending:'1',type:'leads',htype:'mandate'}"
+            <a [routerLink]="'/mandate-lead-stages'" [queryParams]="{pending:'1',type:'leads',htype:'mandate'}"
               (click)="onClickSidebarMenu()"><i class="fa fa-tty" aria-hidden="true"></i><span class="sidebar-text">All
                 Leads</span></a>
           </li>
 
           <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
-            <a
-              [routerLink]="'/mandate-lead-stages'"
-              [queryParams]="{usv: 1,stagestatus:'3',type:'visits', visitedfrom: '', visitedto: '',htype:'mandate',id:'3'}"
-              (click)="onClickSidebarMenu()"><i class="fa fa-code-branch" aria-hidden="true"></i><span
-                class="sidebar-text">All Visits</span></a></li>
+            <a (click)="checkCountAndRedirect();onClickSidebarMenu()"><i class="fa fa-code-branch"
+                aria-hidden="true"></i><span class="sidebar-text">All Visits</span></a>
+          </li>
 
           <li *ngIf="adminview" [routerLinkActive]="'active'" class="notdrop" (click)="onClickSidebarMenu()">
-            <a
-              [routerLink]="'/mandate-lead-stages'"
+            <a [routerLink]="'/mandate-lead-stages'"
               [queryParams]="{bookingPending: 1,from:'', to:'',type:'bookings',htype:'mandate'}"
               (click)="onClickSidebarMenu()"><i class="fa fa-dungeon" aria-hidden="true"></i><span
                 class="sidebar-text">All Bookings</span></a>
@@ -1505,16 +1502,16 @@
   <img src="../../../assets/images/infinity_loader.gif">
 </div>
 
-<div class="modal fade" id="auto_assign_settings" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
-  aria-hidden="true">
+<div class="modal fade" id="auto_assign_settings" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="defModalHead" aria-hidden="true">
   <div class="modal-dialog assign_modal ">
     <div class="modal-content assign_modal_body" id="assign_leads">
       <div class="modal-header d-flex justify-content-between px-3 py-1"
         style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);;border-bottom: 1px solid #D8D8D8">
         <h4 class="m-0 col-11 text-center"
           style="color: #4D4D4D;font-size: 24px !important;font-weight: 400 !important;">Auto Assign Control</h4>
-        <button type="button" class="close style_close_btn col-1" data-dismiss="modal"
-          (click)="sourceHistoryModalClose()">
+        <button type="button" class="close style_close_btn col-1" id="auto_assign_close" data-dismiss="modal"
+          (click)="autoAssignModalClose()">
           <i class="fas fa-times" style="font-size: 14px;font-weight: 600;"></i>
         </button>
       </div>
@@ -1529,14 +1526,14 @@
               <div class="option_1 py-3">
                 <span class="col-9 p-0">General Followups</span>
                 <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
-                    id="hidecheckboxid" value="followups" name='programming' (change)="getSelectedAssignSec()"
-                    style="width: 25px !important;height: 25px !important;"></span>
+                    [checked]="isFollowup == true" id="hidecheckboxid" value="followups" name='programming'
+                    (change)="getSelectedAssignSec()" style="width: 25px !important;height: 25px !important;"></span>
               </div>
               <div class="option_1 py-3">
                 <span class="col-9 p-0">Inactive Leads</span>
                 <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
-                    id="hidecheckboxid" value="inactive" name='programming' (change)="getSelectedAssignSec()"
-                    style="width: 25px !important;height: 25px !important;"></span>
+                    [checked]="isInactive == true" id="hidecheckboxid" value="inactive" name='programming'
+                    (change)="getSelectedAssignSec()" style="width: 25px !important;height: 25px !important;"></span>
               </div>
             </div>
 
@@ -1544,14 +1541,14 @@
               <div class="option_1 py-3">
                 <span class="col-7 p-0">Normal Call</span>
                 <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
-                    id="hidecheckboxid" value="nc" name='programming' (change)="getSelectedAssignSec()"
-                    style="width: 25px !important;height: 25px !important;"></span>
+                    [checked]="isNC == true" id="hidecheckboxid" value="nc" name='programming'
+                    (change)="getSelectedAssignSec()" style="width: 25px !important;height: 25px !important;"></span>
               </div>
               <div class="option_1 py-3">
                 <span class="col-7 p-0">Junk Leads</span>
                 <span class="d-flex align-items-center"><input type="checkbox" class="loopcheckbox hidecheckbox"
-                    id="hidecheckboxid" value="junk" name='programming' (change)="getSelectedAssignSec()"
-                    style="width: 25px !important;height: 25px !important;"></span>
+                    [checked]="isJunk == true" id="hidecheckboxid" value="junk" name='programming'
+                    (change)="getSelectedAssignSec()" style="width: 25px !important;height: 25px !important;"></span>
               </div>
             </div>
           </div>
@@ -1568,28 +1565,64 @@
 
             <div class="d-flex gap_5 radio_options_style">
               <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
-                  id="hidecheckboxid" value="30days" name='programmingdays' (change)="getDateRange()"
-                  style="width: 16px !important;height: 16px !important;">
+                  [checked]="selectedDateRange == '30'" id="hidecheckboxid" value="30" name='programmingdays'
+                  (change)="getDateRange()" style="width: 16px !important;height: 16px !important;">
               </span>
               Last 30 days
             </div>
 
             <div class="d-flex gap_5 radio_options_style">
               <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
-                  id="hidecheckboxid" value="60days" name='programmingdays' (change)="getDateRange()"
-                  style="width: 16px !important;height: 16px !important;">
+                  [checked]="selectedDateRange == '60'" id="hidecheckboxid" value="60" name='programmingdays'
+                  (change)="getDateRange()" style="width: 16px !important;height: 16px !important;">
               </span>
               Last 60 days
             </div>
 
             <div class="d-flex gap_5 radio_options_style">
               <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
-                  id="hidecheckboxid" value="90days" name='programmingdays' (change)="getDateRange()"
-                  style="width: 16px !important;height: 16px !important;"></span>
+                  [checked]="selectedDateRange == '90'" id="hidecheckboxid" value="90" name='programmingdays'
+                  (change)="getDateRange()" style="width: 16px !important;height: 16px !important;"></span>
               Last 90 days
             </div>
 
             <div class="d-flex gap_5 radio_options_style">
+
+              <span class="d-flex align-items-center">
+                <input type="radio" class="loopcheckbox hidecheckbox" name="programmingdays" value="custom"
+                  [checked]="selectedDateRange === 'custom'" (change)="getDateRange()" style="width:16px;height:16px;">
+              </span>
+
+              {{ selectedCustomOption }}
+
+              <div class="d-flex align-items-center">
+                <a class="m-0" type="button" id="customLeadDropdown" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <i class="fas fa-caret-down" style="color:#000;font-size:16px;"></i>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="customLeadDropdown"
+                  style="cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.1);">
+
+                  <a class="dropdown-item" (click)="CustomDate('today')">
+                    Today
+                  </a>
+
+                  <a class="dropdown-item" (click)="CustomDate('last7')">
+                    Last 7 days
+                  </a>
+
+                  <a class="dropdown-item" (click)="CustomDate('last15')">
+                    Last 15 days
+                  </a>
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <!-- <div class="d-flex gap_5 radio_options_style">
               <span class="d-flex align-items-center"><input type="radio" class="loopcheckbox hidecheckbox"
                   id="hidecheckboxid" value="custom" name='programmingdays' (change)="getDateRange()"
                   style="width: 16px !important;height: 16px !important;">
@@ -1604,12 +1637,11 @@
                   style="cursor:pointer;box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);">
                   <a class="dropdown-item dropDownCursor" (click)="CustomDate('today')">Today</a>
                   <a class="dropdown-item dropDownCursor" (click)="CustomDate('last7')">Last 7 days</a>
-                  <a class="dropdown-item dropDownCursor" (click)="CustomDate('last15')">Last 15 Days
-                    Visits</a>
+                  <a class="dropdown-item dropDownCursor" (click)="CustomDate('last15')">Last 15 Days</a>
                 </div>
               </div>
 
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -1617,7 +1649,7 @@
       </div>
       <div class="modal-footer ">
         <button type="button" class="btn btn-secondary footer_close_btn m-0 col-5 py-0" data-dismiss="modal"
-          (click)="sourceHistoryModalClose()">Close</button>
+          (click)="autoAssignModalClose()">Close</button>
         <button type="button" class="btn btn-warning footer_submit_button col-5 py-0 m-0" (click)="finalSubmit()">Save &
           Implement</button>
       </div>

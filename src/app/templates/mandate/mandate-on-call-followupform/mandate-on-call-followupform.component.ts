@@ -22,7 +22,8 @@ export class MandateOnCallFollowupformComponent implements OnInit {
   @Input() calledLead: any;
   @Input() assignedRm: any;
   date = new Date();
-  priorDate = new Date(new Date().setDate(this.date.getDate() + 7));
+  priorDate
+  // new Date(new Date().setDate(this.date.getDate() + 7));
   priorDatebefore = new Date(new Date().setDate(this.date.getDate() - 30));
 
   constructor(
@@ -211,6 +212,7 @@ export class MandateOnCallFollowupformComponent implements OnInit {
 
     this.followsectiondata = id;
     this.followsectionname = name;
+    this.scriptfunctions();
 
   }
 
@@ -925,7 +927,7 @@ export class MandateOnCallFollowupformComponent implements OnInit {
       $('.calendardate').calendar({
         type: 'date',
         minDate: this.date,
-        maxDate: this.priorDate,
+        maxDate: this.followsectionname == 'Callback'?new Date(new Date().setDate(this.date.getDate() + 1)):new Date(new Date().setDate(this.date.getDate() + 3)) ,
         formatter: {
           date: function (date, settings) {
             if (!date) return '';

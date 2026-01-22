@@ -720,6 +720,7 @@ export class MandateJunkDashComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
   }
 

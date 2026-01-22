@@ -120,8 +120,10 @@ export class EnquiryComponent implements OnInit {
   locality: any;
   roleid: any;
   assignedResponseInfo: any;
-  roleTeam:any;
+  roleTeam: any;
   @ViewChild('fileInput') fileInput: ElementRef;
+  uploadedResultCSV: any;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.userid = localStorage.getItem('UserId');
@@ -133,7 +135,7 @@ export class EnquiryComponent implements OnInit {
     this.hoverSubscription = this._sharedservice.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
     });
-    localStorage.setItem('locationURL','')
+    localStorage.setItem('locationURL', '')
     var curmonth = this.currentdateforcompare.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
     // Todays Date
@@ -147,14 +149,79 @@ export class EnquiryComponent implements OnInit {
     var prevMonth = (previousMonthDate.getMonth() + 1).toString().padStart(2, '0');
     var prevDay = previousMonthDate.getDate().toString().padStart(2, '0');
     this.previousMonthDateForCompare = previousMonthDate.getFullYear() + '-' + prevMonth + '-' + prevDay;
-    this.getleadsData();
     this.getsourcelist();
     this.getlocalitylist();
     this.getcitylist();
+
+    const savedState = sessionStorage.getItem('enquiry_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.propertyid = state.property;
+      this.source = state.source;
+      EnquiryComponent.count = state.page;
+      this.enquiries = state.leads;
+      this.leads = state.id
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+      } else {
+        if (this.leads == 2) {
+          this.datefilterview = true;
+        } else {
+          this.datefilterview = false;
+          this.fromdate = '';
+          this.todate = '';
+        }
+      }
+
+      if (this.source == '' || this.source == undefined || this.source == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.selectedCity == undefined || this.selectedCity == '' || this.selectedCity == null) {
+        this.cityFilter = false;
+      } else {
+        this.cityFilter = true;
+      }
+
+      if (this.propertyid == '' || this.propertyid == undefined || this.propertyid == null) {
+        this.propertyFilter = false;
+      } else {
+        this.propertyFilter = true;
+      }
+
+      $(".pendingLeads_section").removeClass("active");
+      $(".freshLeads_section").removeClass("active");
+      setTimeout(() => {
+        if (state.id == 1) {
+          $(".freshLeads_section").addClass("active");
+        } else if (state.id == 2) {
+          $(".pendingLeads_section").addClass("active");
+        }
+      }, 100)
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      setTimeout(() => {
+        this.initializeNextActionDateRangePicker();
+      }, 0)
+      this.getProperties();
+      this.filterLoader = false;
+      this.getEnquiriesCount();
+      // 🔴 IMPORTANT
+    }
+
+    this.getleadsData();
     if (localStorage.getItem('Role') == null) {
       this.router.navigateByUrl('/login');
     }
-    EnquiryComponent.count = 0;
+    // EnquiryComponent.count = 0;
     EnquiryComponent.retailCount = 0;
     $('.ui.accordion').accordion();
   }
@@ -175,12 +242,22 @@ export class EnquiryComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
   getleadsData() {
     this.route.queryParams.subscribe((response) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       this.filterLoader = true;
       this.propertyid = response['property'];
       this.source = response['source'];
@@ -426,14 +503,16 @@ export class EnquiryComponent implements OnInit {
         queryParams: {
           leads: 2,
           property: this.propertyid
-        }
+        },
+        queryParamsHandling: 'merge',
       })
 
     } else {
       this.router.navigate(['/Enquiry'], {
         queryParams: {
           property: this.propertyid
-        }
+        },
+        queryParamsHandling: 'merge',
       })
     }
 
@@ -1042,13 +1121,13 @@ export class EnquiryComponent implements OnInit {
 
   // executives_LIST
   getexecutives(event) {
-   this.roleTeam =  event.target.options[event.target.options.selectedIndex].value;
+    this.roleTeam = event.target.options[event.target.options.selectedIndex].value;
     // if (id == '50010') {
     // } else if (id == '50004') {
     // } else {
     //   id = ''
     // }
-this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves(this.propId, '', this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.mandateexecutives = executives['mandateexecutives'];
       } else {
@@ -1064,7 +1143,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
 
   //get list of executives for  filter purpose
   getExecutivesForFilter() {
-    this._sharedservice.getexecutiveslist('', '', '','','').subscribe(executives => {
+    this._sharedservice.getexecutiveslist('', '', '', '', '').subscribe(executives => {
       this.executivesList = executives;
     });
   }
@@ -1122,14 +1201,14 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
     // }
 
     // if (event && type == 'mandate') {
-      this.selectedExecIds = this.selectedEXEC.map((exec) => exec.id)
-      if (this.selectedEXEC.length > 1 && this.maxSelectedLabels > 1) {
-        $('#customSwitch1').prop('checked', true);
-        this.randomCheckVal = 1;
-      } else {
-        $('#customSwitch1').prop('checked', false);
-        this.randomCheckVal = '';
-      }
+    this.selectedExecIds = this.selectedEXEC.map((exec) => exec.id)
+    if (this.selectedEXEC.length > 1 && this.maxSelectedLabels > 1) {
+      $('#customSwitch1').prop('checked', true);
+      this.randomCheckVal = 1;
+    } else {
+      $('#customSwitch1').prop('checked', false);
+      this.randomCheckVal = '';
+    }
     // }
 
     // if (event && type == 'retail') {
@@ -1248,7 +1327,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
   //to get all the mandate executive based on the team id
   getMandateDetails() {
     // if (this.propertyid != null) {
-    this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves(this.propId, '', this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.mandateexecutives = executives['mandateexecutives'];
       } else {
@@ -1259,7 +1338,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
   }
 
   getMandateRanavExecutives() {
-    this._mandateService.getExecutivesForRanav(this.propId, '',this.roleTeam,'').subscribe(executives => {
+    this._mandateService.getExecutivesForRanav(this.propId, '', this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.mandateexecutives = executives['mandateexecutives'];
       } else {
@@ -1365,7 +1444,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
     if (this.selectedRetEXECIds.length == 0) {
       swal({
         title: 'Please Select One Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1380,7 +1459,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1406,15 +1485,15 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
           title: 'Assigned Succesfully',
           type: 'success',
           // confirmButtonText: 'Show Details'
-          showConfirmButton:false,
-          timer:2000
+          showConfirmButton: false,
+          timer: 2000
         })
         // .then(() => {
-          //   this.assignedResponseInfo = success['details'];
-          //   $('#assign_leads_detail').click();
-          // })
-          this.cancel.nativeElement.click();
-          this.assignleadModalClose();
+        //   this.assignedResponseInfo = success['details'];
+        //   $('#assign_leads_detail').click();
+        // })
+        this.cancel.nativeElement.click();
+        this.assignleadModalClose();
         $('#assigneeeTeam_dropdown').dropdown('clear');
         $('#counts_dropdown').dropdown('clear');
         $('#exec_designation').dropdown('clear');
@@ -1425,7 +1504,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
         this.filterLoader = false;
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -1441,7 +1520,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
     if (this.leadforwards.assignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1455,7 +1534,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
     if (this.selectedExecIds.length == 0) {
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -1499,7 +1578,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1547,7 +1626,7 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -1764,18 +1843,37 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
 
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'fresh');
-    localStorage.setItem('locationURL',this.router.url)
+    localStorage.setItem('locationURL', this.router.url)
   }
 
-  redirectTO(enquiry){
+  redirectTO(enquiry) {
+
+    this._sharedservice.leads = this.enquiries;
+    this._sharedservice.page = EnquiryComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      property: this.propertyid,
+      source: this.source,
+      page: EnquiryComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      id: this.leads,
+      leads: this.enquiries
+    };
+    console.log(state,this.source)
+    sessionStorage.setItem('enquiry_state', JSON.stringify(state));
+
     this.router.navigate([
-    '/mandate-customers',
-    enquiry.customer_IDPK,
-    this.userid,
-    0,
-    'mandate',
-    ''
-  ]);
+      '/mandate-customers',
+      enquiry.customer_IDPK,
+      this.userid,
+      0,
+      'mandate',
+      ''
+    ]);
   }
 
   //importing leads through csv file
@@ -1816,8 +1914,23 @@ this._mandateService.fetchmandateexecutuves(this.propId, '',this.roleTeam,'').su
       return;
     }
 
-    this._sharedservice.uploadCSV(file).subscribe((resp)=>{
+    this._sharedservice.uploadCSV(file).subscribe((resp) => {
       console.log(file);
+      if (resp.status == true) {
+        console.log(resp.summary)
+        this.uploadedResultCSV = resp.summary;
+        swal({
+          title: 'Successfully uploaded the File',
+          type: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          $('.close').click();
+          setTimeout(() => {
+            $('#import_csv_detail').click();
+          })
+        });
+      }
     })
 
     // const reader = new FileReader();

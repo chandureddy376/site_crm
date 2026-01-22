@@ -138,6 +138,7 @@ export class StageDashboardComponent implements OnInit {
   visitedDatefilterview: boolean = false;
   visitedFrom: any;
   visitedTo: any;
+  isRestoredFromSession = false;
 
   ngOnInit() {
     this.roleid = localStorage.getItem('Role');
@@ -214,6 +215,155 @@ export class StageDashboardComponent implements OnInit {
       this.getsourcelist();
       this.getmandateExecutives()
     }
+
+    const savedState = sessionStorage.getItem('stage_leads_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.selectedCategory = state.category;
+      this.receivedFromDate = state.receivedfrom,
+        this.receivedToDate = state.receivedto,
+        this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.priorityName = state.priority,
+        this.leadstatusVisits = state.visits,
+        this.source = state.source;
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+      this.assignedFrom = state.assignedfrom,
+        this.assignedTo = state.assignedto,
+        this.execid = state.execid;
+      this.execname = state.execname,
+        this.visitedFrom = state.visitedfrom,
+        this.visitedTo = state.visitedto
+
+      StageDashboardComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      switch (state.dateFilterType) {
+        case 'today':
+          this.clicked1 = true;
+          break;
+        case 'yesterday':
+          this.clicked2 = true;
+          break;
+        case 'last7':
+          this.clicked3 = true;
+          break;
+        default:
+          this.clicked = true;
+      }
+
+      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '' && (this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1)) {
+        this.selectedCategory = 'Fixed';
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined) || (this.todate == '' || this.todate == undefined)) {
+        this.fromdate = '';
+        this.todate = '';
+      }
+
+      if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == '' || this.receivedToDate == undefined || this.receivedToDate == null)) {
+        this.receivedDatefilterview = false;
+        this.receivedFromDate = '';
+        this.receivedToDate = '';
+      } else {
+        this.receivedDatefilterview = true;
+      }
+
+      if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
+        this.visitedDatefilterview = false;
+        this.visitedFrom = '';
+        this.visitedTo = '';
+      } else {
+        this.visitedDatefilterview = true;
+        if ((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1) && this.selectedCategory == 'Fixed') {
+          this.visitedDatefilterview = true;
+          this.visitedFrom = '';
+          this.visitedTo = '';
+        }
+      }
+
+      if ((this.assignedFrom == '' || this.assignedFrom == undefined || this.assignedFrom == null) || (this.assignedTo == null || this.assignedTo == '' || this.assignedTo == undefined)) {
+        this.assignedOnDatefilterview = false;
+        this.assignedFrom = '';
+        this.assignedTo = '';
+      } else {
+        this.assignedOnDatefilterview = true;
+      }
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.priorityName) {
+        if (this.priorityName == 1) {
+          this.priorityType = 'Hot';
+        } else if (this.priorityName == 2) {
+          this.priorityType = 'Warm';
+        } else if (this.priorityName == 3) {
+          this.priorityType = 'Cold';
+        }
+        this.priorityFilter = true;
+      } else {
+        this.priorityFilter = false;
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.source == '' || this.source == null || this.source == undefined) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      $('.other_section').removeClass('active');
+      setTimeout(() => {
+        if (state.tabs == 'usvParam') {
+          $('.usv_stage').addClass('active');
+          this.usvParam = 1;
+        } else if (state.tabs == 'rsvParam') {
+          $('.rsv_stage').addClass('active');
+          this.rsvParam = 1;
+        } else if (state.tabs == 'fnParam') {
+          $('.fn_stage').addClass('active');
+          this.fnParam = 1;
+        }
+        this.getAllStageCounts();
+      }, 100)
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+    }
+
     this.getleadsdata();
   }
 
@@ -304,8 +454,18 @@ export class StageDashboardComponent implements OnInit {
       this.rmid = localStorage.getItem('UserId');
     }
     this.filterLoader = true;
-    StageDashboardComponent.count = 0;
+    // StageDashboardComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       this.propertyid = paramss['property'];
       this.propertyname = paramss['propname'];
@@ -336,7 +496,7 @@ export class StageDashboardComponent implements OnInit {
         this.resetScroll();
       }, 0);
 
-      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '' && this.usvParam == 1) {
+      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '' && (this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1)) {
         this.selectedCategory = 'Fixed';
       }
 
@@ -360,11 +520,7 @@ export class StageDashboardComponent implements OnInit {
         this.visitedTo = '';
       } else {
         this.visitedDatefilterview = true;
-        // if ((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1 ) && this.selectedCategory != 'Fixed' && (this.fromdate != '' && this.fromdate != undefined && this.fromdate != null && this.todate != '' && this.todate != undefined && this.todate != null)) {
-        //   this.fromdate = '';
-        //   this.todate = '';
-        // }
-        if((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1) && this.selectedCategory == 'Fixed'){
+        if ((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1) && this.selectedCategory == 'Fixed') {
           this.visitedDatefilterview = true;
           this.visitedFrom = '';
           this.visitedTo = '';
@@ -613,7 +769,6 @@ export class StageDashboardComponent implements OnInit {
         }
       });
 
-
       var usvfixjunkparam = {
         statuss: 'junkleads',
         stage: 'USV',
@@ -683,9 +838,9 @@ export class StageDashboardComponent implements OnInit {
       }
       this._mandateservice.assignedLeadsCount(rsvfixpar).subscribe(compleads => {
         if (compleads['status'] == 'True') {
-          this.DoneCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+          this.fixedCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
         } else {
-          this.DoneCount = 0;
+          this.fixedCount = 0;
         }
       });
 
@@ -762,6 +917,28 @@ export class StageDashboardComponent implements OnInit {
 
       //here i get the usv junk counts
 
+      var rsvfixjunkparam = {
+        statuss: 'junkvisits',
+        stage: 'RSV',
+        stagestatus: '1',
+        propid: this.propertyid,
+        executid: this.rmid,
+        loginuser: this.userid,
+        source: this.source,
+        receivedfrom: this.receivedFromDate,
+        receivedto: this.receivedToDate,
+        ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
+        assignedfrom: this.fromdate,
+        assignedto: this.todate,
+      }
+      this._mandateservice.assignedLeadsCount(rsvfixjunkparam).subscribe(compleads => {
+        if (compleads['status'] == 'True') {
+          this.junkFixedCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+        } else {
+          this.junkFixedCount = 0;
+        }
+      });
+
       var rsvDonejunkparam = {
         visitedfrom: this.fromdate,
         visitedto: this.todate,
@@ -809,9 +986,9 @@ export class StageDashboardComponent implements OnInit {
       }
       this._mandateservice.assignedLeadsCount(fnfixpar).subscribe(compleads => {
         if (compleads['status'] == 'True') {
-          this.DoneCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
+          this.fixedCount = parseInt(compleads.AssignedLeads[0].Uniquee_counts);
         } else {
-          this.DoneCount = 0;
+          this.fixedCount = 0;
         }
       });
 
@@ -899,8 +1076,8 @@ export class StageDashboardComponent implements OnInit {
         receivedfrom: this.receivedFromDate,
         receivedto: this.receivedToDate,
         ...(this.role_type == 1 ? { teamlead: this.userid } : {}),
-        visitedfrom: this.fromdate,
-        visitedto: this.todate,
+        assignedfrom: this.fromdate,
+        assignedto: this.todate,
       }
       this._mandateservice.assignedLeadsCount(fnfixjunkparam).subscribe(compleads => {
         if (compleads['status'] == 'True') {
@@ -945,6 +1122,7 @@ export class StageDashboardComponent implements OnInit {
   }
 
   getUSVLeadsData() {
+    StageDashboardComponent.count = 0;
     $('.other_section').removeClass('active');
     $('.usv_stage').addClass('active');
 
@@ -1116,6 +1294,7 @@ export class StageDashboardComponent implements OnInit {
   }
 
   getRSVLeadsData() {
+    StageDashboardComponent.count = 0;
     $('.other_section').removeClass('active');
     $('.rsv_stage').addClass('active');
     if (this.selectedCategory == 'Fixed') {
@@ -1288,6 +1467,7 @@ export class StageDashboardComponent implements OnInit {
   }
 
   getFNLeadsData() {
+    StageDashboardComponent.count = 0;
     $('.other_section').removeClass('active');
     $('.fn_stage').addClass('active');
 
@@ -1462,7 +1642,7 @@ export class StageDashboardComponent implements OnInit {
 
   getCategoryLeads(type) {
     this.selectedCategory = type;
-    if(type == 'Fixed'){
+    if (type == 'Fixed') {
       this.router.navigate([], {
         queryParams: {
           category: type,
@@ -1518,9 +1698,16 @@ export class StageDashboardComponent implements OnInit {
           execid: this.execid,
           execname: this.execname,
           datetype: this.datetype,
-          category: 'USV Fix',
+          category: this.selectedCategory,
           from: this.fromdate,
-          to: this.todate
+          to: this.todate,
+          assignedfrom: this.assignedFrom,
+          assignedto: this.assignedTo,
+          receivedFrom: this.receivedFromDate,
+          receivedTo: this.receivedToDate,
+          priority: this.priorityName,
+          visitedfrom: this.visitedFrom,
+          visitedto: this.visitedTo
         }
       })
     } else if (type == 'rsv') {
@@ -1538,7 +1725,14 @@ export class StageDashboardComponent implements OnInit {
           to: this.todate,
           visits: '',
           datetype: this.datetype,
-          category: 'RSV Fix'
+          category: this.selectedCategory,
+          assignedfrom: this.assignedFrom,
+          assignedto: this.assignedTo,
+          receivedFrom: this.receivedFromDate,
+          receivedTo: this.receivedToDate,
+          priority: this.priorityName,
+          visitedfrom: this.visitedFrom,
+          visitedto: this.visitedTo
         }
       })
     } else if (type == 'fn') {
@@ -1556,7 +1750,14 @@ export class StageDashboardComponent implements OnInit {
           to: this.todate,
           visits: '',
           datetype: this.datetype,
-          category: 'FN Fix'
+          category: this.selectedCategory,
+          assignedfrom: this.assignedFrom,
+          assignedto: this.assignedTo,
+          receivedFrom: this.receivedFromDate,
+          receivedTo: this.receivedToDate,
+          priority: this.priorityName,
+          visitedfrom: this.visitedFrom,
+          visitedto: this.visitedTo
         }
       })
     }
@@ -1866,6 +2067,7 @@ export class StageDashboardComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
   }
 
@@ -1993,6 +2195,26 @@ export class StageDashboardComponent implements OnInit {
   }
 
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -2673,7 +2895,7 @@ export class StageDashboardComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2686,7 +2908,7 @@ export class StageDashboardComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2701,7 +2923,7 @@ export class StageDashboardComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2748,7 +2970,7 @@ export class StageDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -2783,7 +3005,7 @@ export class StageDashboardComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             confirmButtonText: 'OK'
           })
@@ -2817,7 +3039,7 @@ export class StageDashboardComponent implements OnInit {
       //     } else {
       //       swal({
       //         title: 'Authentication Failed!',
-      //         text: 'Please try agin',
+      //         text: 'Please try again',
       //         type: 'error',
       //         confirmButtonText: 'OK'
       //       })
@@ -2843,7 +3065,7 @@ export class StageDashboardComponent implements OnInit {
   getReassignLeadsData(limitR) {
     this.filterLoader = true;
 
-     if (this.selectedCategory == 'Fixed' && this.usvParam == 1) {
+    if (this.selectedCategory == 'Fixed' && this.usvParam == 1) {
       var usvparam = {
         limit: 0,
         limitrows: limitR,
@@ -3007,7 +3229,7 @@ export class StageDashboardComponent implements OnInit {
           this.callerleads = [];
         }
       });
-    } else  if (this.selectedCategory == 'Fixed' && this.rsvParam == 1) {
+    } else if (this.selectedCategory == 'Fixed' && this.rsvParam == 1) {
       var rsvparam = {
         limit: 0,
         limitrows: limitR,
@@ -3173,7 +3395,7 @@ export class StageDashboardComponent implements OnInit {
           this.callerleads = [];
         }
       });
-    } else  if (this.selectedCategory == 'Fixed' && this.fnParam == 1) {
+    } else if (this.selectedCategory == 'Fixed' && this.fnParam == 1) {
       var fnparam = {
         limit: 0,
         limitrows: limitR,
@@ -3572,6 +3794,64 @@ export class StageDashboardComponent implements OnInit {
       autoApply: true,
     }, cb);
     cb(this.visitedOnStart, this.visitedOnEnd);
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    let dateFilterType = 'custom';
+
+    if (this.clicked1) dateFilterType = 'today';
+    else if (this.clicked2) dateFilterType = 'yesterday';
+    else if (this.clicked3) dateFilterType = 'last7';
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = StageDashboardComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+    let tab;
+    if (this.usvParam == 1) {
+      tab = 'usvParam';
+    } else if (this.rsvParam == 1) {
+      tab = 'rsvParam';
+    } else if (this.fnParam == 1) {
+      tab = 'fnParam';
+    }
+
+    const state = {
+      category: this.selectedCategory,
+      receivedfrom: this.receivedFromDate,
+      receivedto: this.receivedToDate,
+      fromdate: this.fromdate,
+      todate: this.todate,
+      priority: this.priorityName,
+      visits: this.leadstatusVisits,
+      source: this.source,
+      propertyname: this.propertyname,
+      propertyid: this.propertyid,
+      execid: this.execid,
+      execname: this.execname,
+      assignedfrom: this.assignedFrom,
+      assignedto: this.assignedTo,
+      visitedfrom: this.visitedFrom,
+      visitedto: this.visitedTo,
+      page: StageDashboardComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: tab,
+      dateFilterType
+    };
+
+    sessionStorage.setItem('stage_leads_state', JSON.stringify(state));
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 
 }

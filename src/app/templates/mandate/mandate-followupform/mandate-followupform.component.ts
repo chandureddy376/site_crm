@@ -19,7 +19,7 @@ export class MandateFollowupformComponent implements OnInit {
   @Input() callStatus: any;
   @Input() selectedSuggestedProp: any;
   date = new Date();
-  priorDate = new Date(new Date().setDate(this.date.getDate() + 7));
+  priorDate;
   priorDatebefore = new Date(new Date().setDate(this.date.getDate() - 30));
   followmodel = new Followups();
 
@@ -72,6 +72,7 @@ export class MandateFollowupformComponent implements OnInit {
     const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
     const timeString = (new Date()).toLocaleTimeString([], options);
     this.currenttime = timeString;
+    console.log(this.currenttime)
 
     if (this.userid == 1) {
       this.followupExecutiveId = this.selectedExecId;
@@ -161,6 +162,8 @@ export class MandateFollowupformComponent implements OnInit {
 
   followupactionclick(i, id, name) {
     if ((id == 1 && name == 'Callback') || (id == 8 && name == 'NC') && this.currentstage == "Fresh") {
+
+      console.log(name == 'Callback')   
       this.isFreshLead = true;
       $('#folloupdate').val('');
       $('#followuptime').val('')
@@ -184,6 +187,7 @@ export class MandateFollowupformComponent implements OnInit {
 
     this.followsectiondata = id;
     this.followsectionname = name;
+    this.scriptfunctions();
 
   }
 
@@ -901,12 +905,13 @@ export class MandateFollowupformComponent implements OnInit {
   // }
 
   scriptfunctions() {
+
     $('.ui.dropdown').dropdown();
     if (this.getselectedLeadExec && this.getselectedLeadExec.leadstage == 'Fresh') {
       $('.calendardate').calendar({
         type: 'date',
         minDate: this.date,
-        maxDate: this.priorDate,
+        maxDate: this.followsectionname == 'Callback'?new Date(new Date().setDate(this.date.getDate() + 1)):new Date(new Date().setDate(this.date.getDate() + 3)),
         formatter: {
           date: function (date, settings) {
             if (!date) return '';

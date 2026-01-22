@@ -154,6 +154,7 @@ export class MandateExecActivitiesComponent implements OnInit {
   selectedRecordExec: any;
   audioList: any;
   onRecordExecList: any;
+  isRestoredFromSession = false;
   // *****************************Assignedleads section list*****************************
 
   ngOnInit() {
@@ -161,12 +162,6 @@ export class MandateExecActivitiesComponent implements OnInit {
     this.userid = localStorage.getItem('UserId');
     this.role_type = localStorage.getItem('role_type');
     // *********************load the required template files*********************
-    this.getleadsdata();
-    this.mandateprojectsfetch();
-    if (this.roleid == 1 || this.roleid == '2' || this.roleid == '50013' || this.roleid == '50014' || this.role_type == 1) {
-      this.getsourcelist();
-      this.getExecutivesForFilter()
-    }
 
     this.hoverSubscription = this._sharedservice.hoverState$.subscribe((isHovered) => {
       this.isSidebarHovered = isHovered;
@@ -199,20 +194,342 @@ export class MandateExecActivitiesComponent implements OnInit {
       this.router.navigateByUrl('/login');
     }
 
+    this.mandateprojectsfetch();
+    if (this.roleid == 1 || this.roleid == '2' || this.roleid == '50013' || this.roleid == '50014' || this.role_type == 1) {
+      this.getsourcelist();
+      this.getExecutivesForFilter()
+    }
+
+    const savedState = sessionStorage.getItem('exec_activity_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.fromdate = state.fromdate;
+      this.todate = state.todate;
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname;
+      this.leadstatusVisits = state.visits;
+      this.datetype = state.datetype;
+      this.categoryStage = state.followupcategory;
+      this.categoryStageName = state.followupcategoryName;
+      this.stagestatusval = state.stagestatus;
+      this.leadBookingstatus = state.bookingLeadRequest;
+      this.stagevalue = state.stage
+      this.source = state.source
+      $(".other_section").removeClass("active");
+      if (state.tabs == 'followups') {
+        this.followupleadsparam = 1;
+        $(".followups_section").addClass("active");
+      } else if (state.tabs == 'nc') {
+        this.normalcallparam = 1;
+        $(".nc_section").addClass("active");
+      } else if (state.tabs == 'usv') {
+        this.usvParam = 1;
+        $(".usv_section").addClass("active");
+      } else if (state.tabs == 'rsv') {
+        this.rsvParam = 1;
+        $(".rsv_section").addClass("active");
+      } else if (state.tabs == 'fn') {
+        this.fnParam = 1;
+        $(".fn_section").addClass("active");
+      } else if (state.tabs == 'brq') {
+        this.bookingRequestParam = 1;
+        $(".booking_section").addClass("active");
+      } else if (state.tabs == 'booked') {
+        this.bookedParam = 1;
+        $(".booked_section").addClass("active");
+      } else if (state.tabs == 'inactive') {
+        this.inactiveparam = 1;
+      } else if (state.tabs == 'junkleads') {
+        this.junkleadsParam = 1;
+        $(".junkleads_section").addClass("active");
+      } else if (state.tabs == 'junkvisits') {
+        this.junkvisitsParam = 1;
+        $(".junkvisits_section").addClass("active");
+      }
+
+      MandateExecActivitiesComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.datetype == 'today') {
+        this.clicked = true;
+        this.clicked1 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.currentdateforcompare = new Date();
+        var curmonth = this.currentdateforcompare.getMonth() + 1;
+        var curmonthwithzero = curmonth.toString().padStart(2, "0");
+        var curday = this.currentdateforcompare.getDate();
+        var curdaywithzero = curday.toString().padStart(2, "0");
+        this.todaysdate = this.currentdateforcompare.getFullYear() + "-" + curmonthwithzero + "-" + curdaywithzero;
+        this.updatedFrom = this.todaysdate;
+        this.updatedTo = this.todaysdate;
+      } else if (this.datetype == 'yesterday') {
+        this.clicked = false;
+        this.clicked1 = true;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.currentdateforcompare = new Date();
+        var curmonth = this.currentdateforcompare.getMonth() + 1;
+        var curmonthwithzero = curmonth.toString().padStart(2, "0");
+        let yesterday = this.currentdateforcompare.getDate() - 1;
+        var yesterdaywithzero = yesterday.toString().padStart(2, "0");
+        this.yesterdaysdateforcompare = this.currentdateforcompare.getFullYear() + "-" + curmonthwithzero + "-" + yesterdaywithzero;
+        this.updatedFrom = this.yesterdaysdateforcompare;
+        this.updatedTo = this.yesterdaysdateforcompare;
+      } else if (this.datetype == '7days') {
+        this.clicked = false;
+        this.clicked1 = false;
+        this.clicked2 = true;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        //current date of today's
+        this.currentdateforcompare = new Date();
+        var curmonth = this.currentdateforcompare.getMonth() + 1;
+        var curmonthwithzero = curmonth.toString().padStart(2, '0');
+        var curday = this.currentdateforcompare.getDate();
+        var curdaywithzero = curday.toString().padStart(2, '0');
+        this.todaysdate = this.currentdateforcompare.getFullYear() + "-" + curmonthwithzero + "-" + curdaywithzero;
+        //getting the date of the -6days
+        var sevendaysago = new Date(this.currentdateforcompare);
+        sevendaysago.setDate(sevendaysago.getDate() - 6);
+        var sevendaysmonth = sevendaysago.getMonth() + 1;
+        var sevendaysmonthwithzero = sevendaysmonth.toString().padStart(2, "0");
+        var sevendays = sevendaysago.getDate();
+        var sevendayswithzero = sevendays.toString().padStart(2, "0");
+        this.sevendaysdateforcompare = sevendaysago.getFullYear() + "-" + sevendaysmonthwithzero + "-" + sevendayswithzero;
+
+        this.updatedFrom = this.sevendaysdateforcompare;
+        this.updatedTo = this.todaysdate;
+      } else if (this.datetype == '30days') {
+        this.clicked = false;
+        this.clicked1 = false;
+        this.clicked2 = false;
+        this.clicked3 = true;
+        this.clicked4 = false;
+        //current date of today's
+        this.currentdateforcompare = new Date();
+        var curmonth = this.currentdateforcompare.getMonth() + 1;
+        var curmonthwithzero = curmonth.toString().padStart(2, '0');
+        var curday = this.currentdateforcompare.getDate();
+        var curdaywithzero = curday.toString().padStart(2, '0');
+        this.todaysdate = this.currentdateforcompare.getFullYear() + "-" + curmonthwithzero + "-" + curdaywithzero;
+        //getting the date of the 29days of the previous month
+        var thirtyDaysago = new Date(this.currentdateforcompare);
+        thirtyDaysago.setDate(this.currentdateforcompare.getDate() - 29);
+        var thirtydaysmonth = thirtyDaysago.getMonth() + 1;
+        var thirtydaysmonthwithzero = thirtydaysmonth.toString().padStart(2, "0");
+        var thirtydays = thirtyDaysago.getDate();
+        var thirtydayswithzero = thirtydays.toString().padStart(2, "0");
+        this.thirtydaysdateforcompare = thirtyDaysago.getFullYear() + "-" + thirtydaysmonthwithzero + "-" + thirtydayswithzero;
+        this.updatedFrom = this.thirtydaysdateforcompare;
+        this.updatedTo = this.todaysdate;
+      } else {
+        this.clicked = false;
+        this.clicked1 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked4 = true;
+        this.updatedFrom = this.updatedFrom;
+        this.updatedTo = this.updatedTo;
+      }
+
+      if (this.propertyid == null || this.propertyid == '' || this.propertyid == undefined) {
+        this.propertyfilterview = false;
+      } else {
+        this.propertyfilterview = true;
+      }
+
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+        this.fromdate = '';
+        this.todate = '';
+        this.fromTime = '';
+        this.toTime = '';
+      } else {
+        this.datefilterview = true;
+
+        if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == null || this.receivedToDate == '' || this.receivedToDate == undefined)) {
+          this.receivedDatefilterview = false;
+        } else {
+          this.receivedDatefilterview = true;
+        }
+
+        if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
+          this.lastupdatedDatefilterview = false;
+        } else {
+          this.lastupdatedDatefilterview = true;
+        }
+      }
+
+      if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == '' || this.receivedToDate == undefined || this.receivedToDate == null)) {
+        this.receivedDatefilterview = false;
+        this.receivedFromDate = '';
+        this.receivedToDate = '';
+      } else {
+        this.receivedDatefilterview = true;
+
+        if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+          this.datefilterview = false;
+        } else {
+          this.datefilterview = true;
+        }
+
+        if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
+          this.lastupdatedDatefilterview = false;
+        } else {
+          this.lastupdatedDatefilterview = true;
+        }
+      }
+
+      if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
+        this.lastupdatedDatefilterview = false;
+        this.updatedFrom = '';
+        this.updatedTo = '';
+      } else {
+        this.lastupdatedDatefilterview = true;
+
+        if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == null || this.receivedToDate == '' || this.receivedToDate == undefined)) {
+          this.receivedDatefilterview = false;
+        } else {
+          this.receivedDatefilterview = true;
+        }
+
+        if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+          this.datefilterview = false;
+        } else {
+          this.datefilterview = true;
+        }
+      }
+
+      if (this.stagevalue) {
+        this.stagefilterview = true;
+        if (this.stagevalue == "USV") {
+          this.stagestatus = true;
+        } else {
+          this.stagestatus = true;
+        }
+      } else {
+        this.stagefilterview = false;
+      }
+
+      if (this.stagevalue == '' || this.stagevalue == undefined || this.stagevalue == null) {
+        this.stagefilterview = false;
+        if (this.junkvisitsParam == 1 && this.stagestatusval == 3) {
+          this.stagestatusval = '';
+        }
+      } else {
+        this.stagestatus = true;
+        this.stagefilterview = true;
+      }
+
+      if ((this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null)) {
+        this.stagestatusfilterview = false;
+        this.stagestatusval = '3';
+      } else {
+        this.stagestatusfilterview = true;
+        if (this.stagestatusval == '1') {
+          this.stagestatusvaltext = "Fixed";
+        } else if (this.stagestatusval == '2') {
+          this.stagestatusvaltext = "Refixed";
+        } else if (this.stagestatusval == '3') {
+          this.stagestatusvaltext = "Done";
+          if (this.junkvisitsParam != 1) {
+            this.stagefilterview = false;
+            this.stagestatusfilterview = false;
+          }
+        }
+      }
+
+      if (this.stagestatusval && this.stagestatusval != '3') {
+        this.stagefilterview = true;
+      }
+
+      if ((this.categoryStage == '' || this.categoryStage == undefined) || (this.categoryStageName == '' || this.categoryStageName == undefined)) {
+        this.categoryStage = '';
+        this.categoryStageName = '';
+        this.categeoryfilterview = false;
+      } else {
+        this.categeoryfilterview = true;
+      }
+
+      if (this.leadBookingstatus == 1) {
+        this.selectedBookingLeadStatus = 'Rejected'
+      } else if (this.leadBookingstatus == 2) {
+        this.selectedBookingLeadStatus = 'Pending'
+      } else {
+        this.selectedBookingLeadStatus = 'All'
+      }
+
+      if ((this.updatedFrom == "" || this.updatedFrom == undefined) && (this.updatedTo == undefined || this.updatedTo == "")) {
+        this.datecustomfetch = "Custom";
+      } else {
+        this.datecustomfetch = this.updatedFrom + ' - ' + this.updatedTo;
+      }
+
+      if (this.execid == '' || this.execid == undefined || this.execid == null) {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if (this.source == '' || this.source == undefined || this.source == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+    setTimeout(() => {
+      this.initializeNextActionDateRangePicker();
+      this.initializeUpdatedOnDateRangePicker();
+    }, 0);
+
+    this.getleadsdata();
+
     const elements = document.getElementsByClassName("modalclick");
     while (elements.length > 0) elements[0].remove();
     const el = document.createElement('div');
     el.classList.add('modalclick');
     document.body.appendChild(el);
-    MandateExecActivitiesComponent.count = 0;
-    MandateExecActivitiesComponent.closedcount = 0;
+    // MandateExecActivitiesComponent.count = 0;
+    // MandateExecActivitiesComponent.closedcount = 0;
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.initializeNextActionDateRangePicker();
       this.initializeUpdatedOnDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -243,12 +560,20 @@ export class MandateExecActivitiesComponent implements OnInit {
 
   getleadsdata() {
     this.filterLoader = true;
-    MandateExecActivitiesComponent.count = 0;
+    // MandateExecActivitiesComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
       // Updated Using Strategy
 
-      // *****************************Assignedleads section list*****************************
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
 
+      // *****************************Assignedleads section list*****************************
       this.followupleadsparam = paramss['followups'];
       this.inactiveparam = paramss['inactive'];
       this.usvParam = paramss['usv'];
@@ -384,14 +709,8 @@ export class MandateExecActivitiesComponent implements OnInit {
 
       if (this.propertyid == null || this.propertyid == '' || this.propertyid == undefined) {
         this.propertyfilterview = false;
-        if (this.roleid == 1 || this.roleid == '2') {
-          // this.getExecutivesForFilter();
-        }
       } else {
         this.propertyfilterview = true;
-        if (this.roleid == 1 || this.roleid == '2') {
-          // this.getExecutivesForFilter();
-        }
       }
 
       if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
@@ -408,12 +727,6 @@ export class MandateExecActivitiesComponent implements OnInit {
         } else {
           this.receivedDatefilterview = true;
         }
-
-        // if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
-        //   this.visitedDatefilterview = false;
-        // } else {
-        //   this.visitedDatefilterview = true;
-        // }
 
         if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
           this.lastupdatedDatefilterview = false;
@@ -435,44 +748,12 @@ export class MandateExecActivitiesComponent implements OnInit {
           this.datefilterview = true;
         }
 
-        // if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
-        //   this.visitedDatefilterview = false;
-        // } else {
-        //   this.visitedDatefilterview = true;
-        // }
-
         if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
           this.lastupdatedDatefilterview = false;
         } else {
           this.lastupdatedDatefilterview = true;
         }
       }
-
-      // if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
-      //   this.visitedDatefilterview = false;
-      //   this.visitedFrom = '';
-      //   this.visitedTo = '';
-      // } else {
-      //   this.visitedDatefilterview = true;
-
-      //   if ((this.receivedFromDate == '' || this.receivedFromDate == undefined || this.receivedFromDate == null) || (this.receivedToDate == null || this.receivedToDate == '' || this.receivedToDate == undefined)) {
-      //     this.receivedDatefilterview = false;
-      //   } else {
-      //     this.receivedDatefilterview = true;
-      //   }
-
-      //   if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
-      //     this.datefilterview = false;
-      //   } else {
-      //     this.datefilterview = true;
-      //   }
-
-      //   if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
-      //     this.lastupdatedDatefilterview = false;
-      //   } else {
-      //     this.lastupdatedDatefilterview = true;
-      //   }
-      // }
 
       if ((this.updatedFrom == '' || this.updatedFrom == undefined || this.updatedFrom == null) || (this.updatedTo == null || this.updatedTo == '' || this.updatedTo == undefined)) {
         this.lastupdatedDatefilterview = false;
@@ -486,12 +767,6 @@ export class MandateExecActivitiesComponent implements OnInit {
         } else {
           this.receivedDatefilterview = true;
         }
-
-        // if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
-        //   this.visitedDatefilterview = false;
-        // } else {
-        //   this.visitedDatefilterview = true;
-        // }
 
         if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
           this.datefilterview = false;
@@ -523,9 +798,7 @@ export class MandateExecActivitiesComponent implements OnInit {
 
       if ((this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null)) {
         this.stagestatusfilterview = false;
-        // if (this.junkParam != 1) {
         this.stagestatusval = '3';
-        // }
       } else {
         this.stagestatusfilterview = true;
         if (this.stagestatusval == '1') {
@@ -539,11 +812,6 @@ export class MandateExecActivitiesComponent implements OnInit {
             this.stagestatusfilterview = false;
           }
         }
-        // else if (this.stagestatusval == '4') {
-        //   this.stagestatusvaltext = "Followup";
-        // } else if (this.stagestatusval == '5') {
-        //   this.stagestatusvaltext = "Junk";
-        // }
       }
 
       if (this.stagestatusval && this.stagestatusval != '3') {
@@ -569,7 +837,6 @@ export class MandateExecActivitiesComponent implements OnInit {
       if ((this.updatedFrom == "" || this.updatedFrom == undefined) && (this.updatedTo == undefined || this.updatedTo == "")) {
         this.datecustomfetch = "Custom";
       } else {
-        // this.datecustomfetch = "Custom";
         this.datecustomfetch = this.updatedFrom + ' - ' + this.updatedTo;
       }
 
@@ -2636,14 +2903,14 @@ export class MandateExecActivitiesComponent implements OnInit {
 
   //get list of mandate executives for mandate for filter purpose
   getExecutivesForFilter() {
-        let teamlead;
-    if(this.role_type == 1){
+    let teamlead;
+    if (this.role_type == 1) {
       teamlead = this.userid
-    }else{
+    } else {
       teamlead = '';
     }
     if (this.roleid == 1 || this.roleid == '2' || this.role_type == 1) {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '',teamlead).subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '', teamlead).subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
@@ -2882,6 +3149,26 @@ export class MandateExecActivitiesComponent implements OnInit {
 
   isModalOpen: boolean = false;
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -3051,4 +3338,71 @@ export class MandateExecActivitiesComponent implements OnInit {
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'executives-report');
   }
+
+  redirectTo(lead) {
+    console.log(lead);
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = MandateExecActivitiesComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    let tab;
+    if (this.followupleadsparam == 1) {
+      tab = 'followups'
+    } else if (this.normalcallparam == 1) {
+      tab = 'nc'
+    } else if (this.usvParam == 1) {
+      tab = 'usv';
+    } else if (this.rsvParam == 1) {
+      tab = 'rsv';
+    } else if (this.fnParam == 1) {
+      tab = 'fn';
+    } else if (this.bookingRequestParam == 1) {
+      tab = 'brq';
+    } else if (this.bookedParam == 1) {
+      tab = 'booked';
+    } else if (this.inactiveparam == 1) {
+      tab = 'inactive';
+    } else if (this.junkleadsParam == 1) {
+      tab = 'junkleads';
+    } else if (this.junkvisitsParam == 1) {
+      tab = 'junkvisits';
+    }
+
+    const state = {
+      fromdate: this.fromdate,
+      todate: this.todate,
+      source: this.source,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      execid: this.execid,
+      execname: this.execname,
+      page: MandateExecActivitiesComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      visits: this.leadstatusVisits,
+      datetype: this.datetype,
+      tabs: tab,
+      followupcategory: this.categoryStage,
+      followupcategoryName: this.categoryStageName,
+      stagestatus: this.stagestatusval,
+      bookingLeadRequest: this.leadBookingstatus,
+      stage: this.stagevalue
+    };
+
+    sessionStorage.setItem('exec_activity_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
+  }
+
 }

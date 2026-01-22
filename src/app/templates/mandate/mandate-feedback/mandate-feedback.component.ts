@@ -205,6 +205,7 @@ export class MandateFeedbackComponent implements OnInit {
   audioList: any;
   onRecordExecList: any;
   roleTeam: any = '';
+  isRestoredFromSession = false;
   // *****************************Assignedleads section list*****************************
 
   ngOnInit() {
@@ -223,12 +224,7 @@ export class MandateFeedbackComponent implements OnInit {
     });
 
     // *********************load the required template files*********************
-    this.getleadsdata();
-    this.mandateprojectsfetch();
-    if (this.roleid == '1' || this.roleid == '50013' || this.roleid == '50014' || this.roleid == '2') {
-      this.getCsExecutives();
-      this.getExecutivesForFilter()
-    }
+
 
     var curmonth = this.currentdateforcompare.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
@@ -262,6 +258,180 @@ export class MandateFeedbackComponent implements OnInit {
     } else {
     }
 
+    this.mandateprojectsfetch();
+    if (this.roleid == '1' || this.roleid == '50013' || this.roleid == '50014' || this.roleid == '2') {
+      this.getCsExecutives();
+      this.getExecutivesForFilter()
+    }
+
+    const savedState = sessionStorage.getItem('feedback_state');
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.source = state.source
+      this.execid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname;
+      this.csexecid = state.csexecid,
+        this.csexecname = state.csexecname,
+        this.fromdate = state.from;
+      this.todate = state.to;
+      this.assignedFrom = state.assignedfrom;
+      this.assignedTo = state.assignedto;
+      this.visitedFrom = state.visitedfrom;
+      this.visitedTo = state.visitedto;
+      this.stagevalue = state.stage;
+      this.stagestatusval = state.stagestatus
+
+      $(".other_section").removeClass("active");
+      if (state.tabs == 'pendingleadsparam') {
+        $(".pending_section").addClass("active");
+        this.pendingleadsparam = 1;
+      } else if (state.tabs == 'ncleadsparam') {
+        $(".nc_section").addClass("active");
+        this.ncleadsparam = 1;
+      } else if (state.tabs == 'usvParam') {
+        $(".usv_section").addClass("active");
+        this.usvParam = 1;
+      } else if (state.tabs == 'rsvParam') {
+        $(".rsv_section").addClass("active");
+        this.rsvParam = 1;
+      } else if (state.tabs == 'fnParam') {
+        $(".fn_section").addClass("active");
+        this.fnParam = 1;
+      } else if (state.tabs == 'junkvisitsParam') {
+        $(".junkvisits_section").addClass("active");
+        this.junkvisitsParam = 1;
+      }
+
+      MandateFeedbackComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      if (this.propertyid == null || this.propertyid == '' || this.propertyid == undefined) {
+        this.propertyfilterview = false;
+      } else {
+        this.propertyfilterview = true;
+      }
+
+      if (this.execid == '' || this.execid == undefined || this.execid == null) {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      if (this.source == '' || this.source == undefined || this.source == null) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+
+      if ((this.fromdate == '' || this.fromdate == undefined || this.fromdate == null) || (this.todate == '' || this.todate == undefined || this.todate == null)) {
+        this.datefilterview = false;
+        this.fromdate = '';
+        this.todate = '';
+        this.fromTime = '';
+        this.toTime = '';
+      } else {
+        this.datefilterview = true;
+        $("#fromdate").val(this.fromdate);
+        $("#selectedtodate").val(this.todate);
+      }
+
+      if ((this.visitedFrom == '' || this.visitedFrom == undefined || this.visitedFrom == null) || (this.visitedTo == null || this.visitedTo == '' || this.visitedTo == undefined)) {
+        this.visitedDatefilterview = false;
+        this.visitedFrom = '';
+        this.visitedTo = '';
+      } else {
+        this.visitedDatefilterview = true;
+        if (this.stagestatusval == 1 || this.stagestatusval == 2) {
+          this.stagestatusval = '';
+        }
+
+        if ((this.usvParam == 1 || this.rsvParam == 1 || this.fnParam == 1) && (this.fromdate != '' && this.fromdate != undefined && this.fromdate != null && this.todate != '' && this.todate != undefined && this.todate != null)) {
+          this.fromdate = '';
+          this.todate = '';
+          this.datefilterview = false;
+        }
+      }
+
+      if ((this.assignedFrom == '' || this.assignedFrom == undefined || this.assignedFrom == null) || (this.assignedTo == null || this.assignedTo == '' || this.assignedTo == undefined)) {
+        this.assignedOnDatefilterview = false;
+        this.assignedFrom = '';
+        this.assignedTo = '';
+      } else {
+        this.assignedOnDatefilterview = true;
+      }
+
+      if (this.stagevalue) {
+        this.stagefilterview = true;
+        if (this.stagevalue == "USV") {
+          this.stagestatus = true;
+        } else if (this.stagevalue == 'Junk') {
+          this.stagestatusval = '';
+          this.stagestatusvaltext = '';
+          this.stagestatusfilterview = false;
+          this.stagestatusval = '';
+        } else {
+          this.stagestatus = true;
+        }
+      } else {
+        this.stagefilterview = false;
+      }
+
+      if (this.stagevalue == '' || this.stagevalue == undefined || this.stagevalue == null) {
+        this.stagefilterview = false;
+        if (this.junkvisitsParam == 1 && this.stagestatusval == 3) {
+          this.stagestatusval = '';
+        }
+      } else {
+        this.stagestatus = true;
+        this.stagefilterview = true;
+      }
+
+      if ((this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null)) {
+        this.stagestatusfilterview = false;
+      } else {
+        this.stagestatusfilterview = true;
+        if (this.stagestatusval == '1') {
+          this.stagestatusvaltext = "Fixed";
+        } else if (this.stagestatusval == '2') {
+          this.stagestatusvaltext = "Refixed";
+        } else if (this.stagestatusval == '3') {
+          this.stagestatusvaltext = "Done";
+          if (this.junkvisitsParam != 1) {
+            this.stagefilterview = false;
+            this.stagestatusfilterview = false;
+          }
+        }
+      }
+
+      if (this.stagestatusval && this.stagestatusval != '3') {
+        this.stagefilterview = true;
+      }
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+
+    this.getleadsdata();
+
     let node2: any = document.createElement('link');
     node2.setAttribute('href', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
     node2.rel = 'stylesheet';
@@ -281,8 +451,8 @@ export class MandateFeedbackComponent implements OnInit {
     const el = document.createElement('div');
     el.classList.add('modalclick');
     document.body.appendChild(el);
-    MandateFeedbackComponent.count = 0;
-    MandateFeedbackComponent.closedcount = 0;
+    // MandateFeedbackComponent.count = 0;
+    // MandateFeedbackComponent.closedcount = 0;
     if (this.roleid == 1 || this.roleid == '50013' || this.roleid == '50014' || this.roleid == '2') {
       this.getsourcelist();
     }
@@ -293,7 +463,7 @@ export class MandateFeedbackComponent implements OnInit {
       this.initializeNextActionDateRangePicker();
       this.initializeAssignedOnDateRangePicker();
       this.initializeVisitedOnDateRangePicker();
-      this.resetScroll();
+      // this.resetScroll();
     }, 0);
   }
 
@@ -330,8 +500,18 @@ export class MandateFeedbackComponent implements OnInit {
   }
 
   getleadsdata() {
-    MandateFeedbackComponent.count = 0;
+    // MandateFeedbackComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       this.filterLoader = true;
 
@@ -384,19 +564,17 @@ export class MandateFeedbackComponent implements OnInit {
 
       if (this.propertyid) {
         this.propertyfilterview = true;
-        // this.getExecutivesForFilter();
       } else {
         this.propertyfilterview = false;
-        // this.getExecutivesForFilter();
       }
 
       if (this.execid) {
         this.executivefilterview = true;
         if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
           this.rmid = this.execid;
-          } else {
-            this.rmid = this.execid;
-          }
+        } else {
+          this.rmid = this.execid;
+        }
       } else {
         this.executivefilterview = false;
         if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
@@ -461,6 +639,7 @@ export class MandateFeedbackComponent implements OnInit {
       } else {
         this.assignedOnDatefilterview = true;
       }
+
       if (this.stagevalue) {
         this.stagefilterview = true;
         if (this.stagevalue == "USV") {
@@ -489,7 +668,6 @@ export class MandateFeedbackComponent implements OnInit {
 
       if ((this.stagestatusval == '' || this.stagestatusval == undefined || this.stagestatusval == null)) {
         this.stagestatusfilterview = false;
-        // this.stagestatusval = '3';
       } else {
         this.stagestatusfilterview = true;
         if (this.stagestatusval == '1') {
@@ -1260,7 +1438,7 @@ export class MandateFeedbackComponent implements OnInit {
   }
 
   getExecutives() {
-    this._mandateService.fetchmandateexecutuves(this.propertyid, this.team, this.roleTeam,'').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves(this.propertyid, this.team, this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.mandateexecutives = executives['mandateexecutives'];
       }
@@ -1949,7 +2127,7 @@ export class MandateFeedbackComponent implements OnInit {
     $('#leadcount_dropdown').dropdown('clear');
     $('#property_dropdown').dropdown('clear');
 
-    this._mandateService.fetchmandateexecutuves('', '', '50014','').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves('', '', '50014', '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.csListExecutives = executives['mandateexecutives'];
         this.copyOfcsListExecutives = executives['mandateexecutives'];
@@ -2039,7 +2217,7 @@ export class MandateFeedbackComponent implements OnInit {
       }
     }
 
-    this._mandateService.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam,'').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuves(this.selectedMandateProp, this.selectedReassignTeamType, this.roleTeam, '').subscribe(executives => {
       if (executives['status'] == 'True') {
         setTimeout(() => {
           this.reassignListExecutives = executives['mandateexecutives'];
@@ -2073,7 +2251,7 @@ export class MandateFeedbackComponent implements OnInit {
       $('#property_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Property');
       swal({
         title: 'Please Select Property!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2087,7 +2265,7 @@ export class MandateFeedbackComponent implements OnInit {
     if (this.selectedAssignedleads == undefined || this.selectedAssignedleads == "") {
       swal({
         title: 'Please Select Some Leads!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2102,7 +2280,7 @@ export class MandateFeedbackComponent implements OnInit {
       $('#retailExec_dropdown').focus().css("border-color", "red").attr('placeholder', 'Select Executives');
       swal({
         title: 'Please Select The Executive!',
-        text: 'Please try agin',
+        text: 'Please try again',
         type: 'error',
         confirmButtonText: 'OK'
       })
@@ -2150,7 +2328,7 @@ export class MandateFeedbackComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           confirmButtonText: 'OK'
         })
@@ -2379,14 +2557,14 @@ export class MandateFeedbackComponent implements OnInit {
   //get list of mandate executives for mandate for filter purpose
   getExecutivesForFilter() {
     if (this.role_type != 1) {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '50002','').subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.propertyid, '', '', '50002', '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
         }
       });
     } else {
-      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '50002','').subscribe(executives => {
+      this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '50002', '').subscribe(executives => {
         if (executives['status'] == 'True') {
           this.mandateExecutivesFilter = executives['mandateexecutives'];
           this.copyMandateExecutives = executives['mandateexecutives'];
@@ -2396,7 +2574,7 @@ export class MandateFeedbackComponent implements OnInit {
   }
 
   getCsExecutives() {
-    this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '50014','').subscribe(executives => {
+    this._mandateService.fetchmandateexecutuvesforreassign(this.mandateProperty_ID, 2, '', '50014', '').subscribe(executives => {
       if (executives['status'] == 'True') {
         this.csListExecutives = executives['mandateexecutives'];
         this.copyOfcsListExecutives = executives['mandateexecutives'];
@@ -2875,6 +3053,26 @@ export class MandateFeedbackComponent implements OnInit {
 
   isModalOpen: boolean = false;
   triggerCall(lead) {
+
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     this.calledLead = lead;
     this.assignedRm = lead.ExecId;
     localStorage.setItem('calledLead', JSON.stringify(lead));
@@ -3043,5 +3241,64 @@ export class MandateFeedbackComponent implements OnInit {
 
   detailsPageRedirection() {
     localStorage.setItem('backLocation', 'feedback');
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = MandateFeedbackComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+
+    localStorage.setItem('backLocation', '');
+
+    let tab;
+    if (this.pendingleadsparam == 1) {
+      tab = 'pendingleadsparam'
+    } else if (this.ncleadsparam == 1) {
+      tab = 'ncleadsparam'
+    } else if (this.usvParam == 1) {
+      tab = 'usvParam';
+    } else if (this.rsvParam == 1) {
+      tab = 'rsvParam';
+    } else if (this.fnParam == 1) {
+      tab = 'fnParam';
+    } else if (this.junkvisitsParam == 1) {
+      tab = 'junkvisitsParam';
+    }
+
+    const state = {
+      source: this.source,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      execid: this.execid,
+      execname: this.execname,
+      page: MandateFeedbackComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      leads: this.callerleads,
+      tabs: tab,
+      csexecname: this.csexecname,
+      csexecid: this.csexecid,
+      from: this.fromdate,
+      to: this.todate,
+      assignedfrom: this.assignedFrom,
+      assignedto: this.assignedFrom,
+      visitedfrom: this.visitedFrom,
+      visitedto: this.visitedTo,
+      stage: this.stagevalue,
+      stagestatus: this.stagestatusval
+    };
+
+    sessionStorage.setItem('feedback_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.RMID,
+      1,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 }

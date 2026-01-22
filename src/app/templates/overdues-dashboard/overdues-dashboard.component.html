@@ -334,7 +334,7 @@
                                     </label>
                                   </div>
                                 </div>
-                                <div *ngIf="!mandateExecutivesFilter?.length" class="text-center"
+                                <div *ngIf="!mandateexecutives?.length" class="text-center"
                                   style="color: #666666;">
                                   <h4>No Executives Found</h4>
                                 </div>
@@ -350,23 +350,23 @@
                       <tr *ngFor="let leads of callerleads; let i = index">
                         <td class="text-center">{{i+1}}</td>
                         <td *ngIf="roleid == 1 || roleid == '2'">
-                          <a class="btn_style cursor-pointer" style="font-size: 14px;" (click)="detailsPageRedirection()">
-                            <span
-                              routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">{{leads.CustomerName}}
+                          <a class="btn_style cursor-pointer" style="font-size: 14px;"
+                            (click)="detailsPageRedirection()">
+                            <span (click)="redirectTo(leads)">{{leads.CustomerName}}
                             </span>
                             <!-- <span class="blocked_des" *ngIf="leads.rnr_counts >= 5"><i class="fas fa-ban"
                                                         style="color: white;"></i>
                                                       Inactive</span> -->
-                            <span class="d-flex" *ngIf="leads?.qualified_leads == '2'"><img src="../../../assets/images/qualified.svg"
-                                style="width: 20px;"></span>
-                            <span class="d-flex" *ngIf="leads?.qualified_leads == '3'"><img src="../../../assets/images/not_qualified.svg"
-                                style="width: 20px;">
+                            <span class="d-flex" *ngIf="leads?.qualified_leads == '2'"><img
+                                src="../../../assets/images/qualified.svg" style="width: 20px;"></span>
+                            <span class="d-flex" *ngIf="leads?.qualified_leads == '3'"><img
+                                src="../../../assets/images/not_qualified.svg" style="width: 20px;">
                             </span>
                             <div>
                               <div class="d-flex gap-3"
                                 [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
-                                <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
-                                  data-placement="right"
+                                <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)"
+                                  data-toggle="tooltip" data-placement="right"
                                   [attr.title]="'Click to Call: ' +  ((roleid != 50001 && roleid != 50002) || (leads.laststage != fresh || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
                                     src="../../../assets/images/call_btn.png"></span>
                                 <!-- <span class="call_des" *ngIf="leads.number" (click)="moveToWhatsapp(leads)"
@@ -375,7 +375,8 @@
                                 <span class="call_des"
                                   *ngIf="leads.number && ((leads.Leadphase != 'Fresh' || (leads.Leadphase == 'Fresh' && leads.followupreason == 8)) || (roleid == 1 || roleid == 2))"
                                   (click)="recordingList(leads)" data-toggle="tooltip" data-placement="right"
-                                  title="Click to listen to the recordings"><img src="../../../assets/images/play_btn.png">
+                                  title="Click to listen to the recordings"><img
+                                    src="../../../assets/images/play_btn.png">
                                 </span>
                               </div>
                             </div>
@@ -383,14 +384,13 @@
                         </td>
 
                         <td *ngIf="roleid != 1 && roleid != '2'">
-                          <a class="btn_style cursor-pointer" style="font-size: 14px;" (click)="detailsPageRedirection()">
-                            <span
-                              routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">{{leads.CustomerName}}
-                            </span>
+                          <a class="btn_style cursor-pointer" style="font-size: 14px;"
+                            (click)="detailsPageRedirection()">
+                            <span (click)="redirectTo(leads)">{{leads.CustomerName}}</span>
                             <div class="d-flex gap-3"
                               [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && ( normalcallparam || usvParam || rsvParam || fnParam)) ? 'red' : '' , 'opacity' : (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? '' :''}">
-                              <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)" data-toggle="tooltip"
-                                data-placement="right"
+                              <span class="call_des" *ngIf="leads.number" (click)="triggerCall(leads)"
+                                data-toggle="tooltip" data-placement="right"
                                 [attr.title]="'Click to Call: ' +  (((roleid != 50001 && roleid != 50002) || (leads?.Leadphase != 'Fresh' || (leads?.Leadphase == 'Fresh' && leads.followupreason == 8))) ? leads?.number : 'xxxxxxxxxx')"><img
                                   src="../../../assets/images/call_btn.png"></span>
                               <!-- <span class="call_des" *ngIf="leads.number" (click)="moveToWhatsapp(leads)" data-toggle="tooltip"
@@ -398,7 +398,8 @@
                               <span class="call_des"
                                 *ngIf="leads.number && ((leads.Leadphase != 'Fresh' || (leads.Leadphase == 'Fresh' && leads.followupreason == 8)) || (roleid == 1 || roleid == 2))"
                                 (click)="recordingList(leads)" data-toggle="tooltip" data-placement="right"
-                                title="Click to listen to the recordings"><img src="../../../assets/images/play_btn.png">
+                                title="Click to listen to the recordings"><img
+                                  src="../../../assets/images/play_btn.png">
                               </span>
                             </div>
                           </a>
@@ -551,7 +552,7 @@
             </div>
 
             <div class="form-group col-3 input_cmn_div">
-              <label class="font-bold">Assign To</label>
+              <label class="font-bold">Assign To</label><br/>
               <p-multiSelect id="mandateExec_dropdown" [options]="reassignListExecutives"
                 [(ngModel)]="selectedEXECUTIVES" [filter]="true" optionLabel="name" #customersupport="ngModel"
                 name="customersupport" defaultLabel="Select Executives"
@@ -591,9 +592,9 @@
 
             <!-- list of reassign selected leads table  -->
             <div class="assign_table1 pt-3">
-              <table id="start2" class="content_table_main table" infinite-scroll
-                [fromRoot]="true" [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
-                [infiniteScrollContainer]="'.assign_table1'" (scrolled)="loadMoreassignedleads()">
+              <table id="start2" class="content_table_main table" infinite-scroll [fromRoot]="true"
+                [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+                [infiniteScrollContainer]="'.assign_table1'">
                 <thead style="background: #0B7AB2 !important;">
                   <tr>
                     <th>#</th>
@@ -660,7 +661,7 @@
   Details</button>
 <div class="modal fade" id="reassigned_leads_modal" tabindex="-1" role="dialog" aria-labelledby="defModalHead"
   aria-hidden="true">
-  <div class="modal-dialog reassignlead_modal">
+  <!-- <div class="modal-dialog reassignlead_modal">
     <div class="modal-content enquiry_modal_body" id="reassign_leads">
       <div class="modal-header">
         <h4 class="col-10 m-0">Re-Assign Leads</h4>
@@ -706,7 +707,79 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+  <div class="modal-dialog history_modal ">
+    <div class="modal-content history_modal_body" id="history_leads">
+      <div class="modal-header d-flex justify-content-between px-3 py-2 align-items-center"
+        style="background: linear-gradient(180deg, #FFFFFF 0%, #F3F3F3 100%);border-bottom: 1px solid #D8D8D8">
+        <h4 class="m-0 col-11 p-0 text-center"
+          style="color: #30383C;font-size: 24px !important;font-weight: 500 !important;">Re-Assigned Leads Details</h4>
+        <button type="button" class="close style_close_btn" data-dismiss="modal" (click)="closeDetailModal()">
+          <i class="fas fa-times" style="font-size: 14px;font-weight: 600;margin: 0;"></i>
+        </button>
+      </div>
+      <div class="modal-body p-0" style="overflow: scroll;height: 400px;">
+        <div class="col-12 py-3">
+          <div class="col-12 py-3" *ngFor="let reassign of reassignedResponseInfo; let i = index">
+            <div class="">
+              <span class="executive_style">{{reassign.execname}}</span>
+            </div>
+            <div class="col-12 row p-0 m-0">
+              <div class="col-3 p-0 text-center assigned_col">Assigned</div>
+              <div class="col-6 p-0 text-center not_assigned_col">Not Assigned</div>
+              <div class="col-3 p-0 text-center untouched_col">Untouched</div>
+            </div>
+            <div class="col-12 row p-0 m-0">
+              <div class="col-3 p-0">
+                <div class="assigned_inner_row">Total
+                  <span>{{reassign.fresh + reassign.reassignedLeads + reassign.reassignedVisits}}</span>
+                </div>
+                <div class="assigned_inner_row">Leads
+                  <span>{{reassign.fresh + reassign.reassignedLeads}}</span>
+                </div>
+                <div class="assigned_inner_row">Overdued Visits
+                  <span>{{reassign.reassignedVisits}}</span>
+                </div>
+              </div>
+              <div class="col-6 p-0">
+                <div class="col-12 p-0 d-flex">
+                  <div class="col-6 p-0">
+                    <div class="not_assigned_inner_row">Already in Fresh
+                      <span>{{reassign.alreadyinfresh}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Already in Active
+                      <span>{{reassign.alreadyinactive}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row">Overload Limit
+                      <span>{{reassign.leads_skipped_executive_capacity}}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0">
+                    <div class="not_assigned_inner_row" style="height: 51px !important;">GR Swara Leads
+                      <span>{{reassign.gr_swara_leads_skipped}}</span>
+                    </div>
+                    <div class="not_assigned_inner_row" style="height: 51px !important;">Active Visits
+                      <span>{{reassign.reassignedVisitExist}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 p-0">
+                <div class="untouched_inner_row">Leads
+                  <span>{{reassign.untouched_leads}}</span>
+                </div>
+                <div class="untouched_inner_row">Visits
+                  <span>{{reassign.untouched_visits}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 </div>
 <!-- ----------------------------After reassign Info table---------------------------- -->
 

@@ -1299,3 +1299,16 @@ ul.tl li .timestamp {
   font-weight: 400;
   font-size: 16px;
 }
+
+::ng-deep .source_dpdown .ui.selection.dropdown {
+  min-width: 18em !important;
+}
+
+.CSassigned_table .table td,
+.CSassigned_table .table th,
+.assign_table1 .table th,
+.assign_table1 .table td {
+  white-space: normal !important;
+  word-break: break-word;
+  word-wrap: break-word;
+}

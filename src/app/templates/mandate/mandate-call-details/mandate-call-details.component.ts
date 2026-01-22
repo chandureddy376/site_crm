@@ -2077,7 +2077,7 @@ export class MandateCallDetailsComponent implements OnInit {
       if (comma_separated_data == '' || comma_separated_data == null) {
         swal({
           title: 'Please Select The Executive!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false
@@ -2129,7 +2129,7 @@ export class MandateCallDetailsComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               timer: 2000,
               showConfirmButton: false
@@ -2168,7 +2168,7 @@ export class MandateCallDetailsComponent implements OnInit {
           } else {
             swal({
               title: 'Authentication Failed!',
-              text: 'Please try agin',
+              text: 'Please try again',
               type: 'error',
               timer: 2000,
               showConfirmButton: false
@@ -2188,7 +2188,7 @@ export class MandateCallDetailsComponent implements OnInit {
       if (comma_separated_data == '' || comma_separated_data == null) {
         swal({
           title: 'Please Select One Executive.',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false
@@ -2231,7 +2231,7 @@ export class MandateCallDetailsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             timer: 2000,
             showConfirmButton: false
@@ -2332,7 +2332,7 @@ export class MandateCallDetailsComponent implements OnInit {
         } else {
           swal({
             title: 'Authentication Failed!',
-            text: 'Please try agin',
+            text: 'Please try again',
             type: 'error',
             timer: 2000,
             showConfirmButton: false
@@ -2397,7 +2397,7 @@ export class MandateCallDetailsComponent implements OnInit {
       } else {
         swal({
           title: 'Authentication Failed!',
-          text: 'Please try agin',
+          text: 'Please try again',
           type: 'error',
           timer: 2000,
           showConfirmButton: false
@@ -3303,6 +3303,26 @@ export class MandateCallDetailsComponent implements OnInit {
   }
 
   triggerCall() {
+
+    let number = this.assignedrm[0].customer_number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${this.assignedrm[0].customer_number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
     let currentDate = new Date();
     //date
     let year = currentDate.getFullYear();

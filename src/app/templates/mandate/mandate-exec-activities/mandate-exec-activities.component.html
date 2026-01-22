@@ -343,8 +343,8 @@
                           <div class="dropdown-menu " aria-labelledby="bookingLeadDropdown" style="cursor:pointer;">
                             <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('1')"
                               *ngIf="usvParam != 1">Fixed</a>
-                            <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('2')"
-                              *ngIf="usvParam != 1">ReFixed</a>
+                            <!-- <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('2')"
+                              *ngIf="usvParam != 1">ReFixed</a> -->
                             <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('3')"
                               *ngIf="usvParam != 1">Done</a>
                             <!-- <a class="dropdown-item dropDownCursor" (click)="stagestatuschange('4')" *ngIf="stagestatusval == 3 ">Followup</a>
@@ -372,7 +372,7 @@
                               </div>
                               <div class="submenu" *ngIf="junkvisitsParam != 1">
                                 <a class="submenu-item" (click)="junkStageStatusChange('USV','1')">Fix</a>
-                                <a class="submenu-item" (click)="junkStageStatusChange('USV','2')">Refix</a>
+                                <!-- <a class="submenu-item" (click)="junkStageStatusChange('USV','2')">Refix</a> -->
                                 <a class="submenu-item" (click)="junkStageStatusChange('USV','3')">Done</a>
                               </div>
                             </div>
@@ -383,7 +383,7 @@
                               </div>
                               <div class="submenu" *ngIf="junkvisitsParam != 1">
                                 <a class="submenu-item" (click)="junkStageStatusChange('RSV','1')">Fix</a>
-                                <a class="submenu-item" (click)="junkStageStatusChange('RSV','2')">Refix</a>
+                                <!-- <a class="submenu-item" (click)="junkStageStatusChange('RSV','2')">Refix</a> -->
                                 <a class="submenu-item" (click)="junkStageStatusChange('RSV','3')">Done</a>
                               </div>
                             </div>
@@ -394,8 +394,8 @@
                               </div>
                               <div class="submenu" *ngIf="junkvisitsParam != 1">
                                 <a class="submenu-item" (click)="junkStageStatusChange('Final Negotiation','1')">Fix</a>
-                                <a class="submenu-item"
-                                  (click)="junkStageStatusChange('Final Negotiation','2')">Refix</a>
+                                <!-- <a class="submenu-item"
+                                  (click)="junkStageStatusChange('Final Negotiation','2')">Refix</a> -->
                                 <a class="submenu-item"
                                   (click)="junkStageStatusChange('Final Negotiation','3')">Done</a>
                               </div>
@@ -639,9 +639,8 @@
                     </a> -->
 
                     <a *ngIf="roleid == 1 || roleid == '2'" class="btn_style cursor-pointer"
-                      (click)="detailsPageRedirection()">
+                      (click)="detailsPageRedirection();redirectTo(leads)">
                       <div class="statuscard"
-                        routerLink="/mandate-customers/{{leads.LeadID}}/{{leads.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}"
                         [ngStyle]="{'color': (todaysdateforcompare > leads?.nextactiondate && (normalcallparam || usvParam || rsvParam || fnParam)) ? 'white' : '' }">
                         {{leads.CustomerName}}
                         <span *ngIf="leads?.qualified_leads == '2'"><img src="../../../../assets/images/qualified.svg"

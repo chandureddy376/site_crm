@@ -430,8 +430,7 @@
 
                   <!-- ----------------------------Customer name and number---------------------------- -->
                   <td>
-                    <a class="btn_style cursor-pointer" (click)="detailsPageRedirection()"
-                      routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">
+                    <a class="btn_style cursor-pointer" (click)="detailsPageRedirection();redirectTo(leads)">
                       <div class="statuscard">
                         {{leads.CustomerName}}
                         <span class="blocked_des" *ngIf="leads.rnr_counts >= 5"><i class="fas fa-ban"
@@ -694,8 +693,7 @@
                 <tr *ngFor="let leads of callerleads; let i = index">
                   <td>{{i+1}}</td>
                   <td>
-                    <a class="btn_style cursor-pointer" (click)="detailsPageRedirection()"
-                      routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">{{leads.CustomerName}}
+                    <a class="btn_style cursor-pointer" (click)="detailsPageRedirection();redirectTo(leads)">{{leads.CustomerName}}
                     </a>
                     <span class="blocked_des" *ngIf="leads.rnr_counts >= 5"><i class="fas fa-ban"
                         style="color: white;"></i> Inactive</span>
@@ -1142,8 +1140,7 @@
                   <!-- ----------------------------Customer name and number---------------------------- -->
                   <td>
                     <a class="btn_style cursor-pointer">
-                      <div class="statuscard" (click)="detailsPageRedirection()"
-                        routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">
+                      <div class="statuscard" (click)="detailsPageRedirection();redirectTo(leads)">
                         {{leads.CustomerName}}
                         <span class="blocked_des" *ngIf="leads.rnr_counts >= 5"><i class="fas fa-ban"
                             style="color: white;"></i> Inactive</span>
@@ -1504,8 +1501,7 @@
                   <!-- ----------------------------Customer name and number---------------------------- -->
                   <td>
                     <a class="btn_style cursor-pointer">
-                      <div class="statuscard" (click)="detailsPageRedirection()"
-                        routerLink="/mandate-customers/{{leads.LeadID}}/{{leads?.ExecId}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">
+                      <div class="statuscard" (click)="detailsPageRedirection();redirectTo(leads)">
                         {{leads.CustomerName}}
                         <span class="blocked_des" *ngIf="leads.rnr_counts >= 5"><i class="fas fa-ban"
                             style="color: white;"></i> Inactive</span>
@@ -1648,8 +1644,7 @@
                       <div class="profile-image cursor-pointer"
                         style="display: flex; flex-direction: column;gap:1rem;align-items: center;justify-content: center;">
                         <img class="center-vertical" src="assets/img/contact_card_avatar.png" />
-                        <div class="rolo-text-header"><a class="btn_style" (click)="detailsPageRedirection()"
-                            routerLink="/mandate-customers/{{selecteduser[0].customer_IDPK}}/{{userid}}/{{'0'}}/{{'mandate'}}/{{leads.propertyid}}">{{selecteduser[0].customer_name}}
+                        <div class="rolo-text-header"><a class="btn_style" (click)="detailsPageRedirection();redirectTo(leads)">{{selecteduser[0].customer_name}}
                           </a></div>
                       </div>
                       <div class="profile-image margin-left-20px  cursor-pointer flex-max-content"

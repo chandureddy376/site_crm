@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center details_column col-12">
       <div>
         <span class="cust_name">{{(show_cnt?.enquiry_name?show_cnt?.enquiry_name:show_cnt?.customer_name)}}</span>
-        <div style="font-size: 16px;">{{(((roleid != 50001 && roleid != 50002) || (assignedrm &&
+        <div style="font-size: 16px;">{{(((roleid != 50001 && roleid != 50002 && roleid != 50013 && roleid != 50014) || (assignedrm &&
           assignedrm[0]?.leadstage != 'Fresh' ||
           ((assignedrm && assignedrm[0]?.leadstage == 'Fresh') && (assignedrm && assignedrm[0]?.followupreason == 8))))?
           show_cnt.customer_number :
@@ -354,7 +354,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks }}
                           </div>
                         </div>
                       </div>
@@ -399,7 +399,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks }}
                           </div>
                         </div>
                       </div>
@@ -623,7 +623,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks }}
                           </div>
                         </div>
                       </div>
@@ -668,7 +668,7 @@
                             {{ leadhistory.autoremarks }}
                           </div>
                           <div class="remarks">
-                            {{ leadhistory.Remarks || 'Here well have the remarks.' }}
+                            {{ leadhistory.Remarks }}
                           </div>
                         </div>
                       </div>

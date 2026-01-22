@@ -72,7 +72,7 @@ export class TodayDashboardComponent implements OnInit {
   selectedRecordExec: any;
   audioList: any;
   onRecordExecList: any;
-
+  isRestoredFromSession = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -157,13 +157,79 @@ export class TodayDashboardComponent implements OnInit {
       this.getsourcelist();
       this.getmandateExecutives()
     }
+    console.log('triggered')
+    const savedState = sessionStorage.getItem('todays_state');
+    console.log(savedState)
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.isRestoredFromSession = true;
+      this.selectedCategory = state.category;
+      this.execid = state.execid;
+      this.rmid = state.execid;
+      this.execname = state.execname
+      this.propertyid = state.propertyid;
+      this.propertyname = state.propertyname
+      this.source = state.source;
+      this.leadstatusVisits = state.visits
+
+      if (this.selectedCategory == undefined || this.selectedCategory == null || this.selectedCategory == '') {
+        this.selectedCategory = 'Scheduled Visits';
+      }
+
+      if (this.leadstatusVisits == 1) {
+        this.selectedLeadStatus = 'Direct Visits'
+      } else if (this.leadstatusVisits == 2) {
+        this.selectedLeadStatus = 'Assigned'
+      } else {
+        this.selectedLeadStatus = 'All'
+      }
+
+      if (this.propertyid) {
+        this.propertyfilterview = true;
+      } else {
+        this.propertyfilterview = false;
+      }
+
+      if (this.source == '' || this.source == null || this.source == undefined) {
+        this.sourceFilter = false;
+      } else {
+        this.sourceFilter = true;
+      }
+
+      if (this.execid) {
+        this.executivefilterview = true;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == '1') {
+          this.rmid = this.execid;
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      } else {
+        this.executivefilterview = false;
+        if (localStorage.getItem('Role') == '1' || localStorage.getItem('Role') == '2' || this.role_type == 1) {
+          this.rmid = "";
+        } else {
+          this.rmid = localStorage.getItem('UserId');
+        }
+      }
+
+      TodayDashboardComponent.count = state.page;
+      this.callerleads = state.leads;
+
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = state.scrollTop;
+      }, 0);
+      this.filterLoader = false;
+      // 🔴 IMPORTANT
+      this.batch1trigger();
+    }
+
     this.getleadsdata();
 
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.resetScroll();
+      // this.resetScroll();
     }, 0)
   }
 
@@ -243,9 +309,19 @@ export class TodayDashboardComponent implements OnInit {
     if (localStorage.getItem('Role') == '50002') {
       this.rmid = localStorage.getItem('UserId');
     }
-    this.filterLoader = true;
-    TodayDashboardComponent.count = 0;
+    // TodayDashboardComponent.count = 0;
     this.route.queryParams.subscribe((paramss) => {
+      this.filterLoader = true;
+
+      if (this.isRestoredFromSession) {
+        this.filterLoader = false;
+        this.isRestoredFromSession = false;
+        setTimeout(() => {
+          sessionStorage.clear();
+        }, 3000)
+        return;
+      }
+
       // Updated Using Strategy
       this.propertyid = paramss['property'];
       this.propertyname = paramss['propname'];
@@ -603,7 +679,7 @@ export class TodayDashboardComponent implements OnInit {
   }
 
   fetchScheduledVisits() {
-
+    TodayDashboardComponent.count = 0;
     var curmonth = this.currentDate.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
     var curday = this.currentDate.getDate();
@@ -644,6 +720,7 @@ export class TodayDashboardComponent implements OnInit {
   }
 
   fetchTodayVisited() {
+    TodayDashboardComponent.count = 0;
     var curmonth = this.currentDate.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
     var curday = this.currentDate.getDate();
@@ -686,6 +763,7 @@ export class TodayDashboardComponent implements OnInit {
   }
 
   fetchUpcomingVisits() {
+    TodayDashboardComponent.count = 0;
     let stage;
     if (this.selectedCategory == 'Upcoming USV Visits') {
       stage = 'USV';
@@ -746,6 +824,7 @@ export class TodayDashboardComponent implements OnInit {
   }
 
   loadMoreassignedleads() {
+    let limit = TodayDashboardComponent.count += 30;
     var curmonth = this.currentDate.getMonth() + 1;
     var curmonthwithzero = curmonth.toString().padStart(2, "0");
     var curday = this.currentDate.getDate();
@@ -792,7 +871,7 @@ export class TodayDashboardComponent implements OnInit {
 
     if (this.selectedCategory == 'Scheduled USV Visits' || this.selectedCategory == 'Scheduled RSV Visits' || this.selectedCategory == 'Scheduled FN Visits' || this.selectedCategory == 'Scheduled Visits') {
       var param = {
-        limit: 0,
+        limit: limit,
         limitrows: 30,
         datefrom: this.todaysdate,
         dateto: this.todaysdate,
@@ -816,7 +895,7 @@ export class TodayDashboardComponent implements OnInit {
       }
     } else if (this.selectedCategory == 'Today USV Visited' || this.selectedCategory == 'Today RSV Visited' || this.selectedCategory == 'Today FN Visited' || this.selectedCategory == 'Today Visited') {
       var param1 = {
-        limit: 0,
+        limit: limit,
         limitrows: 30,
         datefrom: '',
         dateto: '',
@@ -842,7 +921,7 @@ export class TodayDashboardComponent implements OnInit {
       }
     } else if (this.selectedCategory == 'Upcoming USV Visits' || this.selectedCategory == 'Upcoming RSV Visits' || this.selectedCategory == 'Upcoming FN Visits' || this.selectedCategory == 'Upcoming Visits') {
       var param2 = {
-        limit: 0,
+        limit: limit,
         limitrows: 30,
         datefrom: this.fromdate,
         dateto: this.todate,
@@ -1060,6 +1139,16 @@ export class TodayDashboardComponent implements OnInit {
     });
   }
 
+  removeselectedLeadStatus() {
+    this.selectedLeadStatus = '';
+    this.router.navigate([], {
+      queryParams: {
+        visits: ''
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
+
   refresh() {
     this.propertyid = '';
     this.propertyname = '';
@@ -1075,6 +1164,95 @@ export class TodayDashboardComponent implements OnInit {
         category: this.selectedCategory
       }
     });
+  }
+
+  triggerCall(lead) {
+    let number = lead.number.toString().trim();
+
+    if (number.startsWith('+')) {
+      number = number.substring(1);
+    }
+
+    const mobileRegex = /^(?:[0-9]{10}|91[0-9]{10})$/;
+
+    if (!mobileRegex.test(number)) {
+      swal({
+        title: 'Invalid Mobile Number',
+        html: `The mobile number <b>${lead.number}</b> is not valid`,
+        type: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return false;
+    }
+
+    this.calledLead = lead;
+    localStorage.setItem('calledLead', JSON.stringify(lead));
+    localStorage.setItem('callerTriggeredPlace', 'mandate');
+    let currentDate = new Date();
+    //date
+    let year = currentDate.getFullYear();
+    let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    let day = String(currentDate.getDate()).padStart(2, '0');
+    //time
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    let seconds = currentDate.getSeconds();
+
+    let formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    if (this.roleid != 50001 && this.roleid != 50002) {
+      this.copyToClipboard(lead.number);
+    }
+    swal({
+      title: 'Initiate Outbound Call',
+      html: `Do you want to place a call to <br><stronsg>${lead.CustomerName}</strong> (${((lead.Leadphase != 'Fresh' || (lead.Leadphase == 'Fresh' && lead.followupreason == 8) || this.roleid == 1 || this.roleid == 2) ? lead.number : 'xxxxxxxxxx')})`,
+      type: 'warning',
+      confirmButtonText: "Call",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      showCancelButton: true,
+      allowOutsideClick: false
+    }).then((val) => {
+      this.filterLoader = true;
+      if (val.value == true) {
+        const cleanedNumber = lead.number.startsWith('91') && lead.number.length > 10 ? lead.number.slice(2) : lead.number;
+        let param = {
+          execid: this.userid,
+          number: cleanedNumber,
+          leadid: lead.LeadID,
+          starttime: formattedDateTime,
+          modeofcall: 'Desktop-mandate',
+          rmid: lead.ExecId
+        }
+        this._sharedservice.postTriggerCall(param).subscribe((resp) => {
+          this.filterLoader = false;
+          if (resp.status == 'success') {
+            this._sharedservice.setOnCallSelection('oncall')
+          } else {
+            swal({
+              title: 'Call Not Connected',
+              html: `The call could not be completed to <br><stronsg>${lead.CustomerName}</strong> (${lead.number}) Please try again later.`,
+              type: 'error',
+              timer: 3000,
+              showConfirmButton: false,
+              showCancelButton: false
+            });
+          }
+        });
+      } else {
+        this.filterLoader = false;
+      }
+    })
+  }
+
+  copyToClipboard(text) {
+    if ((navigator as any).clipboard) {
+      (navigator as any).clipboard.writeText(text).then(() => {
+        console.log('Number copied to clipboard!');
+      }).catch(() => {
+        console.log('Failed to copy number.');
+      });
+    }
   }
 
   resetScroll() {
@@ -1119,5 +1297,39 @@ export class TodayDashboardComponent implements OnInit {
   getexecutiveId(exec) {
     this.selectedRecordExec = exec.Exec_IDFK;
     this.getRecordListByLead();
+  }
+
+  redirectTo(lead) {
+    console.log(lead);
+
+    // save data
+    this._sharedservice.leads = this.callerleads;
+    this._sharedservice.page = TodayDashboardComponent.count;
+    this._sharedservice.scrollTop = this.scrollContainer.nativeElement.scrollTop;
+    this._sharedservice.hasState = true;
+    localStorage.setItem('backLocation', '');
+    const state = {
+      category: this.selectedCategory,
+      source: this.source,
+      execid: this.execid,
+      execname: this.execname,
+      propertyid: this.propertyid,
+      propertyname: this.propertyname,
+      page: TodayDashboardComponent.count,
+      scrollTop: this.scrollContainer.nativeElement.scrollTop,
+      visits: this.leadstatusVisits,
+      leads: this.callerleads,
+    };
+
+    sessionStorage.setItem('todays_state', JSON.stringify(state));
+
+    this.router.navigate([
+      '/mandate-customers',
+      lead.LeadID,
+      lead.ExecId,
+      0,
+      'mandate',
+      lead.propertyid
+    ]);
   }
 }

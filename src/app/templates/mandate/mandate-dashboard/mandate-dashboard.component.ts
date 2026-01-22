@@ -1891,6 +1891,7 @@ export class MandateDashboardComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
 
   }

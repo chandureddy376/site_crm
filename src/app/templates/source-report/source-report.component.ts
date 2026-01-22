@@ -330,6 +330,19 @@ export class SourceReportComponent implements OnInit {
     }
   }
 
+  // sourcechange(event){
+  //   this.selectedSource = event.target.value;
+  //   this.router.navigate(['/source-dashboard'], {
+  //     queryParams: {
+  //       from: this.fromdate,
+  //       to: this.todate,
+  //       dashtype: 'dashboard',
+  //       source: this.selectedSource
+  //     },
+  //     queryParamsHandling: 'merge'
+  //   });
+  // }
+
   onDateRangeSelected(range: Date[]): void {
     this.dateRange = range;
     // Convert the first date of the range to yyyy-mm-dd format
@@ -799,6 +812,7 @@ export class SourceReportComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
   }
 
@@ -814,6 +828,7 @@ export class SourceReportComponent implements OnInit {
     }, 0)
     this.fromdate = '';
     this.todate = '';
+    // $('#source_dropdown').dropdown('clear');
     this.sourceCategory = '';
     // this.currentdateforcompare = new Date();
     // var curmonth = this.currentdateforcompare.getMonth() + 1;

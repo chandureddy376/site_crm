@@ -394,6 +394,7 @@ export class AdminReportComponent {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => this.backToWelcome(), 1000);
     this._echoService.disconnectSocket();
   }
